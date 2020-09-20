@@ -1,0 +1,10 @@
+{
+  "name": "LogisticsMobileApp",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}
