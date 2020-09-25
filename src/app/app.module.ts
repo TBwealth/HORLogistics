@@ -9,6 +9,11 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import {SocialSharing} from '@ionic-native/social-sharing/ngx';
+
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
