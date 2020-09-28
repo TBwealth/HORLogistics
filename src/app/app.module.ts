@@ -11,8 +11,8 @@ import { AppComponent } from './app.component';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
-
-
+import { FCM } from '@ionic-native/fcm/ngx';
+import { Firebase } from '@ionic-native/firebase/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +21,9 @@ import {SocialSharing} from '@ionic-native/social-sharing/ngx';
   providers: [
     StatusBar,
     SplashScreen,
+    Firebase,
+    FCM,
+    Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

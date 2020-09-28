@@ -1,0 +1,38 @@
+ion-content{
+    --background: #2A2E43;
+}
+
+ion-segment{
+    --background: #FFFFFF;
+    color: #454F63;
+}
+
+.formContainer{
+    padding: 20px;
+    font-size: 15px;
+    font-family: 'avenir_ff_roman';
+    font-style:normal;
+    color: #FFFFFF;
+}
+
+ion-input{
+    padding: 8px 8px 8px 20px;
+    background-color: #454F63;
+    border-radius: 5px;
+    color:#FFFFFF80 ;
+    font-size: 15px;
+    font-family: 'avenir_ff_roman';
+    box-shadow: 0px 4px 16px #455B6314;
+    height: 52px;
+
+}
+.sc-ion-input-ios-h{
+    --padding-start: 10px;
+}
+ion-segment-button{
+    --border-width: 2px;
+    --border-color: #FFB900;
+    --indicator-color:#FFB900;
+    --indicator-box-shadow:  0px 4px 16px #FFB900;
+}
+

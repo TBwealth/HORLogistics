@@ -1,0 +1,63 @@
+
+
+<ion-content >
+  <div style="padding:25px;"></div>
+  <ion-segment #ionsgmnt (ionChange)="segmentChanged(ionsgmnt.value)" >
+    <ion-segment-button value="SIGNIN">
+      <ion-label style="color: #454F63;">SIGN IN</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="SIGNUP">
+      <ion-label style="color: #454F63;">SIGN UP</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+<div *ngIf="signinSegment" class="formContainer">
+  <form name="loginForm" id="loginForm" #loginForm="ngForm">
+
+    <div>
+      <ion-label for="" class="control-label">Email</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-input placeholder="Email" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
+      <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
+        <div *ngIf="(email.errors.required || email.errors)">
+          valid email is required
+        </div>
+    </div>
+    <div style="padding: 10px;"></div>
+      <ion-label for="" >Password</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-input  placeholder="Password" type="password" id="password" name="password" #password="ngModel"  [(ngModel)]="login.password" required></ion-input>
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
+        <div *ngIf="password.errors.required">
+          password is required
+        </div>
+    </div>
+    </div>
+   <ion-row class="input_row">
+     
+    <ion-col size=12 text-center>
+      <ion-button  fill="clear" size="small" expand="block" color="dark"(click)="forgotPassword()" ><span style="color: #FFFFFF;">FORGOT PASSWORD?</span></ion-button>
+    </ion-col>
+   
+  </ion-row>
+    <div style="padding-top: 5px;">
+      <ion-button [disabled]="loginForm.invalid" class="pryColor"  expand="block" (click)="loginUser()">CONTINUE</ion-button>
+    </div>
+    <!--
+    <ion-row class="input_row">
+     
+      <ion-col size=12 text-center>
+        <ion-button  fill="clear" size="small" expand="full" color="dark"(click)="register()" ><span style="color: #4847E0;">Register</span></ion-button>
+      </ion-col>
+     
+    </ion-row>
+    -->
+   
+  </form>
+</div>
+<div *ngIf="signupSegment" class="formContainer">
+  {{'am signup'}}
+</div>
+
+
+</ion-content>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="71.214" height="64.738" viewBox="0 0 71.214 64.738">
+  <defs>
+    <filter id="Rectangle_73" x="0" y="0" width="71.214" height="64.738" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.251"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="car" transform="translate(-240.195 203.997) rotate(-56)">
+    <rect id="shadow" width="25" height="48" rx="8" transform="translate(278.205 113.126)" opacity="0.251"/>
+    <g id="car_purple" data-name="car/purple" transform="translate(287 107)">
+      <g transform="matrix(0.56, 0.83, -0.83, 0.56, 16.44, -21.94)" filter="url(#Rectangle_73)">
+        <rect id="Rectangle_73-2" data-name="Rectangle 73" width="24" height="48" rx="8" transform="matrix(0.56, -0.83, 0.83, 0.56, 9, 25.9)" fill="#ffb900"/>
+      </g>
+      <rect id="Rectangle_74" data-name="Rectangle 74" width="20" height="30" rx="8" transform="translate(2 12)" fill="rgba(0,0,0,0.48)"/>
+      <rect id="Rectangle_75" data-name="Rectangle 75" width="16" height="18" rx="6" transform="translate(4 21)" fill="#ffb900"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "364350750552",
+    "firebase_url": "https://hor-logistics.firebaseio.com",
+    "project_id": "hor-logistics",
+    "storage_bucket": "hor-logistics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364350750552:android:7996476ec5595a47016f2d",
+        "android_client_info": {
+          "package_name": "com.horlogistics.mobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364350750552-53jhboe7p8u9781vqcgn65d710khe0n5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.horlogistics.mobileapp",
+            "certificate_hash": "cefc5e8a9210c808cc72aebdc3c09d6cf0b966c4"
+          }
+        },
+        {
+          "client_id": "364350750552-ddfim24i0i91n45281anj059kqailqqj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwY0IzYQfitP6WV1AQatOnrCuNlkU9t34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364350750552-ddfim24i0i91n45281anj059kqailqqj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

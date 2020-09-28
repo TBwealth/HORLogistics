@@ -1,0 +1,48 @@
+ion-content {
+    font-family: "avenir_ff_roman";
+  }
+  ion-slides {
+    height: 100%;
+    --bullet-background:#78849E;
+    --bullet-background-active:  #454F63;
+  }
+
+
+  .toolbar-background {
+    background: #fff;
+    border-color: transparent;
+  }
+
+  .slide-zoom {
+    height: 100%;
+  }
+
+  .slide-title {
+    margin-top: 2.0rem;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: "avenir_ff_black";
+    color: #454F63;
+  }
+
+  .slide-image {
+    max-height: 50%;
+    max-width: 60%;
+    margin: 12px 0;
+  }
+
+  b {
+    font-weight: 500;
+  }
+
+  p {
+    font-family: "avenir_ff_roman";
+    padding: 0 40px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #78849E;
+
+    b {
+      color: #000000;
+    }
+  }

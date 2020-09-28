@@ -24,3 +24,103 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+@font-face {
+    font-family: 'Rubik';
+    src: url('/assets/fonts/Rubik/Rubik-Regular.ttf');
+  }
+  
+  @font-face {
+    font-family: 'avenir_ff_black';
+    src: url('/assets/fonts/avenir_ff/AvenirLTStd-Black.otf');
+  }
+  @font-face {
+    font-family: 'avenir_ff_book';
+    src: url('/assets/fonts/avenir_ff/AvenirLTStd-Book.otf');
+  }
+  @font-face {
+    font-family: 'avenir_ff_roman';
+    src: url('/assets/fonts/avenir_ff/AvenirLTStd-Roman.otf');
+  }
+
+.pryColor{
+    --background: #FFB900;
+    text-align: center;
+    font-size: 15px;
+    color:#f4f4f4;
+    font-family: 'avenir_ff_roman';
+    font-style:normal;
+    font-weight: lighter;
+    --border-radius: 5px;
+    height: 52px;
+}
+.error {
+    color: #ea6153;
+    font-weight: normal;
+    text-align: left;
+    font-size: 12px;
+  }
+.secColor{
+    --background: #353A50;
+    text-align: center;
+    font-size: 15px;
+    color:#f4f4f4;
+    font-family: 'avenir_ff_roman';
+    font-style:normal;
+    --border-radius: 5px;
+    height: 52px;
+}
+
+.bottomvertPos{
+vertical-align: baseline;
+}
+  
+.menubox{
+    position: relative;
+    height: 100%;
+  }
+  
+  .overlay {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:rgba(0, 0, 0, 0);
+    background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAATSURBVBhXY2RgYNgHxGAAYuwDAA78AjwwRoQYAAAAAElFTkSuQmCC) repeat scroll transparent\9;
+    z-index:9999;
+    color:#f4f4f4;
+    border-radius: 3px;  
+    text-align: left;
+    font-family: 'avenir_ff_black';
+    font-style: bold;
+    font-weight: bolder;
+    font-size: 24px;
+    line-height: 21px;
+  }
+  
+  
+  .overlay:before {
+    // content: '';
+    display: inline-block;
+    // height: 100%;
+    vertical-align: top;
+    // margin-right: -0.25em;
+  }
+  
+  .txt {
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px 15px;
+    position:relative;  
+  }
+
+  .txt p{
+    font-family: 'avenir_ff_roman';
+    font-weight: lighter;
+    font-style:normal;
+    font-size: 14px;
+    line-height: 21px;
+  }
+
+  
