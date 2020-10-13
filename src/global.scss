@@ -42,17 +42,24 @@
     font-family: 'avenir_ff_roman';
     src: url('/assets/fonts/avenir_ff/AvenirLTStd-Roman.otf');
   }
-
+  ion-content{
+    font-family: 'avenir_ff_roman';
+    font-size: 12px;
+    color: #454F63;
+  }
+  ion-content p{
+    color:#78849E;
+  }
 .pryColor{
     --background: #FFB900;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     color:#f4f4f4;
     font-family: 'avenir_ff_roman';
     font-style:normal;
     font-weight: lighter;
     --border-radius: 5px;
-    height: 52px;
+    height: 32px;
 }
 .error {
     color: #ea6153;
@@ -63,25 +70,27 @@
 .secColor{
     --background: #353A50;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     color:#f4f4f4;
     font-family: 'avenir_ff_roman';
     font-style:normal;
     --border-radius: 5px;
-    height: 52px;
+    height: 32px;
 }
 
 .bottomvertPos{
-vertical-align: baseline;
+
 }
   
 .menubox{
     position: relative;
+    width: inherit;
     height: 100%;
   }
   
   .overlay {
     position:absolute;
+    width: inherit;
     top:0;
     left:0;
     right:0;
@@ -89,7 +98,7 @@ vertical-align: baseline;
     background-color:rgba(0, 0, 0, 0);
     background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAATSURBVBhXY2RgYNgHxGAAYuwDAA78AjwwRoQYAAAAAElFTkSuQmCC) repeat scroll transparent\9;
     z-index:9999;
-    color:#f4f4f4;
+    color: #FFFFFF;
     border-radius: 3px;  
     text-align: left;
     font-family: 'avenir_ff_black';
@@ -113,6 +122,10 @@ vertical-align: baseline;
     vertical-align: top;
     padding: 10px 15px;
     position:relative;  
+    font-family: 'avenir_ff_black';
+    font-style: bold;
+    font-weight: bolder;
+    font-size: 24px;
   }
 
   .txt p{
@@ -121,6 +134,24 @@ vertical-align: baseline;
     font-style:normal;
     font-size: 14px;
     line-height: 21px;
+    color: #FFFFFF;
   }
 
-  
+  a{
+      text-decoration: none;
+      color: #FFB900;
+  }
+
+  ion-toolbar{
+    text-align: center;
+    padding: 5px;
+    font-family: 'avenir_ff_roman';
+    font-weight: lighter;
+    font-style:bold;
+    font-size: 12px;
+}
+
+.iconstyle1{
+  font-style:bold;
+  font-size: 24px;
+}

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'onboardingpage', pathMatch: 'full'},
+  {path: '', redirectTo: 'preferedaction', pathMatch: 'full'},
  
   {
     path: 'login',
@@ -27,6 +27,10 @@ const routes: Routes = [
   {
     path: 'onboardingpage',
     loadChildren: () => import('./onboardingpage/onboardingpage.module').then( m => m.OnboardingpagePageModule)
+  },
+  {
+    path: 'terms',
+    loadChildren: () => import('./terms/terms.module').then( m => m.TermsPageModule)
   }
 ];
 @NgModule({

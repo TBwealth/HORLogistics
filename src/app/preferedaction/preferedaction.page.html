@@ -1,19 +1,18 @@
 <ion-content>
-  <div class="menubox" >
-    <img src="assets/logisticMobileIcon/Signuploginimage.svg" alt="menu">
-    <div class="overlay">     
+  <div style="padding-top:50px;"></div>
+  <div style="padding: 10px;">
+    <div style="top: 100px; text-align:center;z-index:1000; width:100%; color: #fffffd;text-align: left;">
       <div class="txt">
-        <div style="padding: 34px;"></div>  
-        <p>Hello, nice to meet you!</p>
-        <h4>Please select your preferred action</h4>
-<div style="padding: 150px;"></div>
-        <div class="bottomvertPos">
-          <ion-button class="pryColor " expand="block" fill="fill">I WANT TO PLACE AN ORDER</ion-button>
-         <div style="padding: 5px;"></div>
-          <ion-button class="secColor" expand="block" fill="fill">I'M A RIDER</ion-button>
-        </div>
+      <p >Hello, nice to meet you!</p>
+      <h6>Please select your preferred action</h6>
       </div>
-    </div>
-    </div>
+      </div> 
+      <div style="padding-top:220px;"></div>
+      <div style="text-align:center;z-index:1000; width:100%;">
+        <ion-button (click)="gotoplaceorder()" class="pryColor " expand="block" fill="fill">I WANT TO PLACE AN ORDER</ion-button>
+        <div style="padding: 5px;"></div>
+         <ion-button (click)="gotoriderorder()" class="secColor" expand="block" fill="fill">I'M A RIDER</ion-button>
+      </div>
+  </div>
 
 </ion-content>

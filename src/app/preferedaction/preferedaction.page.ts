@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-preferedaction',
   templateUrl: './preferedaction.page.html',
@@ -7,8 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreferedactionPage implements OnInit {
 
-  constructor() { }
-
+  constructor(private router: Router) { }
+  gotoplaceorder(){
+this.router.navigate(['loginsigninoptions']);
+  }
+  gotoriderorder(){
+this.router.navigate([''])
+  }
   ngOnInit() {
   }
 
