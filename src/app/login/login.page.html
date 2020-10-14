@@ -1,8 +1,73 @@
-
-
+<ion-header class="zindex">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="headertitle" slot="end">New User? <a href="javascript:void(0)" (click)="register()">Sign Up</a> </ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content >
-  <div style="padding:25px;"></div>
-  <ion-segment #ionsgmnt (ionChange)="segmentChanged(ionsgmnt.value)" >
+  <div style="padding:25px;">
+    <div style="color: #303030;text-align: left;">
+      <div class="txt">
+        <h6>Welcome Back!</h6>
+      </div>
+      </div> 
+      <div style="padding: 10px;"></div>
+      <form name="loginForm" id="loginForm" #loginForm="ngForm">
+    
+        <div>
+          <ion-label for="" class="control-label">Email</ion-label>
+          <div style="padding: 5px;"></div>
+          <ion-input placeholder="Email" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
+          <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
+            <div *ngIf="(email.errors.required || email.errors)">
+              valid email is required
+            </div>
+        </div>
+        <div style="padding: 5px;"></div>
+          <ion-label for="" >Password</ion-label>
+          <div style="padding: 5px;"></div>
+          <ion-input  placeholder="Password" type="password" id="password" name="password" #password="ngModel"  [(ngModel)]="login.password" required></ion-input>
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
+            <div *ngIf="password.errors.required">
+              password is required
+            </div>
+        </div>
+        </div>
+       <div style="padding: 5px;"></div>
+           <a href="javascript:void(0)" style="float: right;text-transform: none;"(click)="forgotPassword()" ><span style="color: #EF6102;font-size: 12px;">Forgot Password?</span></a>
+           <div style="padding: 10px;"></div>
+          <ion-button [disabled]="loginForm.invalid" class="pryColor"  expand="block" (click)="loginUser()">CONTINUE</ion-button>
+     
+          <div style="color: #313131;text-align: center;">
+            <div class="txt">
+              <h6>Or Sign in with</h6>
+            </div>
+            </div> 
+            <ion-row >
+              <ion-col size=6>
+                <ion-button class="otherbtn" color="danger" expand="block" fill="outline">
+                  <ion-icon slot="start"   name="logo-google"></ion-icon>
+                  
+                  Google
+                </ion-button>
+                </ion-col>
+                <ion-col size=6>
+                  <ion-button class="otherbtn" color="primary" expand="block" fill="outline">
+                    <ion-icon slot="start"   name="logo-facebook"></ion-icon>                  
+                    Facebook                   
+                  </ion-button>
+                </ion-col>
+                </ion-row>
+           
+            
+           
+      </form>
+  </div>
+  <!-- <ion-segment [(ngModel)]="type" #ionsgmnt (ionChange)="segmentChanged(ionsgmnt.value)" >
     <ion-segment-button value="SIGNIN">
       <ion-label style="color: #454F63;">SIGN IN</ion-label>
     </ion-segment-button>
@@ -11,53 +76,73 @@
     </ion-segment-button>
   </ion-segment>
 
-<div *ngIf="signinSegment" class="formContainer">
-  <form name="loginForm" id="loginForm" #loginForm="ngForm">
+  <div [ngSwitch]="type" style="background-color: #2A2E43;">
+  
+      <ion-list *ngSwitchCase="'SIGNUP'" style="background-color: #2A2E43;">
+        <ion-card style="padding: 5px;" style="background-color: #2A2E43;">
+          <form name="loginForm" id="loginForm" #loginForm="ngForm">
+    
+            <div>
+              <ion-label for="" class="control-label"><small>First Name</small></ion-label>
+              <div style="padding: 5px;"></div>
+              <ion-input placeholder="First Name" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
+              <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
+                <div *ngIf="(email.errors.required || email.errors)">
+                  First Name is required
+                </div>
+            </div>
+            <ion-label for="" class="control-label"><small>Last Name</small></ion-label>
+            <div style="padding: 5px;"></div>
+            <ion-input placeholder="Last Name" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
+            <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
+              <div *ngIf="(email.errors.required || email.errors)">
+                Last Name is required
+              </div>
+          </div>
+            
+          <ion-label for="" class="control-label"><small>Email Address</small></ion-label>
+          <div style="padding: 5px;"></div>
+          <ion-input placeholder="Email Address" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
+          <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
+            <div *ngIf="(email.errors.required || email.errors)">
+              Valid Email is required
+            </div>
+        </div>
 
-    <div>
-      <ion-label for="" class="control-label">Email</ion-label>
-      <div style="padding: 5px;"></div>
-      <ion-input placeholder="Email" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
-      <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
-        <div *ngIf="(email.errors.required || email.errors)">
-          valid email is required
-        </div>
-    </div>
-    <div style="padding: 10px;"></div>
-      <ion-label for="" >Password</ion-label>
-      <div style="padding: 5px;"></div>
-      <ion-input  placeholder="Password" type="password" id="password" name="password" #password="ngModel"  [(ngModel)]="login.password" required></ion-input>
-      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
-        <div *ngIf="password.errors.required">
-          password is required
-        </div>
-    </div>
-    </div>
-   <ion-row class="input_row">
-     
-    <ion-col size=12 text-center>
-      <ion-button  fill="clear" size="small" expand="block" color="dark"(click)="forgotPassword()" ><span style="color: #FFFFFF;">FORGOT PASSWORD?</span></ion-button>
-    </ion-col>
-   
-  </ion-row>
-    <div style="padding-top: 5px;">
-      <ion-button [disabled]="loginForm.invalid" class="pryColor"  expand="block" (click)="loginUser()">CONTINUE</ion-button>
-    </div>
-    <!--
-    <ion-row class="input_row">
-     
-      <ion-col size=12 text-center>
-        <ion-button  fill="clear" size="small" expand="full" color="dark"(click)="register()" ><span style="color: #4847E0;">Register</span></ion-button>
-      </ion-col>
-     
-    </ion-row>
-    -->
-   
-  </form>
-</div>
-<div *ngIf="signupSegment" class="formContainer">
-  {{'am signup'}}
-</div>
+        <ion-label for="" class="control-label"><small>Phone Number</small></ion-label>
+        <div style="padding: 5px;"></div>
+        <ion-input placeholder="Phone Number" type="email" name="email" id="email" [(ngModel)]="login.email" #email="ngModel" [pattern]="emailPattern" required></ion-input>
+        <div *ngIf="email.invalid && (email.dirty || email.touched) " class="error">
+          <div *ngIf="(email.errors.required || email.errors)">
+            Phone Number is required
+          </div>
+      </div>  
+
+
+            <div style="padding: 5px;"></div>
+              <ion-label for="" ><small>Password</small></ion-label>
+              <div style="padding: 5px;"></div>
+              <ion-input  placeholder="Password" type="password" id="password" name="password" #password="ngModel"  [(ngModel)]="login.password" required></ion-input>
+              <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
+                <div *ngIf="password.errors.required">
+                  password is required
+                </div>
+            </div>
+            </div>
+         <div style="padding: 10px;"></div>
+
+         <p style="text-align: center;">Please read & agree to the <a href="javascript:void(0)" (click)="gototerms()">Terms & conditions and Privacy policy</a> before you continue</p>
+        
+              <ion-button  class="pryColor"  expand="block" (click)="register()">CONTINUE</ion-button>
+         
+          </form>
+        </ion-card>
+        </ion-list>
+ 
+ 
+  </div> -->
+
+
 
 
 </ion-content>

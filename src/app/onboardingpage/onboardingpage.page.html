@@ -1,11 +1,11 @@
 <ion-content>
   <ion-slides  #slides pager="true" [options]="slideOpts">
     <ion-slide *ngFor="let slide of sliders" >
-      <div style="padding-top: 80px; text-align:center;z-index:1000; width:100%;">
-        <img [src]="slide.image" class="slide-image" style="width:50%; height:auto;"/><br/>
+      <div style="padding-top: 20px; text-align:center;z-index:1000; width:100%;">
+        <img [src]="slide.image" class="slide-image" style="width:80%; height:auto;"/><br/>
         <p class="slide-title" [innerHTML]="slide.title"></p>
         <p [innerHTML]="slide.description"></p>
-        <ion-button class="pryColor" size="small" fill="fill" style="height: 44px;width: 80px;">SKIP</ion-button>
+        <ion-button (click)="gotosignup()" class="pryColor" size="small" fill="fill" style="height: 44px;width: 80px;">SKIP</ion-button>
         <br>
         
       </div>

@@ -1,19 +1,21 @@
 <ion-content>
-  <div class="menubox" >
-    <img src="assets/logisticMobileIcon/Signuploginimage.svg" alt="menu">
-    <div class="overlay">     
+  <div style="padding-top:50px;"></div>
+  <div style="padding: 25px;">
+    <div style="padding: 20px;"></div>
+    <div style="color: #303030;text-align: left;">
       <div class="txt">
-        <div style="padding: 34px;"></div>  
         <p>Thanks!</p>
-        <h4>Let’s help deliver your goods</h4>
-<div style="padding: 150px;"></div>
-        <div class="bottomvertPos">
-          <ion-button class="pryColor " expand="block" fill="fill">SIGN UP</ion-button>
-         <div style="padding: 5px;"></div>
-          <ion-button class="secColor" expand="block" fill="fill">SIGN IN</ion-button>
-        </div>
+        <h6>Let’s help deliver your goods</h6>
       </div>
-    </div>
-    </div>
+      </div> 
+
+      <div style="padding:150px;"></div>
+      <div style="text-align:center;z-index:1000; width:100%;">
+        <ion-button (click)="gotoOnboarding()" class="pryColor " expand="block" fill="fill">SIGN UP</ion-button>
+        <div style="padding: 5px;"></div>
+         <ion-button (click)="gotologin()" class="secColor" expand="block" fill="fill">SIGN IN</ion-button>
+     
+      </div>
+  </div>
 
 </ion-content>

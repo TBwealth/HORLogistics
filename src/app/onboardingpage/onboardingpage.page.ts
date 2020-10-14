@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChildren } from '@angular/core';
 import { NavController, IonSlides} from '@ionic/angular';
-
+import {Router} from '@angular/router'
 @Component({
   selector: 'app-onboardingpage',
   templateUrl: './onboardingpage.page.html',
@@ -30,7 +30,7 @@ export class OnboardingpagePage implements OnInit {
       image:"assets/logisticMobileIcon/Onboarding4.svg",
     }
   ];
-  constructor( public navCtrl: NavController) { }
+  constructor( public navCtrl: NavController, private router: Router) { }
   slideOpts = {
     autoplay:false,
       slidesPerView: 1,
@@ -121,7 +121,9 @@ export class OnboardingpagePage implements OnInit {
         }
       }
     }
-
+gotosignup(){
+this.router.navigate(['login'])
+}
   ngOnInit() {
   }
 

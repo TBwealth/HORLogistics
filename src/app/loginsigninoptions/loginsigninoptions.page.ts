@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Router} from '@angular/router';
 @Component({
   selector: 'app-loginsigninoptions',
   templateUrl: './loginsigninoptions.page.html',
@@ -7,8 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginsigninoptionsPage implements OnInit {
 
-  constructor() { }
-
+  constructor(private router: Router) { }
+gotoOnboarding(){
+  this.router.navigate(['onboardingpage']);
+}
+gotologin(){
+  this.router.navigate(['login']);
+}
   ngOnInit() {
   }
 
