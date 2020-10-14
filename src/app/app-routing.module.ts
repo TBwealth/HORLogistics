@@ -31,6 +31,18 @@ const routes: Routes = [
   {
     path: 'terms',
     loadChildren: () => import('./terms/terms.module').then( m => m.TermsPageModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+  },
+  {
+    path: 'customerspartneroption',
+    loadChildren: () => import('./customerspartneroption/customerspartneroption.module').then( m => m.CustomerspartneroptionPageModule)
+  },
+  {
+    path: 'localdelivery',
+    loadChildren: () => import('./localdelivery/localdelivery.module').then( m => m.LocaldeliveryPageModule)
   }
 ];
 @NgModule({

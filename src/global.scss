@@ -51,7 +51,7 @@
     color:#78849E;
   }
 .pryColor{
-    --background: #FFB900;
+    --background: #EF6102;
     text-align: center;
     font-size: 12px;
     color:#f4f4f4;
@@ -59,7 +59,7 @@
     font-style:normal;
     font-weight: lighter;
     --border-radius: 5px;
-    height: 32px;
+    height: 35px;
 }
 .error {
     color: #ea6153;
@@ -68,20 +68,17 @@
     font-size: 12px;
   }
 .secColor{
-    --background: #353A50;
+    --background: transparent;
     text-align: center;
     font-size: 12px;
-    color:#f4f4f4;
+    color:#EF6102;
     font-family: 'avenir_ff_roman';
     font-style:normal;
-    --border-radius: 5px;
-    height: 32px;
+    border-radius: 5px;
+    height: 35px;
+    border: 1px solid #EF6102;
 }
 
-.bottomvertPos{
-
-}
-  
 .menubox{
     position: relative;
     width: inherit;
@@ -120,7 +117,7 @@
   .txt {
     display: inline-block;
     vertical-align: top;
-    padding: 10px 15px;
+    // padding: 10px 15px;
     position:relative;  
     font-family: 'avenir_ff_black';
     font-style: bold;
@@ -134,12 +131,12 @@
     font-style:normal;
     font-size: 14px;
     line-height: 21px;
-    color: #FFFFFF;
+    color: #303030;
   }
 
   a{
       text-decoration: none;
-      color: #FFB900;
+      color:#EF6102;
   }
 
   ion-toolbar{
@@ -151,7 +148,36 @@
     font-size: 12px;
 }
 
+.zindex{
+  z-index: 0;
+}
+
+.headertitle{
+  font-family: 'avenir_ff_roman';
+  font-weight: normal;
+  font-style:normal;
+  font-size: 15px;
+}
+
 .iconstyle1{
   font-style:bold;
   font-size: 24px;
+}
+
+ion-input{
+  padding: 8px 8px 8px 20px;
+  background-color:inherit;
+  border-radius: 5px;
+  color:#A1A3AC ;
+  font-size: 12px;
+  font-family: 'avenir_ff_roman';
+  // box-shadow: 0px 4px 16px #455B6314;
+  height: 35px;
+  border: 0.5px solid #d6d3d3;
+
+}
+
+.otherbtn{
+  text-transform: none;
+  border-radius: 5px;
 }
