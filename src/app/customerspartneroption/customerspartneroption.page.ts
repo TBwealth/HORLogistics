@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customerspartneroption',
@@ -7,8 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerspartneroptionPage implements OnInit {
 
-  constructor() { }
-
+  constructor(private router: Router) { }
+  gotoOnboarding(customerType){
+    this.router.navigate(['register'],{queryParams:{custType:customerType}})
+  }
   ngOnInit() {
   }
 

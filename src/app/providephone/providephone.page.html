@@ -1,0 +1,65 @@
+<ion-header class="zindex">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1" style="color: #454F63;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="headertitle" >Verification </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding-top:20px;"></div>
+  <div style="padding: 25px;">
+    <div style="padding: 20px;"></div>
+    <div style="color: #303030;text-align: left;">
+      <div class="txt">
+        <p>One final Step!</p>
+        <h4>Enter your phone <br>number:</h4>
+       
+      </div>
+      </div> 
+    
+      
+ 
+
+      <div style="padding:10px;"></div>
+      <form name="regForm" id="regForm" #regForm="ngForm">  
+        <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
+          <ion-col size=2>
+            <div style="padding: 5px;"></div>
+            <span *ngFor="let imgSrc of selectedFlag">
+              <img style="width: 30px;height:16px;" [src]="imgSrc.flag" />
+            </span>
+            
+          </ion-col>
+          <ion-col size=3>
+            <ion-select #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value)"  [(ngModel)]="alpha2Code"  cancelText="Cancel" name="alpha2Code" okText="OK" required>
+              <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+                {{Ccode.name}}
+              </ion-select-option>             
+            </ion-select>
+          </ion-col>
+          <ion-col size=7>
+            <ion-input #phone (keyup)="phoneValidation(phone.value)" placeholder="Phone Number" type="tel" name="phone" id="phone" [(ngModel)]="regUser.phone" #phone="ngModel" required style="border: none;"></ion-input>
+     
+          </ion-col>
+        </ion-row> 
+        <div style="padding: 2px;"></div>
+        <div *ngIf="phoneError" class="error">
+          valid Phone Number  is required
+      </div>
+        
+       <div style="padding: 5px;"></div>
+   
+          <ion-button [disabled]="regForm.invalid" (click)="sendOTP()" class="pryColor"  expand="block" >NEXT STEP</ion-button>
+
+     
+           
+            
+           
+      </form>
+ 
+  </div>
+</ion-content>

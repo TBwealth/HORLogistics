@@ -16,7 +16,7 @@ export class TermsPage implements OnInit {
     this.navCtrl.back();
   }
   contineandagree(){
-this.router.navigate(['login'],{queryParams:{value: true}})
+this.router.navigate(['register'],{queryParams:{terms: true}})
   }
   ngOnInit() {
   }

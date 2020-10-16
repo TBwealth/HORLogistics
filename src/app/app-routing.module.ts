@@ -43,6 +43,14 @@ const routes: Routes = [
   {
     path: 'localdelivery',
     loadChildren: () => import('./localdelivery/localdelivery.module').then( m => m.LocaldeliveryPageModule)
+  },
+  {
+    path: 'providephone',
+    loadChildren: () => import('./providephone/providephone.module').then( m => m.ProvidephonePageModule)
+  },
+  {
+    path: 'otpvalidation',
+    loadChildren: () => import('./otpvalidation/otpvalidation.module').then( m => m.OtpvalidationPageModule)
   }
 ];
 @NgModule({

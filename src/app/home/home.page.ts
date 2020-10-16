@@ -29,7 +29,7 @@ Lgpslatlng:any;
         center: {lat: 9.077751, lng: 8.6774567},
         mapTypeControl: false,
         streetViewControl: false,
-        zoom: 17
+        zoom: 2
       }
       this.map = new google.maps.Map(document.getElementById("map"),mapOptions);
       this.GetLocation();  

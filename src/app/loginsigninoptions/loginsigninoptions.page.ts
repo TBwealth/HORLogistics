@@ -9,7 +9,7 @@ export class LoginsigninoptionsPage implements OnInit {
 
   constructor(private router: Router) { }
 gotoOnboarding(){
-  this.router.navigate(['onboardingpage']);
+  this.router.navigate(['customerspartneroption']);
 }
 gotologin(){
   this.router.navigate(['login']);
