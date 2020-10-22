@@ -2,7 +2,9 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'preferedaction', pathMatch: 'full'},
+  // {path: '', redirectTo: 'preferedaction', pathMatch: 'full'},
+  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
+  // {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
   {
     path: 'login',
