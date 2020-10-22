@@ -17,13 +17,16 @@ export class RegisterPage implements OnInit {
   responseData: any;
   user: User;
   type: string;
-  
+  customerType: any;
   regUser: any = {
+    businessname: '',
+    businessanniversary: new Date().toISOString(),
     lastname: '',
     firstname:'',
     phone:'',
     email: '',
-    password: ''
+    password: '',
+    terms: false
   };
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"; 
     constructor(private router: Router,
@@ -41,8 +44,21 @@ export class RegisterPage implements OnInit {
     userlogin(){
       this.router.navigate(['login'])
     }
+    getcustType(custType){
+     this.customerType = custType;
+    }
+    registerUser(){
+      this.router.navigate(['providephone'])
+    }
     ngOnInit() {
-  
+      this.activatedroute.queryParams.subscribe(data=>{
+        if(data.custType){
+          this.getcustType(data.custType);
+        }
+        if(data.terms){
+          this.regUser.terms = data.terms;
+        }
+      })
     }
 
 }

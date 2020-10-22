@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="goback()">
-        <ion-icon name="arrow-back-outline" class="iconstyle1" ></ion-icon>
+        <ion-icon name="arrow-back-outline" class="iconstyle1" style="color: #454F63;"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title class="headertitle" slot="end">New User? <a href="javascript:void(0)" (click)="register()">Sign Up</a> </ion-title>
@@ -49,7 +49,7 @@
             </div> 
             <ion-row >
               <ion-col size=6>
-                <ion-button class="otherbtn" color="danger" expand="block" fill="outline">
+                <ion-button class="otherbtn" (click)="doLogin()" color="danger" expand="block" fill="outline">
                   <ion-icon slot="start"   name="logo-google"></ion-icon>
                   
                   Google

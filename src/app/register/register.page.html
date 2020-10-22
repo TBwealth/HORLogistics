@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="goback()">
-        <ion-icon name="arrow-back-outline" class="iconstyle1" ></ion-icon>
+        <ion-icon name="arrow-back-outline" class="iconstyle1"  style="color: #454F63;"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title class="headertitle" slot="end"><a href="javascript:void(0)" (click)="userlogin()">Sign In</a> </ion-title>
@@ -19,23 +19,48 @@
       <form name="regForm" id="regForm" #regForm="ngForm">
     
         <div>
+          <span *ngIf="customerType == 'partner'">
+            <ion-label for="" class="control-label">Business Name</ion-label>
+            <div style="padding: 5px;"></div>
+            <ion-input placeholder="Business Name" type="text" name="businessname" id="businessname" [(ngModel)]="regUser.businessname" #businessname="ngModel" ></ion-input>
+            <div *ngIf="businessname.invalid && (businessname.dirty || businessname.touched) " class="error">
+              <div *ngIf="(firstname.errors.required || firstname.errors)">
+                Business Name is required
+              </div>
+          </div>
+        </span>
+          <span *ngIf="customerType == 'customer'">
           <ion-label for="" class="control-label">First Name</ion-label>
           <div style="padding: 5px;"></div>
-          <ion-input placeholder="First Name" type="text" name="firstname" id="firstname" [(ngModel)]="regUser.firstname" #firstname="ngModel"  required></ion-input>
+          <ion-input placeholder="First Name" type="text" name="firstname" id="firstname" [(ngModel)]="regUser.firstname" #firstname="ngModel"  ></ion-input>
           <div *ngIf="firstname.invalid && (firstname.dirty || email.touched) " class="error">
             <div *ngIf="(firstname.errors.required || firstname.errors)">
               First Name is required
             </div>
         </div>
+      </span>
         <div style="padding: 5px;"></div>
+        <span *ngIf="customerType == 'partner'">
+          <ion-label for="" class="control-label">Business Anniversary</ion-label>
+          <div style="padding: 5px;"></div>
+          <ion-datetime style="width: 100%;" display-format="DD/MM/YYYY" picker-format="DD/MM/YYYY" [(ngModel)]="regUser.businessanniversary" #businessanniversary="ngModel" name="businessanniversary" id="businessanniversary" ></ion-datetime>
+          <div *ngIf="businessanniversary.invalid && (businessanniversary.dirty || businessanniversary.touched) " class="error">
+            <div *ngIf="(businessanniversary.errors.required || businessanniversary.errors)">
+              Business Anniversary is required
+            </div>
+        </div>
+      </span>
+        <span *ngIf="customerType == 'customer'">
         <ion-label for="" class="control-label">Last Name</ion-label>
         <div style="padding: 5px;"></div>
-        <ion-input placeholder="Last Name" type="text" name="lastname" id="lastname" [(ngModel)]="regUser.lastname" #lastname="ngModel"  required></ion-input>
+        <ion-input placeholder="Last Name" type="text" name="lastname" id="lastname" [(ngModel)]="regUser.lastname" #lastname="ngModel" ></ion-input>
         <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched) " class="error">
           <div *ngIf="(lastname.errors.required || lastname.errors)">
             Last Name is required
           </div>
       </div>
+    </span>
+
       <div style="padding: 5px;"></div>
           <ion-label for="" class="control-label">Email</ion-label>
           <div style="padding: 5px;"></div>
@@ -58,14 +83,14 @@
        <div style="padding: 5px;"></div>
            <a href="javascript:void(0)" style="float: right;text-transform: none;"(click)="forgotPassword()" ><span style="color: #EF6102;font-size: 12px;">Forgot Password?</span></a>
            <div style="padding: 10px;"></div>
-          <ion-button [disabled]="regForm.invalid" class="pryColor"  expand="block" (click)="loginUser()">CONTINUE</ion-button>
+          <ion-button [disabled]="regForm.invalid" class="pryColor"  expand="block" (click)="registerUser()">CONTINUE</ion-button>
      
-          <div style="color: #313131;text-align: center;">
+          <div style="color: #313131;text-align: center;" *ngIf="customerType == 'customer'">
             <div class="txt">
-              <h6>Or Sign in with</h6>
+              <h6>Or Sign up with</h6>
             </div>
             </div> 
-            <ion-row >
+            <ion-row *ngIf="customerType == 'customer'">
               <ion-col size=6>
                 <ion-button class="otherbtn" color="danger" expand="block" fill="outline">
                   <ion-icon slot="start"   name="logo-google"></ion-icon>
@@ -80,7 +105,10 @@
                   </ion-button>
                 </ion-col>
                 </ion-row>
-           
+
+                <p style="text-align: center;font-size: 12px;">
+                  By signing up you agree to the <br><a href="javascript:void(0)" (click)="gototerms()">Terms & Conditions </a> 
+                </p>
             
            
       </form>
