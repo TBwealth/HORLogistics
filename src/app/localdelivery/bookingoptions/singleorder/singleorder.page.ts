@@ -2,14 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
 import { NavController} from '@ionic/angular';
-import { local_deliveryModel, pickup_detailsModel, package_detailsModel, LocaldeliveryButton } from '../_models/local_delivery'
+import { local_deliveryModel, pickup_detailsModel, package_detailsModel, LocaldeliveryButton } from '../../../_models/local_delivery'
+
 
 @Component({
-  selector: 'app-localdelivery',
-  templateUrl: './localdelivery.page.html',
-  styleUrls: ['./localdelivery.page.scss'],
+  selector: 'app-singleorder',
+  templateUrl: './singleorder.page.html',
+  styleUrls: ['./singleorder.page.scss'],
 })
-export class LocaldeliveryPage implements OnInit {
+export class SingleorderPage implements OnInit {
+
+  constructor(private router: Router,
+    private navCtrl: NavController,
+    private activatedroute: ActivatedRoute) { }
+
+  ngOnInit() {
+  }
+
   package_detailsForm:FormGroup;
   pickup_detailsForm: FormGroup; 
   delivery_detailsForm:FormGroup;
@@ -46,15 +55,6 @@ export class LocaldeliveryPage implements OnInit {
   delivery:boolean = false;
   package:boolean = false;
   activetab:string = "";
-
-
-  constructor(private router: Router,
-    private navCtrl: NavController,
-    private activatedroute: ActivatedRoute) { }
-
-  ngOnInit() {
-  }
-
   goback(){
     this.navCtrl.back();
   }
