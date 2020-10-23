@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Multiple Booking</ion-title>
+    <ion-title>Local delivery</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,7 +14,7 @@
   <ion-grid [ngSwitch]="activetab">
     <ion-row>
       <ion-col>
-        <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(pickup)" #pickup>
+        <ion-button [disabled]="pickupDetailsPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(pickup)" #pickup>
           <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>
           <p class="localheader">Pickup Details</p>
         </ion-button>
@@ -22,37 +22,81 @@
     </ion-row>
     
       <div *ngSwitchCase='pickup'>
-    <form name="pickup_detailsForm" #pickup_detailsForm="ngForm">
+    <form name="pickup_detailsForm" id="pickup_detailsForm" #pickup_detailsForm="ngForm">
       <ion-grid>
-          <ion-select placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
+          <ion-select (ionChange)="validatePickupForm()" placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
             <ion-select-option value="withinLag">Within Lagos</ion-select-option>
             <ion-select-option value="withinIB">Within Ibadan</ion-select-option>
             <ion-select-option value="withinAbj">Within Abuja</ion-select-option>
             <ion-select-option value="LagtoIB">Lagos to Ibadan</ion-select-option>
             <ion-select-option value="LagtoAbj">Lagos to Abuja</ion-select-option>
           </ion-select>
-          <div *ngIf="booking_category.invalid && (booking_category.dirty || booking_category.touched)" class="error">Please select booking category</div>
+          <div *ngIf="booking_category.invalid && (booking_category.dirty || booking_category.touched)" class="error">
+            <div *ngIf="booking_category.errors.required">
+              Booking Category is required
+            </div>
+        </div>
+          <!-- <div *ngIf="local_deliveryModel.booking_category.invalid && (booking_category.dirty || booking_category.touched)" ></div> -->
           <div style="padding: 5px;"></div>
-          <ion-input type="text" placeholder="Name" [(ngModel)]="pickup_details.pickup_name" name="pickup_name" #pickup_name="ngModel" required></ion-input>
-          <div *ngIf="(pickup_name.touched || pickup_name.touched)  && pickup_name.invalid" class="error">Please enter the name</div>
+          <ion-input (keyup)="validatePickupForm()"  (ionChange)="validatePickupForm()" type="text" placeholder="Name" [(ngModel)]="pickup_details.pickup_name" name="pickup_name" id="pickup_name" #pickup_name="ngModel" required></ion-input>
+          <div *ngIf="pickup_name.invalid && (pickup_name.dirty || pickup_name.touched)" class="error">
+            <div *ngIf="pickup_name.errors.required">
+              Pick-up Name is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" placeholder="Address" [(ngModel)]="pickup_details.pickup_address" name="pickup_address" #pickup_address="ngModel" required></ion-input>
-          <div *ngIf="(pickup_address.touched  || pickup_address.dirty) && pickup_address.invalid" class="error">Please enter the address</div>
+          <ion-input (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" type="text" placeholder="Address" [(ngModel)]="pickup_details.pickup_address" name="pickup_address" id="pickup_address" #pickup_address="ngModel" required></ion-input>
+          <div *ngIf="pickup_address.invalid && (pickup_address.dirty || pickup_address.touched)" class="error">
+            <div *ngIf="pickup_address.errors.required">
+              Pick-up Address is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" placeholder="Phone" [(ngModel)]="pickup_details.pickup_phone" name="pickup_phone" #pickup_phone="ngModel" required></ion-input>
-          <div *ngIf="(pickup_phone.touched || pickup_phone.dirty) && pickup_phone.invalid" class="error">Please enter the phone number</div>
+           
+          <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
+            <ion-col size=2>
+              <div style="padding: 5px;"></div>
+              <span *ngFor="let imgSrc of selectedFlag">
+                <img style="width: 30px;height:16px;" [src]="imgSrc.flag" />
+              </span>
+              
+            </ion-col>
+            <ion-col size=3>
+              <ion-select #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'pickup')"  [(ngModel)]="alpha2Code"  cancelText="Cancel" name="alpha2Code" okText="OK" required>
+                <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+                  {{Ccode.name}}
+                </ion-select-option>             
+              </ion-select>
+            </ion-col>
+            <ion-col size=7>
+              <ion-input #phone (keyup)="phoneValidation(phone.value,'pickup')" placeholder="Phone Number" type="tel" [(ngModel)]="pickup_details.pickup_phone" name="pickup_phone" id="pickup_phone" #pickup_phone="ngModel"  required style="border: none;"></ion-input>
+       
+            </ion-col>
+          </ion-row> 
+          <div style="padding: 2px;"></div>
+          <div *ngIf="phoneError" class="error">
+            valid Phone Number  is required
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" placeholder="Pickup Landmanrk" [(ngModel)]="pickup_details.pickup_landmark" name="pickup_landmark" #pickup_landmark="ngModel" required></ion-input>
-          <div *ngIf="(pickup_landmark.touched || pickup_landmark.dirty) && pickup_landmark.invalid">Please enter the landmark</div>
+          <ion-input (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" type="text" placeholder="Pickup Landmanrk" [(ngModel)]="pickup_details.pickup_landmark" name="pickup_landmark" id="pickup_landmark" #pickup_landmark="ngModel" required></ion-input>
+          <div *ngIf="pickup_landmark.invalid && (pickup_landmark.dirty || pickup_landmark.touched)" class="error">
+            <div *ngIf="pickup_landmark.errors.required">
+              Pick-up Landmark is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" placeholder="Closest Bus Stop" [(ngModel)]="pickup_details.pickup_busstop" name="pickup_busstop" #pickup_busstop="ngModel" required></ion-input>
-          <div *ngIf="(pickup_busstop.touched || pickup_busstop.dirty) && pickup_busstop.invalid" class="error">Please enter the bus stop</div>
+          <ion-input (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" type="text" placeholder="Closest Bus Stop" [(ngModel)]="pickup_details.pickup_busstop" name="pickup_busstop" id="pickup_busstop" #pickup_busstop="ngModel" required></ion-input>
+          <div *ngIf="pickup_busstop.invalid && (pickup_busstop.dirty || pickup_busstop.touched)" class="error">
+            <div *ngIf="pickup_busstop.errors.required">
+              Pick-up Busstop is required
+            </div>
+        </div>
         </ion-grid>
   </form></div>
     
   <ion-row>
       <ion-col>
-      <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery)" #delivery>
+      <ion-button [disabled]="DeliveryDetailsPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery)" #delivery>
         <ion-img src="assets/images/delivery.png" class="myicons"></ion-img>
         <p class="localheader">Delivery Details</p>
       </ion-button>
@@ -61,30 +105,73 @@
     <div *ngSwitchCase='delivery'>
       <ion-grid>
         <form name="delivery_detailsForm" #delivery_detailsForm="ngForm">
-          <ion-datetime name="delivery_date" #delivery_date="ngModel" id="delivery_date" [(ngModel)]="local_delivery.delivery_date" displayFormat="MM DD YY" placeholder="Delivery Date" required></ion-datetime>
-          <div *ngIf="(delivery_date.touched || delivery_date.dirty) && delivery_date.invalid" class="error">Please select date</div>
+          <ion-datetime (ionChange)="validateDeliveryForm()" #delivery_date="ngModel" name="delivery_date" id="delivery_date" [(ngModel)]="local_delivery.delivery_date" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
+          <div *ngIf="delivery_date.invalid && (delivery_date.dirty || delivery_date.touched)" class="error">
+            <div *ngIf="delivery_date.errors.required">
+              Delivery Date is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" name="delivery_name" #delivery_name="ngModel" placeholder="Receiver's Name" [(ngModel)]="local_delivery.delivery_name" required></ion-input>
-          <div *ngIf="(delivery_name.touched || delivery_name.dirty) && delivery_name.invalid" class="error">Please enter name</div>
+          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_name="ngModel" name="delivery_name" placeholder="Receiver's Name" [(ngModel)]="local_delivery.delivery_name" required></ion-input>
+          <div *ngIf="delivery_name.invalid && (delivery_name.dirty || delivery_name.touched)" class="error">
+            <div *ngIf="delivery_name.errors.required">
+              Delivery Name is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" name="delivery_address" #delivery_address="ngModel" placeholder="Address" [(ngModel)]="local_delivery.delivery_address" required></ion-input>
-          <div *ngIf="(delivery_address.touched || delivery_address.dirty) && delivery_address.invalid" class="error">Please enter address</div>
+          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_address="ngModel" name="delivery_address" placeholder="Address" [(ngModel)]="local_delivery.delivery_address" required></ion-input>
+          <div *ngIf="delivery_address.invalid && (delivery_address.dirty || delivery_address.touched)" class="error">
+            <div *ngIf="delivery_address.errors.required">
+              Delivery Address is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" name="delivery_phone" #delivery_phone="ngModel" placeholder="Phone" [(ngModel)]="local_delivery.delivery_phone" required></ion-input>
-          <div *ngIf="(delivery_phone.touched || delivery_phone.dirty) && delivery_phone.invalid" class="error">Please enter phone number</div>
+          <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
+            <ion-col size=2>
+              <div style="padding: 5px;"></div>
+              <span *ngFor="let imgSrc of selectedFlag">
+                <img style="width: 30px;height:16px;" [src]="imgSrc.flag" />
+              </span>
+              
+            </ion-col>
+            <ion-col size=3>
+              <ion-select #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'delivery')"  [(ngModel)]="deliveryAlpha2Code"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" required>
+                <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+                  {{Ccode.name}}
+                </ion-select-option>             
+              </ion-select>
+            </ion-col>
+            <ion-col size=7>
+              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="local_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #delivery_phone="ngModel"  required style="border: none;"></ion-input>
+       
+            </ion-col>
+          </ion-row> 
+          <div style="padding: 2px;"></div>
+          <div *ngIf="deliveryphoneError" class="error">
+            valid Phone Number  is required
+        </div>
+         
           <div style="padding: 5px;"></div>
-          <ion-input type="text" name="delivery_landmark" #delivery_landmark="ngModel" placeholder="Pickup Landmanrk" [(ngModel)]="local_delivery.delivery_landmark" required></ion-input>          
-          <div *ngIf="(delivery_landmark.touched || delivery_landmark.dirty) && delivery_landmark.invalid" class="error">Please enter landmark</div>
+          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_landmark="ngModel" name="delivery_landmark" placeholder="Pickup Landmanrk" [(ngModel)]="local_delivery.delivery_landmark" required></ion-input>
+          <div *ngIf="delivery_landmark.invalid && (delivery_landmark.dirty || delivery_landmark.touched)" class="error">
+            <div *ngIf="delivery_landmark.errors.required">
+              Delivery Landmark is required
+            </div>
+        </div>
           <div style="padding: 5px;"></div>
-          <ion-input type="text" name="delivery_busstop" #delivery_busstop="ngModel" placeholder="Closest Bus Stop" [(ngModel)]="local_delivery.delivery_busstop" required></ion-input>
-          <div *ngIf="(delivery_busstop.touched || delivery_busstop.dirty) && delivery_busstop.invalid" class="error">Please enter bus stop</div>    
+          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_busstop="ngModel" name="delivery_busstop" placeholder="Closest Bus Stop" [(ngModel)]="local_delivery.delivery_busstop" required></ion-input>
+          <div *ngIf="delivery_busstop.invalid && (delivery_busstop.dirty || delivery_busstop.touched)" class="error">
+            <div *ngIf="delivery_busstop.errors.required">
+              Delivery Busstop is required
+            </div>
+        </div>
         </form>
       </ion-grid>
     </div>
 
     <ion-row>
       <ion-col>
-      <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(package)" #package> 
+      <ion-button [disabled]="packageDeliveryPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(package)" #package> 
         <ion-img src="assets/images/package.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Package Description</p>
       </ion-button>
