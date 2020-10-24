@@ -74,7 +74,7 @@
             </ion-col>
           </ion-row> 
           <div style="padding: 2px;"></div>
-          <div *ngIf="phoneError" class="error">
+          <div *ngIf="phoneError && (pickup_phone.dirty || pickup_phone.touched)" class="error">
             valid Phone Number  is required
         </div>
           <div style="padding: 5px;"></div>
@@ -142,7 +142,7 @@
               </ion-select>
             </ion-col>
             <ion-col size=7>
-              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="local_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #delivery_phone="ngModel"  required style="border: none;"></ion-input>
+              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="local_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #deliveryphone="ngModel"  required style="border: none;"></ion-input>
        
             </ion-col>
           </ion-row> 
