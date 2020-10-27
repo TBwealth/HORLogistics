@@ -23,6 +23,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireModule } from '@angular/fire';
 import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook } from '@ionic-native/facebook/ngx';
 
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
@@ -48,7 +49,8 @@ import { NetworkProvider } from './_services/network';
     Device,
     Network,
     FirebaseAuthentication,
-    GooglePlus
+    GooglePlus,
+    Facebook,
   ],
   bootstrap: [AppComponent]
 })
