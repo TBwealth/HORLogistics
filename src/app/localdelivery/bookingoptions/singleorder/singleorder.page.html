@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Local delivery</ion-title>
+    <ion-title>Single Order</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -142,7 +142,7 @@
               </ion-select>
             </ion-col>
             <ion-col size=7>
-              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="local_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #deliveryphone="ngModel"  required style="border: none;"></ion-input>
+              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="local_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #delivery_phone="ngModel"  required style="border: none;"></ion-input>
        
             </ion-col>
           </ion-row> 
@@ -220,14 +220,5 @@
           </ion-button>
         </div>
       </div>  
-      
-      <ion-row>
-        <ion-col>
-          <ion-button expand="block" class="localdelivery" fill="clear" [disabled]="true">
-            <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>
-            <p class="localheader">Add Another Order</p>
-          </ion-button>
-        </ion-col>
-      </ion-row>
   </ion-grid>
 </ion-content>

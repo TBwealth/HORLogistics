@@ -64,6 +64,7 @@ export class LocaldeliveryPage implements OnInit {
     private router: Router,
     private navCtrl: NavController,
     private activatedroute: ActivatedRoute) { }
+   
     yesfn(event){
       if(event.detail.checked) this.checkedIdx = true;
     }
