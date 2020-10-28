@@ -22,20 +22,20 @@
           <span *ngIf="customerType == 'partner'">
             <ion-label for="" class="control-label">Business Name</ion-label>
             <div style="padding: 5px;"></div>
-            <ion-input placeholder="Business Name" type="text" name="businessname" id="businessname" [(ngModel)]="regUser.businessname" #businessname="ngModel" ></ion-input>
-            <div *ngIf="businessname.invalid && (businessname.dirty || businessname.touched) " class="error">
-              <div *ngIf="(firstname.errors.required || firstname.errors)">
+            <ion-input placeholder="Business Name" type="text" name="businessName" id="businessName" [(ngModel)]="regUser.businessName" #businessName="ngModel" ></ion-input>
+            <div *ngIf="businessName.invalid && (businessName.dirty || businessName.touched) " class="error">
+              <div *ngIf="(businessName.errors.required || businessName.errors)">
                 Business Name is required
               </div>
           </div>
         </span>
           <span *ngIf="customerType == 'customer'">
-          <ion-label for="" class="control-label">First Name</ion-label>
+          <ion-label for="" class="control-label">Full Name</ion-label>
           <div style="padding: 5px;"></div>
-          <ion-input placeholder="First Name" type="text" name="firstname" id="firstname" [(ngModel)]="regUser.firstname" #firstname="ngModel"  ></ion-input>
-          <div *ngIf="firstname.invalid && (firstname.dirty || email.touched) " class="error">
-            <div *ngIf="(firstname.errors.required || firstname.errors)">
-              First Name is required
+          <ion-input placeholder="Full Name" type="text" name="fullName" id="fullName" [(ngModel)]="regUser.fullName" #fullName="ngModel"  ></ion-input>
+          <div *ngIf="fullName.invalid && (fullName.dirty || fullName.touched) " class="error">
+            <div *ngIf="(fullName.errors.required || fullName.errors)">
+              Full Name is required
             </div>
         </div>
       </span>
@@ -43,24 +43,14 @@
         <span *ngIf="customerType == 'partner'">
           <ion-label for="" class="control-label">Business Anniversary</ion-label>
           <div style="padding: 5px;"></div>
-          <ion-datetime style="width: 100%;" display-format="DD/MM/YYYY" picker-format="DD/MM/YYYY" [(ngModel)]="regUser.businessanniversary" #businessanniversary="ngModel" name="businessanniversary" id="businessanniversary" ></ion-datetime>
-          <div *ngIf="businessanniversary.invalid && (businessanniversary.dirty || businessanniversary.touched) " class="error">
-            <div *ngIf="(businessanniversary.errors.required || businessanniversary.errors)">
+          <ion-datetime style="width: 100%;" display-format="DD/MM/YYYY" picker-format="DD/MM/YYYY" [(ngModel)]="regUser.businessAnniversary" #businessAnniversary="ngModel" name="businessAnniversary" id="businessAnniversary" ></ion-datetime>
+          <div *ngIf="businessAnniversary.invalid && (businessAnniversary.dirty || businessAnniversary.touched) " class="error">
+            <div *ngIf="(businessAnniversary.errors.required || businessAnniversary.errors)">
               Business Anniversary is required
             </div>
         </div>
       </span>
-        <span *ngIf="customerType == 'customer'">
-        <ion-label for="" class="control-label">Last Name</ion-label>
-        <div style="padding: 5px;"></div>
-        <ion-input placeholder="Last Name" type="text" name="lastname" id="lastname" [(ngModel)]="regUser.lastname" #lastname="ngModel" ></ion-input>
-        <div *ngIf="lastname.invalid && (lastname.dirty || lastname.touched) " class="error">
-          <div *ngIf="(lastname.errors.required || lastname.errors)">
-            Last Name is required
-          </div>
-      </div>
-    </span>
-
+       
       <div style="padding: 5px;"></div>
           <ion-label for="" class="control-label">Email</ion-label>
           <div style="padding: 5px;"></div>
@@ -76,12 +66,25 @@
           <ion-input  placeholder="Password" type="password" id="password" name="password" #password="ngModel"  [(ngModel)]="regUser.password" required></ion-input>
           <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error">
             <div *ngIf="password.errors.required">
-              password is required
+              Password is required
             </div>
         </div>
+
+        <div style="padding: 5px;"></div>
+        <ion-label for="" >Confirm Password</ion-label>
+        <div style="padding: 5px;"></div>
+        <ion-input  placeholder="Confirm Password" type="password" id="confirmPassword" name="confirmPassword" #confirmPassword="ngModel"  [(ngModel)]="regUser.confirmPassword" required></ion-input>
+        <div *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)" class="error">
+          <div *ngIf="confirmPassword.errors.required">
+          Confirm Password is required
+          </div>
+      </div>
+      <div *ngIf="regUser.confirmPassword != regUser.password" class="error">
+        Password does not match
+      </div>
         </div>
        <div style="padding: 5px;"></div>
-           <a href="javascript:void(0)" style="float: right;text-transform: none;"(click)="forgotPassword()" ><span style="color: #EF6102;font-size: 12px;">Forgot Password?</span></a>
+
            <div style="padding: 10px;"></div>
           <ion-button [disabled]="regForm.invalid" class="pryColor"  expand="block" (click)="registerUser()">CONTINUE</ion-button>
      

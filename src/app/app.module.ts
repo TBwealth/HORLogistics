@@ -1,8 +1,9 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { RouteReuseStrategy } from '@angular/router';
-import { HttpClientModule, HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpHandler, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -29,6 +30,10 @@ import { Facebook } from '@ionic-native/facebook/ngx';
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
 import { NetworkProvider } from './_services/network';
+import { AuthService } from './_services/auth.service';
+import { AuthGuardService } from './_services/auth-guard.service';
+import { AuthenticationService } from './_services/authentication.service';
+import { JwtInterceptor } from './_services/jwt.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -52,6 +57,10 @@ import { NetworkProvider } from './_services/network';
     FirebaseAuthentication,
     GooglePlus,
     Facebook,
+    AuthService,
+    AuthGuardService,
+    AuthenticationService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

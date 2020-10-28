@@ -90,3 +90,15 @@ export interface User {
   user_token?: string,
   baseUrl?: string
 }
+
+export interface userRegistration{
+  email?: string,
+  fullName?: string,
+  password?: string,
+  confirmPassword?: string,
+  userType?: number,
+  businessName?: string,
+  businessAnniversary?: string,
+  tcAccepted?: boolean,
+  userPicsUrl?: string
+}

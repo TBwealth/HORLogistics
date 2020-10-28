@@ -9,6 +9,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -72,8 +73,6 @@ this.router.navigate(['terms'])
       .then((response) => {
         this.user = response.user;
         console.log(this.user)
-      //  this.router.navigate(['/profile']);
-      //  this.loading.dismiss();
       });
 
   }
