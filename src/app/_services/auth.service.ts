@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { User, UserClass,userRegistration } from "../_models/user";
+import { IRegisterUserVieModel,RegisterUserVieModel, } from "../_models/service-models";
 import {customConfig} from "../custumConfig";
 import { HttpClient,HttpParams } from '@angular/common/http';
 import { NavController} from '@ionic/angular';
@@ -57,7 +58,7 @@ socialMediaLogin(){
 
 }
 
-register(registrationData: userRegistration){
+register(registrationData: IRegisterUserVieModel){
   let endPoint: string = '/api/Account/Register';
   return this.http.post(this.Urlbase + endPoint,registrationData)
   .pipe(catchError(this.handleError<any>('userRegistration')));

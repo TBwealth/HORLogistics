@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup} from "@angular/forms";
-import { NavController,LoadingController, Platform} from '@ionic/angular';
+import { NavController,LoadingController, Platform, ToastController} from '@ionic/angular';
 import { from } from 'rxjs';
-import { User, UserClass } from "../_models/user";
+import { User, socialUser } from "../_models/user";
+import { LoginViewModel,ObjectResourceOfLoginResource, LoginResource, 
+  SocialSignUpViewModel,ObjectResourceOfRegisterUserResource,RegisterUserResource } from "../_models/service-models";
 import {Router,ActivatedRoute} from '@angular/router';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-
-
+import { AccountServiceProxy, RegisterServiceProxy } from '../_services/service-proxies';
+import { AuthenticationService } from '../_services/authentication.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -20,29 +22,50 @@ signinSegment: boolean = true;
 signupSegment: boolean = false;
 loginForm: FormGroup;
 responseData: any;
-user: User;
+user: socialUser;
 type: string;
-
-login: any = {
-  email: '',
-  password: ''
-};
+LoginResource = new LoginResource().clone();
+login = new LoginViewModel().clone(); 
+socLogin = new SocialSignUpViewModel().clone();
 emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"; 
 loading: any;
 isGoogleLogin = false;
-
+RegisterUserResource = new RegisterUserResource().clone();
   constructor(private router: Router,
     private navCtrl: NavController,
     private activatedroute: ActivatedRoute,
     private google: GooglePlus,
     public loadingController: LoadingController,
+    private toastCtrl: ToastController,
     private fireAuth: AngularFireAuth,
     private platform: Platform,
-    private fb: Facebook,) { }
+    private fb: Facebook,
+    private registerService: AccountServiceProxy,
+    private soclLogin: RegisterServiceProxy,
+    private AuthenService: AuthenticationService,) { }
 
 loginUser(){
-  console.log('am here')
-  this.router.navigate(['home'])
+  this.registerService.login(this.login).subscribe(async (data:ObjectResourceOfLoginResource)=>{
+    if(data.code == '000'){
+      this.LoginResource = data.data;
+      this.AuthenService.addUser(this.LoginResource);
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: data.message,
+        color: "success"
+      });
+      toast.present();
+      this.router.navigate(['home'])
+    }else{
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: data.message,
+        color: "danger"
+      });
+      toast.present();
+    }
+          });
+
   }
   async forgotPassword(){}
   gototerms(){
@@ -55,14 +78,38 @@ this.router.navigate(['terms'])
     this.router.navigate(['customerspartneroption'])
   }
 
+  socialLogin(userDetails: socialUser){
+    this.socLogin.email = userDetails.email;
+    this.socLogin.fullName = userDetails.displayName;
+    this.soclLogin.socialSignup(this.socLogin).subscribe(async (data:ObjectResourceOfRegisterUserResource)=>{
+      if(data.code == '000'){
+        this.RegisterUserResource = data.data;
+        this.AuthenService.addUser(this.RegisterUserResource);
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: data.message,
+          color: "success"
+        });
+        toast.present();
+        this.router.navigate(['home'])
+      }else{
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: data.message,
+          color: "danger"
+        });
+        toast.present();
+      }
+            });
+  }
+
   async fblogin() {
     this.fb.login(['email'])
       .then((response: FacebookLoginResponse) => {
         this.fbonLoginSuccess(response);
         console.log(response.authResponse.accessToken);
       }).catch((error) => {
-        console.log(error);
-        alert('error:' + error);
+        console.log(error);     
       });
   }
 
@@ -71,14 +118,14 @@ this.router.navigate(['terms'])
     const credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
     this.fireAuth.signInWithCredential(credential)
       .then((response) => {
+        console.log(response.user);
         this.user = response.user;
-        console.log(this.user)
+      this.socialLogin(this.user);
       });
 
   }
 
   doLogin(){
-
     let params: any;
     if (this.platform.is('cordova')) {
       if (this.platform.is('android')) {
@@ -95,14 +142,16 @@ this.router.navigate(['terms'])
         this.onLoginSuccess(idToken, accessToken);
       }).catch((error) => {
         console.log(error);
-        alert('error:' + JSON.stringify(error));
+
       });
     } else{
       console.log('else...');
       this.fireAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(success => {
         console.log('success in google login', success);
         this.isGoogleLogin = true;
-        this.user =  success.user;
+        this.user = success.user;
+        this.socialLogin(this.user);
+        console.log(success.user);
       }).catch(err => {
         console.log(err.message, 'error in google login');
       });
@@ -114,10 +163,9 @@ this.router.navigate(['terms'])
             .credential(accessToken);
     this.fireAuth.signInWithCredential(credential)
       .then((success) => {
-       // alert('successfully');
-       
         this.isGoogleLogin = true;
-        this.user =  success.user;
+        this.user = success.user;
+        this.socialLogin(this.user);
         console.log(this.user);
         this.loading.dismiss();
       });
