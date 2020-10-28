@@ -1,7 +1,8 @@
 import { Component, OnInit,ViewChild,ElementRef,AfterViewInit } from '@angular/core';
 import { Geolocation,Geoposition } from '@ionic-native/geolocation/ngx';
-import {Platform, NavController, AlertController} from '@ionic/angular';
-import {ActivatedRoute} from '@angular/router'
+import {Platform, NavController, AlertController,MenuController } from '@ionic/angular';
+import {ActivatedRoute} from '@angular/router';
+
 declare var google;
 @Component({
   selector: 'app-home',
@@ -20,7 +21,8 @@ Lgpslatlng:any;
 
   constructor(
     public platform:Platform, public navCtrl: NavController, public alertCtrl: AlertController,
-    public geolocation: Geolocation, public activatedroute: ActivatedRoute
+    public geolocation: Geolocation, public activatedroute: ActivatedRoute,
+    private menu: MenuController
   ) { 
 
     this.platform.ready().then(()=>{
@@ -96,7 +98,9 @@ ref.map.fitBounds(bounds);
     })
     
   }
-
+  openMenu(){
+this.menu.open();
+  }
   filtersearch(event){
     var searchinput = event.srcElement.value
     var displaySuggestions = function(predictions, status) {
