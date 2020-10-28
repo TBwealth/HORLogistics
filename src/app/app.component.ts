@@ -13,6 +13,34 @@ import { NetworkProvider } from "./_services/network";
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+  public appPages = [
+    {
+      title: 'Home',
+      url: '/home',
+      icon: 'home'
+    },
+    {
+      title: 'Orders',
+      url: '/order',
+      icon: 'receipt-outline'
+    },
+    {
+      title: 'Payments',
+      url: '/payment',
+      icon: 'cash-outline'
+    },
+    {
+      title: 'Track',
+      url: '/track',
+      icon: 'aperture-outline'
+    },
+    {
+      title: 'Chat With Us',
+      url: '/support',
+      icon: 'person-outline'
+    },
+   
+  ];
   constructor(
     private fbaseService: Firebase,
     private platform: Platform,
