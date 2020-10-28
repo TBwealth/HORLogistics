@@ -32,7 +32,7 @@ Lgpslatlng:any;
         zoom: 2
       }
       this.map = new google.maps.Map(document.getElementById("map"),mapOptions);
-      this.GetLocation();  
+      this.GetLocation(); 
       
 
       var searchBox = new google.maps.places.SearchBox(this.searchbar.nativeElement);

@@ -2,8 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'payment', pathMatch: 'full'},
-  //  {path: '', redirectTo: 'preferedaction', pathMatch: 'full'},
+   {path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
   // {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
@@ -54,7 +53,12 @@ const routes: Routes = [
   {
     path: 'otpvalidation',
     loadChildren: () => import('./otpvalidation/otpvalidation.module').then( m => m.OtpvalidationPageModule)
+  },
+  {
+    path: 'profilepage',
+    loadChildren: () => import('./profilepage/profilepage.module').then( m => m.ProfilepagePageModule)
   }
+
 ];
 @NgModule({
   imports: [
