@@ -58,7 +58,12 @@ const routes: Routes = [
   {
     path: 'profilepage',
     loadChildren: () => import('./profilepage/profilepage.module').then( m => m.ProfilepagePageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   }
+
 
 ];
 @NgModule({
