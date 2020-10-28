@@ -3,6 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable } from 'rxjs';
 import { AuthenticationService } from './authentication.service';
 import { User, UserClass } from "../_models/user";
+import { Storage } from '@ionic/storage';
 
 
 @Injectable()
@@ -19,10 +20,9 @@ export class JwtInterceptor implements HttpInterceptor {
             if(users){
                 this.user = users[0];               
                 if (this.user) {
-                    var token = this.user.main_session_token;                  
+                    var token = this.user.token;                  
                     request = request.clone({
-                        setHeaders: { 
-                            'Content-Type': 'application/json',
+                        setHeaders: {
                             Authorization: `Bearer ${token}`,                        
                         }
                     });

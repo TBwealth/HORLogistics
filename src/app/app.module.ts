@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import {environment} from './environment'
 
 //PLUGIN
+import { IonicStorageModule  } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
@@ -34,15 +35,17 @@ import { AuthService } from './_services/auth.service';
 import { AuthGuardService } from './_services/auth-guard.service';
 import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
+import { AccountServiceProxy } from './_services/service-proxies';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
+    AngularFireAuthModule,IonicStorageModule.forRoot()
   ],
   providers: [
+    IonicStorageModule,
     HttpClient,
     StatusBar,
     SplashScreen,
@@ -60,6 +63,7 @@ import { JwtInterceptor } from './_services/jwt.interceptor';
     AuthService,
     AuthGuardService,
     AuthenticationService,
+    AccountServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

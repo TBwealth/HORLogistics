@@ -20,24 +20,10 @@ export class AuthenticationService {
                     for(let user of users){
       
                         let saveduser = {
-                            id : user.id,
-                            user_id: user.user_id,
-                            company_id:user.company_id,
-                            department:user.department,
-                            department_id:user.department_id,
-                            employee_contract_id:user.employee_contract_id,
-                            employee_id:user.employee_id,
-                            email:user.email,
-                            first_name:user.first_name,
-                            last_name:user.last_name,
-                            other_name:user.other_name,
-                            lstPermissions:user.lstPermissions,
-                            serial_no:user.serial_no,
-                            session_token:user.session_token,
-                            sub_id:user.sub_id,
-                            main_session_token:user.main_session_token,
-                            user_token:user.user_token,
-                            baseUrl:user.baseUrl
+                            token: user.token,
+                            userId: user.userId,
+                            userType: user.userType,
+                            isProfileComplete: user.isProfileComplete
                         };
                         this.users.push(saveduser);      
                     }
