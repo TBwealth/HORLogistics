@@ -38,7 +38,7 @@
         </div>
           <!-- <div *ngIf="local_deliveryModel.booking_category.invalid && (booking_category.dirty || booking_category.touched)" ></div> -->
           <div style="padding: 5px;"></div>
-          <ion-input (keyup)="validatePickupForm()"  (ionChange)="validatePickupForm()" type="text" placeholder="Name" [(ngModel)]="pickup_details.pickup_name" name="pickup_name" id="pickup_name" #pickup_name="ngModel" required></ion-input>
+          <ion-input (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" type="text" placeholder="Name" [(ngModel)]="pickup_details.pickup_name" name="pickup_name" id="pickup_name" #pickup_name="ngModel" required></ion-input>
           <div *ngIf="pickup_name.invalid && (pickup_name.dirty || pickup_name.touched)" class="error">
             <div *ngIf="pickup_name.errors.required">
               Pick-up Name is required

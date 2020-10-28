@@ -1,0 +1,254 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Import Shipment Mode</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngSwitch]="activetab">
+  <ion-grid>
+  <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;">
+    <ion-img src="assets/images/booking.png" class="myicons" slot="start" style="background-color: #E2E4EB;"></ion-img>
+    <ion-label class="mylabel">Booking Category</ion-label>
+    <ion-select [disabled]="bookingCategoryPanel" (ionChange)="validateBookingForm()" (keyup)="validateBookingForm()" name="booking_category" class="select" [(ngModel)]="shipment_booking.booking_category" #booking_category="ngModel" required>
+      <ion-select-option value="pickup">Pickup</ion-select-option>
+      <ion-select-option value="dropoff">Dropoff</ion-select-option>
+    </ion-select>
+  </ion-item>
+ 
+   <ion-row>
+    <ion-col>
+      <ion-button [disabled]="packageDescriptionPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(package_description)" #package_description>
+        <ion-img src="assets/images/package.png" class="myicons" slot="start"></ion-img>
+        <p class="localheader">Package Description</p>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  
+  <div *ngSwitchCase="package_description">
+    <form name="DescriptionForm" #DescriptionForm="ngForm">
+      <p style="word-wrap: break-word;">We do not open packages except in extreme circumstances where package is suspicious, or flagged by customs. We however need to know the content as required by law</p>
+      <ion-col size=3>
+        <ion-select class="form-control" #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'delivery')"  [(ngModel)]="deliveryAlpha2Code"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button" required>
+          <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+            {{Ccode.name}}
+          </ion-select-option>             
+        </ion-select>
+      </ion-col>
+      <div style="padding: 5px;"></div>
+      <ion-input type="text" placeholder="Estimated Package Weight (Lbs)" (ionChange)="validateDescriptionForm()" (keyup)="validateDescriptionForm()" name="estimated_weight" #estimated_weight="ngModel" [(ngModel)]="shipment_description.estimated_weight" required></ion-input>
+      <div *ngIf="estimated_weight.invalid && (estimated_weight.dirty || estimated_weight.touched)" class="error">
+        <div *ngIf="estimated_weight.errors.required">
+          Estimated weight is required
+        </div>
+    </div>
+      <div style="padding: 5px;"></div>
+      <ion-input placeholder="Value of Package in Naira" name="package_value" (keyup)="validateDescriptionForm()" (ionChange)="validateDescriptionForm()" #package_value="ngModel" [(ngModel)]="shipment_description.package_value" required></ion-input>
+      <div *ngIf="package_value.invalid && (package_value.dirty || package_value.touched)" class="error">
+        <div *ngIf="package_value.errors.required">
+          Enter package value in Naira
+        </div>
+      </div>
+      <div style="padding: 5px;"></div>
+      <ion-input type="text" placeholder="Description" name="description" (keyup)="validateDescriptionForm()" (ionChange)="validateDescriptionForm()" #description="ngModel" [(ngModel)]="shipment_description.description" required></ion-input>
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="error">
+        <div *ngIf="description.errors.required">
+          Description field is required
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <ion-row>
+    <ion-col>
+      <ion-button [disabled]="pickupDetailsPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(pickup_details)" #pickup_details>
+        <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>
+        <p class="localheader">Pickup Details</p>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  
+  <div *ngSwitchCase="pickup_details">
+    <form name="pickupForm" #pickupForm="ngForm">
+      <div style="padding: 5px;"></div>
+          <ion-input type="text" (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" #pickup_name="ngModel" name="pickup_name" placeholder="Name" [(ngModel)]="shipment_pickup.pickup_name" required></ion-input>
+          <div *ngIf="pickup_name.invalid && (pickup_name.dirty || pickup_name.touched)" class="error">
+            <div *ngIf="pickup_name.errors.required">
+              Name is required
+            </div>
+          </div>
+          <div style="padding: 5px;"></div>
+          <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
+            <ion-col size=2>
+              <div style="padding: 5px;"></div>
+              <span *ngFor="let imgSrc of selectedFlag">
+                <img style="width: 30px;height:16px;" [src]="imgSrc.flag" />
+              </span>
+              
+            </ion-col>
+            <ion-col size=3>
+              <ion-select #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'delivery')" placeholder="Select One" [(ngModel)]="deliveryAlpha2Code"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" required>
+                <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+                  {{Ccode.name}}
+                </ion-select-option>             
+              </ion-select>
+            </ion-col>
+            <ion-col size=7>
+              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="shipment_pickup.pickup_phone" name="pickup_phone" #pickup_phone="ngModel"  required style="border: none;"></ion-input>
+       
+            </ion-col>
+          </ion-row> 
+
+          <div style="padding: 5px;"></div>
+          <ion-input (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" type="text" #pickup_address="ngModel" name="pickup_address" placeholder="Address" [(ngModel)]="shipment_pickup.pickup_address" required></ion-input>
+          <div *ngIf="pickup_address.invalid && (pickup_address.dirty || pickup_address.touched)" class="error">
+            <div *ngIf="pickup_address.errors.required">
+              Pickup Address is required
+            </div>
+        </div>
+    </form>
+  </div>
+
+  <ion-row>
+    <ion-col>
+      <ion-button [disabled]="deliveryDetailsPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
+        <ion-img src="assets/images/plane.png" class="myicons" slot="start"></ion-img>
+        <p class="localheader">Delivery Details</p>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <div *ngSwitchCase="delivery_details">
+    <form name="deliveryForm" #deliveryForm="ngForm">
+      <p>Do you want home delivery ?</p>
+            <ion-radio-group>
+            <ion-row>
+              <ion-col>
+                   <ion-item lines="none">  
+                    <ion-checkbox slot="start" class="checker" [checked]="checkedIdx" (ionChange)="yesfn($event)" ></ion-checkbox>
+                      <ion-label>Yes</ion-label>
+                 </ion-item>
+               </ion-col>
+          
+              <ion-col>
+                  <ion-item lines="none"> 
+                    <ion-checkbox slot="start" class="checker" [checked]="!checkedIdx"  (ionChange)="nofn($event)"></ion-checkbox>
+                      <ion-label>No</ion-label>
+                 </ion-item>
+              </ion-col>
+          </ion-row>   
+        </ion-radio-group>
+      <div style="padding: 5px;"></div>
+          <ion-input type="text" (keyup)="validateDeliveryForm()" (ionChange)="validateDeliveryForm()" #delivery_name="ngModel" name="delivery_name" placeholder="Name" [(ngModel)]="shipment_delivery.delivery_name" required></ion-input>
+          <div *ngIf="delivery_name.invalid && (delivery_name.dirty || delivery_name.touched)" class="error">
+            <div *ngIf="delivery_name.errors.required">
+              Name is required
+            </div>
+          </div>
+
+          <div style="padding: 5px;"></div>
+          <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
+            <ion-col size=2>
+              <div style="padding: 5px;"></div>
+              <span *ngFor="let imgSrc of selectedFlag">
+                <img style="width: 30px;height:16px;" [src]="imgSrc.flag" />
+              </span>
+              
+            </ion-col>
+            <ion-col size=3>
+              <ion-select #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'delivery')"  [(ngModel)]="deliveryAlpha2Code"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" required>
+                <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+                  {{Ccode.name}}
+                </ion-select-option>             
+              </ion-select>
+            </ion-col>
+            <ion-col size=7>
+              <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="shipment_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #deliveryphone="ngModel"  required style="border: none;"></ion-input>
+            </ion-col>
+          </ion-row> 
+
+          <div style="padding: 5px;"></div>
+          <ion-input type="text" #delivery_location="ngModel" (keyup)="validateDeliveryForm()" (ionChange)="validateDeliveryForm()" name="delivery_location" placeholder="Select Delivery Location" [(ngModel)]="shipment_delivery.delivery_location" required></ion-input>
+          <div *ngIf="delivery_location.invalid && (delivery_location.dirty || delivery_location.touched)" class="error">
+            <div *ngIf="delivery_location.errors.required">
+              Delivery Address is required
+            </div>
+          </div>
+          <!-- <ion-col size=3>
+            <ion-select #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'delivery')"  [(ngModel)]="deliveryAlpha2Code"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" required>
+              <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+                {{Ccode.name}}
+              </ion-select-option>             
+            </ion-select>
+          </ion-col> -->
+
+          <div style="padding: 5px;"></div>
+          <ion-input (keyup)="validateDeliveryForm()" (ionChange)="validateDeliveryForm()" type="text" #delivery_address="ngModel" name="delivery_address" placeholder="Delivery Address" [(ngModel)]="shipment_delivery.delivery_address" required></ion-input>
+          <div *ngIf="delivery_address.invalid && (delivery_address.dirty || delivery_address.touched)" class="error">
+            <div *ngIf="delivery_address.errors.required">
+              Delivery Address is required
+            </div>
+        </div>
+          
+    </form>
+  </div>
+
+  <ion-row>
+    <ion-col>
+      <ion-button [disabled]="holdInstructionPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(hold_instruction)" #hold_instruction>
+        <ion-img src="assets/images/hold.png" class="myicons" slot="start"></ion-img>
+        <p class="localheader">Hold Instruction </p>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <div *ngSwitchCase="hold_instruction">
+    <form name="holdForm" #holdForm="ngForm">
+      <p>Do you want us to hold item before shipping ?</p>
+            <ion-radio-group>
+            <ion-row>
+              <ion-col>
+                   <ion-item lines="none">  
+                    <ion-checkbox slot="start" class="checker" [checked]="checkedIdx" (ionChange)="yesfn($event)"></ion-checkbox>
+                      <ion-label>Yes</ion-label>
+                 </ion-item>
+               </ion-col>
+          
+              <ion-col>
+                  <ion-item lines="none"> 
+                    <ion-checkbox slot="start" class="checker" [checked]="!checkedIdx"  (ionChange)="nofn($event)"></ion-checkbox>
+                      <ion-label>No</ion-label>
+                 </ion-item>
+              </ion-col>
+          </ion-row>   
+        </ion-radio-group>
+      <div style="padding: 5px;"></div>
+      <ion-datetime (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="shipment_hold.hold_date" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
+      <div *ngIf="hold_date.invalid && (hold_date.dirty || hold_date.touched)" class="error">
+        <div *ngIf="hold_date.errors.required">
+          Delivery Date is required
+        </div>
+      </div>
+      <div style="padding: 5px;"></div>
+        <ion-input type="text" (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" name="hold_comment" #hold_comment="ngModel" placeholder="Comment" [(ngModel)]="shipment_hold.hold_comment" required></ion-input>
+        <div *ngIf="hold_comment.invalid && (hold_comment.dirty || hold_comment.touched)" class="error">
+          <div *ngIf="hold_comment.errors.required">
+            Comment is required
+          </div>
+          </div>
+    </form>
+    <div style="display:flex;">
+      <ion-button class="cta1" expand="block" fill="outline">
+        <ion-label>Cancel</ion-label>
+      </ion-button>
+      <ion-button class="cta" expand="block" fill="default">
+        <ion-label>Apply</ion-label>
+      </ion-button>
+    </div>
+  </div>  
+</ion-grid>
+</ion-content>

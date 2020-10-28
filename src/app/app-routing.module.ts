@@ -3,7 +3,9 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   // {path: '', redirectTo: 'preferedaction', pathMatch: 'full'},
-  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
+  // {path: '', redirectTo: 'shipmentoptions', pathMatch: 'full'},
+  {path: '', redirectTo: 'payment', pathMatch: 'full'},
+  // {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},i
   // {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
   {
@@ -53,7 +55,17 @@ const routes: Routes = [
   {
     path: 'otpvalidation',
     loadChildren: () => import('./otpvalidation/otpvalidation.module').then( m => m.OtpvalidationPageModule)
+  },
+  {
+    path: 'shipmentoptions',
+    loadChildren: () => import('./shipmentoptions/shipmentoptions.module').then( m => m.ShipmentoptionsPageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   }
+
+
 ];
 @NgModule({
   imports: [
