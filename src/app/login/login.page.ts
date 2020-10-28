@@ -5,8 +5,10 @@ import { from } from 'rxjs';
 import { User, UserClass } from "../_models/user";
 import {Router,ActivatedRoute} from '@angular/router';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
+
 
 @Component({
   selector: 'app-login',
@@ -35,9 +37,13 @@ isGoogleLogin = false;
     private google: GooglePlus,
     public loadingController: LoadingController,
     private fireAuth: AngularFireAuth,
-    private platform: Platform,) { }
+    private platform: Platform,
+    private fb: Facebook,) { }
 
-  async  loginUser(){}
+loginUser(){
+  console.log('am here')
+  this.router.navigate(['home'])
+  }
   async forgotPassword(){}
   gototerms(){
 this.router.navigate(['terms'])
@@ -49,9 +55,30 @@ this.router.navigate(['terms'])
     this.router.navigate(['customerspartneroption'])
   }
 
+  async fblogin() {
+    this.fb.login(['email'])
+      .then((response: FacebookLoginResponse) => {
+        this.fbonLoginSuccess(response);
+        console.log(response.authResponse.accessToken);
+      }).catch((error) => {
+        console.log(error);
+        alert('error:' + error);
+      });
+  }
 
+  fbonLoginSuccess(res: FacebookLoginResponse) {
+    // const { token, secret } = res;
+    const credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+    this.fireAuth.signInWithCredential(credential)
+      .then((response) => {
+        this.user = response.user;
+        console.log(this.user)
+      });
+
+  }
 
   doLogin(){
+
     let params: any;
     if (this.platform.is('cordova')) {
       if (this.platform.is('android')) {
@@ -87,7 +114,8 @@ this.router.navigate(['terms'])
             .credential(accessToken);
     this.fireAuth.signInWithCredential(credential)
       .then((success) => {
-        alert('successfully');
+       // alert('successfully');
+       
         this.isGoogleLogin = true;
         this.user =  success.user;
         console.log(this.user);

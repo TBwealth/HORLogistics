@@ -4,6 +4,7 @@ import {environment} from "./environment";
 export const customConfig = {
     apiEndpointmain: Util.getDomain(environment.mainURL),
     apiEndpointbase: Util.getDomain(environment.baseURL),
+    baseUrl:Util.getDomain(environment.stage),
     contentType: "application/json",
     accept: "application/json",
     app_id: "talentbase.web.angular",

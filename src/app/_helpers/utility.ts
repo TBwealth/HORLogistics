@@ -5,12 +5,12 @@ export const Util = {
 
         if(env == 'local')
         {
-            return "https://localhost:44381";
+            return "";
         }
 
         if(env == 'development')
         {
-            return "https://centralsys.azurewebsites.net/api/proxy/GetBaseUrl";
+            return "http://40.91.215.240:8008";
         }
 
         if(env == 'companydevelopment')
@@ -36,12 +36,12 @@ export const Util = {
 
         if(env == 'localmain')
         {
-            return "http://localhost:8000/api/";
+            return "";
         }
 
         if(env == 'developmentmain')
         {
-            return "https://qatestbed.azurewebsites.net/api/mobile/";
+            return "";
         }
 
         if(env == 'companydevelopmentmain')
