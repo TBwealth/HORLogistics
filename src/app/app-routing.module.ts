@@ -57,7 +57,11 @@ const routes: Routes = [
   {
     path: 'profilepage',
     loadChildren: () => import('./profilepage/profilepage.module').then( m => m.ProfilepagePageModule)
+  },  {
+    path: 'confirm-booking',
+    loadChildren: () => import('./local-delivery/confirm-booking/confirm-booking.module').then( m => m.ConfirmBookingPageModule)
   }
+
 
 ];
 @NgModule({

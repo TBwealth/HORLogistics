@@ -1,0 +1,29 @@
+<app-page-structure title="Payment">
+  <div class="main-container">
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.cash" (showChange)="changeSelection(PAYMENT_OPTIONS.cash)">
+      <span title>
+        Cash
+      </span>
+    </app-slide-down-box>
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.card" (showChange)="changeSelection(PAYMENT_OPTIONS.card)">
+      <span title>
+        Add Card
+      </span>
+    </app-slide-down-box>
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.bank" (showChange)="changeSelection(PAYMENT_OPTIONS.bank)">
+      <span title>
+        Bank Transfer
+      </span>
+    </app-slide-down-box>
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.wallet" (showChange)="changeSelection(PAYMENT_OPTIONS.wallet)">
+      <span title>
+        Wallet
+      </span>
+    </app-slide-down-box>
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.promo" (showChange)="changeSelection(PAYMENT_OPTIONS.promo)">
+      <span title>
+        Apply promo code 
+      </span>
+    </app-slide-down-box>
+  </div>
+</app-page-structure>

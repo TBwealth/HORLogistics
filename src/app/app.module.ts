@@ -36,9 +36,12 @@ import { AuthGuardService } from './_services/auth-guard.service';
 import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { AccountServiceProxy } from './_services/service-proxies';
+import { PageStructureComponent } from './components/page-structure/page-structure.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent,
+    // PageStructureComponent
+  ],
   entryComponents: [],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),

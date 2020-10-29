@@ -1,0 +1,9 @@
+<ion-button [disabled]="disabled" expand="block" class="localdelivery" fill="clear" (click)="showDropdown()">
+  <div style="display: block; width: 100%; text-align: left;">
+    <i style="width: 30px; margin-right: 20px;"></i>
+    <span><ng-content select='[title]'></ng-content></span>
+  </div>
+</ion-button>
+<div [style.display]="innerShow ? 'block' : 'none'">
+  <ng-content select='[content]'></ng-content>
+</div>

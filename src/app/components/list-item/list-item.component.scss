@@ -1,0 +1,21 @@
+:host{
+  display: block;
+  position: relative;
+  // padding-top: 10px;
+  // padding-bottom: 10px
+}
+
+.square, .circle{
+  display: inline-block;
+  margin-right: 15px;
+  width: 7px;
+  height: 7px;
+}
+.square{
+  background-color: #EF6102;
+}
+
+.circle{
+  background-color: #444F63;
+  border-radius: 50%;
+}

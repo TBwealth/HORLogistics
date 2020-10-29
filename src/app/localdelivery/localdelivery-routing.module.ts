@@ -10,6 +10,18 @@ const routes: Routes = [
   },  {
     path: 'bookingoptions',
     loadChildren: () => import('./bookingoptions/bookingoptions.module').then( m => m.BookingoptionsPageModule)
+  },
+  {
+    path: 'confirm-booking',
+    loadChildren: () => import('./confirm-booking/confirm-booking.module').then( m => m.ConfirmBookingPageModule)
+  },
+  {
+    path: 'review-booking',
+    loadChildren: () => import('./review-booking/review-booking.module').then( m => m.ReviewBookingPageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   }
 
 ];
