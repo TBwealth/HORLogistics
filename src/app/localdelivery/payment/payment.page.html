@@ -1,13 +1,13 @@
 <app-page-structure title="Payment">
   <div class="main-container">
-    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.cash" (showChange)="changeSelection(PAYMENT_OPTIONS.cash)">
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.cash" (showChange)="changeSelection(PAYMENT_OPTIONS.cash)" icon="assets/images/cash_pay.png">
       <span title>
         Cash
       </span>
     </app-slide-down-box>
-    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.card" (showChange)="changeSelection(PAYMENT_OPTIONS.card)">
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.card" (showChange)="changeSelection(PAYMENT_OPTIONS.card)" icon="assets/images/add_card.png">
       <span title>
-        Add Card
+        Card
       </span>
     </app-slide-down-box>
     <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.bank" (showChange)="changeSelection(PAYMENT_OPTIONS.bank)">
@@ -20,7 +20,7 @@
         Wallet
       </span>
     </app-slide-down-box>
-    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.promo" (showChange)="changeSelection(PAYMENT_OPTIONS.promo)">
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.promo" (showChange)="changeSelection(PAYMENT_OPTIONS.promo)" icon="assets/images/promo_code.png">
       <span title>
         Apply promo code 
       </span>
