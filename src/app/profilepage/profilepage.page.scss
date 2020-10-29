@@ -1,0 +1,11 @@
+.profileSection{
+    width: 100%;
+    background: url('/assets/images/menuProfileBg.png') 0 0/100% 100% no-repeat;
+    height: 200px;
+    color: #FFFFFF;
+}
+
+ion-toolbar {
+    --background: transparent;
+    --border-style: none;
+}

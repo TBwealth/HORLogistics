@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { FCM } from '@ionic-native/fcm/';
 import { Badge } from '@ionic-native/badge/ngx'; 
 import { NetworkProvider } from "./_services/network";
+import { AuthenticationService } from './_services/authentication.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -17,7 +19,7 @@ export class AppComponent {
     {
       title: 'Home',
       url: '/home',
-      icon: 'home'
+      icon: 'home-outline'
     },
     {
       title: 'Orders',
@@ -47,10 +49,16 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private network: NetworkProvider,
+    private menu: MenuController,
+    private AuthenService: AuthenticationService,
+    private router: Router
   ) {
     this.initializeApp();
   }
-
+logout(){
+this.AuthenService.clearusers();
+this.router.navigate(['preferedaction']);
+}
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
@@ -58,7 +66,9 @@ export class AppComponent {
       this.network.checkNetwork();      
     });
   }
-
+  closeMenu(){
+this.menu.close();
+  }
   async getToken(){
     let token;
     if(this.platform.is('android')){

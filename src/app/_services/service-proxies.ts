@@ -593,60 +593,7 @@ export class ApiServiceProxy {
         return _observableOf<boolean>(<any>null);
     }
 
-    /**
-     * @return OK
-     */
-    // localDeliveryTypesGet(): Observable<DeliveryType[]> {
-    //     let url_ = this.baseUrl + "/api/local-delivery-types";
-    //     url_ = url_.replace(/[?&]$/, "");
 
-    //     let options_ : any = {
-    //         observe: "response",
-    //         responseType: "blob",
-    //         headers: new HttpHeaders({
-    //             "Accept": "application/json"
-    //         })
-    //     };
-
-    //     return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-    //         return this.processLocalDeliveryTypesGet(response_);
-    //     })).pipe(_observableCatch((response_: any) => {
-    //         if (response_ instanceof HttpResponseBase) {
-    //             try {
-    //                 return this.processLocalDeliveryTypesGet(<any>response_);
-    //             } catch (e) {
-    //                 return <Observable<DeliveryType[]>><any>_observableThrow(e);
-    //             }
-    //         } else
-    //             return <Observable<DeliveryType[]>><any>_observableThrow(response_);
-    //     }));
-    // }
-
-    // protected processLocalDeliveryTypesGet(response: HttpResponseBase): Observable<DeliveryType[]> {
-    //     const status = response.status;
-    //     const responseBlob =
-    //         response instanceof HttpResponse ? response.body :
-    //         (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-    //     let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-    //     if (status === 200) {
-    //         return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-    //         let result200: any = null;
-    //         let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-    //         if (Array.isArray(resultData200)) {
-    //             result200 = [] as any;
-    //             for (let item of resultData200)
-    //                 result200.push(DeliveryType.fromJS(item));
-    //         }
-    //         return _observableOf(result200);
-    //         }));
-    //     } else if (status !== 200 && status !== 204) {
-    //         return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-    //         return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-    //         }));
-    //     }
-    //     return _observableOf<DeliveryType[]>(<any>null);
-    // }
 
     /**
      * @return OK
@@ -755,6 +702,129 @@ export class ApiServiceProxy {
             }));
         }
         return _observableOf<void>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    internationalBookingsGet(page: number, booking_status: number, date_range: string, full_name: string): Observable<ObjectResourceOfIPagedListOfInternationalBookingResource> {
+        let url_ = this.baseUrl + "/api/InternationalBookings?";
+        if (page === undefined || page === null)
+            throw new Error("The parameter 'page' must be defined and cannot be null.");
+        else
+            url_ += "page=" + encodeURIComponent("" + page) + "&";
+        if (booking_status === undefined || booking_status === null)
+            throw new Error("The parameter 'booking_status' must be defined and cannot be null.");
+        else
+            url_ += "booking_status=" + encodeURIComponent("" + booking_status) + "&";
+        if (date_range === undefined || date_range === null)
+            throw new Error("The parameter 'date_range' must be defined and cannot be null.");
+        else
+            url_ += "date_range=" + encodeURIComponent("" + date_range) + "&";
+        if (full_name === undefined || full_name === null)
+            throw new Error("The parameter 'full_name' must be defined and cannot be null.");
+        else
+            url_ += "full_name=" + encodeURIComponent("" + full_name) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processInternationalBookingsGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processInternationalBookingsGet(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfIPagedListOfInternationalBookingResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfIPagedListOfInternationalBookingResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processInternationalBookingsGet(response: HttpResponseBase): Observable<ObjectResourceOfIPagedListOfInternationalBookingResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfIPagedListOfInternationalBookingResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfIPagedListOfInternationalBookingResource>(<any>null);
+    }
+
+ 
+
+    /**
+     * @return OK
+     */
+    internationalBookingsPost(id: number): Observable<ObjectResourceOfInternationalBookingResource> {
+        let url_ = this.baseUrl + "/api/InternationalBookings/{id}";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processInternationalBookingsPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processInternationalBookingsPost(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processInternationalBookingsPost(response: HttpResponseBase): Observable<ObjectResourceOfInternationalBookingResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfInternationalBookingResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfInternationalBookingResource>(<any>null);
     }
 
     /**
@@ -2611,6 +2681,658 @@ export class LocalbookingServiceProxy {
             }));
         }
         return _observableOf<any>(<any>null);
+    }
+}
+
+@Injectable()
+export class InternationalbookingServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+    }
+
+    /**
+     * @return OK
+     */
+    intlbookingstatus(): Observable<ListResourceOfIntlBookingStatusResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/intlbookingstatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIntlbookingstatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIntlbookingstatus(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResourceOfIntlBookingStatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResourceOfIntlBookingStatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIntlbookingstatus(response: HttpResponseBase): Observable<ListResourceOfIntlBookingStatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResourceOfIntlBookingStatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResourceOfIntlBookingStatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    intlbookingbatches(): Observable<ListResourceOfShippingBatchResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/intlbookingbatches";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIntlbookingbatches(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIntlbookingbatches(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResourceOfShippingBatchResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResourceOfShippingBatchResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIntlbookingbatches(response: HttpResponseBase): Observable<ListResourceOfShippingBatchResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResourceOfShippingBatchResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResourceOfShippingBatchResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    intlbookingshipmentmode(): Observable<ListResourceOfShipmentModeResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/intlbookingshipmentmode";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIntlbookingshipmentmode(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIntlbookingshipmentmode(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResourceOfShipmentModeResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResourceOfShipmentModeResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIntlbookingshipmentmode(response: HttpResponseBase): Observable<ListResourceOfShipmentModeResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResourceOfShipmentModeResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResourceOfShipmentModeResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    intlbookingdeliverytypes(): Observable<ListResourceOfShipmentDeliveryTypeResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/intlbookingdeliverytypes";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIntlbookingdeliverytypes(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIntlbookingdeliverytypes(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResourceOfShipmentDeliveryTypeResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResourceOfShipmentDeliveryTypeResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIntlbookingdeliverytypes(response: HttpResponseBase): Observable<ListResourceOfShipmentDeliveryTypeResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResourceOfShipmentDeliveryTypeResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResourceOfShipmentDeliveryTypeResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    createIntlBooking(internationalBooking: InternationalBookingCtreatDTO): Observable<ObjectResourceOfIntlCreateResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/CreateIntlBooking";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(internationalBooking);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateIntlBooking(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateIntlBooking(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfIntlCreateResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfIntlCreateResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateIntlBooking(response: HttpResponseBase): Observable<ObjectResourceOfIntlCreateResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfIntlCreateResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfIntlCreateResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    prepareholdinstructionfor_create(): Observable<ObjectResourceOfHoldInstructionResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/Prepareholdinstructionfor create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPrepareholdinstructionfor_create(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPrepareholdinstructionfor_create(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfHoldInstructionResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfHoldInstructionResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processPrepareholdinstructionfor_create(response: HttpResponseBase): Observable<ObjectResourceOfHoldInstructionResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfHoldInstructionResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfHoldInstructionResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    createHoldInstruction(holdInstruction: HoldInstructionDTO): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/CreateHoldInstruction";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(holdInstruction);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateHoldInstruction(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateHoldInstruction(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateHoldInstruction(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    addintlbookingstatus(addStatusViewModel: AddILStatusViewModelDTO): Observable<ObjectResourceOfInternationalBookingResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/addintlbookingstatus";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(addStatusViewModel);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddintlbookingstatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddintlbookingstatus(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAddintlbookingstatus(response: HttpResponseBase): Observable<ObjectResourceOfInternationalBookingResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfInternationalBookingResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfInternationalBookingResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    processIntlBooking(processIL: ProcessILViewModelDTO): Observable<ObjectResourceOfProcessIntlBookingResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/ProcessIntlBooking";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(processIL);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processProcessIntlBooking(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processProcessIntlBooking(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfProcessIntlBookingResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfProcessIntlBookingResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processProcessIntlBooking(response: HttpResponseBase): Observable<ObjectResourceOfProcessIntlBookingResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfProcessIntlBookingResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfProcessIntlBookingResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    intlBookingstatus(id: number): Observable<ObjectResourceOfInternationalBookingResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/IntlBookingstatus?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIntlBookingstatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIntlBookingstatus(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processIntlBookingstatus(response: HttpResponseBase): Observable<ObjectResourceOfInternationalBookingResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfInternationalBookingResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfInternationalBookingResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    deleteStatus(id: number): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/DeleteStatus?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteStatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteStatus(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteStatus(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    deleteIntl(id: number): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/internationalbooking/DeleteIntl?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteIntl(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteIntl(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteIntl(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
     }
 }
 
@@ -5275,6 +5997,9 @@ export class LoginResource implements ILoginResource {
     userId: string | undefined;
     userType: LoginResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
+    user: AspNetUser | undefined;
+    role: AspNetRole[] | undefined;
+    customer: Customer | undefined;
 
     constructor(data?: ILoginResource) {
         if (data) {
@@ -5291,6 +6016,13 @@ export class LoginResource implements ILoginResource {
             this.userId = _data["userId"];
             this.userType = _data["userType"];
             this.isProfileComplete = _data["isProfileComplete"];
+            this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
+            if (Array.isArray(_data["role"])) {
+                this.role = [] as any;
+                for (let item of _data["role"])
+                    this.role.push(AspNetRole.fromJS(item));
+            }
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
         }
     }
 
@@ -5307,6 +6039,13 @@ export class LoginResource implements ILoginResource {
         data["userId"] = this.userId;
         data["userType"] = this.userType;
         data["isProfileComplete"] = this.isProfileComplete;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        if (Array.isArray(this.role)) {
+            data["role"] = [];
+            for (let item of this.role)
+                data["role"].push(item.toJSON());
+        }
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -5323,893 +6062,9 @@ export interface ILoginResource {
     userId: string | undefined;
     userType: LoginResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
-}
-
-export class RegisterUserVieModel implements IRegisterUserVieModel {
-    email: string;
-    fullName: string | undefined;
-    password: string;
-    confirmPassword: string | undefined;
-    userType: RegisterUserVieModelUserType;
-    businessName: string | undefined;
-    businessAnniversary: moment.Moment | undefined;
-    tcAccepted: boolean | undefined;
-
-    constructor(data?: IRegisterUserVieModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.fullName = _data["fullName"];
-            this.password = _data["password"];
-            this.confirmPassword = _data["confirmPassword"];
-            this.userType = _data["userType"];
-            this.businessName = _data["businessName"];
-            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
-            this.tcAccepted = _data["tcAccepted"];
-        }
-    }
-
-    static fromJS(data: any): RegisterUserVieModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterUserVieModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["fullName"] = this.fullName;
-        data["password"] = this.password;
-        data["confirmPassword"] = this.confirmPassword;
-        data["userType"] = this.userType;
-        data["businessName"] = this.businessName;
-        data["businessAnniversary"] = this.businessAnniversary ? this.businessAnniversary.toISOString() : <any>undefined;
-        data["tcAccepted"] = this.tcAccepted;
-        return data; 
-    }
-
-    clone(): RegisterUserVieModel {
-        const json = this.toJSON();
-        let result = new RegisterUserVieModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IRegisterUserVieModel {
-    email: string;
-    fullName: string | undefined;
-    password: string;
-    confirmPassword: string | undefined;
-    userType: RegisterUserVieModelUserType;
-    businessName: string | undefined;
-    businessAnniversary: moment.Moment | undefined;
-    tcAccepted: boolean | undefined;
-}
-
-export class ObjectResourceOfRegisterUserResource implements IObjectResourceOfRegisterUserResource {
-    data: RegisterUserResource | undefined;
-    code: string | undefined;
-    message: string | undefined;
-
-    constructor(data?: IObjectResourceOfRegisterUserResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.data = _data["data"] ? RegisterUserResource.fromJS(_data["data"]) : <any>undefined;
-            this.code = _data["code"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): ObjectResourceOfRegisterUserResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfRegisterUserResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
-        data["code"] = this.code;
-        data["message"] = this.message;
-        return data; 
-    }
-
-    clone(): ObjectResourceOfRegisterUserResource {
-        const json = this.toJSON();
-        let result = new ObjectResourceOfRegisterUserResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IObjectResourceOfRegisterUserResource {
-    data: RegisterUserResource | undefined;
-    code: string | undefined;
-    message: string | undefined;
-}
-
-export class RegisterUserResource implements IRegisterUserResource {
-    userId: string | undefined;
-    userType: RegisterUserResourceUserType | undefined;
-    token: string | undefined;
-    isProfileComplete: boolean | undefined;
-
-    constructor(data?: IRegisterUserResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.userType = _data["userType"];
-            this.token = _data["token"];
-            this.isProfileComplete = _data["isProfileComplete"];
-        }
-    }
-
-    static fromJS(data: any): RegisterUserResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new RegisterUserResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["userType"] = this.userType;
-        data["token"] = this.token;
-        data["isProfileComplete"] = this.isProfileComplete;
-        return data; 
-    }
-
-    clone(): RegisterUserResource {
-        const json = this.toJSON();
-        let result = new RegisterUserResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IRegisterUserResource {
-    userId: string | undefined;
-    userType: RegisterUserResourceUserType | undefined;
-    token: string | undefined;
-    isProfileComplete: boolean | undefined;
-}
-
-export class ObjectResourceOfTCResource implements IObjectResourceOfTCResource {
-    data: TCResource | undefined;
-    code: string | undefined;
-    message: string | undefined;
-
-    constructor(data?: IObjectResourceOfTCResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.data = _data["data"] ? TCResource.fromJS(_data["data"]) : <any>undefined;
-            this.code = _data["code"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): ObjectResourceOfTCResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfTCResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
-        data["code"] = this.code;
-        data["message"] = this.message;
-        return data; 
-    }
-
-    clone(): ObjectResourceOfTCResource {
-        const json = this.toJSON();
-        let result = new ObjectResourceOfTCResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IObjectResourceOfTCResource {
-    data: TCResource | undefined;
-    code: string | undefined;
-    message: string | undefined;
-}
-
-export class TCResource implements ITCResource {
-    tcValue: string | undefined;
-
-    constructor(data?: ITCResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.tcValue = _data["tcValue"];
-        }
-    }
-
-    static fromJS(data: any): TCResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new TCResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["tcValue"] = this.tcValue;
-        return data; 
-    }
-
-    clone(): TCResource {
-        const json = this.toJSON();
-        let result = new TCResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ITCResource {
-    tcValue: string | undefined;
-}
-
-export class ListResourceOfCountryResource implements IListResourceOfCountryResource {
-    total: number | undefined;
-    data: CountryResource[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
-
-    constructor(data?: IListResourceOfCountryResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.total = _data["total"];
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(CountryResource.fromJS(item));
-            }
-            this.code = _data["code"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): ListResourceOfCountryResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new ListResourceOfCountryResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["total"] = this.total;
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["code"] = this.code;
-        data["message"] = this.message;
-        return data; 
-    }
-
-    clone(): ListResourceOfCountryResource {
-        const json = this.toJSON();
-        let result = new ListResourceOfCountryResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IListResourceOfCountryResource {
-    total: number | undefined;
-    data: CountryResource[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
-}
-
-export class CountryResource implements ICountryResource {
-    id: number | undefined;
-    name: string | undefined;
-    countryCode: string | undefined;
-
-    constructor(data?: ICountryResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.countryCode = _data["countryCode"];
-        }
-    }
-
-    static fromJS(data: any): CountryResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new CountryResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["countryCode"] = this.countryCode;
-        return data; 
-    }
-
-    clone(): CountryResource {
-        const json = this.toJSON();
-        let result = new CountryResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICountryResource {
-    id: number | undefined;
-    name: string | undefined;
-    countryCode: string | undefined;
-}
-
-export class SocialSignUpViewModel implements ISocialSignUpViewModel {
-    email: string | undefined;
-    fullName: string | undefined;
-    password: string | undefined;
-
-    constructor(data?: ISocialSignUpViewModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.email = _data["email"];
-            this.fullName = _data["fullName"];
-            this.password = _data["password"];
-        }
-    }
-
-    static fromJS(data: any): SocialSignUpViewModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new SocialSignUpViewModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["email"] = this.email;
-        data["fullName"] = this.fullName;
-        data["password"] = this.password;
-        return data; 
-    }
-
-    clone(): SocialSignUpViewModel {
-        const json = this.toJSON();
-        let result = new SocialSignUpViewModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISocialSignUpViewModel {
-    email: string | undefined;
-    fullName: string | undefined;
-    password: string | undefined;
-}
-
-export class CompleteProfileViewModel implements ICompleteProfileViewModel {
-    homeAddress: string;
-    residentialCountryId: number;
-    residentialStateId: number;
-    closestLandmark: string | undefined;
-    closestBustopId: number | undefined;
-    userId: string | undefined;
-
-    constructor(data?: ICompleteProfileViewModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.homeAddress = _data["homeAddress"];
-            this.residentialCountryId = _data["residentialCountryId"];
-            this.residentialStateId = _data["residentialStateId"];
-            this.closestLandmark = _data["closestLandmark"];
-            this.closestBustopId = _data["closestBustopId"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): CompleteProfileViewModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new CompleteProfileViewModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["homeAddress"] = this.homeAddress;
-        data["residentialCountryId"] = this.residentialCountryId;
-        data["residentialStateId"] = this.residentialStateId;
-        data["closestLandmark"] = this.closestLandmark;
-        data["closestBustopId"] = this.closestBustopId;
-        data["userId"] = this.userId;
-        return data; 
-    }
-
-    clone(): CompleteProfileViewModel {
-        const json = this.toJSON();
-        let result = new CompleteProfileViewModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICompleteProfileViewModel {
-    homeAddress: string;
-    residentialCountryId: number;
-    residentialStateId: number;
-    closestLandmark: string | undefined;
-    closestBustopId: number | undefined;
-    userId: string | undefined;
-}
-
-export class StatusResource implements IStatusResource {
-    code: string | undefined;
-    message: string | undefined;
-
-    constructor(data?: IStatusResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.code = _data["code"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): StatusResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new StatusResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["code"] = this.code;
-        data["message"] = this.message;
-        return data; 
-    }
-
-    clone(): StatusResource {
-        const json = this.toJSON();
-        let result = new StatusResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IStatusResource {
-    code: string | undefined;
-    message: string | undefined;
-}
-
-export class UserPhotoViewModel implements IUserPhotoViewModel {
-    file: HttpPostedFileBase;
-    userId: string;
-
-    constructor(data?: IUserPhotoViewModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.file = new HttpPostedFileBase();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.file = _data["file"] ? HttpPostedFileBase.fromJS(_data["file"]) : new HttpPostedFileBase();
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): UserPhotoViewModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserPhotoViewModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["file"] = this.file ? this.file.toJSON() : <any>undefined;
-        data["userId"] = this.userId;
-        return data; 
-    }
-
-    clone(): UserPhotoViewModel {
-        const json = this.toJSON();
-        let result = new UserPhotoViewModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserPhotoViewModel {
-    file: HttpPostedFileBase;
-    userId: string;
-}
-
-export class HttpPostedFileBase implements IHttpPostedFileBase {
-    readonly contentLength: number | undefined;
-    readonly contentType: string | undefined;
-    readonly fileName: string | undefined;
-    readonly inputStream: Stream | undefined;
-
-    constructor(data?: IHttpPostedFileBase) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).contentLength = _data["contentLength"];
-            (<any>this).contentType = _data["contentType"];
-            (<any>this).fileName = _data["fileName"];
-            (<any>this).inputStream = _data["inputStream"] ? Stream.fromJS(_data["inputStream"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): HttpPostedFileBase {
-        data = typeof data === 'object' ? data : {};
-        let result = new HttpPostedFileBase();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["contentLength"] = this.contentLength;
-        data["contentType"] = this.contentType;
-        data["fileName"] = this.fileName;
-        data["inputStream"] = this.inputStream ? this.inputStream.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): HttpPostedFileBase {
-        const json = this.toJSON();
-        let result = new HttpPostedFileBase();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IHttpPostedFileBase {
-    contentLength: number | undefined;
-    contentType: string | undefined;
-    fileName: string | undefined;
-    inputStream: Stream | undefined;
-}
-
-export class Stream implements IStream {
-    readonly canRead: boolean | undefined;
-    readonly canSeek: boolean | undefined;
-    readonly canTimeout: boolean | undefined;
-    readonly canWrite: boolean | undefined;
-    readonly length: number | undefined;
-    position: number | undefined;
-    readTimeout: number | undefined;
-    writeTimeout: number | undefined;
-
-    constructor(data?: IStream) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).canRead = _data["canRead"];
-            (<any>this).canSeek = _data["canSeek"];
-            (<any>this).canTimeout = _data["canTimeout"];
-            (<any>this).canWrite = _data["canWrite"];
-            (<any>this).length = _data["length"];
-            this.position = _data["position"];
-            this.readTimeout = _data["readTimeout"];
-            this.writeTimeout = _data["writeTimeout"];
-        }
-    }
-
-    static fromJS(data: any): Stream {
-        data = typeof data === 'object' ? data : {};
-        let result = new Stream();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["canRead"] = this.canRead;
-        data["canSeek"] = this.canSeek;
-        data["canTimeout"] = this.canTimeout;
-        data["canWrite"] = this.canWrite;
-        data["length"] = this.length;
-        data["position"] = this.position;
-        data["readTimeout"] = this.readTimeout;
-        data["writeTimeout"] = this.writeTimeout;
-        return data; 
-    }
-
-    clone(): Stream {
-        const json = this.toJSON();
-        let result = new Stream();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IStream {
-    canRead: boolean | undefined;
-    canSeek: boolean | undefined;
-    canTimeout: boolean | undefined;
-    canWrite: boolean | undefined;
-    length: number | undefined;
-    position: number | undefined;
-    readTimeout: number | undefined;
-    writeTimeout: number | undefined;
-}
-
-export class VerifiedPhoneUpdate implements IVerifiedPhoneUpdate {
-    phone: string | undefined;
-    isVerified: boolean | undefined;
-    userId: string | undefined;
-
-    constructor(data?: IVerifiedPhoneUpdate) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.phone = _data["phone"];
-            this.isVerified = _data["isVerified"];
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): VerifiedPhoneUpdate {
-        data = typeof data === 'object' ? data : {};
-        let result = new VerifiedPhoneUpdate();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["phone"] = this.phone;
-        data["isVerified"] = this.isVerified;
-        data["userId"] = this.userId;
-        return data; 
-    }
-
-    clone(): VerifiedPhoneUpdate {
-        const json = this.toJSON();
-        let result = new VerifiedPhoneUpdate();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IVerifiedPhoneUpdate {
-    phone: string | undefined;
-    isVerified: boolean | undefined;
-    userId: string | undefined;
-}
-
-export class VmUserObj implements IVmUserObj {
-    claimsPrincipal: ClaimsPrincipal | undefined;
     user: AspNetUser | undefined;
-
-    constructor(data?: IVmUserObj) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.claimsPrincipal = _data["claimsPrincipal"] ? ClaimsPrincipal.fromJS(_data["claimsPrincipal"]) : <any>undefined;
-            this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): VmUserObj {
-        data = typeof data === 'object' ? data : {};
-        let result = new VmUserObj();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["claimsPrincipal"] = this.claimsPrincipal ? this.claimsPrincipal.toJSON() : <any>undefined;
-        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): VmUserObj {
-        const json = this.toJSON();
-        let result = new VmUserObj();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IVmUserObj {
-    claimsPrincipal: ClaimsPrincipal | undefined;
-    user: AspNetUser | undefined;
-}
-
-export class ClaimsPrincipal implements IClaimsPrincipal {
-    readonly claims: Claim[] | undefined;
-    readonly identities: ClaimsIdentity[] | undefined;
-    readonly identity: IIdentity | undefined;
-
-    constructor(data?: IClaimsPrincipal) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["claims"])) {
-                (<any>this).claims = [] as any;
-                for (let item of _data["claims"])
-                    (<any>this).claims.push(Claim.fromJS(item));
-            }
-            if (Array.isArray(_data["identities"])) {
-                (<any>this).identities = [] as any;
-                for (let item of _data["identities"])
-                    (<any>this).identities.push(ClaimsIdentity.fromJS(item));
-            }
-            (<any>this).identity = _data["identity"] ? IIdentity.fromJS(_data["identity"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): ClaimsPrincipal {
-        data = typeof data === 'object' ? data : {};
-        let result = new ClaimsPrincipal();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.claims)) {
-            data["claims"] = [];
-            for (let item of this.claims)
-                data["claims"].push(item.toJSON());
-        }
-        if (Array.isArray(this.identities)) {
-            data["identities"] = [];
-            for (let item of this.identities)
-                data["identities"].push(item.toJSON());
-        }
-        data["identity"] = this.identity ? this.identity.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): ClaimsPrincipal {
-        const json = this.toJSON();
-        let result = new ClaimsPrincipal();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IClaimsPrincipal {
-    claims: Claim[] | undefined;
-    identities: ClaimsIdentity[] | undefined;
-    identity: IIdentity | undefined;
+    role: AspNetRole[] | undefined;
+    customer: Customer | undefined;
 }
 
 export class AspNetUser implements IAspNetUser {
@@ -6259,16 +6114,11 @@ export interface IAspNetUser {
     userName: string;
 }
 
-export class Claim implements IClaim {
-    readonly issuer: string | undefined;
-    readonly originalIssuer: string | undefined;
-    readonly properties: { [key: string]: string; } | undefined;
-    readonly subject: ClaimsIdentity | undefined;
-    readonly type: string | undefined;
-    readonly value: string | undefined;
-    readonly valueType: string | undefined;
+export class AspNetRole implements IAspNetRole {
+    name: string;
+    aspNetUsers: AspNetUser[] | undefined;
 
-    constructor(data?: IClaim) {
+    constructor(data?: IAspNetRole) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6279,173 +6129,18 @@ export class Claim implements IClaim {
 
     init(_data?: any) {
         if (_data) {
-            (<any>this).issuer = _data["issuer"];
-            (<any>this).originalIssuer = _data["originalIssuer"];
-            if (_data["properties"]) {
-                (<any>this).properties = {} as any;
-                for (let key in _data["properties"]) {
-                    if (_data["properties"].hasOwnProperty(key))
-                        (<any>this).properties[key] = _data["properties"][key];
-                }
-            }
-            (<any>this).subject = _data["subject"] ? ClaimsIdentity.fromJS(_data["subject"]) : <any>undefined;
-            (<any>this).type = _data["type"];
-            (<any>this).value = _data["value"];
-            (<any>this).valueType = _data["valueType"];
-        }
-    }
-
-    static fromJS(data: any): Claim {
-        data = typeof data === 'object' ? data : {};
-        let result = new Claim();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["issuer"] = this.issuer;
-        data["originalIssuer"] = this.originalIssuer;
-        if (this.properties) {
-            data["properties"] = {};
-            for (let key in this.properties) {
-                if (this.properties.hasOwnProperty(key))
-                    data["properties"][key] = this.properties[key];
-            }
-        }
-        data["subject"] = this.subject ? this.subject.toJSON() : <any>undefined;
-        data["type"] = this.type;
-        data["value"] = this.value;
-        data["valueType"] = this.valueType;
-        return data; 
-    }
-
-    clone(): Claim {
-        const json = this.toJSON();
-        let result = new Claim();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IClaim {
-    issuer: string | undefined;
-    originalIssuer: string | undefined;
-    properties: { [key: string]: string; } | undefined;
-    subject: ClaimsIdentity | undefined;
-    type: string | undefined;
-    value: string | undefined;
-    valueType: string | undefined;
-}
-
-export class ClaimsIdentity implements IClaimsIdentity {
-    readonly authenticationType: string | undefined;
-    readonly isAuthenticated: boolean | undefined;
-    actor: ClaimsIdentity | undefined;
-    bootstrapContext: any | undefined;
-    readonly claims: Claim[] | undefined;
-    label: string | undefined;
-    readonly name: string | undefined;
-    readonly nameClaimType: string | undefined;
-    readonly roleClaimType: string | undefined;
-
-    constructor(data?: IClaimsIdentity) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
+            this.name = _data["name"];
+            if (Array.isArray(_data["aspNetUsers"])) {
+                this.aspNetUsers = [] as any;
+                for (let item of _data["aspNetUsers"])
+                    this.aspNetUsers.push(AspNetUser.fromJS(item));
             }
         }
     }
 
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).authenticationType = _data["authenticationType"];
-            (<any>this).isAuthenticated = _data["isAuthenticated"];
-            this.actor = _data["actor"] ? ClaimsIdentity.fromJS(_data["actor"]) : <any>undefined;
-            this.bootstrapContext = _data["bootstrapContext"];
-            if (Array.isArray(_data["claims"])) {
-                (<any>this).claims = [] as any;
-                for (let item of _data["claims"])
-                    (<any>this).claims.push(Claim.fromJS(item));
-            }
-            this.label = _data["label"];
-            (<any>this).name = _data["name"];
-            (<any>this).nameClaimType = _data["nameClaimType"];
-            (<any>this).roleClaimType = _data["roleClaimType"];
-        }
-    }
-
-    static fromJS(data: any): ClaimsIdentity {
+    static fromJS(data: any): AspNetRole {
         data = typeof data === 'object' ? data : {};
-        let result = new ClaimsIdentity();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["authenticationType"] = this.authenticationType;
-        data["isAuthenticated"] = this.isAuthenticated;
-        data["actor"] = this.actor ? this.actor.toJSON() : <any>undefined;
-        data["bootstrapContext"] = this.bootstrapContext;
-        if (Array.isArray(this.claims)) {
-            data["claims"] = [];
-            for (let item of this.claims)
-                data["claims"].push(item.toJSON());
-        }
-        data["label"] = this.label;
-        data["name"] = this.name;
-        data["nameClaimType"] = this.nameClaimType;
-        data["roleClaimType"] = this.roleClaimType;
-        return data; 
-    }
-
-    clone(): ClaimsIdentity {
-        const json = this.toJSON();
-        let result = new ClaimsIdentity();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IClaimsIdentity {
-    authenticationType: string | undefined;
-    isAuthenticated: boolean | undefined;
-    actor: ClaimsIdentity | undefined;
-    bootstrapContext: any | undefined;
-    claims: Claim[] | undefined;
-    label: string | undefined;
-    name: string | undefined;
-    nameClaimType: string | undefined;
-    roleClaimType: string | undefined;
-}
-
-export class IIdentity implements IIIdentity {
-    readonly name: string | undefined;
-    readonly authenticationType: string | undefined;
-    readonly isAuthenticated: boolean | undefined;
-
-    constructor(data?: IIIdentity) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).name = _data["name"];
-            (<any>this).authenticationType = _data["authenticationType"];
-            (<any>this).isAuthenticated = _data["isAuthenticated"];
-        }
-    }
-
-    static fromJS(data: any): IIdentity {
-        data = typeof data === 'object' ? data : {};
-        let result = new IIdentity();
+        let result = new AspNetRole();
         result.init(data);
         return result;
     }
@@ -6453,31 +6148,49 @@ export class IIdentity implements IIIdentity {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
-        data["authenticationType"] = this.authenticationType;
-        data["isAuthenticated"] = this.isAuthenticated;
+        if (Array.isArray(this.aspNetUsers)) {
+            data["aspNetUsers"] = [];
+            for (let item of this.aspNetUsers)
+                data["aspNetUsers"].push(item.toJSON());
+        }
         return data; 
     }
 
-    clone(): IIdentity {
+    clone(): AspNetRole {
         const json = this.toJSON();
-        let result = new IIdentity();
+        let result = new AspNetRole();
         result.init(json);
         return result;
     }
 }
 
-export interface IIIdentity {
-    name: string | undefined;
-    authenticationType: string | undefined;
-    isAuthenticated: boolean | undefined;
+export interface IAspNetRole {
+    name: string;
+    aspNetUsers: AspNetUser[] | undefined;
 }
 
-export class FormData implements IFormData {
-    action: string | undefined;
-    number: number | undefined;
-    offset: number | undefined;
+export class Customer implements ICustomer {
+    userId: string | undefined;
+    fullName: string | undefined;
+    closestLandmark: string | undefined;
+    closestBustopId: number | undefined;
+    registerAsPartner: boolean | undefined;
+    homeAddress: string | undefined;
+    businessName: string | undefined;
+    companyLogo: string | undefined;
+    residentialCountryId: number | undefined;
+    residentialStateId: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    businessAnniversary: moment.Moment | undefined;
+    aspNetUser: AspNetUser | undefined;
+    wallet: Wallet | undefined;
+    residentialCountry: ResidentialCountry | undefined;
+    residentialState: ResidentialState | undefined;
+    location: Location | undefined;
+    synergyProgramCustomer: SynergyProgramCustomer | undefined;
 
-    constructor(data?: IFormData) {
+    constructor(data?: ICustomer) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6488,50 +6201,642 @@ export class FormData implements IFormData {
 
     init(_data?: any) {
         if (_data) {
-            this.action = _data["action"];
-            this.number = _data["number"];
-            this.offset = _data["offset"];
+            this.userId = _data["userId"];
+            this.fullName = _data["fullName"];
+            this.closestLandmark = _data["closestLandmark"];
+            this.closestBustopId = _data["closestBustopId"];
+            this.registerAsPartner = _data["registerAsPartner"];
+            this.homeAddress = _data["homeAddress"];
+            this.businessName = _data["businessName"];
+            this.companyLogo = _data["companyLogo"];
+            this.residentialCountryId = _data["residentialCountryId"];
+            this.residentialStateId = _data["residentialStateId"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
+            this.aspNetUser = _data["aspNetUser"] ? AspNetUser.fromJS(_data["aspNetUser"]) : <any>undefined;
+            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
+            this.residentialCountry = _data["residentialCountry"] ? ResidentialCountry.fromJS(_data["residentialCountry"]) : <any>undefined;
+            this.residentialState = _data["residentialState"] ? ResidentialState.fromJS(_data["residentialState"]) : <any>undefined;
+            this.location = _data["location"] ? Location.fromJS(_data["location"]) : <any>undefined;
+            this.synergyProgramCustomer = _data["synergyProgramCustomer"] ? SynergyProgramCustomer.fromJS(_data["synergyProgramCustomer"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): FormData {
+    static fromJS(data: any): Customer {
         data = typeof data === 'object' ? data : {};
-        let result = new FormData();
+        let result = new Customer();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["action"] = this.action;
-        data["number"] = this.number;
-        data["offset"] = this.offset;
+        data["userId"] = this.userId;
+        data["fullName"] = this.fullName;
+        data["closestLandmark"] = this.closestLandmark;
+        data["closestBustopId"] = this.closestBustopId;
+        data["registerAsPartner"] = this.registerAsPartner;
+        data["homeAddress"] = this.homeAddress;
+        data["businessName"] = this.businessName;
+        data["companyLogo"] = this.companyLogo;
+        data["residentialCountryId"] = this.residentialCountryId;
+        data["residentialStateId"] = this.residentialStateId;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["businessAnniversary"] = this.businessAnniversary ? this.businessAnniversary.toISOString() : <any>undefined;
+        data["aspNetUser"] = this.aspNetUser ? this.aspNetUser.toJSON() : <any>undefined;
+        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
+        data["residentialCountry"] = this.residentialCountry ? this.residentialCountry.toJSON() : <any>undefined;
+        data["residentialState"] = this.residentialState ? this.residentialState.toJSON() : <any>undefined;
+        data["location"] = this.location ? this.location.toJSON() : <any>undefined;
+        data["synergyProgramCustomer"] = this.synergyProgramCustomer ? this.synergyProgramCustomer.toJSON() : <any>undefined;
         return data; 
     }
 
-    clone(): FormData {
+    clone(): Customer {
         const json = this.toJSON();
-        let result = new FormData();
+        let result = new Customer();
         result.init(json);
         return result;
     }
 }
 
-export interface IFormData {
-    action: string | undefined;
-    number: number | undefined;
-    offset: number | undefined;
+export interface ICustomer {
+    userId: string | undefined;
+    fullName: string | undefined;
+    closestLandmark: string | undefined;
+    closestBustopId: number | undefined;
+    registerAsPartner: boolean | undefined;
+    homeAddress: string | undefined;
+    businessName: string | undefined;
+    companyLogo: string | undefined;
+    residentialCountryId: number | undefined;
+    residentialStateId: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    businessAnniversary: moment.Moment | undefined;
+    aspNetUser: AspNetUser | undefined;
+    wallet: Wallet | undefined;
+    residentialCountry: ResidentialCountry | undefined;
+    residentialState: ResidentialState | undefined;
+    location: Location | undefined;
+    synergyProgramCustomer: SynergyProgramCustomer | undefined;
 }
 
-export class DeliveryType implements IDeliveryType {
+export class Wallet implements IWallet {
+    userId: string | undefined;
+    isActive: boolean | undefined;
+    customer: Customer | undefined;
+    balance: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    walletPayments: WalletPayment[] | undefined;
+    walletCredits: WalletCredit[] | undefined;
+
+    constructor(data?: IWallet) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.isActive = _data["isActive"];
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+            this.balance = _data["balance"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["walletPayments"])) {
+                this.walletPayments = [] as any;
+                for (let item of _data["walletPayments"])
+                    this.walletPayments.push(WalletPayment.fromJS(item));
+            }
+            if (Array.isArray(_data["walletCredits"])) {
+                this.walletCredits = [] as any;
+                for (let item of _data["walletCredits"])
+                    this.walletCredits.push(WalletCredit.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Wallet {
+        data = typeof data === 'object' ? data : {};
+        let result = new Wallet();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["isActive"] = this.isActive;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["balance"] = this.balance;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        if (Array.isArray(this.walletPayments)) {
+            data["walletPayments"] = [];
+            for (let item of this.walletPayments)
+                data["walletPayments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.walletCredits)) {
+            data["walletCredits"] = [];
+            for (let item of this.walletCredits)
+                data["walletCredits"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): Wallet {
+        const json = this.toJSON();
+        let result = new Wallet();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IWallet {
+    userId: string | undefined;
+    isActive: boolean | undefined;
+    customer: Customer | undefined;
+    balance: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    walletPayments: WalletPayment[] | undefined;
+    walletCredits: WalletCredit[] | undefined;
+}
+
+export class ResidentialCountry implements IResidentialCountry {
+    id: number | undefined;
+    name: string;
+    countryCode: string | undefined;
+    residentialStates: ResidentialState[] | undefined;
+
+    constructor(data?: IResidentialCountry) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.countryCode = _data["countryCode"];
+            if (Array.isArray(_data["residentialStates"])) {
+                this.residentialStates = [] as any;
+                for (let item of _data["residentialStates"])
+                    this.residentialStates.push(ResidentialState.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ResidentialCountry {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResidentialCountry();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["countryCode"] = this.countryCode;
+        if (Array.isArray(this.residentialStates)) {
+            data["residentialStates"] = [];
+            for (let item of this.residentialStates)
+                data["residentialStates"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): ResidentialCountry {
+        const json = this.toJSON();
+        let result = new ResidentialCountry();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IResidentialCountry {
+    id: number | undefined;
+    name: string;
+    countryCode: string | undefined;
+    residentialStates: ResidentialState[] | undefined;
+}
+
+export class ResidentialState implements IResidentialState {
+    id: number | undefined;
+    name: string;
+    residentialCountryId: number | undefined;
+
+    constructor(data?: IResidentialState) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.residentialCountryId = _data["residentialCountryId"];
+        }
+    }
+
+    static fromJS(data: any): ResidentialState {
+        data = typeof data === 'object' ? data : {};
+        let result = new ResidentialState();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["residentialCountryId"] = this.residentialCountryId;
+        return data; 
+    }
+
+    clone(): ResidentialState {
+        const json = this.toJSON();
+        let result = new ResidentialState();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IResidentialState {
+    id: number | undefined;
+    name: string;
+    residentialCountryId: number | undefined;
+}
+
+export class Location implements ILocation {
+    id: number | undefined;
+    name: string;
+    localBookingCategoryId: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    localBookingCategory: LocalBookingCategory | undefined;
+    locationRatesGroupId: number | undefined;
+    isActive: boolean | undefined;
+    locationRatesGroup: LocationRatesGroup | undefined;
+    localBookingsForPickup: LocalBooking[] | undefined;
+    localBookingsForDelivery: LocalBooking[] | undefined;
+    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
+
+    constructor(data?: ILocation) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.localBookingCategoryId = _data["localBookingCategoryId"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
+            this.locationRatesGroupId = _data["locationRatesGroupId"];
+            this.isActive = _data["isActive"];
+            this.locationRatesGroup = _data["locationRatesGroup"] ? LocationRatesGroup.fromJS(_data["locationRatesGroup"]) : <any>undefined;
+            if (Array.isArray(_data["localBookingsForPickup"])) {
+                this.localBookingsForPickup = [] as any;
+                for (let item of _data["localBookingsForPickup"])
+                    this.localBookingsForPickup.push(LocalBooking.fromJS(item));
+            }
+            if (Array.isArray(_data["localBookingsForDelivery"])) {
+                this.localBookingsForDelivery = [] as any;
+                for (let item of _data["localBookingsForDelivery"])
+                    this.localBookingsForDelivery.push(LocalBooking.fromJS(item));
+            }
+            if (Array.isArray(_data["customizedLocationGroups"])) {
+                this.customizedLocationGroups = [] as any;
+                for (let item of _data["customizedLocationGroups"])
+                    this.customizedLocationGroups.push(CustomizedLocationGroup.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Location {
+        data = typeof data === 'object' ? data : {};
+        let result = new Location();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["localBookingCategoryId"] = this.localBookingCategoryId;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
+        data["locationRatesGroupId"] = this.locationRatesGroupId;
+        data["isActive"] = this.isActive;
+        data["locationRatesGroup"] = this.locationRatesGroup ? this.locationRatesGroup.toJSON() : <any>undefined;
+        if (Array.isArray(this.localBookingsForPickup)) {
+            data["localBookingsForPickup"] = [];
+            for (let item of this.localBookingsForPickup)
+                data["localBookingsForPickup"].push(item.toJSON());
+        }
+        if (Array.isArray(this.localBookingsForDelivery)) {
+            data["localBookingsForDelivery"] = [];
+            for (let item of this.localBookingsForDelivery)
+                data["localBookingsForDelivery"].push(item.toJSON());
+        }
+        if (Array.isArray(this.customizedLocationGroups)) {
+            data["customizedLocationGroups"] = [];
+            for (let item of this.customizedLocationGroups)
+                data["customizedLocationGroups"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): Location {
+        const json = this.toJSON();
+        let result = new Location();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILocation {
+    id: number | undefined;
+    name: string;
+    localBookingCategoryId: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    localBookingCategory: LocalBookingCategory | undefined;
+    locationRatesGroupId: number | undefined;
+    isActive: boolean | undefined;
+    locationRatesGroup: LocationRatesGroup | undefined;
+    localBookingsForPickup: LocalBooking[] | undefined;
+    localBookingsForDelivery: LocalBooking[] | undefined;
+    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
+}
+
+export class SynergyProgramCustomer implements ISynergyProgramCustomer {
+    userId: string | undefined;
+    createdAt: moment.Moment | undefined;
+    isApproved: boolean | undefined;
+    updatedAt: moment.Moment | undefined;
+    approvedAt: moment.Moment | undefined;
+    approvedByUserId: string | undefined;
+    approvedBy: AspNetUser | undefined;
+    customer: Customer | undefined;
+
+    constructor(data?: ISynergyProgramCustomer) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.isApproved = _data["isApproved"];
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.approvedAt = _data["approvedAt"] ? moment(_data["approvedAt"].toString()) : <any>undefined;
+            this.approvedByUserId = _data["approvedByUserId"];
+            this.approvedBy = _data["approvedBy"] ? AspNetUser.fromJS(_data["approvedBy"]) : <any>undefined;
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SynergyProgramCustomer {
+        data = typeof data === 'object' ? data : {};
+        let result = new SynergyProgramCustomer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["isApproved"] = this.isApproved;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["approvedAt"] = this.approvedAt ? this.approvedAt.toISOString() : <any>undefined;
+        data["approvedByUserId"] = this.approvedByUserId;
+        data["approvedBy"] = this.approvedBy ? this.approvedBy.toJSON() : <any>undefined;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): SynergyProgramCustomer {
+        const json = this.toJSON();
+        let result = new SynergyProgramCustomer();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISynergyProgramCustomer {
+    userId: string | undefined;
+    createdAt: moment.Moment | undefined;
+    isApproved: boolean | undefined;
+    updatedAt: moment.Moment | undefined;
+    approvedAt: moment.Moment | undefined;
+    approvedByUserId: string | undefined;
+    approvedBy: AspNetUser | undefined;
+    customer: Customer | undefined;
+}
+
+export class WalletPayment implements IWalletPayment {
+    id: number | undefined;
+    paymentGatewayId: number | undefined;
+    transactionId: string | undefined;
+    transactionReference: string | undefined;
+    totalAmount: number | undefined;
+    currency: string | undefined;
+    paymentStatusId: number | undefined;
+    walletUserId: string | undefined;
+    isUsed: boolean | undefined;
+    paymentGateway: PaymentGateway | undefined;
+    paymentStatus: PaymentStatus | undefined;
+    wallet: Wallet | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+
+    constructor(data?: IWalletPayment) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.paymentGatewayId = _data["paymentGatewayId"];
+            this.transactionId = _data["transactionId"];
+            this.transactionReference = _data["transactionReference"];
+            this.totalAmount = _data["totalAmount"];
+            this.currency = _data["currency"];
+            this.paymentStatusId = _data["paymentStatusId"];
+            this.walletUserId = _data["walletUserId"];
+            this.isUsed = _data["isUsed"];
+            this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
+            this.paymentStatus = _data["paymentStatus"] ? PaymentStatus.fromJS(_data["paymentStatus"]) : <any>undefined;
+            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): WalletPayment {
+        data = typeof data === 'object' ? data : {};
+        let result = new WalletPayment();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["paymentGatewayId"] = this.paymentGatewayId;
+        data["transactionId"] = this.transactionId;
+        data["transactionReference"] = this.transactionReference;
+        data["totalAmount"] = this.totalAmount;
+        data["currency"] = this.currency;
+        data["paymentStatusId"] = this.paymentStatusId;
+        data["walletUserId"] = this.walletUserId;
+        data["isUsed"] = this.isUsed;
+        data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
+        data["paymentStatus"] = this.paymentStatus ? this.paymentStatus.toJSON() : <any>undefined;
+        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): WalletPayment {
+        const json = this.toJSON();
+        let result = new WalletPayment();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IWalletPayment {
+    id: number | undefined;
+    paymentGatewayId: number | undefined;
+    transactionId: string | undefined;
+    transactionReference: string | undefined;
+    totalAmount: number | undefined;
+    currency: string | undefined;
+    paymentStatusId: number | undefined;
+    walletUserId: string | undefined;
+    isUsed: boolean | undefined;
+    paymentGateway: PaymentGateway | undefined;
+    paymentStatus: PaymentStatus | undefined;
+    wallet: Wallet | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+}
+
+export class WalletCredit implements IWalletCredit {
+    id: number | undefined;
+    walletId: string | undefined;
+    amount: number | undefined;
+    isPaid: boolean | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    wallet: Wallet | undefined;
+
+    constructor(data?: IWalletCredit) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.walletId = _data["walletId"];
+            this.amount = _data["amount"];
+            this.isPaid = _data["isPaid"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): WalletCredit {
+        data = typeof data === 'object' ? data : {};
+        let result = new WalletCredit();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["walletId"] = this.walletId;
+        data["amount"] = this.amount;
+        data["isPaid"] = this.isPaid;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): WalletCredit {
+        const json = this.toJSON();
+        let result = new WalletCredit();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IWalletCredit {
+    id: number | undefined;
+    walletId: string | undefined;
+    amount: number | undefined;
+    isPaid: boolean | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    wallet: Wallet | undefined;
+}
+
+export class LocalBookingCategory implements ILocalBookingCategory {
     id: number | undefined;
     name: string;
     toggleBookingActivation: boolean | undefined;
-    isActive: boolean | undefined;
-    localRouteRates: LocalRouteRate[] | undefined;
+    locations: Location[] | undefined;
     localBookings: LocalBooking[] | undefined;
 
-    constructor(data?: IDeliveryType) {
+    constructor(data?: ILocalBookingCategory) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6545,11 +6850,10 @@ export class DeliveryType implements IDeliveryType {
             this.id = _data["id"];
             this.name = _data["name"];
             this.toggleBookingActivation = _data["toggleBookingActivation"];
-            this.isActive = _data["isActive"];
-            if (Array.isArray(_data["localRouteRates"])) {
-                this.localRouteRates = [] as any;
-                for (let item of _data["localRouteRates"])
-                    this.localRouteRates.push(LocalRouteRate.fromJS(item));
+            if (Array.isArray(_data["locations"])) {
+                this.locations = [] as any;
+                for (let item of _data["locations"])
+                    this.locations.push(Location.fromJS(item));
             }
             if (Array.isArray(_data["localBookings"])) {
                 this.localBookings = [] as any;
@@ -6559,9 +6863,9 @@ export class DeliveryType implements IDeliveryType {
         }
     }
 
-    static fromJS(data: any): DeliveryType {
+    static fromJS(data: any): LocalBookingCategory {
         data = typeof data === 'object' ? data : {};
-        let result = new DeliveryType();
+        let result = new LocalBookingCategory();
         result.init(data);
         return result;
     }
@@ -6571,11 +6875,10 @@ export class DeliveryType implements IDeliveryType {
         data["id"] = this.id;
         data["name"] = this.name;
         data["toggleBookingActivation"] = this.toggleBookingActivation;
-        data["isActive"] = this.isActive;
-        if (Array.isArray(this.localRouteRates)) {
-            data["localRouteRates"] = [];
-            for (let item of this.localRouteRates)
-                data["localRouteRates"].push(item.toJSON());
+        if (Array.isArray(this.locations)) {
+            data["locations"] = [];
+            for (let item of this.locations)
+                data["locations"].push(item.toJSON());
         }
         if (Array.isArray(this.localBookings)) {
             data["localBookings"] = [];
@@ -6585,45 +6888,31 @@ export class DeliveryType implements IDeliveryType {
         return data; 
     }
 
-    clone(): DeliveryType {
+    clone(): LocalBookingCategory {
         const json = this.toJSON();
-        let result = new DeliveryType();
+        let result = new LocalBookingCategory();
         result.init(json);
         return result;
     }
 }
 
-export interface IDeliveryType {
+export interface ILocalBookingCategory {
     id: number | undefined;
     name: string;
     toggleBookingActivation: boolean | undefined;
-    isActive: boolean | undefined;
-    localRouteRates: LocalRouteRate[] | undefined;
+    locations: Location[] | undefined;
     localBookings: LocalBooking[] | undefined;
 }
 
-export class LocalRouteRate implements ILocalRouteRate {
+export class LocationRatesGroup implements ILocationRatesGroup {
     id: number | undefined;
-    fromLocationRatesGroupId: number | undefined;
-    toLocationRatesGroupId: number | undefined;
-    deliveryTypeId: number;
-    generalRate: number;
-    partnerRate: number;
-    scale: number | undefined;
-    chargeOnExtra: number | undefined;
-    fromLocationId: number | undefined;
-    fromLocation: Location | undefined;
-    toLocationId: number | undefined;
-    toLocation: Location | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    fromLocationRatesGroup: LocationRatesGroup | undefined;
-    toLocationRatesGroup: LocationRatesGroup | undefined;
-    deliveryType: DeliveryType | undefined;
-    usesGroup: boolean | undefined;
-    localBookings: LocalBooking[] | undefined;
+    name: string;
+    locations: Location[] | undefined;
+    fromLocalRouteRates: LocalRouteRate[] | undefined;
+    toLocalRouteRates: LocalRouteRate[] | undefined;
+    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
 
-    constructor(data?: ILocalRouteRate) {
+    constructor(data?: ILocationRatesGroup) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6635,34 +6924,33 @@ export class LocalRouteRate implements ILocalRouteRate {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.fromLocationRatesGroupId = _data["fromLocationRatesGroupId"];
-            this.toLocationRatesGroupId = _data["toLocationRatesGroupId"];
-            this.deliveryTypeId = _data["deliveryTypeId"];
-            this.generalRate = _data["generalRate"];
-            this.partnerRate = _data["partnerRate"];
-            this.scale = _data["scale"];
-            this.chargeOnExtra = _data["chargeOnExtra"];
-            this.fromLocationId = _data["fromLocationId"];
-            this.fromLocation = _data["fromLocation"] ? Location.fromJS(_data["fromLocation"]) : <any>undefined;
-            this.toLocationId = _data["toLocationId"];
-            this.toLocation = _data["toLocation"] ? Location.fromJS(_data["toLocation"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.fromLocationRatesGroup = _data["fromLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["fromLocationRatesGroup"]) : <any>undefined;
-            this.toLocationRatesGroup = _data["toLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["toLocationRatesGroup"]) : <any>undefined;
-            this.deliveryType = _data["deliveryType"] ? DeliveryType.fromJS(_data["deliveryType"]) : <any>undefined;
-            this.usesGroup = _data["usesGroup"];
-            if (Array.isArray(_data["localBookings"])) {
-                this.localBookings = [] as any;
-                for (let item of _data["localBookings"])
-                    this.localBookings.push(LocalBooking.fromJS(item));
+            this.name = _data["name"];
+            if (Array.isArray(_data["locations"])) {
+                this.locations = [] as any;
+                for (let item of _data["locations"])
+                    this.locations.push(Location.fromJS(item));
+            }
+            if (Array.isArray(_data["fromLocalRouteRates"])) {
+                this.fromLocalRouteRates = [] as any;
+                for (let item of _data["fromLocalRouteRates"])
+                    this.fromLocalRouteRates.push(LocalRouteRate.fromJS(item));
+            }
+            if (Array.isArray(_data["toLocalRouteRates"])) {
+                this.toLocalRouteRates = [] as any;
+                for (let item of _data["toLocalRouteRates"])
+                    this.toLocalRouteRates.push(LocalRouteRate.fromJS(item));
+            }
+            if (Array.isArray(_data["localBookingCategoryGroups"])) {
+                this.localBookingCategoryGroups = [] as any;
+                for (let item of _data["localBookingCategoryGroups"])
+                    this.localBookingCategoryGroups.push(LocalBookingCategoryGroup.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): LocalRouteRate {
+    static fromJS(data: any): LocationRatesGroup {
         data = typeof data === 'object' ? data : {};
-        let result = new LocalRouteRate();
+        let result = new LocationRatesGroup();
         result.init(data);
         return result;
     }
@@ -6670,59 +6958,45 @@ export class LocalRouteRate implements ILocalRouteRate {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["fromLocationRatesGroupId"] = this.fromLocationRatesGroupId;
-        data["toLocationRatesGroupId"] = this.toLocationRatesGroupId;
-        data["deliveryTypeId"] = this.deliveryTypeId;
-        data["generalRate"] = this.generalRate;
-        data["partnerRate"] = this.partnerRate;
-        data["scale"] = this.scale;
-        data["chargeOnExtra"] = this.chargeOnExtra;
-        data["fromLocationId"] = this.fromLocationId;
-        data["fromLocation"] = this.fromLocation ? this.fromLocation.toJSON() : <any>undefined;
-        data["toLocationId"] = this.toLocationId;
-        data["toLocation"] = this.toLocation ? this.toLocation.toJSON() : <any>undefined;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["fromLocationRatesGroup"] = this.fromLocationRatesGroup ? this.fromLocationRatesGroup.toJSON() : <any>undefined;
-        data["toLocationRatesGroup"] = this.toLocationRatesGroup ? this.toLocationRatesGroup.toJSON() : <any>undefined;
-        data["deliveryType"] = this.deliveryType ? this.deliveryType.toJSON() : <any>undefined;
-        data["usesGroup"] = this.usesGroup;
-        if (Array.isArray(this.localBookings)) {
-            data["localBookings"] = [];
-            for (let item of this.localBookings)
-                data["localBookings"].push(item.toJSON());
+        data["name"] = this.name;
+        if (Array.isArray(this.locations)) {
+            data["locations"] = [];
+            for (let item of this.locations)
+                data["locations"].push(item.toJSON());
+        }
+        if (Array.isArray(this.fromLocalRouteRates)) {
+            data["fromLocalRouteRates"] = [];
+            for (let item of this.fromLocalRouteRates)
+                data["fromLocalRouteRates"].push(item.toJSON());
+        }
+        if (Array.isArray(this.toLocalRouteRates)) {
+            data["toLocalRouteRates"] = [];
+            for (let item of this.toLocalRouteRates)
+                data["toLocalRouteRates"].push(item.toJSON());
+        }
+        if (Array.isArray(this.localBookingCategoryGroups)) {
+            data["localBookingCategoryGroups"] = [];
+            for (let item of this.localBookingCategoryGroups)
+                data["localBookingCategoryGroups"].push(item.toJSON());
         }
         return data; 
     }
 
-    clone(): LocalRouteRate {
+    clone(): LocationRatesGroup {
         const json = this.toJSON();
-        let result = new LocalRouteRate();
+        let result = new LocationRatesGroup();
         result.init(json);
         return result;
     }
 }
 
-export interface ILocalRouteRate {
+export interface ILocationRatesGroup {
     id: number | undefined;
-    fromLocationRatesGroupId: number | undefined;
-    toLocationRatesGroupId: number | undefined;
-    deliveryTypeId: number;
-    generalRate: number;
-    partnerRate: number;
-    scale: number | undefined;
-    chargeOnExtra: number | undefined;
-    fromLocationId: number | undefined;
-    fromLocation: Location | undefined;
-    toLocationId: number | undefined;
-    toLocation: Location | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    fromLocationRatesGroup: LocationRatesGroup | undefined;
-    toLocationRatesGroup: LocationRatesGroup | undefined;
-    deliveryType: DeliveryType | undefined;
-    usesGroup: boolean | undefined;
-    localBookings: LocalBooking[] | undefined;
+    name: string;
+    locations: Location[] | undefined;
+    fromLocalRouteRates: LocalRouteRate[] | undefined;
+    toLocalRouteRates: LocalRouteRate[] | undefined;
+    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
 }
 
 export class LocalBooking implements ILocalBooking {
@@ -7048,21 +7322,341 @@ export interface ILocalBooking {
     personalizedLocalRate: PersonalizedLocalRate | undefined;
 }
 
-export class Location implements ILocation {
+export class CustomizedLocationGroup implements ICustomizedLocationGroup {
+    id: number | undefined;
+    description: string | undefined;
+    name: string | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    locations: Location[] | undefined;
+
+    constructor(data?: ICustomizedLocationGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.description = _data["description"];
+            this.name = _data["name"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["locations"])) {
+                this.locations = [] as any;
+                for (let item of _data["locations"])
+                    this.locations.push(Location.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CustomizedLocationGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomizedLocationGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["description"] = this.description;
+        data["name"] = this.name;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        if (Array.isArray(this.locations)) {
+            data["locations"] = [];
+            for (let item of this.locations)
+                data["locations"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CustomizedLocationGroup {
+        const json = this.toJSON();
+        let result = new CustomizedLocationGroup();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICustomizedLocationGroup {
+    id: number | undefined;
+    description: string | undefined;
+    name: string | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    locations: Location[] | undefined;
+}
+
+export class PaymentGateway implements IPaymentGateway {
+    id: number | undefined;
+    gatewayKey: string | undefined;
+    active: boolean | undefined;
+    controller: string | undefined;
+    currencies: string | undefined;
+    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
+
+    constructor(data?: IPaymentGateway) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.gatewayKey = _data["gatewayKey"];
+            this.active = _data["active"];
+            this.controller = _data["controller"];
+            this.currencies = _data["currencies"];
+            if (Array.isArray(_data["paymentGatewayConfigs"])) {
+                this.paymentGatewayConfigs = [] as any;
+                for (let item of _data["paymentGatewayConfigs"])
+                    this.paymentGatewayConfigs.push(PaymentGatewayConfig.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentGateway {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentGateway();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["gatewayKey"] = this.gatewayKey;
+        data["active"] = this.active;
+        data["controller"] = this.controller;
+        data["currencies"] = this.currencies;
+        if (Array.isArray(this.paymentGatewayConfigs)) {
+            data["paymentGatewayConfigs"] = [];
+            for (let item of this.paymentGatewayConfigs)
+                data["paymentGatewayConfigs"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PaymentGateway {
+        const json = this.toJSON();
+        let result = new PaymentGateway();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentGateway {
+    id: number | undefined;
+    gatewayKey: string | undefined;
+    active: boolean | undefined;
+    controller: string | undefined;
+    currencies: string | undefined;
+    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
+}
+
+export class PaymentStatus implements IPaymentStatus {
+    id: number | undefined;
+    name: string | undefined;
+    payments: Payment[] | undefined;
+
+    constructor(data?: IPaymentStatus) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["payments"])) {
+                this.payments = [] as any;
+                for (let item of _data["payments"])
+                    this.payments.push(Payment.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        if (Array.isArray(this.payments)) {
+            data["payments"] = [];
+            for (let item of this.payments)
+                data["payments"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PaymentStatus {
+        const json = this.toJSON();
+        let result = new PaymentStatus();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStatus {
+    id: number | undefined;
+    name: string | undefined;
+    payments: Payment[] | undefined;
+}
+
+export class LocalRouteRate implements ILocalRouteRate {
+    id: number | undefined;
+    fromLocationRatesGroupId: number | undefined;
+    toLocationRatesGroupId: number | undefined;
+    deliveryTypeId: number;
+    generalRate: number;
+    partnerRate: number;
+    scale: number | undefined;
+    chargeOnExtra: number | undefined;
+    fromLocationId: number | undefined;
+    fromLocation: Location | undefined;
+    toLocationId: number | undefined;
+    toLocation: Location | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    fromLocationRatesGroup: LocationRatesGroup | undefined;
+    toLocationRatesGroup: LocationRatesGroup | undefined;
+    deliveryType: DeliveryType | undefined;
+    usesGroup: boolean | undefined;
+    localBookings: LocalBooking[] | undefined;
+
+    constructor(data?: ILocalRouteRate) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fromLocationRatesGroupId = _data["fromLocationRatesGroupId"];
+            this.toLocationRatesGroupId = _data["toLocationRatesGroupId"];
+            this.deliveryTypeId = _data["deliveryTypeId"];
+            this.generalRate = _data["generalRate"];
+            this.partnerRate = _data["partnerRate"];
+            this.scale = _data["scale"];
+            this.chargeOnExtra = _data["chargeOnExtra"];
+            this.fromLocationId = _data["fromLocationId"];
+            this.fromLocation = _data["fromLocation"] ? Location.fromJS(_data["fromLocation"]) : <any>undefined;
+            this.toLocationId = _data["toLocationId"];
+            this.toLocation = _data["toLocation"] ? Location.fromJS(_data["toLocation"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.fromLocationRatesGroup = _data["fromLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["fromLocationRatesGroup"]) : <any>undefined;
+            this.toLocationRatesGroup = _data["toLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["toLocationRatesGroup"]) : <any>undefined;
+            this.deliveryType = _data["deliveryType"] ? DeliveryType.fromJS(_data["deliveryType"]) : <any>undefined;
+            this.usesGroup = _data["usesGroup"];
+            if (Array.isArray(_data["localBookings"])) {
+                this.localBookings = [] as any;
+                for (let item of _data["localBookings"])
+                    this.localBookings.push(LocalBooking.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LocalRouteRate {
+        data = typeof data === 'object' ? data : {};
+        let result = new LocalRouteRate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fromLocationRatesGroupId"] = this.fromLocationRatesGroupId;
+        data["toLocationRatesGroupId"] = this.toLocationRatesGroupId;
+        data["deliveryTypeId"] = this.deliveryTypeId;
+        data["generalRate"] = this.generalRate;
+        data["partnerRate"] = this.partnerRate;
+        data["scale"] = this.scale;
+        data["chargeOnExtra"] = this.chargeOnExtra;
+        data["fromLocationId"] = this.fromLocationId;
+        data["fromLocation"] = this.fromLocation ? this.fromLocation.toJSON() : <any>undefined;
+        data["toLocationId"] = this.toLocationId;
+        data["toLocation"] = this.toLocation ? this.toLocation.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["fromLocationRatesGroup"] = this.fromLocationRatesGroup ? this.fromLocationRatesGroup.toJSON() : <any>undefined;
+        data["toLocationRatesGroup"] = this.toLocationRatesGroup ? this.toLocationRatesGroup.toJSON() : <any>undefined;
+        data["deliveryType"] = this.deliveryType ? this.deliveryType.toJSON() : <any>undefined;
+        data["usesGroup"] = this.usesGroup;
+        if (Array.isArray(this.localBookings)) {
+            data["localBookings"] = [];
+            for (let item of this.localBookings)
+                data["localBookings"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): LocalRouteRate {
+        const json = this.toJSON();
+        let result = new LocalRouteRate();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILocalRouteRate {
+    id: number | undefined;
+    fromLocationRatesGroupId: number | undefined;
+    toLocationRatesGroupId: number | undefined;
+    deliveryTypeId: number;
+    generalRate: number;
+    partnerRate: number;
+    scale: number | undefined;
+    chargeOnExtra: number | undefined;
+    fromLocationId: number | undefined;
+    fromLocation: Location | undefined;
+    toLocationId: number | undefined;
+    toLocation: Location | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    fromLocationRatesGroup: LocationRatesGroup | undefined;
+    toLocationRatesGroup: LocationRatesGroup | undefined;
+    deliveryType: DeliveryType | undefined;
+    usesGroup: boolean | undefined;
+    localBookings: LocalBooking[] | undefined;
+}
+
+export class LocalBookingCategoryGroup implements ILocalBookingCategoryGroup {
     id: number | undefined;
     name: string;
     localBookingCategoryId: number | undefined;
+    localBookingCategory: LocalBookingCategory | undefined;
+    locationRatesGroups: LocationRatesGroup[] | undefined;
+    toggleBookingActivation: boolean | undefined;
     createdAt: moment.Moment | undefined;
     updatedAt: moment.Moment | undefined;
-    localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroupId: number | undefined;
-    isActive: boolean | undefined;
-    locationRatesGroup: LocationRatesGroup | undefined;
-    localBookingsForPickup: LocalBooking[] | undefined;
-    localBookingsForDelivery: LocalBooking[] | undefined;
-    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
 
-    constructor(data?: ILocation) {
+    constructor(data?: ILocalBookingCategoryGroup) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7076,33 +7670,21 @@ export class Location implements ILocation {
             this.id = _data["id"];
             this.name = _data["name"];
             this.localBookingCategoryId = _data["localBookingCategoryId"];
+            this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
+            if (Array.isArray(_data["locationRatesGroups"])) {
+                this.locationRatesGroups = [] as any;
+                for (let item of _data["locationRatesGroups"])
+                    this.locationRatesGroups.push(LocationRatesGroup.fromJS(item));
+            }
+            this.toggleBookingActivation = _data["toggleBookingActivation"];
             this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
             this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
-            this.locationRatesGroupId = _data["locationRatesGroupId"];
-            this.isActive = _data["isActive"];
-            this.locationRatesGroup = _data["locationRatesGroup"] ? LocationRatesGroup.fromJS(_data["locationRatesGroup"]) : <any>undefined;
-            if (Array.isArray(_data["localBookingsForPickup"])) {
-                this.localBookingsForPickup = [] as any;
-                for (let item of _data["localBookingsForPickup"])
-                    this.localBookingsForPickup.push(LocalBooking.fromJS(item));
-            }
-            if (Array.isArray(_data["localBookingsForDelivery"])) {
-                this.localBookingsForDelivery = [] as any;
-                for (let item of _data["localBookingsForDelivery"])
-                    this.localBookingsForDelivery.push(LocalBooking.fromJS(item));
-            }
-            if (Array.isArray(_data["customizedLocationGroups"])) {
-                this.customizedLocationGroups = [] as any;
-                for (let item of _data["customizedLocationGroups"])
-                    this.customizedLocationGroups.push(CustomizedLocationGroup.fromJS(item));
-            }
         }
     }
 
-    static fromJS(data: any): Location {
+    static fromJS(data: any): LocalBookingCategoryGroup {
         data = typeof data === 'object' ? data : {};
-        let result = new Location();
+        let result = new LocalBookingCategoryGroup();
         result.init(data);
         return result;
     }
@@ -7112,62 +7694,46 @@ export class Location implements ILocation {
         data["id"] = this.id;
         data["name"] = this.name;
         data["localBookingCategoryId"] = this.localBookingCategoryId;
+        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
+        if (Array.isArray(this.locationRatesGroups)) {
+            data["locationRatesGroups"] = [];
+            for (let item of this.locationRatesGroups)
+                data["locationRatesGroups"].push(item.toJSON());
+        }
+        data["toggleBookingActivation"] = this.toggleBookingActivation;
         data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
         data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
-        data["locationRatesGroupId"] = this.locationRatesGroupId;
-        data["isActive"] = this.isActive;
-        data["locationRatesGroup"] = this.locationRatesGroup ? this.locationRatesGroup.toJSON() : <any>undefined;
-        if (Array.isArray(this.localBookingsForPickup)) {
-            data["localBookingsForPickup"] = [];
-            for (let item of this.localBookingsForPickup)
-                data["localBookingsForPickup"].push(item.toJSON());
-        }
-        if (Array.isArray(this.localBookingsForDelivery)) {
-            data["localBookingsForDelivery"] = [];
-            for (let item of this.localBookingsForDelivery)
-                data["localBookingsForDelivery"].push(item.toJSON());
-        }
-        if (Array.isArray(this.customizedLocationGroups)) {
-            data["customizedLocationGroups"] = [];
-            for (let item of this.customizedLocationGroups)
-                data["customizedLocationGroups"].push(item.toJSON());
-        }
         return data; 
     }
 
-    clone(): Location {
+    clone(): LocalBookingCategoryGroup {
         const json = this.toJSON();
-        let result = new Location();
+        let result = new LocalBookingCategoryGroup();
         result.init(json);
         return result;
     }
 }
 
-export interface ILocation {
+export interface ILocalBookingCategoryGroup {
     id: number | undefined;
     name: string;
     localBookingCategoryId: number | undefined;
+    localBookingCategory: LocalBookingCategory | undefined;
+    locationRatesGroups: LocationRatesGroup[] | undefined;
+    toggleBookingActivation: boolean | undefined;
     createdAt: moment.Moment | undefined;
     updatedAt: moment.Moment | undefined;
-    localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroupId: number | undefined;
-    isActive: boolean | undefined;
-    locationRatesGroup: LocationRatesGroup | undefined;
-    localBookingsForPickup: LocalBooking[] | undefined;
-    localBookingsForDelivery: LocalBooking[] | undefined;
-    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
 }
 
-export class LocationRatesGroup implements ILocationRatesGroup {
+export class DeliveryType implements IDeliveryType {
     id: number | undefined;
     name: string;
-    locations: Location[] | undefined;
-    fromLocalRouteRates: LocalRouteRate[] | undefined;
-    toLocalRouteRates: LocalRouteRate[] | undefined;
-    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
+    toggleBookingActivation: boolean | undefined;
+    isActive: boolean | undefined;
+    localRouteRates: LocalRouteRate[] | undefined;
+    localBookings: LocalBooking[] | undefined;
 
-    constructor(data?: ILocationRatesGroup) {
+    constructor(data?: IDeliveryType) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7180,32 +7746,24 @@ export class LocationRatesGroup implements ILocationRatesGroup {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            if (Array.isArray(_data["locations"])) {
-                this.locations = [] as any;
-                for (let item of _data["locations"])
-                    this.locations.push(Location.fromJS(item));
+            this.toggleBookingActivation = _data["toggleBookingActivation"];
+            this.isActive = _data["isActive"];
+            if (Array.isArray(_data["localRouteRates"])) {
+                this.localRouteRates = [] as any;
+                for (let item of _data["localRouteRates"])
+                    this.localRouteRates.push(LocalRouteRate.fromJS(item));
             }
-            if (Array.isArray(_data["fromLocalRouteRates"])) {
-                this.fromLocalRouteRates = [] as any;
-                for (let item of _data["fromLocalRouteRates"])
-                    this.fromLocalRouteRates.push(LocalRouteRate.fromJS(item));
-            }
-            if (Array.isArray(_data["toLocalRouteRates"])) {
-                this.toLocalRouteRates = [] as any;
-                for (let item of _data["toLocalRouteRates"])
-                    this.toLocalRouteRates.push(LocalRouteRate.fromJS(item));
-            }
-            if (Array.isArray(_data["localBookingCategoryGroups"])) {
-                this.localBookingCategoryGroups = [] as any;
-                for (let item of _data["localBookingCategoryGroups"])
-                    this.localBookingCategoryGroups.push(LocalBookingCategoryGroup.fromJS(item));
+            if (Array.isArray(_data["localBookings"])) {
+                this.localBookings = [] as any;
+                for (let item of _data["localBookings"])
+                    this.localBookings.push(LocalBooking.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): LocationRatesGroup {
+    static fromJS(data: any): DeliveryType {
         data = typeof data === 'object' ? data : {};
-        let result = new LocationRatesGroup();
+        let result = new DeliveryType();
         result.init(data);
         return result;
     }
@@ -7214,159 +7772,36 @@ export class LocationRatesGroup implements ILocationRatesGroup {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        if (Array.isArray(this.locations)) {
-            data["locations"] = [];
-            for (let item of this.locations)
-                data["locations"].push(item.toJSON());
+        data["toggleBookingActivation"] = this.toggleBookingActivation;
+        data["isActive"] = this.isActive;
+        if (Array.isArray(this.localRouteRates)) {
+            data["localRouteRates"] = [];
+            for (let item of this.localRouteRates)
+                data["localRouteRates"].push(item.toJSON());
         }
-        if (Array.isArray(this.fromLocalRouteRates)) {
-            data["fromLocalRouteRates"] = [];
-            for (let item of this.fromLocalRouteRates)
-                data["fromLocalRouteRates"].push(item.toJSON());
-        }
-        if (Array.isArray(this.toLocalRouteRates)) {
-            data["toLocalRouteRates"] = [];
-            for (let item of this.toLocalRouteRates)
-                data["toLocalRouteRates"].push(item.toJSON());
-        }
-        if (Array.isArray(this.localBookingCategoryGroups)) {
-            data["localBookingCategoryGroups"] = [];
-            for (let item of this.localBookingCategoryGroups)
-                data["localBookingCategoryGroups"].push(item.toJSON());
+        if (Array.isArray(this.localBookings)) {
+            data["localBookings"] = [];
+            for (let item of this.localBookings)
+                data["localBookings"].push(item.toJSON());
         }
         return data; 
     }
 
-    clone(): LocationRatesGroup {
+    clone(): DeliveryType {
         const json = this.toJSON();
-        let result = new LocationRatesGroup();
+        let result = new DeliveryType();
         result.init(json);
         return result;
     }
 }
 
-export interface ILocationRatesGroup {
+export interface IDeliveryType {
     id: number | undefined;
     name: string;
-    locations: Location[] | undefined;
-    fromLocalRouteRates: LocalRouteRate[] | undefined;
-    toLocalRouteRates: LocalRouteRate[] | undefined;
-    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
-}
-
-export class Customer implements ICustomer {
-    userId: string | undefined;
-    fullName: string | undefined;
-    closestLandmark: string | undefined;
-    closestBustopId: number | undefined;
-    registerAsPartner: boolean | undefined;
-    homeAddress: string | undefined;
-    businessName: string | undefined;
-    companyLogo: string | undefined;
-    residentialCountryId: number | undefined;
-    residentialStateId: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    businessAnniversary: moment.Moment | undefined;
-    aspNetUser: AspNetUser | undefined;
-    wallet: Wallet | undefined;
-    residentialCountry: ResidentialCountry | undefined;
-    residentialState: ResidentialState | undefined;
-    location: Location | undefined;
-    synergyProgramCustomer: SynergyProgramCustomer | undefined;
-
-    constructor(data?: ICustomer) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.fullName = _data["fullName"];
-            this.closestLandmark = _data["closestLandmark"];
-            this.closestBustopId = _data["closestBustopId"];
-            this.registerAsPartner = _data["registerAsPartner"];
-            this.homeAddress = _data["homeAddress"];
-            this.businessName = _data["businessName"];
-            this.companyLogo = _data["companyLogo"];
-            this.residentialCountryId = _data["residentialCountryId"];
-            this.residentialStateId = _data["residentialStateId"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
-            this.aspNetUser = _data["aspNetUser"] ? AspNetUser.fromJS(_data["aspNetUser"]) : <any>undefined;
-            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
-            this.residentialCountry = _data["residentialCountry"] ? ResidentialCountry.fromJS(_data["residentialCountry"]) : <any>undefined;
-            this.residentialState = _data["residentialState"] ? ResidentialState.fromJS(_data["residentialState"]) : <any>undefined;
-            this.location = _data["location"] ? Location.fromJS(_data["location"]) : <any>undefined;
-            this.synergyProgramCustomer = _data["synergyProgramCustomer"] ? SynergyProgramCustomer.fromJS(_data["synergyProgramCustomer"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): Customer {
-        data = typeof data === 'object' ? data : {};
-        let result = new Customer();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["fullName"] = this.fullName;
-        data["closestLandmark"] = this.closestLandmark;
-        data["closestBustopId"] = this.closestBustopId;
-        data["registerAsPartner"] = this.registerAsPartner;
-        data["homeAddress"] = this.homeAddress;
-        data["businessName"] = this.businessName;
-        data["companyLogo"] = this.companyLogo;
-        data["residentialCountryId"] = this.residentialCountryId;
-        data["residentialStateId"] = this.residentialStateId;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["businessAnniversary"] = this.businessAnniversary ? this.businessAnniversary.toISOString() : <any>undefined;
-        data["aspNetUser"] = this.aspNetUser ? this.aspNetUser.toJSON() : <any>undefined;
-        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
-        data["residentialCountry"] = this.residentialCountry ? this.residentialCountry.toJSON() : <any>undefined;
-        data["residentialState"] = this.residentialState ? this.residentialState.toJSON() : <any>undefined;
-        data["location"] = this.location ? this.location.toJSON() : <any>undefined;
-        data["synergyProgramCustomer"] = this.synergyProgramCustomer ? this.synergyProgramCustomer.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): Customer {
-        const json = this.toJSON();
-        let result = new Customer();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICustomer {
-    userId: string | undefined;
-    fullName: string | undefined;
-    closestLandmark: string | undefined;
-    closestBustopId: number | undefined;
-    registerAsPartner: boolean | undefined;
-    homeAddress: string | undefined;
-    businessName: string | undefined;
-    companyLogo: string | undefined;
-    residentialCountryId: number | undefined;
-    residentialStateId: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    businessAnniversary: moment.Moment | undefined;
-    aspNetUser: AspNetUser | undefined;
-    wallet: Wallet | undefined;
-    residentialCountry: ResidentialCountry | undefined;
-    residentialState: ResidentialState | undefined;
-    location: Location | undefined;
-    synergyProgramCustomer: SynergyProgramCustomer | undefined;
+    toggleBookingActivation: boolean | undefined;
+    isActive: boolean | undefined;
+    localRouteRates: LocalRouteRate[] | undefined;
+    localBookings: LocalBooking[] | undefined;
 }
 
 export class BookingStatus implements IBookingStatus {
@@ -7628,81 +8063,6 @@ export interface IDispatcher {
     fcmToken: string | undefined;
     trackingUsername: string | undefined;
     trackingPassword: string | undefined;
-}
-
-export class LocalBookingCategory implements ILocalBookingCategory {
-    id: number | undefined;
-    name: string;
-    toggleBookingActivation: boolean | undefined;
-    locations: Location[] | undefined;
-    localBookings: LocalBooking[] | undefined;
-
-    constructor(data?: ILocalBookingCategory) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.toggleBookingActivation = _data["toggleBookingActivation"];
-            if (Array.isArray(_data["locations"])) {
-                this.locations = [] as any;
-                for (let item of _data["locations"])
-                    this.locations.push(Location.fromJS(item));
-            }
-            if (Array.isArray(_data["localBookings"])) {
-                this.localBookings = [] as any;
-                for (let item of _data["localBookings"])
-                    this.localBookings.push(LocalBooking.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): LocalBookingCategory {
-        data = typeof data === 'object' ? data : {};
-        let result = new LocalBookingCategory();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["toggleBookingActivation"] = this.toggleBookingActivation;
-        if (Array.isArray(this.locations)) {
-            data["locations"] = [];
-            for (let item of this.locations)
-                data["locations"].push(item.toJSON());
-        }
-        if (Array.isArray(this.localBookings)) {
-            data["localBookings"] = [];
-            for (let item of this.localBookings)
-                data["localBookings"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): LocalBookingCategory {
-        const json = this.toJSON();
-        let result = new LocalBookingCategory();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILocalBookingCategory {
-    id: number | undefined;
-    name: string;
-    toggleBookingActivation: boolean | undefined;
-    locations: Location[] | undefined;
-    localBookings: LocalBooking[] | undefined;
 }
 
 export class CustomerActorState implements ICustomerActorState {
@@ -8156,15 +8516,14 @@ export interface IPersonalizedLocalRate {
     localBookingCategory: LocalBookingCategory | undefined;
 }
 
-export class CustomizedLocationGroup implements ICustomizedLocationGroup {
+export class PaymentGatewayConfig implements IPaymentGatewayConfig {
     id: number | undefined;
-    description: string | undefined;
+    paymentGatewayId: number | undefined;
     name: string | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    locations: Location[] | undefined;
+    value: string | undefined;
+    paymentGateway: PaymentGateway | undefined;
 
-    constructor(data?: ICustomizedLocationGroup) {
+    constructor(data?: IPaymentGatewayConfig) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8176,21 +8535,16 @@ export class CustomizedLocationGroup implements ICustomizedLocationGroup {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.description = _data["description"];
+            this.paymentGatewayId = _data["paymentGatewayId"];
             this.name = _data["name"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            if (Array.isArray(_data["locations"])) {
-                this.locations = [] as any;
-                for (let item of _data["locations"])
-                    this.locations.push(Location.fromJS(item));
-            }
+            this.value = _data["value"];
+            this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): CustomizedLocationGroup {
+    static fromJS(data: any): PaymentGatewayConfig {
         data = typeof data === 'object' ? data : {};
-        let result = new CustomizedLocationGroup();
+        let result = new PaymentGatewayConfig();
         result.init(data);
         return result;
     }
@@ -8198,384 +8552,27 @@ export class CustomizedLocationGroup implements ICustomizedLocationGroup {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["description"] = this.description;
+        data["paymentGatewayId"] = this.paymentGatewayId;
         data["name"] = this.name;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        if (Array.isArray(this.locations)) {
-            data["locations"] = [];
-            for (let item of this.locations)
-                data["locations"].push(item.toJSON());
-        }
+        data["value"] = this.value;
+        data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
         return data; 
     }
 
-    clone(): CustomizedLocationGroup {
+    clone(): PaymentGatewayConfig {
         const json = this.toJSON();
-        let result = new CustomizedLocationGroup();
+        let result = new PaymentGatewayConfig();
         result.init(json);
         return result;
     }
 }
 
-export interface ICustomizedLocationGroup {
+export interface IPaymentGatewayConfig {
     id: number | undefined;
-    description: string | undefined;
+    paymentGatewayId: number | undefined;
     name: string | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    locations: Location[] | undefined;
-}
-
-export class LocalBookingCategoryGroup implements ILocalBookingCategoryGroup {
-    id: number | undefined;
-    name: string;
-    localBookingCategoryId: number | undefined;
-    localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroups: LocationRatesGroup[] | undefined;
-    toggleBookingActivation: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-
-    constructor(data?: ILocalBookingCategoryGroup) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.localBookingCategoryId = _data["localBookingCategoryId"];
-            this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
-            if (Array.isArray(_data["locationRatesGroups"])) {
-                this.locationRatesGroups = [] as any;
-                for (let item of _data["locationRatesGroups"])
-                    this.locationRatesGroups.push(LocationRatesGroup.fromJS(item));
-            }
-            this.toggleBookingActivation = _data["toggleBookingActivation"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): LocalBookingCategoryGroup {
-        data = typeof data === 'object' ? data : {};
-        let result = new LocalBookingCategoryGroup();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["localBookingCategoryId"] = this.localBookingCategoryId;
-        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
-        if (Array.isArray(this.locationRatesGroups)) {
-            data["locationRatesGroups"] = [];
-            for (let item of this.locationRatesGroups)
-                data["locationRatesGroups"].push(item.toJSON());
-        }
-        data["toggleBookingActivation"] = this.toggleBookingActivation;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): LocalBookingCategoryGroup {
-        const json = this.toJSON();
-        let result = new LocalBookingCategoryGroup();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILocalBookingCategoryGroup {
-    id: number | undefined;
-    name: string;
-    localBookingCategoryId: number | undefined;
-    localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroups: LocationRatesGroup[] | undefined;
-    toggleBookingActivation: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-}
-
-export class Wallet implements IWallet {
-    userId: string | undefined;
-    isActive: boolean | undefined;
-    customer: Customer | undefined;
-    balance: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    walletPayments: WalletPayment[] | undefined;
-    walletCredits: WalletCredit[] | undefined;
-
-    constructor(data?: IWallet) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.isActive = _data["isActive"];
-            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-            this.balance = _data["balance"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            if (Array.isArray(_data["walletPayments"])) {
-                this.walletPayments = [] as any;
-                for (let item of _data["walletPayments"])
-                    this.walletPayments.push(WalletPayment.fromJS(item));
-            }
-            if (Array.isArray(_data["walletCredits"])) {
-                this.walletCredits = [] as any;
-                for (let item of _data["walletCredits"])
-                    this.walletCredits.push(WalletCredit.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Wallet {
-        data = typeof data === 'object' ? data : {};
-        let result = new Wallet();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["isActive"] = this.isActive;
-        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        data["balance"] = this.balance;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        if (Array.isArray(this.walletPayments)) {
-            data["walletPayments"] = [];
-            for (let item of this.walletPayments)
-                data["walletPayments"].push(item.toJSON());
-        }
-        if (Array.isArray(this.walletCredits)) {
-            data["walletCredits"] = [];
-            for (let item of this.walletCredits)
-                data["walletCredits"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): Wallet {
-        const json = this.toJSON();
-        let result = new Wallet();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWallet {
-    userId: string | undefined;
-    isActive: boolean | undefined;
-    customer: Customer | undefined;
-    balance: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    walletPayments: WalletPayment[] | undefined;
-    walletCredits: WalletCredit[] | undefined;
-}
-
-export class ResidentialCountry implements IResidentialCountry {
-    id: number | undefined;
-    name: string;
-    countryCode: string | undefined;
-    residentialStates: ResidentialState[] | undefined;
-
-    constructor(data?: IResidentialCountry) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.countryCode = _data["countryCode"];
-            if (Array.isArray(_data["residentialStates"])) {
-                this.residentialStates = [] as any;
-                for (let item of _data["residentialStates"])
-                    this.residentialStates.push(ResidentialState.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): ResidentialCountry {
-        data = typeof data === 'object' ? data : {};
-        let result = new ResidentialCountry();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["countryCode"] = this.countryCode;
-        if (Array.isArray(this.residentialStates)) {
-            data["residentialStates"] = [];
-            for (let item of this.residentialStates)
-                data["residentialStates"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): ResidentialCountry {
-        const json = this.toJSON();
-        let result = new ResidentialCountry();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IResidentialCountry {
-    id: number | undefined;
-    name: string;
-    countryCode: string | undefined;
-    residentialStates: ResidentialState[] | undefined;
-}
-
-export class ResidentialState implements IResidentialState {
-    id: number | undefined;
-    name: string;
-    residentialCountryId: number | undefined;
-
-    constructor(data?: IResidentialState) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.residentialCountryId = _data["residentialCountryId"];
-        }
-    }
-
-    static fromJS(data: any): ResidentialState {
-        data = typeof data === 'object' ? data : {};
-        let result = new ResidentialState();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["residentialCountryId"] = this.residentialCountryId;
-        return data; 
-    }
-
-    clone(): ResidentialState {
-        const json = this.toJSON();
-        let result = new ResidentialState();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IResidentialState {
-    id: number | undefined;
-    name: string;
-    residentialCountryId: number | undefined;
-}
-
-export class SynergyProgramCustomer implements ISynergyProgramCustomer {
-    userId: string | undefined;
-    createdAt: moment.Moment | undefined;
-    isApproved: boolean | undefined;
-    updatedAt: moment.Moment | undefined;
-    approvedAt: moment.Moment | undefined;
-    approvedByUserId: string | undefined;
-    approvedBy: AspNetUser | undefined;
-    customer: Customer | undefined;
-
-    constructor(data?: ISynergyProgramCustomer) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.isApproved = _data["isApproved"];
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.approvedAt = _data["approvedAt"] ? moment(_data["approvedAt"].toString()) : <any>undefined;
-            this.approvedByUserId = _data["approvedByUserId"];
-            this.approvedBy = _data["approvedBy"] ? AspNetUser.fromJS(_data["approvedBy"]) : <any>undefined;
-            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): SynergyProgramCustomer {
-        data = typeof data === 'object' ? data : {};
-        let result = new SynergyProgramCustomer();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["isApproved"] = this.isApproved;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["approvedAt"] = this.approvedAt ? this.approvedAt.toISOString() : <any>undefined;
-        data["approvedByUserId"] = this.approvedByUserId;
-        data["approvedBy"] = this.approvedBy ? this.approvedBy.toJSON() : <any>undefined;
-        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): SynergyProgramCustomer {
-        const json = this.toJSON();
-        let result = new SynergyProgramCustomer();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISynergyProgramCustomer {
-    userId: string | undefined;
-    createdAt: moment.Moment | undefined;
-    isApproved: boolean | undefined;
-    updatedAt: moment.Moment | undefined;
-    approvedAt: moment.Moment | undefined;
-    approvedByUserId: string | undefined;
-    approvedBy: AspNetUser | undefined;
-    customer: Customer | undefined;
+    value: string | undefined;
+    paymentGateway: PaymentGateway | undefined;
 }
 
 export class DispatcherStatus implements IDispatcherStatus {
@@ -8635,136 +8632,6 @@ export interface IDispatcherStatus {
     id: number | undefined;
     name: string;
     dispatchers: Dispatcher[] | undefined;
-}
-
-export class PaymentGateway implements IPaymentGateway {
-    id: number | undefined;
-    gatewayKey: string | undefined;
-    active: boolean | undefined;
-    controller: string | undefined;
-    currencies: string | undefined;
-    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
-
-    constructor(data?: IPaymentGateway) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.gatewayKey = _data["gatewayKey"];
-            this.active = _data["active"];
-            this.controller = _data["controller"];
-            this.currencies = _data["currencies"];
-            if (Array.isArray(_data["paymentGatewayConfigs"])) {
-                this.paymentGatewayConfigs = [] as any;
-                for (let item of _data["paymentGatewayConfigs"])
-                    this.paymentGatewayConfigs.push(PaymentGatewayConfig.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PaymentGateway {
-        data = typeof data === 'object' ? data : {};
-        let result = new PaymentGateway();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["gatewayKey"] = this.gatewayKey;
-        data["active"] = this.active;
-        data["controller"] = this.controller;
-        data["currencies"] = this.currencies;
-        if (Array.isArray(this.paymentGatewayConfigs)) {
-            data["paymentGatewayConfigs"] = [];
-            for (let item of this.paymentGatewayConfigs)
-                data["paymentGatewayConfigs"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): PaymentGateway {
-        const json = this.toJSON();
-        let result = new PaymentGateway();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPaymentGateway {
-    id: number | undefined;
-    gatewayKey: string | undefined;
-    active: boolean | undefined;
-    controller: string | undefined;
-    currencies: string | undefined;
-    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
-}
-
-export class PaymentStatus implements IPaymentStatus {
-    id: number | undefined;
-    name: string | undefined;
-    payments: Payment[] | undefined;
-
-    constructor(data?: IPaymentStatus) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            if (Array.isArray(_data["payments"])) {
-                this.payments = [] as any;
-                for (let item of _data["payments"])
-                    this.payments.push(Payment.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PaymentStatus {
-        data = typeof data === 'object' ? data : {};
-        let result = new PaymentStatus();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        if (Array.isArray(this.payments)) {
-            data["payments"] = [];
-            for (let item of this.payments)
-                data["payments"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): PaymentStatus {
-        const json = this.toJSON();
-        let result = new PaymentStatus();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPaymentStatus {
-    id: number | undefined;
-    name: string | undefined;
-    payments: Payment[] | undefined;
 }
 
 export class InternationalBooking implements IInternationalBooking {
@@ -9350,227 +9217,6 @@ export interface IInvoice {
     shippingBatchId: number | undefined;
     paidAt: moment.Moment | undefined;
     customer: Customer | undefined;
-}
-
-export class WalletPayment implements IWalletPayment {
-    id: number | undefined;
-    paymentGatewayId: number | undefined;
-    transactionId: string | undefined;
-    transactionReference: string | undefined;
-    totalAmount: number | undefined;
-    currency: string | undefined;
-    paymentStatusId: number | undefined;
-    walletUserId: string | undefined;
-    isUsed: boolean | undefined;
-    paymentGateway: PaymentGateway | undefined;
-    paymentStatus: PaymentStatus | undefined;
-    wallet: Wallet | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-
-    constructor(data?: IWalletPayment) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.paymentGatewayId = _data["paymentGatewayId"];
-            this.transactionId = _data["transactionId"];
-            this.transactionReference = _data["transactionReference"];
-            this.totalAmount = _data["totalAmount"];
-            this.currency = _data["currency"];
-            this.paymentStatusId = _data["paymentStatusId"];
-            this.walletUserId = _data["walletUserId"];
-            this.isUsed = _data["isUsed"];
-            this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
-            this.paymentStatus = _data["paymentStatus"] ? PaymentStatus.fromJS(_data["paymentStatus"]) : <any>undefined;
-            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): WalletPayment {
-        data = typeof data === 'object' ? data : {};
-        let result = new WalletPayment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["paymentGatewayId"] = this.paymentGatewayId;
-        data["transactionId"] = this.transactionId;
-        data["transactionReference"] = this.transactionReference;
-        data["totalAmount"] = this.totalAmount;
-        data["currency"] = this.currency;
-        data["paymentStatusId"] = this.paymentStatusId;
-        data["walletUserId"] = this.walletUserId;
-        data["isUsed"] = this.isUsed;
-        data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
-        data["paymentStatus"] = this.paymentStatus ? this.paymentStatus.toJSON() : <any>undefined;
-        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): WalletPayment {
-        const json = this.toJSON();
-        let result = new WalletPayment();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWalletPayment {
-    id: number | undefined;
-    paymentGatewayId: number | undefined;
-    transactionId: string | undefined;
-    transactionReference: string | undefined;
-    totalAmount: number | undefined;
-    currency: string | undefined;
-    paymentStatusId: number | undefined;
-    walletUserId: string | undefined;
-    isUsed: boolean | undefined;
-    paymentGateway: PaymentGateway | undefined;
-    paymentStatus: PaymentStatus | undefined;
-    wallet: Wallet | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-}
-
-export class WalletCredit implements IWalletCredit {
-    id: number | undefined;
-    walletId: string | undefined;
-    amount: number | undefined;
-    isPaid: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    wallet: Wallet | undefined;
-
-    constructor(data?: IWalletCredit) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.walletId = _data["walletId"];
-            this.amount = _data["amount"];
-            this.isPaid = _data["isPaid"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): WalletCredit {
-        data = typeof data === 'object' ? data : {};
-        let result = new WalletCredit();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["walletId"] = this.walletId;
-        data["amount"] = this.amount;
-        data["isPaid"] = this.isPaid;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): WalletCredit {
-        const json = this.toJSON();
-        let result = new WalletCredit();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWalletCredit {
-    id: number | undefined;
-    walletId: string | undefined;
-    amount: number | undefined;
-    isPaid: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    wallet: Wallet | undefined;
-}
-
-export class PaymentGatewayConfig implements IPaymentGatewayConfig {
-    id: number | undefined;
-    paymentGatewayId: number | undefined;
-    name: string | undefined;
-    value: string | undefined;
-    paymentGateway: PaymentGateway | undefined;
-
-    constructor(data?: IPaymentGatewayConfig) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.paymentGatewayId = _data["paymentGatewayId"];
-            this.name = _data["name"];
-            this.value = _data["value"];
-            this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): PaymentGatewayConfig {
-        data = typeof data === 'object' ? data : {};
-        let result = new PaymentGatewayConfig();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["paymentGatewayId"] = this.paymentGatewayId;
-        data["name"] = this.name;
-        data["value"] = this.value;
-        data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): PaymentGatewayConfig {
-        const json = this.toJSON();
-        let result = new PaymentGatewayConfig();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPaymentGatewayConfig {
-    id: number | undefined;
-    paymentGatewayId: number | undefined;
-    name: string | undefined;
-    value: string | undefined;
-    paymentGateway: PaymentGateway | undefined;
 }
 
 export class ShipmentMode implements IShipmentMode {
@@ -10164,6 +9810,1181 @@ export interface ICheckoutAssistanceProduct {
     updatedAt: moment.Moment | undefined;
 }
 
+export class RegisterUserVieModel implements IRegisterUserVieModel {
+    email: string;
+    fullName: string | undefined;
+    password: string;
+    confirmPassword: string | undefined;
+    userType: RegisterUserVieModelUserType;
+    businessName: string | undefined;
+    businessAnniversary: moment.Moment | undefined;
+    tcAccepted: boolean | undefined;
+    profileUrl: string | undefined;
+
+    constructor(data?: IRegisterUserVieModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.fullName = _data["fullName"];
+            this.password = _data["password"];
+            this.confirmPassword = _data["confirmPassword"];
+            this.userType = _data["userType"];
+            this.businessName = _data["businessName"];
+            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
+            this.tcAccepted = _data["tcAccepted"];
+            this.profileUrl = _data["profileUrl"];
+        }
+    }
+
+    static fromJS(data: any): RegisterUserVieModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterUserVieModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["fullName"] = this.fullName;
+        data["password"] = this.password;
+        data["confirmPassword"] = this.confirmPassword;
+        data["userType"] = this.userType;
+        data["businessName"] = this.businessName;
+        data["businessAnniversary"] = this.businessAnniversary ? this.businessAnniversary.toISOString() : <any>undefined;
+        data["tcAccepted"] = this.tcAccepted;
+        data["profileUrl"] = this.profileUrl;
+        return data; 
+    }
+
+    clone(): RegisterUserVieModel {
+        const json = this.toJSON();
+        let result = new RegisterUserVieModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRegisterUserVieModel {
+    email: string;
+    fullName: string | undefined;
+    password: string;
+    confirmPassword: string | undefined;
+    userType: RegisterUserVieModelUserType;
+    businessName: string | undefined;
+    businessAnniversary: moment.Moment | undefined;
+    tcAccepted: boolean | undefined;
+    profileUrl: string | undefined;
+}
+
+export class ObjectResourceOfRegisterUserResource implements IObjectResourceOfRegisterUserResource {
+    data: RegisterUserResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfRegisterUserResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? RegisterUserResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfRegisterUserResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfRegisterUserResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfRegisterUserResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfRegisterUserResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfRegisterUserResource {
+    data: RegisterUserResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class RegisterUserResource implements IRegisterUserResource {
+    token: string | undefined;
+    userId: string | undefined;
+    userType: RegisterUserResourceUserType | undefined;
+    isProfileComplete: boolean | undefined;
+    user: AspNetUser | undefined;
+    role: AspNetRole[] | undefined;
+    customer: Customer | undefined;
+
+    constructor(data?: IRegisterUserResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.token = _data["token"];
+            this.userId = _data["userId"];
+            this.userType = _data["userType"];
+            this.isProfileComplete = _data["isProfileComplete"];
+            this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
+            if (Array.isArray(_data["role"])) {
+                this.role = [] as any;
+                for (let item of _data["role"])
+                    this.role.push(AspNetRole.fromJS(item));
+            }
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): RegisterUserResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterUserResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["token"] = this.token;
+        data["userId"] = this.userId;
+        data["userType"] = this.userType;
+        data["isProfileComplete"] = this.isProfileComplete;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        if (Array.isArray(this.role)) {
+            data["role"] = [];
+            for (let item of this.role)
+                data["role"].push(item.toJSON());
+        }
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): RegisterUserResource {
+        const json = this.toJSON();
+        let result = new RegisterUserResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRegisterUserResource {
+    token: string | undefined;
+    userId: string | undefined;
+    userType: RegisterUserResourceUserType | undefined;
+    isProfileComplete: boolean | undefined;
+    user: AspNetUser | undefined;
+    role: AspNetRole[] | undefined;
+    customer: Customer | undefined;
+}
+
+export class ObjectResourceOfTCResource implements IObjectResourceOfTCResource {
+    data: TCResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfTCResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? TCResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfTCResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfTCResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfTCResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfTCResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfTCResource {
+    data: TCResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class TCResource implements ITCResource {
+    tcValue: string | undefined;
+
+    constructor(data?: ITCResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.tcValue = _data["tcValue"];
+        }
+    }
+
+    static fromJS(data: any): TCResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new TCResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["tcValue"] = this.tcValue;
+        return data; 
+    }
+
+    clone(): TCResource {
+        const json = this.toJSON();
+        let result = new TCResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITCResource {
+    tcValue: string | undefined;
+}
+
+export class ListResourceOfCountryResource implements IListResourceOfCountryResource {
+    total: number | undefined;
+    data: CountryResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfCountryResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(CountryResource.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfCountryResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfCountryResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfCountryResource {
+        const json = this.toJSON();
+        let result = new ListResourceOfCountryResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfCountryResource {
+    total: number | undefined;
+    data: CountryResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class CountryResource implements ICountryResource {
+    id: number | undefined;
+    name: string | undefined;
+    countryCode: string | undefined;
+
+    constructor(data?: ICountryResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.countryCode = _data["countryCode"];
+        }
+    }
+
+    static fromJS(data: any): CountryResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new CountryResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["countryCode"] = this.countryCode;
+        return data; 
+    }
+
+    clone(): CountryResource {
+        const json = this.toJSON();
+        let result = new CountryResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICountryResource {
+    id: number | undefined;
+    name: string | undefined;
+    countryCode: string | undefined;
+}
+
+export class SocialSignUpViewModel implements ISocialSignUpViewModel {
+    email: string | undefined;
+    fullName: string | undefined;
+    profilePicUrl: string | undefined;
+
+    constructor(data?: ISocialSignUpViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.email = _data["email"];
+            this.fullName = _data["fullName"];
+            this.profilePicUrl = _data["profilePicUrl"];
+        }
+    }
+
+    static fromJS(data: any): SocialSignUpViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new SocialSignUpViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["email"] = this.email;
+        data["fullName"] = this.fullName;
+        data["profilePicUrl"] = this.profilePicUrl;
+        return data; 
+    }
+
+    clone(): SocialSignUpViewModel {
+        const json = this.toJSON();
+        let result = new SocialSignUpViewModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISocialSignUpViewModel {
+    email: string | undefined;
+    fullName: string | undefined;
+    profilePicUrl: string | undefined;
+}
+
+export class CompleteProfileViewModel implements ICompleteProfileViewModel {
+    homeAddress: string;
+    residentialCountryId: number;
+    residentialStateId: number;
+    closestLandmark: string | undefined;
+    closestBustopId: number | undefined;
+    userId: string | undefined;
+
+    constructor(data?: ICompleteProfileViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.homeAddress = _data["homeAddress"];
+            this.residentialCountryId = _data["residentialCountryId"];
+            this.residentialStateId = _data["residentialStateId"];
+            this.closestLandmark = _data["closestLandmark"];
+            this.closestBustopId = _data["closestBustopId"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): CompleteProfileViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompleteProfileViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["homeAddress"] = this.homeAddress;
+        data["residentialCountryId"] = this.residentialCountryId;
+        data["residentialStateId"] = this.residentialStateId;
+        data["closestLandmark"] = this.closestLandmark;
+        data["closestBustopId"] = this.closestBustopId;
+        data["userId"] = this.userId;
+        return data; 
+    }
+
+    clone(): CompleteProfileViewModel {
+        const json = this.toJSON();
+        let result = new CompleteProfileViewModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompleteProfileViewModel {
+    homeAddress: string;
+    residentialCountryId: number;
+    residentialStateId: number;
+    closestLandmark: string | undefined;
+    closestBustopId: number | undefined;
+    userId: string | undefined;
+}
+
+export class StatusResource implements IStatusResource {
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IStatusResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): StatusResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new StatusResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): StatusResource {
+        const json = this.toJSON();
+        let result = new StatusResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStatusResource {
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class UserPhotoViewModel implements IUserPhotoViewModel {
+    file: HttpPostedFileBase;
+    userId: string;
+
+    constructor(data?: IUserPhotoViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.file = new HttpPostedFileBase();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.file = _data["file"] ? HttpPostedFileBase.fromJS(_data["file"]) : new HttpPostedFileBase();
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): UserPhotoViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserPhotoViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["file"] = this.file ? this.file.toJSON() : <any>undefined;
+        data["userId"] = this.userId;
+        return data; 
+    }
+
+    clone(): UserPhotoViewModel {
+        const json = this.toJSON();
+        let result = new UserPhotoViewModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserPhotoViewModel {
+    file: HttpPostedFileBase;
+    userId: string;
+}
+
+export class HttpPostedFileBase implements IHttpPostedFileBase {
+    readonly contentLength: number | undefined;
+    readonly contentType: string | undefined;
+    readonly fileName: string | undefined;
+    readonly inputStream: Stream | undefined;
+
+    constructor(data?: IHttpPostedFileBase) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).contentLength = _data["contentLength"];
+            (<any>this).contentType = _data["contentType"];
+            (<any>this).fileName = _data["fileName"];
+            (<any>this).inputStream = _data["inputStream"] ? Stream.fromJS(_data["inputStream"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): HttpPostedFileBase {
+        data = typeof data === 'object' ? data : {};
+        let result = new HttpPostedFileBase();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["contentLength"] = this.contentLength;
+        data["contentType"] = this.contentType;
+        data["fileName"] = this.fileName;
+        data["inputStream"] = this.inputStream ? this.inputStream.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): HttpPostedFileBase {
+        const json = this.toJSON();
+        let result = new HttpPostedFileBase();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHttpPostedFileBase {
+    contentLength: number | undefined;
+    contentType: string | undefined;
+    fileName: string | undefined;
+    inputStream: Stream | undefined;
+}
+
+export class Stream implements IStream {
+    readonly canRead: boolean | undefined;
+    readonly canSeek: boolean | undefined;
+    readonly canTimeout: boolean | undefined;
+    readonly canWrite: boolean | undefined;
+    readonly length: number | undefined;
+    position: number | undefined;
+    readTimeout: number | undefined;
+    writeTimeout: number | undefined;
+
+    constructor(data?: IStream) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).canRead = _data["canRead"];
+            (<any>this).canSeek = _data["canSeek"];
+            (<any>this).canTimeout = _data["canTimeout"];
+            (<any>this).canWrite = _data["canWrite"];
+            (<any>this).length = _data["length"];
+            this.position = _data["position"];
+            this.readTimeout = _data["readTimeout"];
+            this.writeTimeout = _data["writeTimeout"];
+        }
+    }
+
+    static fromJS(data: any): Stream {
+        data = typeof data === 'object' ? data : {};
+        let result = new Stream();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["canRead"] = this.canRead;
+        data["canSeek"] = this.canSeek;
+        data["canTimeout"] = this.canTimeout;
+        data["canWrite"] = this.canWrite;
+        data["length"] = this.length;
+        data["position"] = this.position;
+        data["readTimeout"] = this.readTimeout;
+        data["writeTimeout"] = this.writeTimeout;
+        return data; 
+    }
+
+    clone(): Stream {
+        const json = this.toJSON();
+        let result = new Stream();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStream {
+    canRead: boolean | undefined;
+    canSeek: boolean | undefined;
+    canTimeout: boolean | undefined;
+    canWrite: boolean | undefined;
+    length: number | undefined;
+    position: number | undefined;
+    readTimeout: number | undefined;
+    writeTimeout: number | undefined;
+}
+
+export class VerifiedPhoneUpdate implements IVerifiedPhoneUpdate {
+    phone: string | undefined;
+    isVerified: boolean | undefined;
+    userId: string | undefined;
+
+    constructor(data?: IVerifiedPhoneUpdate) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.phone = _data["phone"];
+            this.isVerified = _data["isVerified"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): VerifiedPhoneUpdate {
+        data = typeof data === 'object' ? data : {};
+        let result = new VerifiedPhoneUpdate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["phone"] = this.phone;
+        data["isVerified"] = this.isVerified;
+        data["userId"] = this.userId;
+        return data; 
+    }
+
+    clone(): VerifiedPhoneUpdate {
+        const json = this.toJSON();
+        let result = new VerifiedPhoneUpdate();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVerifiedPhoneUpdate {
+    phone: string | undefined;
+    isVerified: boolean | undefined;
+    userId: string | undefined;
+}
+
+export class VmUserObj implements IVmUserObj {
+    claimsPrincipal: ClaimsPrincipal | undefined;
+    user: AspNetUser | undefined;
+
+    constructor(data?: IVmUserObj) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.claimsPrincipal = _data["claimsPrincipal"] ? ClaimsPrincipal.fromJS(_data["claimsPrincipal"]) : <any>undefined;
+            this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): VmUserObj {
+        data = typeof data === 'object' ? data : {};
+        let result = new VmUserObj();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["claimsPrincipal"] = this.claimsPrincipal ? this.claimsPrincipal.toJSON() : <any>undefined;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): VmUserObj {
+        const json = this.toJSON();
+        let result = new VmUserObj();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IVmUserObj {
+    claimsPrincipal: ClaimsPrincipal | undefined;
+    user: AspNetUser | undefined;
+}
+
+export class ClaimsPrincipal implements IClaimsPrincipal {
+    readonly claims: Claim[] | undefined;
+    readonly identities: ClaimsIdentity[] | undefined;
+    readonly identity: IIdentity | undefined;
+
+    constructor(data?: IClaimsPrincipal) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["claims"])) {
+                (<any>this).claims = [] as any;
+                for (let item of _data["claims"])
+                    (<any>this).claims.push(Claim.fromJS(item));
+            }
+            if (Array.isArray(_data["identities"])) {
+                (<any>this).identities = [] as any;
+                for (let item of _data["identities"])
+                    (<any>this).identities.push(ClaimsIdentity.fromJS(item));
+            }
+            (<any>this).identity = _data["identity"] ? IIdentity.fromJS(_data["identity"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): ClaimsPrincipal {
+        data = typeof data === 'object' ? data : {};
+        let result = new ClaimsPrincipal();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.claims)) {
+            data["claims"] = [];
+            for (let item of this.claims)
+                data["claims"].push(item.toJSON());
+        }
+        if (Array.isArray(this.identities)) {
+            data["identities"] = [];
+            for (let item of this.identities)
+                data["identities"].push(item.toJSON());
+        }
+        data["identity"] = this.identity ? this.identity.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): ClaimsPrincipal {
+        const json = this.toJSON();
+        let result = new ClaimsPrincipal();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IClaimsPrincipal {
+    claims: Claim[] | undefined;
+    identities: ClaimsIdentity[] | undefined;
+    identity: IIdentity | undefined;
+}
+
+export class Claim implements IClaim {
+    readonly issuer: string | undefined;
+    readonly originalIssuer: string | undefined;
+    readonly properties: { [key: string]: string; } | undefined;
+    readonly subject: ClaimsIdentity | undefined;
+    readonly type: string | undefined;
+    readonly value: string | undefined;
+    readonly valueType: string | undefined;
+
+    constructor(data?: IClaim) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).issuer = _data["issuer"];
+            (<any>this).originalIssuer = _data["originalIssuer"];
+            if (_data["properties"]) {
+                (<any>this).properties = {} as any;
+                for (let key in _data["properties"]) {
+                    if (_data["properties"].hasOwnProperty(key))
+                        (<any>this).properties[key] = _data["properties"][key];
+                }
+            }
+            (<any>this).subject = _data["subject"] ? ClaimsIdentity.fromJS(_data["subject"]) : <any>undefined;
+            (<any>this).type = _data["type"];
+            (<any>this).value = _data["value"];
+            (<any>this).valueType = _data["valueType"];
+        }
+    }
+
+    static fromJS(data: any): Claim {
+        data = typeof data === 'object' ? data : {};
+        let result = new Claim();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["issuer"] = this.issuer;
+        data["originalIssuer"] = this.originalIssuer;
+        if (this.properties) {
+            data["properties"] = {};
+            for (let key in this.properties) {
+                if (this.properties.hasOwnProperty(key))
+                    data["properties"][key] = this.properties[key];
+            }
+        }
+        data["subject"] = this.subject ? this.subject.toJSON() : <any>undefined;
+        data["type"] = this.type;
+        data["value"] = this.value;
+        data["valueType"] = this.valueType;
+        return data; 
+    }
+
+    clone(): Claim {
+        const json = this.toJSON();
+        let result = new Claim();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IClaim {
+    issuer: string | undefined;
+    originalIssuer: string | undefined;
+    properties: { [key: string]: string; } | undefined;
+    subject: ClaimsIdentity | undefined;
+    type: string | undefined;
+    value: string | undefined;
+    valueType: string | undefined;
+}
+
+export class ClaimsIdentity implements IClaimsIdentity {
+    readonly authenticationType: string | undefined;
+    readonly isAuthenticated: boolean | undefined;
+    actor: ClaimsIdentity | undefined;
+    bootstrapContext: any | undefined;
+    readonly claims: Claim[] | undefined;
+    label: string | undefined;
+    readonly name: string | undefined;
+    readonly nameClaimType: string | undefined;
+    readonly roleClaimType: string | undefined;
+
+    constructor(data?: IClaimsIdentity) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).authenticationType = _data["authenticationType"];
+            (<any>this).isAuthenticated = _data["isAuthenticated"];
+            this.actor = _data["actor"] ? ClaimsIdentity.fromJS(_data["actor"]) : <any>undefined;
+            this.bootstrapContext = _data["bootstrapContext"];
+            if (Array.isArray(_data["claims"])) {
+                (<any>this).claims = [] as any;
+                for (let item of _data["claims"])
+                    (<any>this).claims.push(Claim.fromJS(item));
+            }
+            this.label = _data["label"];
+            (<any>this).name = _data["name"];
+            (<any>this).nameClaimType = _data["nameClaimType"];
+            (<any>this).roleClaimType = _data["roleClaimType"];
+        }
+    }
+
+    static fromJS(data: any): ClaimsIdentity {
+        data = typeof data === 'object' ? data : {};
+        let result = new ClaimsIdentity();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["authenticationType"] = this.authenticationType;
+        data["isAuthenticated"] = this.isAuthenticated;
+        data["actor"] = this.actor ? this.actor.toJSON() : <any>undefined;
+        data["bootstrapContext"] = this.bootstrapContext;
+        if (Array.isArray(this.claims)) {
+            data["claims"] = [];
+            for (let item of this.claims)
+                data["claims"].push(item.toJSON());
+        }
+        data["label"] = this.label;
+        data["name"] = this.name;
+        data["nameClaimType"] = this.nameClaimType;
+        data["roleClaimType"] = this.roleClaimType;
+        return data; 
+    }
+
+    clone(): ClaimsIdentity {
+        const json = this.toJSON();
+        let result = new ClaimsIdentity();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IClaimsIdentity {
+    authenticationType: string | undefined;
+    isAuthenticated: boolean | undefined;
+    actor: ClaimsIdentity | undefined;
+    bootstrapContext: any | undefined;
+    claims: Claim[] | undefined;
+    label: string | undefined;
+    name: string | undefined;
+    nameClaimType: string | undefined;
+    roleClaimType: string | undefined;
+}
+
+export class IIdentity implements IIIdentity {
+    readonly name: string | undefined;
+    readonly authenticationType: string | undefined;
+    readonly isAuthenticated: boolean | undefined;
+
+    constructor(data?: IIIdentity) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).name = _data["name"];
+            (<any>this).authenticationType = _data["authenticationType"];
+            (<any>this).isAuthenticated = _data["isAuthenticated"];
+        }
+    }
+
+    static fromJS(data: any): IIdentity {
+        data = typeof data === 'object' ? data : {};
+        let result = new IIdentity();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["authenticationType"] = this.authenticationType;
+        data["isAuthenticated"] = this.isAuthenticated;
+        return data; 
+    }
+
+    clone(): IIdentity {
+        const json = this.toJSON();
+        let result = new IIdentity();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIIdentity {
+    name: string | undefined;
+    authenticationType: string | undefined;
+    isAuthenticated: boolean | undefined;
+}
+
+export class FormData implements IFormData {
+    action: string | undefined;
+    number: number | undefined;
+    offset: number | undefined;
+
+    constructor(data?: IFormData) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.action = _data["action"];
+            this.number = _data["number"];
+            this.offset = _data["offset"];
+        }
+    }
+
+    static fromJS(data: any): FormData {
+        data = typeof data === 'object' ? data : {};
+        let result = new FormData();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["action"] = this.action;
+        data["number"] = this.number;
+        data["offset"] = this.offset;
+        return data; 
+    }
+
+    clone(): FormData {
+        const json = this.toJSON();
+        let result = new FormData();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFormData {
+    action: string | undefined;
+    number: number | undefined;
+    offset: number | undefined;
+}
+
 export class CreateLocalBooking implements ICreateLocalBooking {
     deliveryAddress: string;
     deliveryBustop: string;
@@ -10245,6 +11066,1527 @@ export interface ICreateLocalBooking {
     packageDescription: string;
     usePartnerProfile: boolean | undefined;
     category: string | undefined;
+}
+
+export class ListResourceOfIntlBookingStatusResource implements IListResourceOfIntlBookingStatusResource {
+    total: number | undefined;
+    data: IntlBookingStatusResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfIntlBookingStatusResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(IntlBookingStatusResource.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfIntlBookingStatusResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfIntlBookingStatusResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfIntlBookingStatusResource {
+        const json = this.toJSON();
+        let result = new ListResourceOfIntlBookingStatusResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfIntlBookingStatusResource {
+    total: number | undefined;
+    data: IntlBookingStatusResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class IntlBookingStatusResource implements IIntlBookingStatusResource {
+    id: number | undefined;
+    name: string | undefined;
+
+    constructor(data?: IIntlBookingStatusResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): IntlBookingStatusResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntlBookingStatusResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): IntlBookingStatusResource {
+        const json = this.toJSON();
+        let result = new IntlBookingStatusResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIntlBookingStatusResource {
+    id: number | undefined;
+    name: string | undefined;
+}
+
+export class ListResourceOfShippingBatchResource implements IListResourceOfShippingBatchResource {
+    total: number | undefined;
+    data: ShippingBatchResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfShippingBatchResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ShippingBatchResource.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfShippingBatchResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfShippingBatchResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfShippingBatchResource {
+        const json = this.toJSON();
+        let result = new ListResourceOfShippingBatchResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfShippingBatchResource {
+    total: number | undefined;
+    data: ShippingBatchResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ShippingBatchResource implements IShippingBatchResource {
+    id: number | undefined;
+    name: string | undefined;
+
+    constructor(data?: IShippingBatchResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ShippingBatchResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ShippingBatchResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): ShippingBatchResource {
+        const json = this.toJSON();
+        let result = new ShippingBatchResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IShippingBatchResource {
+    id: number | undefined;
+    name: string | undefined;
+}
+
+export class ListResourceOfShipmentModeResource implements IListResourceOfShipmentModeResource {
+    total: number | undefined;
+    data: ShipmentModeResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfShipmentModeResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ShipmentModeResource.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfShipmentModeResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfShipmentModeResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfShipmentModeResource {
+        const json = this.toJSON();
+        let result = new ListResourceOfShipmentModeResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfShipmentModeResource {
+    total: number | undefined;
+    data: ShipmentModeResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ShipmentModeResource implements IShipmentModeResource {
+    id: number | undefined;
+    name: string | undefined;
+
+    constructor(data?: IShipmentModeResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ShipmentModeResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ShipmentModeResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): ShipmentModeResource {
+        const json = this.toJSON();
+        let result = new ShipmentModeResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IShipmentModeResource {
+    id: number | undefined;
+    name: string | undefined;
+}
+
+export class ListResourceOfShipmentDeliveryTypeResource implements IListResourceOfShipmentDeliveryTypeResource {
+    total: number | undefined;
+    data: ShipmentDeliveryTypeResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfShipmentDeliveryTypeResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ShipmentDeliveryTypeResource.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfShipmentDeliveryTypeResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfShipmentDeliveryTypeResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfShipmentDeliveryTypeResource {
+        const json = this.toJSON();
+        let result = new ListResourceOfShipmentDeliveryTypeResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfShipmentDeliveryTypeResource {
+    total: number | undefined;
+    data: ShipmentDeliveryTypeResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ShipmentDeliveryTypeResource implements IShipmentDeliveryTypeResource {
+    id: number | undefined;
+    name: string | undefined;
+
+    constructor(data?: IShipmentDeliveryTypeResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): ShipmentDeliveryTypeResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ShipmentDeliveryTypeResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): ShipmentDeliveryTypeResource {
+        const json = this.toJSON();
+        let result = new ShipmentDeliveryTypeResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IShipmentDeliveryTypeResource {
+    id: number | undefined;
+    name: string | undefined;
+}
+
+export class InternationalBookingCtreatDTO implements IInternationalBookingCtreatDTO {
+    zipCode: number | undefined;
+    postCode: number | undefined;
+    shipmentModeId: number | undefined;
+    localHomeDeliveryTypeId: number | undefined;
+    shipmentDeliveryTypeId: number;
+    country: string;
+    pickupContactName: string | undefined;
+    pickupAddress: string | undefined;
+    pickupContactPhone: string | undefined;
+    homeDelivery: boolean | undefined;
+    recipientName: string | undefined;
+    packageValue: number | undefined;
+    deliveryAddress: string | undefined;
+    recipientPhone: string | undefined;
+    estimatedPackageWeight: number | undefined;
+    pickup: boolean | undefined;
+    estimatedPackageSize: string | undefined;
+    packageDescription: string;
+    kindOfBooking: string | undefined;
+    eta: moment.Moment | undefined;
+    homeDeliveryLocationId: number | undefined;
+    pickupLocationId: number | undefined;
+
+    constructor(data?: IInternationalBookingCtreatDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.zipCode = _data["zipCode"];
+            this.postCode = _data["postCode"];
+            this.shipmentModeId = _data["shipmentModeId"];
+            this.localHomeDeliveryTypeId = _data["localHomeDeliveryTypeId"];
+            this.shipmentDeliveryTypeId = _data["shipmentDeliveryTypeId"];
+            this.country = _data["country"];
+            this.pickupContactName = _data["pickupContactName"];
+            this.pickupAddress = _data["pickupAddress"];
+            this.pickupContactPhone = _data["pickupContactPhone"];
+            this.homeDelivery = _data["homeDelivery"];
+            this.recipientName = _data["recipientName"];
+            this.packageValue = _data["packageValue"];
+            this.deliveryAddress = _data["deliveryAddress"];
+            this.recipientPhone = _data["recipientPhone"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
+            this.pickup = _data["pickup"];
+            this.estimatedPackageSize = _data["estimatedPackageSize"];
+            this.packageDescription = _data["packageDescription"];
+            this.kindOfBooking = _data["kindOfBooking"];
+            this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
+            this.homeDeliveryLocationId = _data["homeDeliveryLocationId"];
+            this.pickupLocationId = _data["pickupLocationId"];
+        }
+    }
+
+    static fromJS(data: any): InternationalBookingCtreatDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new InternationalBookingCtreatDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["zipCode"] = this.zipCode;
+        data["postCode"] = this.postCode;
+        data["shipmentModeId"] = this.shipmentModeId;
+        data["localHomeDeliveryTypeId"] = this.localHomeDeliveryTypeId;
+        data["shipmentDeliveryTypeId"] = this.shipmentDeliveryTypeId;
+        data["country"] = this.country;
+        data["pickupContactName"] = this.pickupContactName;
+        data["pickupAddress"] = this.pickupAddress;
+        data["pickupContactPhone"] = this.pickupContactPhone;
+        data["homeDelivery"] = this.homeDelivery;
+        data["recipientName"] = this.recipientName;
+        data["packageValue"] = this.packageValue;
+        data["deliveryAddress"] = this.deliveryAddress;
+        data["recipientPhone"] = this.recipientPhone;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
+        data["pickup"] = this.pickup;
+        data["estimatedPackageSize"] = this.estimatedPackageSize;
+        data["packageDescription"] = this.packageDescription;
+        data["kindOfBooking"] = this.kindOfBooking;
+        data["eta"] = this.eta ? this.eta.toISOString() : <any>undefined;
+        data["homeDeliveryLocationId"] = this.homeDeliveryLocationId;
+        data["pickupLocationId"] = this.pickupLocationId;
+        return data; 
+    }
+
+    clone(): InternationalBookingCtreatDTO {
+        const json = this.toJSON();
+        let result = new InternationalBookingCtreatDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInternationalBookingCtreatDTO {
+    zipCode: number | undefined;
+    postCode: number | undefined;
+    shipmentModeId: number | undefined;
+    localHomeDeliveryTypeId: number | undefined;
+    shipmentDeliveryTypeId: number;
+    country: string;
+    pickupContactName: string | undefined;
+    pickupAddress: string | undefined;
+    pickupContactPhone: string | undefined;
+    homeDelivery: boolean | undefined;
+    recipientName: string | undefined;
+    packageValue: number | undefined;
+    deliveryAddress: string | undefined;
+    recipientPhone: string | undefined;
+    estimatedPackageWeight: number | undefined;
+    pickup: boolean | undefined;
+    estimatedPackageSize: string | undefined;
+    packageDescription: string;
+    kindOfBooking: string | undefined;
+    eta: moment.Moment | undefined;
+    homeDeliveryLocationId: number | undefined;
+    pickupLocationId: number | undefined;
+}
+
+export class ObjectResourceOfIntlCreateResource implements IObjectResourceOfIntlCreateResource {
+    data: IntlCreateResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfIntlCreateResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? IntlCreateResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfIntlCreateResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfIntlCreateResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfIntlCreateResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfIntlCreateResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfIntlCreateResource {
+    data: IntlCreateResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class IntlCreateResource implements IIntlCreateResource {
+    id: number | undefined;
+    bookingNumber: string | undefined;
+    successMessage: string | undefined;
+    customer: Customer | undefined;
+
+    constructor(data?: IIntlCreateResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.bookingNumber = _data["bookingNumber"];
+            this.successMessage = _data["successMessage"];
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): IntlCreateResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntlCreateResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["bookingNumber"] = this.bookingNumber;
+        data["successMessage"] = this.successMessage;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): IntlCreateResource {
+        const json = this.toJSON();
+        let result = new IntlCreateResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIntlCreateResource {
+    id: number | undefined;
+    bookingNumber: string | undefined;
+    successMessage: string | undefined;
+    customer: Customer | undefined;
+}
+
+export class ObjectResourceOfHoldInstructionResource implements IObjectResourceOfHoldInstructionResource {
+    data: HoldInstructionResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfHoldInstructionResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? HoldInstructionResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfHoldInstructionResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfHoldInstructionResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfHoldInstructionResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfHoldInstructionResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfHoldInstructionResource {
+    data: HoldInstructionResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class HoldInstructionResource implements IHoldInstructionResource {
+    intlBookingForHoldInstruction: IntlBookingForHoldInstruction[] | undefined;
+    holdInstructionDates: HoldInstructionDates[] | undefined;
+
+    constructor(data?: IHoldInstructionResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["intlBookingForHoldInstruction"])) {
+                this.intlBookingForHoldInstruction = [] as any;
+                for (let item of _data["intlBookingForHoldInstruction"])
+                    this.intlBookingForHoldInstruction.push(IntlBookingForHoldInstruction.fromJS(item));
+            }
+            if (Array.isArray(_data["holdInstructionDates"])) {
+                this.holdInstructionDates = [] as any;
+                for (let item of _data["holdInstructionDates"])
+                    this.holdInstructionDates.push(HoldInstructionDates.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): HoldInstructionResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new HoldInstructionResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.intlBookingForHoldInstruction)) {
+            data["intlBookingForHoldInstruction"] = [];
+            for (let item of this.intlBookingForHoldInstruction)
+                data["intlBookingForHoldInstruction"].push(item.toJSON());
+        }
+        if (Array.isArray(this.holdInstructionDates)) {
+            data["holdInstructionDates"] = [];
+            for (let item of this.holdInstructionDates)
+                data["holdInstructionDates"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): HoldInstructionResource {
+        const json = this.toJSON();
+        let result = new HoldInstructionResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHoldInstructionResource {
+    intlBookingForHoldInstruction: IntlBookingForHoldInstruction[] | undefined;
+    holdInstructionDates: HoldInstructionDates[] | undefined;
+}
+
+export class IntlBookingForHoldInstruction implements IIntlBookingForHoldInstruction {
+    id: number | undefined;
+    bookingNumber: string | undefined;
+
+    constructor(data?: IIntlBookingForHoldInstruction) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.bookingNumber = _data["bookingNumber"];
+        }
+    }
+
+    static fromJS(data: any): IntlBookingForHoldInstruction {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntlBookingForHoldInstruction();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["bookingNumber"] = this.bookingNumber;
+        return data; 
+    }
+
+    clone(): IntlBookingForHoldInstruction {
+        const json = this.toJSON();
+        let result = new IntlBookingForHoldInstruction();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIntlBookingForHoldInstruction {
+    id: number | undefined;
+    bookingNumber: string | undefined;
+}
+
+export class HoldInstructionDates implements IHoldInstructionDates {
+    dates: string | undefined;
+
+    constructor(data?: IHoldInstructionDates) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dates = _data["dates"];
+        }
+    }
+
+    static fromJS(data: any): HoldInstructionDates {
+        data = typeof data === 'object' ? data : {};
+        let result = new HoldInstructionDates();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dates"] = this.dates;
+        return data; 
+    }
+
+    clone(): HoldInstructionDates {
+        const json = this.toJSON();
+        let result = new HoldInstructionDates();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHoldInstructionDates {
+    dates: string | undefined;
+}
+
+export class HoldInstructionDTO implements IHoldInstructionDTO {
+    internationalBookingId: number;
+    shippingDate: moment.Moment;
+    comment: string;
+
+    constructor(data?: IHoldInstructionDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.internationalBookingId = _data["internationalBookingId"];
+            this.shippingDate = _data["shippingDate"] ? moment(_data["shippingDate"].toString()) : <any>undefined;
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): HoldInstructionDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new HoldInstructionDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["internationalBookingId"] = this.internationalBookingId;
+        data["shippingDate"] = this.shippingDate ? this.shippingDate.toISOString() : <any>undefined;
+        data["comment"] = this.comment;
+        return data; 
+    }
+
+    clone(): HoldInstructionDTO {
+        const json = this.toJSON();
+        let result = new HoldInstructionDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHoldInstructionDTO {
+    internationalBookingId: number;
+    shippingDate: moment.Moment;
+    comment: string;
+}
+
+export class AddILStatusViewModelDTO implements IAddILStatusViewModelDTO {
+    id: number;
+    status: string | undefined;
+    bookingNumber: string | undefined;
+    bookingStatus: number | undefined;
+
+    constructor(data?: IAddILStatusViewModelDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.status = _data["status"];
+            this.bookingNumber = _data["bookingNumber"];
+            this.bookingStatus = _data["bookingStatus"];
+        }
+    }
+
+    static fromJS(data: any): AddILStatusViewModelDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new AddILStatusViewModelDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["status"] = this.status;
+        data["bookingNumber"] = this.bookingNumber;
+        data["bookingStatus"] = this.bookingStatus;
+        return data; 
+    }
+
+    clone(): AddILStatusViewModelDTO {
+        const json = this.toJSON();
+        let result = new AddILStatusViewModelDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IAddILStatusViewModelDTO {
+    id: number;
+    status: string | undefined;
+    bookingNumber: string | undefined;
+    bookingStatus: number | undefined;
+}
+
+export class ObjectResourceOfInternationalBookingResource implements IObjectResourceOfInternationalBookingResource {
+    data: InternationalBookingResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfInternationalBookingResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? InternationalBookingResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfInternationalBookingResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfInternationalBookingResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfInternationalBookingResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfInternationalBookingResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfInternationalBookingResource {
+    data: InternationalBookingResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class InternationalBookingResource implements IInternationalBookingResource {
+    id: number | undefined;
+    userId: string | undefined;
+    customer: Customer | undefined;
+    kindOfBooking: string | undefined;
+    eta: moment.Moment | undefined;
+    shipmentModeId: number | undefined;
+    shipmentMode: ShipmentMode | undefined;
+    shipmentDeliveryTypeId: number;
+    shipmentDeliveryType: ShipmentDeliveryType | undefined;
+    pickupContactName: string | undefined;
+    pickupAddress: string | undefined;
+    pickupContactPhone: string | undefined;
+    country: string;
+    isPaid: boolean | undefined;
+    recipientName: string | undefined;
+    deliveryAddress: string | undefined;
+    recipientPhone: string | undefined;
+    estimatedPackageWeight: number | undefined;
+    actualPackageWeight: number | undefined;
+    estimatedPackageSize: string | undefined;
+    homeDelivery: boolean | undefined;
+    homeDeliveryCharge: number | undefined;
+    homeDeliveryLocationId: number | undefined;
+    homeDeliveryLocation: Location | undefined;
+    pickup: boolean | undefined;
+    pickupCharge: number | undefined;
+    pickupLocationId: number | undefined;
+    pickupLocation: Location | undefined;
+    shippingCost: number | undefined;
+    exchangeRate: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    deletedAt: moment.Moment | undefined;
+    bookingNumber: string | undefined;
+    processNote: string | undefined;
+    rejectionNote: string | undefined;
+    hasHoldInstruction: boolean | undefined;
+    holdInstruction: HoldInstruction | undefined;
+    packageDescription: string;
+    zipCode: number | undefined;
+    postCode: number | undefined;
+    localHomeDeliveryTypeId: number | undefined;
+    localHomeDeliveryType: DeliveryType | undefined;
+    carrier: string | undefined;
+    trackingNumber: string | undefined;
+    shippingBatchId: number | undefined;
+    shippingBatch: ShippingBatch | undefined;
+    receivedAt: moment.Moment | undefined;
+    intlStatusTimeline: IntlStatusTimeline[] | undefined;
+    bookingStatusId: number | undefined;
+    bookingStatus: IntlBookingStatus | undefined;
+    payments: Payment[] | undefined;
+    initiatorId: string | undefined;
+    packageValue: number | undefined;
+    initiator: AspNetUser | undefined;
+
+    constructor(data?: IInternationalBookingResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.userId = _data["userId"];
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+            this.kindOfBooking = _data["kindOfBooking"];
+            this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
+            this.shipmentModeId = _data["shipmentModeId"];
+            this.shipmentMode = _data["shipmentMode"] ? ShipmentMode.fromJS(_data["shipmentMode"]) : <any>undefined;
+            this.shipmentDeliveryTypeId = _data["shipmentDeliveryTypeId"];
+            this.shipmentDeliveryType = _data["shipmentDeliveryType"] ? ShipmentDeliveryType.fromJS(_data["shipmentDeliveryType"]) : <any>undefined;
+            this.pickupContactName = _data["pickupContactName"];
+            this.pickupAddress = _data["pickupAddress"];
+            this.pickupContactPhone = _data["pickupContactPhone"];
+            this.country = _data["country"];
+            this.isPaid = _data["isPaid"];
+            this.recipientName = _data["recipientName"];
+            this.deliveryAddress = _data["deliveryAddress"];
+            this.recipientPhone = _data["recipientPhone"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
+            this.actualPackageWeight = _data["actualPackageWeight"];
+            this.estimatedPackageSize = _data["estimatedPackageSize"];
+            this.homeDelivery = _data["homeDelivery"];
+            this.homeDeliveryCharge = _data["homeDeliveryCharge"];
+            this.homeDeliveryLocationId = _data["homeDeliveryLocationId"];
+            this.homeDeliveryLocation = _data["homeDeliveryLocation"] ? Location.fromJS(_data["homeDeliveryLocation"]) : <any>undefined;
+            this.pickup = _data["pickup"];
+            this.pickupCharge = _data["pickupCharge"];
+            this.pickupLocationId = _data["pickupLocationId"];
+            this.pickupLocation = _data["pickupLocation"] ? Location.fromJS(_data["pickupLocation"]) : <any>undefined;
+            this.shippingCost = _data["shippingCost"];
+            this.exchangeRate = _data["exchangeRate"];
+            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.bookingNumber = _data["bookingNumber"];
+            this.processNote = _data["processNote"];
+            this.rejectionNote = _data["rejectionNote"];
+            this.hasHoldInstruction = _data["hasHoldInstruction"];
+            this.holdInstruction = _data["holdInstruction"] ? HoldInstruction.fromJS(_data["holdInstruction"]) : <any>undefined;
+            this.packageDescription = _data["packageDescription"];
+            this.zipCode = _data["zipCode"];
+            this.postCode = _data["postCode"];
+            this.localHomeDeliveryTypeId = _data["localHomeDeliveryTypeId"];
+            this.localHomeDeliveryType = _data["localHomeDeliveryType"] ? DeliveryType.fromJS(_data["localHomeDeliveryType"]) : <any>undefined;
+            this.carrier = _data["carrier"];
+            this.trackingNumber = _data["trackingNumber"];
+            this.shippingBatchId = _data["shippingBatchId"];
+            this.shippingBatch = _data["shippingBatch"] ? ShippingBatch.fromJS(_data["shippingBatch"]) : <any>undefined;
+            this.receivedAt = _data["receivedAt"] ? moment(_data["receivedAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["intlStatusTimeline"])) {
+                this.intlStatusTimeline = [] as any;
+                for (let item of _data["intlStatusTimeline"])
+                    this.intlStatusTimeline.push(IntlStatusTimeline.fromJS(item));
+            }
+            this.bookingStatusId = _data["bookingStatusId"];
+            this.bookingStatus = _data["bookingStatus"] ? IntlBookingStatus.fromJS(_data["bookingStatus"]) : <any>undefined;
+            if (Array.isArray(_data["payments"])) {
+                this.payments = [] as any;
+                for (let item of _data["payments"])
+                    this.payments.push(Payment.fromJS(item));
+            }
+            this.initiatorId = _data["initiatorId"];
+            this.packageValue = _data["packageValue"];
+            this.initiator = _data["initiator"] ? AspNetUser.fromJS(_data["initiator"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): InternationalBookingResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new InternationalBookingResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["userId"] = this.userId;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["kindOfBooking"] = this.kindOfBooking;
+        data["eta"] = this.eta ? this.eta.toISOString() : <any>undefined;
+        data["shipmentModeId"] = this.shipmentModeId;
+        data["shipmentMode"] = this.shipmentMode ? this.shipmentMode.toJSON() : <any>undefined;
+        data["shipmentDeliveryTypeId"] = this.shipmentDeliveryTypeId;
+        data["shipmentDeliveryType"] = this.shipmentDeliveryType ? this.shipmentDeliveryType.toJSON() : <any>undefined;
+        data["pickupContactName"] = this.pickupContactName;
+        data["pickupAddress"] = this.pickupAddress;
+        data["pickupContactPhone"] = this.pickupContactPhone;
+        data["country"] = this.country;
+        data["isPaid"] = this.isPaid;
+        data["recipientName"] = this.recipientName;
+        data["deliveryAddress"] = this.deliveryAddress;
+        data["recipientPhone"] = this.recipientPhone;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
+        data["actualPackageWeight"] = this.actualPackageWeight;
+        data["estimatedPackageSize"] = this.estimatedPackageSize;
+        data["homeDelivery"] = this.homeDelivery;
+        data["homeDeliveryCharge"] = this.homeDeliveryCharge;
+        data["homeDeliveryLocationId"] = this.homeDeliveryLocationId;
+        data["homeDeliveryLocation"] = this.homeDeliveryLocation ? this.homeDeliveryLocation.toJSON() : <any>undefined;
+        data["pickup"] = this.pickup;
+        data["pickupCharge"] = this.pickupCharge;
+        data["pickupLocationId"] = this.pickupLocationId;
+        data["pickupLocation"] = this.pickupLocation ? this.pickupLocation.toJSON() : <any>undefined;
+        data["shippingCost"] = this.shippingCost;
+        data["exchangeRate"] = this.exchangeRate;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["deletedAt"] = this.deletedAt ? this.deletedAt.toISOString() : <any>undefined;
+        data["bookingNumber"] = this.bookingNumber;
+        data["processNote"] = this.processNote;
+        data["rejectionNote"] = this.rejectionNote;
+        data["hasHoldInstruction"] = this.hasHoldInstruction;
+        data["holdInstruction"] = this.holdInstruction ? this.holdInstruction.toJSON() : <any>undefined;
+        data["packageDescription"] = this.packageDescription;
+        data["zipCode"] = this.zipCode;
+        data["postCode"] = this.postCode;
+        data["localHomeDeliveryTypeId"] = this.localHomeDeliveryTypeId;
+        data["localHomeDeliveryType"] = this.localHomeDeliveryType ? this.localHomeDeliveryType.toJSON() : <any>undefined;
+        data["carrier"] = this.carrier;
+        data["trackingNumber"] = this.trackingNumber;
+        data["shippingBatchId"] = this.shippingBatchId;
+        data["shippingBatch"] = this.shippingBatch ? this.shippingBatch.toJSON() : <any>undefined;
+        data["receivedAt"] = this.receivedAt ? this.receivedAt.toISOString() : <any>undefined;
+        if (Array.isArray(this.intlStatusTimeline)) {
+            data["intlStatusTimeline"] = [];
+            for (let item of this.intlStatusTimeline)
+                data["intlStatusTimeline"].push(item.toJSON());
+        }
+        data["bookingStatusId"] = this.bookingStatusId;
+        data["bookingStatus"] = this.bookingStatus ? this.bookingStatus.toJSON() : <any>undefined;
+        if (Array.isArray(this.payments)) {
+            data["payments"] = [];
+            for (let item of this.payments)
+                data["payments"].push(item.toJSON());
+        }
+        data["initiatorId"] = this.initiatorId;
+        data["packageValue"] = this.packageValue;
+        data["initiator"] = this.initiator ? this.initiator.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): InternationalBookingResource {
+        const json = this.toJSON();
+        let result = new InternationalBookingResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInternationalBookingResource {
+    id: number | undefined;
+    userId: string | undefined;
+    customer: Customer | undefined;
+    kindOfBooking: string | undefined;
+    eta: moment.Moment | undefined;
+    shipmentModeId: number | undefined;
+    shipmentMode: ShipmentMode | undefined;
+    shipmentDeliveryTypeId: number;
+    shipmentDeliveryType: ShipmentDeliveryType | undefined;
+    pickupContactName: string | undefined;
+    pickupAddress: string | undefined;
+    pickupContactPhone: string | undefined;
+    country: string;
+    isPaid: boolean | undefined;
+    recipientName: string | undefined;
+    deliveryAddress: string | undefined;
+    recipientPhone: string | undefined;
+    estimatedPackageWeight: number | undefined;
+    actualPackageWeight: number | undefined;
+    estimatedPackageSize: string | undefined;
+    homeDelivery: boolean | undefined;
+    homeDeliveryCharge: number | undefined;
+    homeDeliveryLocationId: number | undefined;
+    homeDeliveryLocation: Location | undefined;
+    pickup: boolean | undefined;
+    pickupCharge: number | undefined;
+    pickupLocationId: number | undefined;
+    pickupLocation: Location | undefined;
+    shippingCost: number | undefined;
+    exchangeRate: number | undefined;
+    createdAt: moment.Moment | undefined;
+    updatedAt: moment.Moment | undefined;
+    deletedAt: moment.Moment | undefined;
+    bookingNumber: string | undefined;
+    processNote: string | undefined;
+    rejectionNote: string | undefined;
+    hasHoldInstruction: boolean | undefined;
+    holdInstruction: HoldInstruction | undefined;
+    packageDescription: string;
+    zipCode: number | undefined;
+    postCode: number | undefined;
+    localHomeDeliveryTypeId: number | undefined;
+    localHomeDeliveryType: DeliveryType | undefined;
+    carrier: string | undefined;
+    trackingNumber: string | undefined;
+    shippingBatchId: number | undefined;
+    shippingBatch: ShippingBatch | undefined;
+    receivedAt: moment.Moment | undefined;
+    intlStatusTimeline: IntlStatusTimeline[] | undefined;
+    bookingStatusId: number | undefined;
+    bookingStatus: IntlBookingStatus | undefined;
+    payments: Payment[] | undefined;
+    initiatorId: string | undefined;
+    packageValue: number | undefined;
+    initiator: AspNetUser | undefined;
+}
+
+export class ProcessILViewModelDTO implements IProcessILViewModelDTO {
+    id: number | undefined;
+    actualPackageWeight: number;
+    model: InternationalBooking | undefined;
+    homeDeliveryCost: number | undefined;
+    pickupCharge: number | undefined;
+
+    constructor(data?: IProcessILViewModelDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.actualPackageWeight = _data["actualPackageWeight"];
+            this.model = _data["model"] ? InternationalBooking.fromJS(_data["model"]) : <any>undefined;
+            this.homeDeliveryCost = _data["homeDeliveryCost"];
+            this.pickupCharge = _data["pickupCharge"];
+        }
+    }
+
+    static fromJS(data: any): ProcessILViewModelDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProcessILViewModelDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["actualPackageWeight"] = this.actualPackageWeight;
+        data["model"] = this.model ? this.model.toJSON() : <any>undefined;
+        data["homeDeliveryCost"] = this.homeDeliveryCost;
+        data["pickupCharge"] = this.pickupCharge;
+        return data; 
+    }
+
+    clone(): ProcessILViewModelDTO {
+        const json = this.toJSON();
+        let result = new ProcessILViewModelDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProcessILViewModelDTO {
+    id: number | undefined;
+    actualPackageWeight: number;
+    model: InternationalBooking | undefined;
+    homeDeliveryCost: number | undefined;
+    pickupCharge: number | undefined;
+}
+
+export class ObjectResourceOfProcessIntlBookingResource implements IObjectResourceOfProcessIntlBookingResource {
+    data: ProcessIntlBookingResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfProcessIntlBookingResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? ProcessIntlBookingResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfProcessIntlBookingResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfProcessIntlBookingResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfProcessIntlBookingResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfProcessIntlBookingResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfProcessIntlBookingResource {
+    data: ProcessIntlBookingResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ProcessIntlBookingResource implements IProcessIntlBookingResource {
+    id: number | undefined;
+
+    constructor(data?: IProcessIntlBookingResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+        }
+    }
+
+    static fromJS(data: any): ProcessIntlBookingResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProcessIntlBookingResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): ProcessIntlBookingResource {
+        const json = this.toJSON();
+        let result = new ProcessIntlBookingResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IProcessIntlBookingResource {
+    id: number | undefined;
+}
+
+export class ObjectResourceOfIPagedListOfInternationalBookingResource implements IObjectResourceOfIPagedListOfInternationalBookingResource {
+    data: InternationalBookingResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfIPagedListOfInternationalBookingResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(InternationalBookingResource.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfIPagedListOfInternationalBookingResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfIPagedListOfInternationalBookingResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfIPagedListOfInternationalBookingResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfIPagedListOfInternationalBookingResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfIPagedListOfInternationalBookingResource {
+    data: InternationalBookingResource[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
 }
 
 export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjectResourceOfGetLocalBookingsForMobileResource {

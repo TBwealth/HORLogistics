@@ -1,3 +1,17 @@
+
 .menuWrapper{
-    background: transparent;
+    --border: none;
+    --ion-background-color: transparent;
+    --side-width: 200px
+}
+
+.profileSection{
+    width: 100%;
+    background: url('/assets/images/menuProfileBg.png') 0 0/100% 100% no-repeat;
+ 
+}
+ion-avatar{
+    --border-radius:4px;
+    height: 40px;
+    width: 40px;
 }

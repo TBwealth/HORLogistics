@@ -23,7 +23,10 @@ export class AuthenticationService {
                             token: user.token,
                             userId: user.userId,
                             userType: user.userType,
-                            isProfileComplete: user.isProfileComplete
+                            isProfileComplete: user.isProfileComplete,
+                            user: user.user,
+                            customer: user.customer,
+                            role: user.role
                         };
                         this.users.push(saveduser);      
                     }
@@ -40,10 +43,42 @@ export class AuthenticationService {
             this.storage.set('user', this.users);              
          }
 
-        addUser(user){
+        addUser(user){   
+           console.log(user);
+       let customerObj ={
+        aspNetUser:  {email: undefined, userName: undefined},
+        businessAnniversary: user.customer.businessAnniversary,
+        businessName: user.customer.businessName,
+        closestBustopId: user.customer.closestBustopId,
+        closestLandmark: user.customer.closestLandmark,
+        companyLogo: user.customer.companyLogo,
+        createdAt: '',
+        fullName: user.customer.fullName,
+        homeAddress: user.customer.homeAddress,
+        location: user.customer.location,
+        registerAsPartner: user.customer.registerAsPartner,
+        residentialCountry: user.customer.residentialCountry,
+        residentialCountryId: user.customer.residentialCountryId,
+        residentialState: user.customer.residentialState,
+        residentialStateId: user.customer.residentialStateId,
+        synergyProgramCustomer: user.customer.synergyProgramCustomer,
+        updatedAt: '',
+        userId: user.customer.userId,
+        wallet: user.customer.wallet
+       }
+       let userObj = {
+        token: user.token,
+        userId: user.userId,
+        userType: user.userType,
+        isProfileComplete: user.isProfileComplete,
+        user: user.user,
+        customer: customerObj,
+         role: user.role
+       }   
         this.users = [];
-        this.users.push(user);
-        this.storage.set('user', this.users);        
+        this.users.push(userObj);
+        this.storage.set('user', this.users);  
+              
               }
 
         updateuser(user){        
