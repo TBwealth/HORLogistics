@@ -35,8 +35,8 @@ import { AuthService } from './_services/auth.service';
 import { AuthGuardService } from './_services/auth-guard.service';
 import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
-import { AccountServiceProxy } from './_services/service-proxies';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
+import { AccountServiceProxy,RegisterServiceProxy } from './_services/service-proxies';
 
 @NgModule({
   declarations: [AppComponent,
@@ -67,6 +67,7 @@ import { PageStructureComponent } from './components/page-structure/page-structu
     AuthGuardService,
     AuthenticationService,
     AccountServiceProxy,
+    RegisterServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

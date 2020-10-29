@@ -1,3 +1,65 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content" class="menuWrapper">
+    <ion-menu contentId="main-content" type="overlay" >
+        <ion-content>
+          <div style="padding: 10px;"></div>
+          <div style="width: 250px;background-color: #fff;border-bottom-right-radius: 10px; border-top-right-radius: 10px;">
+         
+
+          <div class="profileSection" style="color: #fff;padding: 10px 15px 5px 15px ; height: 150px; border-top-right-radius: 10px;border-bottom-right-radius: 10px;">
+            <span style="float: right;font-size: 28px;">
+              <ion-icon name="reorder-three-outline"  style="color: #fff;" (click)="closeMenu()"></ion-icon>
+            </span>
+            
+            <ion-avatar slot="start">
+              <img src="assets/images/female-avatar.png">
+            </ion-avatar>
+            <h4>Temitope Badmus</h4>
+            <h6 style="color: #ffffff;opacity: 56%;">tope@smartace.ng</h6>
+          </div>
+
+
+          <div >
+            <ion-list>
+                <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+                    <ion-item lines="none" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active-link" class="menu-hover">
+                        <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                        <ion-label>
+                            <small><b>{{p.title}}</b></small>
+                        </ion-label>
+                        
+                    </ion-item>
+                    
+                </ion-menu-toggle>
+             
+            </ion-list>
+           
+            <ion-list>
+              <ion-menu-toggle auto-hide="false">
+                <ion-item lines="none" >
+                  <ion-label>
+                    <small>About Us</small>
+                </ion-label>
+                </ion-item>
+                <ion-item lines="none" >
+                  <ion-label>
+                    <small>Privacy Policy</small>
+                </ion-label>
+                </ion-item>
+                <ion-item lines="none" (click)="logout()">
+                  <ion-label>
+                    <small>Log Out</small>
+                </ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            </ion-list>
+          </div>
+          </div>
+        </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content">
+
+    </ion-router-outlet>
+</ion-split-pane>
+
 </ion-app>

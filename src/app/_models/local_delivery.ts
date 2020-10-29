@@ -1,4 +1,3 @@
-import { LocaldeliveryPage } from './../localdelivery/localdelivery.page';
 export interface local_deliveryModel{
     delivery_date?:string,
     delivery_name?:string,
