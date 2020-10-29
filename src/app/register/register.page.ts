@@ -69,7 +69,7 @@ export class RegisterPage implements OnInit {
         toast.present();
       }else{
       this.registerService.register(this.regUser).subscribe(async (data:ObjectResourceOfRegisterUserResource)=>{
-if(data.code == '000'){
+if(data.code == '007'){
   this.RegisterUserResource = data.data;
   this.AuthenService.addUser(this.RegisterUserResource);
   const toast = await this.toastCtrl.create({

@@ -79,6 +79,18 @@
     border: 1px solid #EF6102;
 }
 
+.blacksecColor{
+  --background: transparent;
+  text-align: center;
+  font-size: 12px;
+  color:#313131;
+  font-family: 'avenir_ff_roman';
+  font-style:normal;
+  border-radius: 5px;
+  height: 35px;
+  border: 1px solid #A1A3AC;
+}
+
 .menubox{
     position: relative;
     width: inherit;
@@ -176,7 +188,17 @@ ion-input{
   border: 0.5px solid #d6d3d3;
 
 }
+ion-textarea{
+  padding: 8px 8px 8px 20px;
+  background-color:inherit;
+  border-radius: 5px;
+  color:#A1A3AC ;
+  font-size: 12px;
+  font-family: 'avenir_ff_roman';
+  // box-shadow: 0px 4px 16px #455B6314;
+  border: 0.5px solid #d6d3d3;
 
+}
 ion-datetime{
   padding: 8px 8px 8px 20px;
   background-color:inherit;
@@ -192,4 +214,9 @@ ion-datetime{
 .otherbtn{
   text-transform: none;
   border-radius: 5px;
+}
+
+.my-popover-class{
+  --width:93%;
+  --backdrop-opacity: 100%
 }

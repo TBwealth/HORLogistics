@@ -1,8 +1,10 @@
 import { Component, OnInit,ViewChild,ElementRef,AfterViewInit } from '@angular/core';
 import { Geolocation,Geoposition } from '@ionic-native/geolocation/ngx';
-import {Platform, NavController, AlertController,MenuController } from '@ionic/angular';
-import {ActivatedRoute} from '@angular/router';
-
+import {Platform, NavController, AlertController,MenuController, PopoverController } from '@ionic/angular';
+import {ActivatedRoute, Router} from '@angular/router';
+import { AuthenticationService } from '../_services/authentication.service';
+import {  VerifiedPhoneUpdate,StatusResource, LoginResource } from "../_models/service-models";
+import {PrimarylocationComponent} from './primarylocation/primarylocation.component';
 declare var google;
 @Component({
   selector: 'app-home',
@@ -18,14 +20,34 @@ drawingManager:any;
 completeShape:any;
 savedCircle:any;
 Lgpslatlng:any;
-
+usersdata = new LoginResource().clone();
   constructor(
     public platform:Platform, public navCtrl: NavController, public alertCtrl: AlertController,
     public geolocation: Geolocation, public activatedroute: ActivatedRoute,
-    private menu: MenuController
+    private menu: MenuController,
+    private AuthenService: AuthenticationService,
+    private router: Router,
+    public popoverController: PopoverController
+
   ) { 
 
     this.platform.ready().then(()=>{
+      this.AuthenService.getuser().then(async (usersdata:LoginResource[])=>{
+        if(usersdata.length > 0){
+          this.usersdata = usersdata[0];
+          const popover = await this.popoverController.create({
+            component: PrimarylocationComponent,
+            cssClass: 'my-popover-class',
+            backdropDismiss: false,
+            // event: ev,
+            //translucent: true
+          });
+          return await popover.present();
+        }
+        });
+     
+
+
       var mapOptions = {
         mapTypeId: 'roadmap',
         center: {lat: 9.077751, lng: 8.6774567},

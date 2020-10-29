@@ -46,7 +46,7 @@ RegisterUserResource = new RegisterUserResource().clone();
 
 loginUser(){
   this.registerService.login(this.login).subscribe(async (data:ObjectResourceOfLoginResource)=>{
-    if(data.code == '000'){
+    if(data.code == '007'){
       this.LoginResource = data.data;
       this.AuthenService.addUser(this.LoginResource);
       const toast = await this.toastCtrl.create({

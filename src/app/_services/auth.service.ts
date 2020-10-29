@@ -21,9 +21,10 @@ export class AuthService {
 public async isAuthenticated(){
   
 return new Promise((resolve, reject) => {
-  this.authServ.getuser().then(async users=>{
+  this.authServ.getuser().then(async (users:any[])=>{
+    if(users.length > 0){
   //  console.log(users[0]);
-    this.user = users[0];    
+  this.user = users[0];    
   // console.log(this.user)
     if (this.user) {
       let auStatus = true;
@@ -33,6 +34,11 @@ return new Promise((resolve, reject) => {
   this.authServ.clearusers();
               resolve(false);         
 }
+    }else{
+      this.authServ.clearusers();
+                  resolve(false);         
+    }
+
   });
 });
 
