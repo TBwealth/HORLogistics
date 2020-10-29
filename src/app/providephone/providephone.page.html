@@ -50,16 +50,9 @@
         <div *ngIf="phoneError" class="error">
           valid Phone Number  is required
       </div>
-        
-       <div style="padding: 5px;"></div>
-   
-          <ion-button [disabled]="regForm.invalid" (click)="sendOTP()" class="pryColor"  expand="block" >NEXT STEP</ion-button>
 
-     
-           
-            
-           
-      </form>
- 
+       <div style="padding: 5px;"></div>
+          <ion-button [disabled]="regForm.invalid" (click)="sendOTP()" class="pryColor"  expand="block" >NEXT STEP</ion-button>
+      </form> 
   </div>
 </ion-content>

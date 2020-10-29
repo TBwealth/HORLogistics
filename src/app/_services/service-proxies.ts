@@ -592,9 +592,6 @@ export class ApiServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
-
-
-
     /**
      * @return OK
      */
