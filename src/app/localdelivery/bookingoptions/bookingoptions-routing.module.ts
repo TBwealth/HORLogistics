@@ -8,10 +8,7 @@ const routes: Routes = [
     path: '',
     component: BookingoptionsPage
   },
-  {
-    path: 'singleorder',
-    loadChildren: () => import('./singleorder/singleorder.module').then( m => m.SingleorderPageModule)
-  }
+
 ];
 
 @NgModule({

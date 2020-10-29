@@ -62,10 +62,6 @@ const routes: Routes = [
     loadChildren: () => import('./profilepage/profilepage.module').then( m => m.ProfilepagePageModule)
   },
   {
-    path: 'payment',
-    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
-  },
-  {
     path: 'addprimarylocation',
     loadChildren: () => import('./addprimarylocation/addprimarylocation.module').then( m => m.AddprimarylocationPageModule)
   }
