@@ -42,10 +42,13 @@ ion-col {
 
 .pay-title {
     font-size: smaller;
+    z-index: 2;
 }
 
 .my-input {
+    border: 4px;
     border-color: #EF6102;
+    background-color: black;
 
 }
 
@@ -100,4 +103,18 @@ ion-label {
 .sc-ion-input-ios-h{
     --padding-start: 10px;
 }
+
+.mydiv {
+    border: 5px important;
+    border-color: black;
+
+}
+
+.mydiv2 {
+    border: 5px important;
+    border-color: black;
+
+}
+
+
 
