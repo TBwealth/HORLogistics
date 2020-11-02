@@ -1,8 +1,9 @@
 <ion-button [disabled]="disabled" expand="block" class="localdelivery" fill="clear" (click)="showDropdown()">
   <div style="display: flex; width: 100%; text-align: left; padding: 2px; align-items: center;">
-    <ion-img [src]="icon" class="myicons" slot="start" style="margin-right: 20px; display: inline-block; position: relative; align-items: center; height: 25px;"></ion-img>
+    <ion-img [src]="icon" class="myicons" slot="start" style="margin-right: 20px; display: inline-block; position: relative; align-items: center; width: 22px;"></ion-img>
     <span><ng-content select='[title]'></ng-content></span>
   </div>
+  <ion-icon name="checkmark-circle" slot="end" style="color: #EF6102;" *ngIf="innerShow"></ion-icon>
 </ion-button>
 <div [style.display]="innerShow ? 'block' : 'none'">
   <ng-content select='[content]'></ng-content>

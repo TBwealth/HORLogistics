@@ -4,9 +4,10 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 const routes: Routes = [
 //  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  // {path: '', redirectTo: 'home', pathMatch: 'full'},
- {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
- //{path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
+  // {path: '', redirectTo: 'international-delivery', pathMatch: 'full'},
+//  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
+//  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
+ {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
   {
     path: 'login',
@@ -64,6 +65,10 @@ const routes: Routes = [
   {
     path: 'addprimarylocation',
     loadChildren: () => import('./addprimarylocation/addprimarylocation.module').then( m => m.AddprimarylocationPageModule)
+  },
+  {
+    path: 'international-delivery',
+    loadChildren: () => import('./international-delivery/international-delivery.module').then( m => m.InternationalDeliveryPageModule)
   }
 
 

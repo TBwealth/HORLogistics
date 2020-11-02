@@ -1,0 +1,21 @@
+@import '../../variables.scss';
+
+.main-container > *{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.section-header{
+  color: #282F39;
+  background-color: #F2F5F7;
+  font-weight: 500;
+}
+
+.payment{
+  color: $main-color
+}
+p{
+  background-color: $secondary-color;
+}

@@ -1,0 +1,17 @@
+<ion-radio-group>
+  <ion-row>
+    <ion-col>
+          <ion-item lines="none">  
+          <ion-checkbox slot="start" class="checker" [checked]="checkedIdx" (ionChange)="yesfn($event)"></ion-checkbox>
+            <ion-label>Yes</ion-label>
+        </ion-item>
+      </ion-col>
+
+    <ion-col>
+        <ion-item lines="none"> 
+          <ion-checkbox slot="start" class="checker" [checked]="!checkedIdx"  (ionChange)="nofn($event)"></ion-checkbox>
+            <ion-label>No</ion-label>
+        </ion-item>
+    </ion-col>
+</ion-row>   
+</ion-radio-group>

@@ -212,16 +212,16 @@
 
       </ion-grid>
       <div style="display:flex;">
-          <ion-button class="cta1" expand="block" fill="outline">
+          <ion-button class="cta1" expand="block" fill="outline" (click)="navCtrl.back()">
             <ion-label>Cancel</ion-label>
           </ion-button>
-          <ion-button class="cta" expand="block" fill="default">
+          <ion-button class="cta" expand="block" fill="default" (click)="submitBooking()">
             <ion-label>Apply</ion-label>
           </ion-button>
         </div>
       </div>  
       
-      <ion-row>
+      <ion-row *ngIf="!singleDelivery">
         <ion-col>
           <ion-button expand="block" class="localdelivery" fill="clear" [disabled]="true">
             <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>

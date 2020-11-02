@@ -1,0 +1,11 @@
+.checker {
+    --background-checked:#EF6102;
+    --checkmark-color:#fff;
+    --border-color-checked:#EF6102;
+    --border-radius:3px;
+    --text-decoration: none;
+    }
+
+ion-checkbox{
+    border-bottom: none !important;
+}

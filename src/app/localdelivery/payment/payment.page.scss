@@ -1,3 +1,21 @@
+@import '../../variables.scss';
+
 .main-container > *{
   padding: 10px;
+}
+
+.main-container{
+  padding: 10px;
+}
+p{
+  // background-color: $secondary-color;
+}
+
+h6{
+  color: #A1A3AC;
+  font-size: 11px;
+}
+
+.value{
+  font-size: 14px;
 }

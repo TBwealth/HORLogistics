@@ -10,12 +10,39 @@
         Card
       </span>
     </app-slide-down-box>
-    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.bank" (showChange)="changeSelection(PAYMENT_OPTIONS.bank)">
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.bank" (showChange)="changeSelection(PAYMENT_OPTIONS.bank)" icon="assets/images/bank-transfer.@2x.png">
       <span title>
         Bank Transfer
       </span>
+      <div content>
+        <ion-card style="padding: 10px;">
+          <ion-row>
+            <ion-col>
+              <h6>Account No</h6>
+              <span class="value" style="color: #EF6102;">0238754567654</span>
+            </ion-col>
+            <ion-col>
+              <h6>Bank</h6>
+              <span class="value">Providus Bank</span>
+            </ion-col> 
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <h6>Account Name</h6>
+              <span class="value">Account Name</span>
+            </ion-col>
+          </ion-row>
+          <ion-row style="margin-top: 20px;">
+            <ion-col>
+              <span style="font-size: 12px; line-height: 20px;">
+                Please Send a screenshot of payment details to us after payment via chat for Immediate Payment confirmation
+              </span>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </div>
     </app-slide-down-box>
-    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.wallet" (showChange)="changeSelection(PAYMENT_OPTIONS.wallet)">
+    <app-slide-down-box [show]="selectedPaymentOption == PAYMENT_OPTIONS.wallet" (showChange)="changeSelection(PAYMENT_OPTIONS.wallet)" icon="assets/images/wallet@2x.png">
       <span title>
         Wallet
       </span>
@@ -27,3 +54,11 @@
     </app-slide-down-box>
   </div>
 </app-page-structure>
+<ion-footer style="padding: 10px;">
+  <ion-button expand="block" style="margin-bottom: 20px;" *ngIf="selectedPaymentOption == PAYMENT_OPTIONS.bank">
+    GOTO CHAT FOR CONFIRMATION
+  </ion-button>
+  <ion-button expand="block" style="margin-bottom: 20px;" *ngIf="selectedPaymentOption != PAYMENT_OPTIONS.bank">
+    Confirm
+  </ion-button>
+</ion-footer>

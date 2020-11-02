@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
-import { NavController,ToastController,AlertController} from '@ionic/angular';
+import { NavController,ToastController,AlertController, PopoverController} from '@ionic/angular';
 import { local_deliveryModel, pickup_detailsModel, package_detailsModel, LocaldeliveryButton } from '../_models/local_delivery'
 import libphonenumber from 'google-libphonenumber';
 import {ICountry} from '../_models/country.type';
 import { CountryserviceService } from '../_services/countryservice.service';
+import { AddNewOrderModalComponent } from './add-new-order-modal/add-new-order-modal.component';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-localdelivery',
   templateUrl: './localdelivery.page.html',
@@ -25,6 +27,7 @@ export class LocaldeliveryPage implements OnInit {
   pickupDetailsPanel: boolean = false;
   DeliveryDetailsPanel: boolean = true;
   packageDeliveryPanel: boolean = true;
+  singleDelivery = false;
 
   checkedIdx= true;
   disVal = true;
@@ -62,7 +65,8 @@ export class LocaldeliveryPage implements OnInit {
     public Cservice: CountryserviceService,
     private toastCtrl: ToastController,
     private router: Router,
-    private navCtrl: NavController,
+    public navCtrl: NavController,
+    public popoverController: PopoverController,
     private activatedroute: ActivatedRoute) { }
    
     yesfn(event){
@@ -76,6 +80,12 @@ export class LocaldeliveryPage implements OnInit {
   ngOnInit() {
     this.getcountry();
     this.getCountryFlag("NG",'')
+    this.activatedroute.url.subscribe(url => {
+      if(url[0].path.includes('single')){
+        this.singleDelivery = true
+      }
+    })
+    this.showAddNewBookingModal()
   }
 
   goback(){
@@ -193,8 +203,41 @@ if(isValidNumber){
     });
     toast.present();
     }
-
   
+  }
+
+  async showAddNewBookingModal(){
+    const subject = new Subject<boolean>()
+    const modal = await this.popoverController.create({
+      component: AddNewOrderModalComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        subject
+      }
+    });
+    subject.subscribe(val => {
+      modal.dismiss()
+      if(val){
+        this.clearForm()
+      } else {
+        this.gotoSummary()
+      }
+    })
+    return await modal.present();
+  }
+  clearForm(){
+    
+  }
+  submitBooking(){
+    if(this.singleDelivery){
+      this.gotoSummary()
+    } else {
+      this.showAddNewBookingModal()
+    }
+  }
+
+  gotoSummary(){
+    this.router.navigate(['localdelivery/review-booking'])
   }
 
 }

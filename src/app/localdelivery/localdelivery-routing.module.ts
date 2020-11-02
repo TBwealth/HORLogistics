@@ -7,7 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: LocaldeliveryPage
-  },  {
+  },
+  {
+    path: 'single',
+    component: LocaldeliveryPage
+  },
+  {
     path: 'bookingoptions',
     loadChildren: () => import('./bookingoptions/bookingoptions.module').then( m => m.BookingoptionsPageModule)
   },

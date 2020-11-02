@@ -37,9 +37,12 @@ import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
 import { AccountServiceProxy,RegisterServiceProxy } from './_services/service-proxies';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
 
 @NgModule({
-  declarations: [AppComponent,
+  declarations: [
+    AppComponent,
+    // CheckboxComponent
     // PageStructureComponent
   ],
   entryComponents: [],
