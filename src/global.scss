@@ -46,6 +46,19 @@
     font-family: 'avenir_ff_roman';
     font-size: 12px;
     color: #454F63;
+    --background: #ffffff;
+  }
+  ion-toolbar {
+    --background: #FFFFFF;
+   --border-style: none;
+   color: #454F63;
+}
+  ion-footer{
+    font-family: 'avenir_ff_roman';
+    font-size: 12px;
+    color: #454F63;
+    background: #ffffff;
+    padding: 10px 10px 30px 10px
   }
   ion-content p{
     color:#78849E;
@@ -219,4 +232,16 @@ ion-datetime{
 .my-popover-class{
   --width:93%;
   --backdrop-opacity: 100%
+}
+
+ion-toggle {
+  --background: #DADEE3;
+  --background-checked: #EF6102;
+
+  --handle-background: #EF6102;
+  --handle-background-checked: #DADEE3;
+}
+
+.sc-ion-input-ios-h{
+  --padding-start: 10px;
 }

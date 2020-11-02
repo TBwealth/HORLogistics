@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 const routes: Routes = [
- {path: '', redirectTo: 'home', pathMatch: 'full'},
+ {path: '', redirectTo: 'trackorder', pathMatch: 'full'},
   // {path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
  //{path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canLoad: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
@@ -64,7 +64,31 @@ const routes: Routes = [
   {
     path: 'addprimarylocation',
     loadChildren: () => import('./addprimarylocation/addprimarylocation.module').then( m => m.AddprimarylocationPageModule)
-  }
+  },
+  {
+    path: 'updateprofilepage',
+    loadChildren: () => import('./updateprofilepage/updateprofilepage.module').then( m => m.UpdateprofilepagePageModule)
+  },
+  {
+    path: 'trackorder',
+    loadChildren: () => import('./trackorder/trackorder.module').then( m => m.TrackorderPageModule)
+  },
+  {
+    path: 'tripdetails',
+    loadChildren: () => import('./trackorder/tripdetails/tripdetails.module').then( m => m.TripdetailsPageModule)
+  },
+  {
+    path: 'allchats',
+    loadChildren: () => import('./allchats/allchats.module').then( m => m.AllchatsPageModule)
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./allchats/chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'helpcenter',
+    loadChildren: () => import('./allchats/helpcenter/helpcenter.module').then( m => m.HelpcenterPageModule)
+  },
 
 
 

@@ -9,16 +9,40 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div style="padding:25px;background-color: #FFFFFF;height: 100%;">
+  <div style="padding:10px;background-color: #FFFFFF;height: 100%;">
     <form name="addressForm" id="addressForm" #addressForm="ngForm">
+      <ion-label for="" class="control-label">Country</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-select>
+        <ion-select-option></ion-select-option>
+      </ion-select>
+      <div style="padding: 5px;"></div>
+      <ion-label for="" class="control-label">State</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-select>
+        <ion-select-option></ion-select-option>
+      </ion-select>
+      <div style="padding: 5px;"></div>
+      <ion-label for="" class="control-label">Home Address</ion-label>
+      <div style="padding: 5px;"></div>
       <ion-textarea rows="6" placeholder="Address" type="text" name="pryAddress" id="pryAddress" [(ngModel)]="pryAddress" #primaryAddress  required></ion-textarea>
-          <div *ngIf="primaryAddress.invalid && (primaryAddress.dirty || primaryAddress.touched) " class="error">
-            <div *ngIf="(primaryAddress.errors.required || primaryAddress.errors)">
-              Address is required
-            </div>
+      <div *ngIf="primaryAddress.invalid && (primaryAddress.dirty || primaryAddress.touched) " class="error">
+        <div *ngIf="(primaryAddress.errors.required || primaryAddress.errors)">
+          Address is required
         </div>
+    </div>
+    <div style="padding: 5px;"></div>
+      <ion-label for="" class="control-label">Closest Bus-stop</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-select>
+        <ion-select-option></ion-select-option>
+      </ion-select>
+      <div style="padding: 5px;"></div>
+      <ion-label for="" class="control-label">Closest Landmark</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-textarea rows="6" placeholder="Address" type="text"  ></ion-textarea>     
 
-        <div style="padding:135px;"></div>
+        <div style="padding:5px;"></div>
         <div style="text-align:center;z-index:1000; width:100%;">
           <ion-button (click)="gotoplaceorder()" class="pryColor " expand="block" fill="fill">DONE</ion-button>
           </div>

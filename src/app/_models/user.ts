@@ -17,6 +17,19 @@ export class UserClass {
 
 
 }
+export interface Message {
+  createdAt: firebase.firestore.FieldValue;
+  id: string;
+  sessionId: string;
+  from: string;
+  to: string;
+  msg: string;
+  fromName: string;
+  myMsg: boolean;
+  sessionStatus: string;
+  msgReadStatus: string;
+  createdBy: string
+}
 
 export interface User {
   token?: string | undefined;
