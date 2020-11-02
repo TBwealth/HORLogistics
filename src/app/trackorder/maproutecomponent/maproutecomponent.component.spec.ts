@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { CheckboxComponent } from './checkbox.component';
+import { MaproutecomponentComponent } from './maproutecomponent.component';
 
-describe('CheckboxComponent', () => {
-  let component: CheckboxComponent;
-  let fixture: ComponentFixture<CheckboxComponent>;
+describe('MaproutecomponentComponent', () => {
+  let component: MaproutecomponentComponent;
+  let fixture: ComponentFixture<MaproutecomponentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CheckboxComponent ],
+      declarations: [ MaproutecomponentComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CheckboxComponent);
+    fixture = TestBed.createComponent(MaproutecomponentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

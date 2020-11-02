@@ -7,7 +7,11 @@ const routes: Routes = [
   // {path: '', redirectTo: 'international-delivery', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
- {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
+//  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
+ {path: '', redirectTo: 'home', pathMatch: 'full'},
+  // {path: '', redirectTo: 'home', pathMatch: 'full'},
+//  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
+ //{path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
   {
     path: 'login',
@@ -16,7 +20,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canLoad: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
@@ -69,7 +73,31 @@ const routes: Routes = [
   {
     path: 'international-delivery',
     loadChildren: () => import('./international-delivery/international-delivery.module').then( m => m.InternationalDeliveryPageModule)
-  }
+  },
+  {
+    path: 'updateprofilepage',
+    loadChildren: () => import('./updateprofilepage/updateprofilepage.module').then( m => m.UpdateprofilepagePageModule)
+  },
+  {
+    path: 'trackorder',
+    loadChildren: () => import('./trackorder/trackorder.module').then( m => m.TrackorderPageModule)
+  },
+  {
+    path: 'tripdetails',
+    loadChildren: () => import('./trackorder/tripdetails/tripdetails.module').then( m => m.TripdetailsPageModule)
+  },
+  {
+    path: 'allchats',
+    loadChildren: () => import('./allchats/allchats.module').then( m => m.AllchatsPageModule)
+  },
+  {
+    path: 'chat',
+    loadChildren: () => import('./allchats/chat/chat.module').then( m => m.ChatPageModule)
+  },
+  {
+    path: 'helpcenter',
+    loadChildren: () => import('./allchats/helpcenter/helpcenter.module').then( m => m.HelpcenterPageModule)
+  },
 
 
 

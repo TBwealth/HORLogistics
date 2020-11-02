@@ -27,6 +27,8 @@ import { AngularFireModule } from '@angular/fire';
 import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
 import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook } from '@ionic-native/facebook/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
@@ -36,9 +38,10 @@ import { AuthGuardService } from './_services/auth-guard.service';
 import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
-import { AccountServiceProxy,RegisterServiceProxy } from './_services/service-proxies';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-
+import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy } from './_services/service-proxies';
+import { ChatService } from './_services/chat.service';
+import {MaprouteService} from './_services/maproute.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,6 +74,13 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
     AuthenticationService,
     AccountServiceProxy,
     RegisterServiceProxy,
+    CountriesServiceProxy,
+    ApiServiceProxy,
+    ChatService,
+    ManageServiceProxy,
+    Camera,
+    File,
+    MaprouteService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

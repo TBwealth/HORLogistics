@@ -1,0 +1,31 @@
+<ion-header class="zindex">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1" style="color: #454F63;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="headertitle" >Track your Shipment </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding:10px;background-color: #FFFFFF;height: 100%;">
+    <form name="trackForm" id="trackForm" #trackForm="ngForm">
+      <ion-label for="" class="control-label">Enter the tracking number of your shipment</ion-label>
+          <div style="padding: 5px;"></div>
+      <ion-input  placeholder="Tracking Number" type="text" name="orderTNumber" id="orderTNumber" [(ngModel)]="orderTrackNumber" #orderTNumber  required></ion-input>
+          <div *ngIf="orderTNumber.invalid && (orderTNumber.dirty || orderTNumber.touched) " class="error">
+            <div *ngIf="(orderTNumber.errors.required || orderTNumber.errors)">
+              Tracking Number is required
+            </div>
+        </div>
+
+     
+    </form>
+
+  </div>
+</ion-content>
+<ion-footer class="ion-no-border">
+  <ion-button (click)="gototripdetails()" class="pryColor " expand="block" fill="fill">TRACK</ion-button>
+</ion-footer>

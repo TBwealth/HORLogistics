@@ -24,7 +24,7 @@ export class AccountServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -297,7 +297,7 @@ export class AccountServiceProxy {
     /**
      * @return OK
      */
-    uploadprofilepic(payload: UserPhotoViewModel): Observable<StatusResource> {
+    uploadprofilepic(payload): Observable<StatusResource> {
         let url_ = this.baseUrl + "/api/Account/uploadprofilepic";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -413,7 +413,7 @@ export class RegisterServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -480,7 +480,7 @@ export class ApiServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -592,6 +592,9 @@ export class ApiServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
+
+
+
     /**
      * @return OK
      */
@@ -768,7 +771,6 @@ export class ApiServiceProxy {
         return _observableOf<ObjectResourceOfIPagedListOfInternationalBookingResource>(<any>null);
     }
 
- 
 
     /**
      * @return OK
@@ -1212,7 +1214,7 @@ export class AppConfigServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -1381,7 +1383,7 @@ export class BlogServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -1448,7 +1450,7 @@ export class CustomersServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -1515,7 +1517,7 @@ export class DispatcherServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -1578,7 +1580,7 @@ export class VerificationServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -1743,7 +1745,7 @@ export class SyncServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -1806,7 +1808,7 @@ export class OrdersServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -2202,7 +2204,7 @@ export class OrderServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -2316,7 +2318,7 @@ export class TemplateServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -2379,7 +2381,7 @@ export class EmailServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -2500,7 +2502,7 @@ export class EndpointServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -2567,7 +2569,7 @@ export class LocalbookingServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -2689,7 +2691,7 @@ export class InternationalbookingServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -3341,7 +3343,7 @@ export class InvoicesServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -3408,7 +3410,7 @@ export class LocalBookingServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -4153,7 +4155,7 @@ export class LocalBookingCategoryServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -4274,7 +4276,7 @@ export class GroupsServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -4340,7 +4342,7 @@ export class AssignServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -4462,7 +4464,7 @@ export class RouteRateServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -4538,7 +4540,7 @@ export class LocationsServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -4654,21 +4656,21 @@ export class LocationsServiceProxy {
 }
 
 @Injectable()
-export class ServiceProxy {
+export class ManageServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
      * @return OK
      */
     getAuthenticatedUserdatail(): Observable<ObjectResourceOfUserViewModel> {
-        let url_ = this.baseUrl + "/GetAuthenticatedUserdatail";
+        let url_ = this.baseUrl + "/api/Manage/GetAuthenticatedUserdatail";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4719,7 +4721,7 @@ export class ServiceProxy {
      * @return OK
      */
     upgradeTopPartner(): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/UpgradeTopPartner";
+        let url_ = this.baseUrl + "/api/Manage/UpgradeTopPartner";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4770,7 +4772,7 @@ export class ServiceProxy {
      * @return OK
      */
     changePassword(model: ChangePasswordViewModel): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/ChangePassword";
+        let url_ = this.baseUrl + "/api/Manage/ChangePassword";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -4825,7 +4827,7 @@ export class ServiceProxy {
      * @return OK
      */
     updateUser(payload: UpdateUserViewModel): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/UpdateUser";
+        let url_ = this.baseUrl + "/api/Manage/UpdateUser";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(payload);
@@ -4880,7 +4882,7 @@ export class ServiceProxy {
      * @return OK
      */
     forgotpassword(model: ForgotPasswordViewModel): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/forgotpassword";
+        let url_ = this.baseUrl + "/api/Manage/forgotpassword";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(model);
@@ -4935,7 +4937,7 @@ export class ServiceProxy {
      * @return OK
      */
     sendEmailVerificationCode(): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/SendEmailVerificationCode";
+        let url_ = this.baseUrl + "/api/Manage/SendEmailVerificationCode";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4986,7 +4988,7 @@ export class ServiceProxy {
      * @return OK
      */
     confrimEmail(userId: string, code: string): Observable<any> {
-        let url_ = this.baseUrl + "/ConfrimEmail?";
+        let url_ = this.baseUrl + "/api/Manage/ConfrimEmail?";
         if (userId === undefined || userId === null)
             throw new Error("The parameter 'userId' must be defined and cannot be null.");
         else
@@ -5050,7 +5052,7 @@ export class MediaServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5168,7 +5170,7 @@ export class UploadServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5333,7 +5335,7 @@ export class IntlServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5455,7 +5457,7 @@ export class Shipping_batchServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5522,7 +5524,7 @@ export class ReportServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5588,7 +5590,7 @@ export class RevenueServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5708,7 +5710,7 @@ export class CountriesServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -5774,7 +5776,7 @@ export class SmsServiceProxy {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://40.91.215.240:8008";
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
     /**
@@ -11506,10 +11508,7 @@ export interface IShipmentDeliveryTypeResource {
 }
 
 export class InternationalBookingCtreatDTO implements IInternationalBookingCtreatDTO {
-    zipCode: number | undefined;
-    postCode: number | undefined;
     shipmentModeId: number | undefined;
-    localHomeDeliveryTypeId: number | undefined;
     shipmentDeliveryTypeId: number;
     country: string;
     pickupContactName: string | undefined;
@@ -11540,10 +11539,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
 
     init(_data?: any) {
         if (_data) {
-            this.zipCode = _data["zipCode"];
-            this.postCode = _data["postCode"];
             this.shipmentModeId = _data["shipmentModeId"];
-            this.localHomeDeliveryTypeId = _data["localHomeDeliveryTypeId"];
             this.shipmentDeliveryTypeId = _data["shipmentDeliveryTypeId"];
             this.country = _data["country"];
             this.pickupContactName = _data["pickupContactName"];
@@ -11574,10 +11570,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["zipCode"] = this.zipCode;
-        data["postCode"] = this.postCode;
         data["shipmentModeId"] = this.shipmentModeId;
-        data["localHomeDeliveryTypeId"] = this.localHomeDeliveryTypeId;
         data["shipmentDeliveryTypeId"] = this.shipmentDeliveryTypeId;
         data["country"] = this.country;
         data["pickupContactName"] = this.pickupContactName;
@@ -11608,10 +11601,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
 }
 
 export interface IInternationalBookingCtreatDTO {
-    zipCode: number | undefined;
-    postCode: number | undefined;
     shipmentModeId: number | undefined;
-    localHomeDeliveryTypeId: number | undefined;
     shipmentDeliveryTypeId: number;
     country: string;
     pickupContactName: string | undefined;
@@ -14223,7 +14213,9 @@ export class UserViewModel implements IUserViewModel {
     totalLocalOrder: number | undefined;
     totalIntlOrder: number | undefined;
     totalCheckOutAssistanntlOrder: number | undefined;
-    user: AspNetUser | undefined;
+    user: User | undefined;
+    role: Role[] | undefined;
+    customer: Customer | undefined;
 
     constructor(data?: IUserViewModel) {
         if (data) {
@@ -14239,7 +14231,13 @@ export class UserViewModel implements IUserViewModel {
             this.totalLocalOrder = _data["totalLocalOrder"];
             this.totalIntlOrder = _data["totalIntlOrder"];
             this.totalCheckOutAssistanntlOrder = _data["totalCheckOutAssistanntlOrder"];
-            this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
+            this.user = _data["user"] ? User.fromJS(_data["user"]) : <any>undefined;
+            if (Array.isArray(_data["role"])) {
+                this.role = [] as any;
+                for (let item of _data["role"])
+                    this.role.push(Role.fromJS(item));
+            }
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
         }
     }
 
@@ -14256,6 +14254,12 @@ export class UserViewModel implements IUserViewModel {
         data["totalIntlOrder"] = this.totalIntlOrder;
         data["totalCheckOutAssistanntlOrder"] = this.totalCheckOutAssistanntlOrder;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        if (Array.isArray(this.role)) {
+            data["role"] = [];
+            for (let item of this.role)
+                data["role"].push(item.toJSON());
+        }
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -14271,7 +14275,127 @@ export interface IUserViewModel {
     totalLocalOrder: number | undefined;
     totalIntlOrder: number | undefined;
     totalCheckOutAssistanntlOrder: number | undefined;
-    user: AspNetUser | undefined;
+    user: User | undefined;
+    role: Role[] | undefined;
+    customer: Customer | undefined;
+}
+
+export class User implements IUser {
+    id: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    userName: string | undefined;
+    isAdmin: boolean | undefined;
+    isProfileCompleted: boolean | undefined;
+    tcAccepted: boolean | undefined;
+    userType: UserType | undefined;
+
+    constructor(data?: IUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.email = _data["email"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.userName = _data["userName"];
+            this.isAdmin = _data["isAdmin"];
+            this.isProfileCompleted = _data["isProfileCompleted"];
+            this.tcAccepted = _data["tcAccepted"];
+            this.userType = _data["userType"];
+        }
+    }
+
+    static fromJS(data: any): User {
+        data = typeof data === 'object' ? data : {};
+        let result = new User();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["userName"] = this.userName;
+        data["isAdmin"] = this.isAdmin;
+        data["isProfileCompleted"] = this.isProfileCompleted;
+        data["tcAccepted"] = this.tcAccepted;
+        data["userType"] = this.userType;
+        return data; 
+    }
+
+    clone(): User {
+        const json = this.toJSON();
+        let result = new User();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUser {
+    id: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    userName: string | undefined;
+    isAdmin: boolean | undefined;
+    isProfileCompleted: boolean | undefined;
+    tcAccepted: boolean | undefined;
+    userType: UserType | undefined;
+}
+
+export class Role implements IRole {
+    id: string | undefined;
+    name: string | undefined;
+
+    constructor(data?: IRole) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): Role {
+        data = typeof data === 'object' ? data : {};
+        let result = new Role();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): Role {
+        const json = this.toJSON();
+        let result = new Role();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRole {
+    id: string | undefined;
+    name: string | undefined;
 }
 
 export class ChangePasswordViewModel implements IChangePasswordViewModel {
@@ -14503,6 +14627,12 @@ export enum RegisterUserVieModelUserType {
 }
 
 export enum RegisterUserResourceUserType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+}
+
+export enum UserType {
     _0 = 0,
     _1 = 1,
     _2 = 2,

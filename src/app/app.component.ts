@@ -33,13 +33,13 @@ export class AppComponent {
     },
     {
       title: 'Track',
-      url: '/track',
+      url: '/trackorder',
       icon: 'aperture-outline'
     },
     {
-      title: 'Chat With Us',
+      title: 'Help Center',
       url: '/support',
-      icon: 'person-outline'
+      icon: 'headset-outline'
     },
    
   ];

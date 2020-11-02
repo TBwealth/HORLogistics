@@ -2,7 +2,7 @@
 
 <ion-content>
 <div class="profileSection">
-  <ion-header class="zindex">
+  <ion-header class="zindex ion-no-border" >
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-button (click)="goback()">
@@ -18,12 +18,119 @@
   <ion-row>
   <ion-col size="3"></ion-col>  
   <ion-col size="6">
-    <img class="" style="width:100%;height: auto;max-height: 200px;border-radius: 50%;" src="assets/images/female-avatar.png" alt="" title="" itemprop="image">
+    <img class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="assets/images/female-avatar.png" alt="" title="" itemprop="image">
  
   </ion-col>  
   <ion-col size="3"></ion-col>  
   </ion-row>
 
   </div>
+  <div style="position: absolute;top: 270px; width: 100%;">
+    <div style="text-align: center;">
+      <ion-label><small style="color: #757373;text-align: center; font-size: 16px;">{{userRole}}</small></ion-label> <br>
+      <ion-label style="font-size: 22px;font-style: bold; color: #303030;font-weight: bolder;text-align: center;font-family: 'avenir_ff_black';">{{customersData.fullName}}&nbsp; 
+        <ion-icon (click)="updateUser(customersData.fullName,'Full Name')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon></ion-label>
+    </div>
+    <div style="padding: 10px;"></div>
+<div style="padding: 5px;">
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>Phone</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label>{{customersData.phoneNumber}}</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="gotoverifyPhone(customersData.phoneNumber)" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>Email</ion-label>
+    </ion-col>
+    <ion-col size="9" style="float: right;">
+      <ion-label>{{customersData.email}}</ion-label>
+    </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>Country</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label>{{customersData.residentialCountryId}}</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateUser(customersData.residentialCountryId,'Country')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>State</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label>{{customersData.residentialStateId}}</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateUser(customersData.residentialStateId,'State')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>Home Address</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label>{{customersData.homeAddress}}</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateUser(customersData.homeAddress,'Address')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>Closest Bus-stop</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label>{{customersData.closestBustop}}</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateUser(customersData.closestBustop,'Bus-stop')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+      <ion-label>Closest Landmark</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label>{{customersData.closestLandmark}}</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateUser(customersData.closestLandmark,'Landmark')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+<div style="padding: 10px;"></div>
+  <ion-row>
+    <ion-col size="4">
+      <div style="padding: 7px;"></div>
+      <ion-label>Google</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-toggle style="float: right;"></ion-toggle>
+   </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4">
+      <div style="padding: 7px;"></div>
+      <ion-label>Facebook</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-toggle style="float: right;"> </ion-toggle>
+    </ion-col>
+  </ion-row>
+</div>
+
+
+  </div>
+ 
     
 </ion-content>

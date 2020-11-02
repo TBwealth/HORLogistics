@@ -6,7 +6,7 @@ import * as firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountServiceProxy } from '../_services/service-proxies';
 import { AuthenticationService } from '../_services/authentication.service';
-import {  VerifiedPhoneUpdate,StatusResource, LoginResource } from "../_models/service-models";
+import {  VerifiedPhoneUpdate,StatusResource, LoginResource, } from "../_models/service-models";
 @Component({
   selector: 'app-otpvalidation',
   templateUrl: './otpvalidation.page.html',
@@ -48,12 +48,13 @@ export class OtpvalidationPage implements OnInit {
           });
           toast.present();
           this.AuthenService.getuser().then((usersdata:LoginResource[])=>{
-          if(usersdata){
+          if(usersdata.length > 0){
             this.VerifiedPhoneUpdate.userId = usersdata[0].userId;
             this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
             this.VerifiedPhoneUpdate.isVerified = true;
             this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe((data:StatusResource)=>{
-          if(data.code == "000"){
+          if(data.code == "007"){
+            this.AuthenService.addUser(usersdata[0]);
             this.router.navigate(['home'])
             loading.dismiss();
           }else{
@@ -77,9 +78,13 @@ export class OtpvalidationPage implements OnInit {
                 })
 
      }
-verifyOTP(){
+async verifyOTP(){
+  const loading = await this.loading.create({message: "please wait...",
+  translucent: true,
+  spinner: "bubbles",cssClass: 'my-loading-class'});
+  loading.present();
   let receivedotp = this.code1 + this.code2 + this.code3 + this.code4 + this.code5 + this.code6;
-  console.log(receivedotp);
+  //console.log(receivedotp);
   // const otp = this.verificationID.toString().substr(0, 6);
                 if(receivedotp){
                   // if(receivedotp == otp){
@@ -87,11 +92,42 @@ verifyOTP(){
                   // }else{
                    
                   // }
-                  this.firebaseAuthentication.signInWithVerificationId(this.verificationID,receivedotp);
+                  this.firebaseAuthentication.signInWithVerificationId(this.verificationID,receivedotp)
+                  // .then(data=>{
+                  //   console.log(data)
+                  // });
 
                 }
+                this.AuthenService.getuser().then((usersdata:LoginResource[])=>{
+                  if(usersdata.length > 0){
+                    this.VerifiedPhoneUpdate.userId = usersdata[0].userId;
+                    this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
+                    this.VerifiedPhoneUpdate.isVerified = true;
+                    this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe(async(data:StatusResource)=>{
+                      if(data.code == "007"){
+                        this.AuthenService.addUser(usersdata[0]);
+                        const toast = await this.toastCtrl.create({
+                          duration: 3000,
+                          message: 'Phone Number Verified Successfully',
+                          color: "success"
+                        });
+                        toast.present();
+                        this.router.navigate(['home'])
+                        loading.dismiss();
+                      }else{
+                        const toast = await this.toastCtrl.create({
+                          duration: 3000,
+                          message: 'Wrong/Expired OTP code',
+                          color: "danger"
+                        });
+                        toast.present();
+                        loading.dismiss();
+                      }
+                        });
+                   
 
-  this.router.navigate(['home']);
+                  }
+                })
 }
 
   sendOTP(phoneNumber){
@@ -127,9 +163,10 @@ verifyOTP(){
   ngOnInit() {
     this.activatedroute.queryParams.subscribe(data=>{
       if(data.phoneNumber){
-        this.sendOTP(data.phoneNumber);
         this.currentPhoneNumber = data.phoneNumber;
-        //console.log(data.phoneNumber)
+        console.log(data.phoneNumber)
+        this.sendOTP(data.phoneNumber);
+        
       }else{
         this.router.navigate(['providephone']);
       }
