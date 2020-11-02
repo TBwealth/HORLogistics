@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>CheckOut Assistance</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" class="localdelivery" [routerLink]="['/checkout/single']" fill="clear" #singleorder>
+          <ion-img src="assets/images/single_order.png" class="myicons" slot="start"></ion-img>
+          <p class="localheader">Single Product</p>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  <ion-row>
+      <ion-col>
+      <ion-button expand="block" class="localdelivery" [routerLink]="['/checkout/multiple']" fill="clear" #multiplebooking>
+        <ion-img src="assets/images/multiple_order.png" class="myicons"></ion-img>
+        <p class="localheader">Multiple Products</p>
+      </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
