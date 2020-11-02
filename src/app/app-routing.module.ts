@@ -8,7 +8,7 @@ const routes: Routes = [
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
- {path: '', redirectTo: 'home', pathMatch: 'full'},
+ {path: '', redirectTo: 'checkout', pathMatch: 'full'},
   // {path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
  //{path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
