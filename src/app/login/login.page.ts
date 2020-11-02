@@ -42,9 +42,16 @@ RegisterUserResource = new RegisterUserResource().clone();
     private fb: Facebook,
     private registerService: AccountServiceProxy,
     private soclLogin: RegisterServiceProxy,
-    private AuthenService: AuthenticationService,) { }
+    private AuthenService: AuthenticationService,
+    private loadspinner: LoadingController) { }
 
-loginUser(){
+async loginUser(){
+  this.loading = await this.loadspinner.create({
+    message: "please wait...",
+    translucent: true,
+    spinner: "bubbles",
+  });
+  await this.loading.present();
   this.registerService.login(this.login).subscribe(async (data:ObjectResourceOfLoginResource)=>{
     if(data.code == '007'){
       this.LoginResource = data.data;
@@ -55,6 +62,7 @@ loginUser(){
         color: "success"
       });
       toast.present();
+      this.loading.dismiss();
       this.router.navigate(['home'])
     }else{
       const toast = await this.toastCtrl.create({
@@ -63,6 +71,7 @@ loginUser(){
         color: "danger"
       });
       toast.present();
+      this.loading.dismiss();
     }
           });
 

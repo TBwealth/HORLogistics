@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class SlideDownBoxComponent implements OnInit {
   @Input() disabled = false
+  @Input() icon = ''
   @Input() set show(val: boolean){
     this.innerShow = val
   }

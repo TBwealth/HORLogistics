@@ -125,6 +125,11 @@ this.alpha2Code = "NG";
   ngOnInit() {
     this.getcountry();
     this.getCountryFlag("NG")
+    this.activatedroute.queryParams.subscribe(data=>{
+      if(data.phoneNumber){
+        this.phoneValidation(data.phoneNumber);
+      }
+    })
   }
 
   ngAfterViewInit(){   

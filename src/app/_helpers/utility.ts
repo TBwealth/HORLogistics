@@ -10,7 +10,7 @@ export const Util = {
 
         if(env == 'development')
         {
-            return "http://40.91.215.240:8008";
+            return "http://104.40.215.33:8008";
         }
 
         if(env == 'companydevelopment')

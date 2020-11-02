@@ -35,14 +35,21 @@ usersdata = new LoginResource().clone();
       this.AuthenService.getuser().then(async (usersdata:LoginResource[])=>{
         if(usersdata.length > 0){
           this.usersdata = usersdata[0];
-          const popover = await this.popoverController.create({
-            component: PrimarylocationComponent,
-            cssClass: 'my-popover-class',
-            backdropDismiss: false,
-            // event: ev,
-            //translucent: true
-          });
-          return await popover.present();
+          if(!this.usersdata.isProfileComplete){
+            this.router.navigate(['profilepage']);
+          }else{
+            if(!this.usersdata.customer.closestBustopId){
+              const popover = await this.popoverController.create({
+                component: PrimarylocationComponent,
+                cssClass: 'my-popover-class',
+                backdropDismiss: false,
+                // event: ev,
+                //translucent: true
+              });
+              return await popover.present();
+            }
+          }
+         
         }
         });
      
@@ -89,6 +96,7 @@ if (!place.geometry) {
   console.log("Returned place contains no geometry");
   return;
 }
+
 var icon = {
   url: place.icon,
   size: new google.maps.Size(71, 71),

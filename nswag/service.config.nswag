@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "http://40.91.215.240:8008/swagger/docs/v1",
+      "url": "http://104.40.215.33:8008/swagger/docs/v1",
       "output": null
     }
   },

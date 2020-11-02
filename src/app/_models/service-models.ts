@@ -298,6 +298,7 @@ export class Customer implements ICustomer {
     homeAddress: string | undefined;
     businessName: string | undefined;
     companyLogo: string | undefined;
+    phoneNumber: string | undefined;
     residentialCountryId: number | undefined;
     residentialStateId: number | undefined;
     createdAt: moment.Moment | undefined;
@@ -5629,10 +5630,7 @@ export interface IShipmentDeliveryTypeResource {
 }
 
 export class InternationalBookingCtreatDTO implements IInternationalBookingCtreatDTO {
-    zipCode: number | undefined;
-    postCode: number | undefined;
     shipmentModeId: number | undefined;
-    localHomeDeliveryTypeId: number | undefined;
     shipmentDeliveryTypeId: number;
     country: string;
     pickupContactName: string | undefined;
@@ -5663,10 +5661,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
 
     init(_data?: any) {
         if (_data) {
-            this.zipCode = _data["zipCode"];
-            this.postCode = _data["postCode"];
             this.shipmentModeId = _data["shipmentModeId"];
-            this.localHomeDeliveryTypeId = _data["localHomeDeliveryTypeId"];
             this.shipmentDeliveryTypeId = _data["shipmentDeliveryTypeId"];
             this.country = _data["country"];
             this.pickupContactName = _data["pickupContactName"];
@@ -5697,10 +5692,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["zipCode"] = this.zipCode;
-        data["postCode"] = this.postCode;
         data["shipmentModeId"] = this.shipmentModeId;
-        data["localHomeDeliveryTypeId"] = this.localHomeDeliveryTypeId;
         data["shipmentDeliveryTypeId"] = this.shipmentDeliveryTypeId;
         data["country"] = this.country;
         data["pickupContactName"] = this.pickupContactName;
@@ -5731,10 +5723,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
 }
 
 export interface IInternationalBookingCtreatDTO {
-    zipCode: number | undefined;
-    postCode: number | undefined;
     shipmentModeId: number | undefined;
-    localHomeDeliveryTypeId: number | undefined;
     shipmentDeliveryTypeId: number;
     country: string;
     pickupContactName: string | undefined;
@@ -8346,7 +8335,9 @@ export class UserViewModel implements IUserViewModel {
     totalLocalOrder: number | undefined;
     totalIntlOrder: number | undefined;
     totalCheckOutAssistanntlOrder: number | undefined;
-    user: AspNetUser | undefined;
+    user: User | undefined;
+    role: Role[] | undefined;
+    customer: Customer | undefined;
 
     constructor(data?: IUserViewModel) {
         if (data) {
@@ -8362,7 +8353,13 @@ export class UserViewModel implements IUserViewModel {
             this.totalLocalOrder = _data["totalLocalOrder"];
             this.totalIntlOrder = _data["totalIntlOrder"];
             this.totalCheckOutAssistanntlOrder = _data["totalCheckOutAssistanntlOrder"];
-            this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
+            this.user = _data["user"] ? User.fromJS(_data["user"]) : <any>undefined;
+            if (Array.isArray(_data["role"])) {
+                this.role = [] as any;
+                for (let item of _data["role"])
+                    this.role.push(Role.fromJS(item));
+            }
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
         }
     }
 
@@ -8379,6 +8376,12 @@ export class UserViewModel implements IUserViewModel {
         data["totalIntlOrder"] = this.totalIntlOrder;
         data["totalCheckOutAssistanntlOrder"] = this.totalCheckOutAssistanntlOrder;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        if (Array.isArray(this.role)) {
+            data["role"] = [];
+            for (let item of this.role)
+                data["role"].push(item.toJSON());
+        }
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -8394,7 +8397,127 @@ export interface IUserViewModel {
     totalLocalOrder: number | undefined;
     totalIntlOrder: number | undefined;
     totalCheckOutAssistanntlOrder: number | undefined;
-    user: AspNetUser | undefined;
+    user: User | undefined;
+    role: Role[] | undefined;
+    customer: Customer | undefined;
+}
+
+export class User implements IUser {
+    id: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    userName: string | undefined;
+    isAdmin: boolean | undefined;
+    isProfileCompleted: boolean | undefined;
+    tcAccepted: boolean | undefined;
+    userType: UserType | undefined;
+
+    constructor(data?: IUser) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.email = _data["email"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.userName = _data["userName"];
+            this.isAdmin = _data["isAdmin"];
+            this.isProfileCompleted = _data["isProfileCompleted"];
+            this.tcAccepted = _data["tcAccepted"];
+            this.userType = _data["userType"];
+        }
+    }
+
+    static fromJS(data: any): User {
+        data = typeof data === 'object' ? data : {};
+        let result = new User();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["email"] = this.email;
+        data["phoneNumber"] = this.phoneNumber;
+        data["userName"] = this.userName;
+        data["isAdmin"] = this.isAdmin;
+        data["isProfileCompleted"] = this.isProfileCompleted;
+        data["tcAccepted"] = this.tcAccepted;
+        data["userType"] = this.userType;
+        return data; 
+    }
+
+    clone(): User {
+        const json = this.toJSON();
+        let result = new User();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUser {
+    id: string | undefined;
+    email: string | undefined;
+    phoneNumber: string | undefined;
+    userName: string | undefined;
+    isAdmin: boolean | undefined;
+    isProfileCompleted: boolean | undefined;
+    tcAccepted: boolean | undefined;
+    userType: UserType | undefined;
+}
+
+export class Role implements IRole {
+    id: string | undefined;
+    name: string | undefined;
+
+    constructor(data?: IRole) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): Role {
+        data = typeof data === 'object' ? data : {};
+        let result = new Role();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data; 
+    }
+
+    clone(): Role {
+        const json = this.toJSON();
+        let result = new Role();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRole {
+    id: string | undefined;
+    name: string | undefined;
 }
 
 export class ChangePasswordViewModel implements IChangePasswordViewModel {
@@ -8626,6 +8749,12 @@ export enum RegisterUserVieModelUserType {
 }
 
 export enum RegisterUserResourceUserType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+}
+
+export enum UserType {
     _0 = 0,
     _1 = 1,
     _2 = 2,

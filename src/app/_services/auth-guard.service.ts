@@ -5,10 +5,10 @@ import { Storage } from '@ionic/storage';
 import { AuthenticationService } from '../_services/authentication.service';
 import {  VerifiedPhoneUpdate,StatusResource, LoginResource } from "../_models/service-models";
 @Injectable()
-export class AuthGuardService implements CanLoad {
+export class AuthGuardService implements CanActivate {
   constructor(public auth: AuthService, public router: Router, public storage: Storage,
     private AuthenService: AuthenticationService,) {}
-    canLoad(): boolean {
+    canActivate(): boolean {
     
     this.auth.isAuthenticated().then(data=>{  
       this.storage.set('returnUrl',this.router.url);   
