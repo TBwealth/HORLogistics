@@ -1,5 +1,10 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Payment</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -7,13 +12,10 @@
 <ion-content>
 <ion-grid>
   <ion-row>
-    <ion-img src="assets/images/pickup.png"></ion-img>
+    <ion-img src="assets/images/success_pay.png" class="pay_success" style="box-shadow: none !important"></ion-img>
+    <ion-footer style="display: block;" lines="none">
+      <h5 style="text-align: center; color: #2A2E43;">Payment Successful!</h5>
+    </ion-footer>
   </ion-row>
-  <ion-row>
-    <h5>Payment Successful!</h5>
-  </ion-row>
-  
 </ion-grid>
-  
-
 </ion-content>

@@ -2,15 +2,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
+
 const routes: Routes = [
-//{path: '', redirectTo: 'payment', pathMatch: 'full'},
- // {path: '', redirectTo: 'checkout/ratings', pathMatch: 'full'},
+{path: '', redirectTo: 'terms', pathMatch: 'full'},
+//  {path: '', redirectTo: 'checkout/ratings', pathMatch: 'full'},
   // {path: '', redirectTo: 'international-delivery', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
 //{path: '', redirectTo: 'checkout', pathMatch: 'full'},
-   {path: '', redirectTo: 'home', pathMatch: 'full'},
+   //{path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
  //{path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
@@ -103,6 +104,14 @@ const routes: Routes = [
   {
     path: 'checkout',
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
+  },
+  {
+    path: 'single',
+    loadChildren: () => import('./checkout/single/single.module').then( m => m.SinglePageModule)
+  },
+  {
+    path: 'multiple',
+    loadChildren: () => import('./checkout/multiple/multiple.module').then( m => m.MultiplePageModule)
   },
   {
     path: 'payment',

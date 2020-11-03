@@ -1,3 +1,4 @@
+import { RatingsComponent } from './ratings/ratings.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,14 +9,9 @@ const routes: Routes = [
     path: '',
     component: CheckoutPage
   },
-  {
-    path: 'single',
-    loadChildren: () => import('./single/single.module').then( m => m.SinglePageModule)
-  },
-  {
-    path: 'multiple',
-    loadChildren: () => import('./multiple/multiple.module').then( m => m.MultiplePageModule)
-  }
+ 
+
+
 
 ];
 

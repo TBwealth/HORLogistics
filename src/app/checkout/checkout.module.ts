@@ -1,9 +1,9 @@
+import { CheckoutPageRoutingModule } from './checkout-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
 
 import { CheckoutPage } from './checkout.page';
 
@@ -11,7 +11,8 @@ import { CheckoutPage } from './checkout.page';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    IonicModule,
+    CheckoutPageRoutingModule
   ],
   declarations: [CheckoutPage]
 })
