@@ -16,6 +16,7 @@ const routes: Routes = [
     path: 'multiple',
     loadChildren: () => import('./multiple/multiple.module').then( m => m.MultiplePageModule)
   }
+
 ];
 
 @NgModule({
