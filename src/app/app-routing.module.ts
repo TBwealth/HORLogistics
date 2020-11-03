@@ -10,10 +10,11 @@ const routes: Routes = [
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
 //  {path: '', redirectTo: 'trackorder/pickup', pathMatch: 'full'},
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  // {path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/review-booking', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
+ {path: '', redirectTo: 'checkout/rating', pathMatch: 'full'},
  
   {
     path: 'login',
@@ -108,14 +109,6 @@ const routes: Routes = [
   {
     path: 'checkout',
     loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
-  },
-  {
-    path: 'single',
-    loadChildren: () => import('./checkout/single/single.module').then( m => m.SinglePageModule)
-  },
-  {
-    path: 'multiple',
-    loadChildren: () => import('./checkout/multiple/multiple.module').then( m => m.MultiplePageModule)
   },
   {
     path: 'payment',
