@@ -10,6 +10,7 @@ import { SummaryPage } from './summary.page';
 import { PageStructureComponent } from '../../components/page-structure/page-structure.component'
 import { ListItemComponent } from 'src/app/components/list-item/list-item.component';
 import { ListKeyValueComponent } from 'src/app/components/list-key-value/list-key-value.component';
+import { MaproutecomponentComponent } from 'src/app/trackorder/maproutecomponent/maproutecomponent.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ListKeyValueComponent } from 'src/app/components/list-key-value/list-ke
     SummaryPage,
     PageStructureComponent,
     ListItemComponent,
-    ListKeyValueComponent
+    ListKeyValueComponent,
+    MaproutecomponentComponent
   ]
 })
 export class SummaryPageModule {}
