@@ -2,6 +2,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
+
 const routes: Routes = [
 //  {path: '', redirectTo: 'home', pathMatch: 'full'},
 // {path: '', redirectTo: 'international-delivery/summary', pathMatch: 'full'},
@@ -104,6 +105,22 @@ const routes: Routes = [
     loadChildren: () => import('./orders/orders.module').then( m => m.OrdersPageModule)
   },
 
+  {
+    path: 'checkout',
+    loadChildren: () => import('./checkout/checkout.module').then( m => m.CheckoutPageModule)
+  },
+  {
+    path: 'single',
+    loadChildren: () => import('./checkout/single/single.module').then( m => m.SinglePageModule)
+  },
+  {
+    path: 'multiple',
+    loadChildren: () => import('./checkout/multiple/multiple.module').then( m => m.MultiplePageModule)
+  },
+  {
+    path: 'payment',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
+  },
 
 
 ];

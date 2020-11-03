@@ -1,22 +1,17 @@
-import { RatingsComponent } from './ratings/ratings.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { CheckoutPage } from './checkout.page';
+import { PaymentPage } from './payment.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: CheckoutPage
-  },
- 
-
-
-
+    component: PaymentPage
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CheckoutPageRoutingModule {}
+export class PaymentPageRoutingModule {}

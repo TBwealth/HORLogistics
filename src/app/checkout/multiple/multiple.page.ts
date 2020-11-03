@@ -1,9 +1,11 @@
+import { NeworderComponent } from './../neworder/neworder.component';
 import { Component, OnInit } from '@angular/core';
 import { product_descriptionModel} from './../../_models/checkout';
 import { FormsModule, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
 import { NavController,ToastController,AlertController} from '@ionic/angular';
-
+import { PopoverController } from '@ionic/angular';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-multiple',
@@ -33,11 +35,52 @@ export class MultiplePage implements OnInit {
   constructor(private toastCtrl: ToastController,
     private router: Router,
     private navCtrl: NavController,
+    public popoverController: PopoverController,
     private activatedroute: ActivatedRoute) { }
+
+  
+      async addOrder(ev: any) {
+        const popover = await this.popoverController.create({
+          component: NeworderComponent,
+          cssClass: 'my-custom-class',
+          event: ev,
+          translucent: true
+        });
+        return await popover.present();
+      }
+  //   }
+  //   async showAddNewOrderModal(){
+  //   const subject = new Subject<boolean>()
+  //   const modal = await this.popoverController.create({
+  //     component: NeworderComponent,
+  //     cssClass: 'my-custom-class',
+  //     componentProps: {
+  //       subject
+  //     }
+  //   });
+  //   subject.subscribe(val => {
+  //     modal.dismiss()
+  //     if(val){
+  //       this.clearForm()
+  //     } else {
+  //       this.gotoSummary()
+  //     }
+  //   })
+  //   return await modal.present();
+  // }
+
+  // clearForm(){
+    
+  // }
+  // gotoSummary(){
+  //   // this.router.navigate(['localdelivery/review-booking'])
+  // }
 
   ngOnInit() {
   }
 
+
+  
   home_delivery($option){
     this.homedelivery = $option;
   }

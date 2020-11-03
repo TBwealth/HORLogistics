@@ -1,19 +1,20 @@
-import { CheckoutPageRoutingModule } from './checkout-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { CheckoutPage } from './checkout.page';
+import { PaymentPageRoutingModule } from './payment-routing.module';
+
+import { PaymentPage } from './payment.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CheckoutPageRoutingModule
+    PaymentPageRoutingModule
   ],
-  declarations: [CheckoutPage]
+  declarations: [PaymentPage]
 })
-export class CheckoutPageModule {}
+export class PaymentPageModule {}
