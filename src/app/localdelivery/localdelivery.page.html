@@ -22,7 +22,7 @@
     </ion-row>
     
       <div *ngSwitchCase='pickup'>
-      <form name="pickup_detailsForm" id="pickup_detailsForm" #pickup_detailsForm="ngForm">
+    <form name="pickup_detailsForm" id="pickup_detailsForm" #pickup_detailsForm="ngForm">
       <ion-grid>
           <ion-select (ionChange)="validatePickupForm()" placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
             <ion-select-option value="withinLag">Within Lagos</ion-select-option>
@@ -90,7 +90,7 @@
             <div *ngIf="pickup_busstop.errors.required">
               Pick-up Busstop is required
             </div>
-          </div>
+        </div>
         </ion-grid>
   </form></div>
     

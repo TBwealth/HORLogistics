@@ -17,8 +17,8 @@ export interface pickup_detailsModel {
 }
 
 export interface package_detailsModel {
-    package_size?:string,
-    package_insurance?:string
+    package_size?:boolean,
+    package_insurance?:boolean
 }
 
 export interface LocaldeliveryButton {

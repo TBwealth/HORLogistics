@@ -4,14 +4,15 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 const routes: Routes = [
 //  {path: '', redirectTo: 'home', pathMatch: 'full'},
-  // {path: '', redirectTo: 'international-delivery', pathMatch: 'full'},
+// {path: '', redirectTo: 'international-delivery/summary', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
- {path: '', redirectTo: 'home', pathMatch: 'full'},
-  // {path: '', redirectTo: 'home', pathMatch: 'full'},
+//  {path: '', redirectTo: 'trackorder/pickup', pathMatch: 'full'},
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
- //{path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
+//  {path: '', redirectTo: 'localdelivery/review-booking', pathMatch: 'full'},
+//  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
  
   {
     path: 'login',
@@ -97,6 +98,10 @@ const routes: Routes = [
   {
     path: 'helpcenter',
     loadChildren: () => import('./allchats/helpcenter/helpcenter.module').then( m => m.HelpcenterPageModule)
+  },
+  {
+    path: 'orders',
+    loadChildren: () => import('./orders/orders.module').then( m => m.OrdersPageModule)
   },
 
 

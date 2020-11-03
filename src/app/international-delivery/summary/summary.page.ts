@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MaprouteService } from 'src/app/_services/maproute.service';
 
 @Component({
   selector: 'app-summary',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SummaryPage implements OnInit {
 
-  constructor() { }
+  constructor(
+    private routeService: MaprouteService
+  ) { }
 
   ngOnInit() {
+    this.routeService.addressStart = "7, Amore street, off Freedom way, Lekki, Lagos";
+    this.routeService.addressEnd = "13, Church street, Makoko Lagos"
   }
 
 }
