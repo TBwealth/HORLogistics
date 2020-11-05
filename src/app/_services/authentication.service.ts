@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { User, UserClass } from "../_models/user";
 import { Storage } from '@ionic/storage';
-import {ManageServiceProxy} from '../_services/service-proxies';
+import {ManageServiceProxy,} from '../_services/service-proxies';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -14,6 +14,7 @@ export class AuthenticationService {
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
      private toastCtrl: ToastController,
+     
      private router: Router){}
 
     getuser(){
@@ -51,7 +52,7 @@ export class AuthenticationService {
         addUser(user){      
             let customerObj ={
                 aspNetUser:  {email: undefined, userName: undefined},
-                businessAnniversary: user.customer.businessAnniversary,
+                businessAnniversary: "",
                 businessName: user.customer.businessName,
                 closestBustopId: user.customer.closestBustopId,
                 closestLandmark: user.customer.closestLandmark,
@@ -82,64 +83,65 @@ export class AuthenticationService {
                }   
                 this.users = [];
                 this.users.push(userObj);
-                this.storage.set('user', this.users);  
-
-setTimeout(() => {
-    this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
-        if(data.code == "007"){
-            var res = data.data;
-            let customerObj ={
-                aspNetUser:  res.customer.aspNetUser,
-                businessAnniversary: res.customer.businessAnniversary,
-                businessName: res.customer.businessName,
-                closestBustopId: res.customer.closestBustopId,
-                closestLandmark: res.customer.closestLandmark,
-                companyLogo: res.customer.companyLogo,
-                phoneNumber: res.user.phoneNumber,
-                createdAt: '',
-                fullName: res.customer.fullName,
-                homeAddress: res.customer.homeAddress,
-                location: res.customer.location,
-                registerAsPartner: res.customer.registerAsPartner,
-                residentialCountry: res.customer.residentialCountry,
-                residentialCountryId: res.customer.residentialCountryId,
-                residentialState: res.customer.residentialState,
-                residentialStateId: res.customer.residentialStateId,
-                synergyProgramCustomer: res.customer.synergyProgramCustomer,
-                updatedAt: '',
-                userId: res.customer.userId,
-                wallet: res.customer.wallet
-               }
-               let userObj = {
-                token: user.token,
-                userId: user.userId,
-                userType: res.user.userType,
-                isProfileComplete: res.user.isProfileCompleted,
-                user: res.user,
-                customer: customerObj,
-                role: user.role
-               }   
-                this.users = [];
-                this.users.push(userObj);
-                this.storage.set('user', this.users); 
-        }else{
-            const toast = await this.toastCtrl.create({
-                duration: 3000,
-                message: data.message,
-                color: "danger"
-              });
-              toast.present();
-            if(data.message == "User is not authorized"){
-                this.router.navigate(['login']);
+                this.storage.set('user', this.users).then(data=>{
+            if(data.length > 1){
+                setTimeout(() => {
+                    this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
+                        if(data.code == "000"){
+                            var res = data.data;
+                            let customerObj ={
+                                aspNetUser:  res.customer.aspNetUser,
+                                businessAnniversary: "",
+                                businessName: res.customer.businessName,
+                                closestBustopId: res.customer.closestBustopId,
+                                closestLandmark: res.customer.closestLandmark,
+                                companyLogo: res.customer.companyLogo,
+                                phoneNumber: res.user.phoneNumber,
+                                createdAt: '',
+                                fullName: res.customer.fullName,
+                                homeAddress: res.customer.homeAddress,
+                                location: res.customer.location,
+                                registerAsPartner: res.customer.registerAsPartner,
+                                residentialCountry: res.customer.residentialCountry,
+                                residentialCountryId: res.customer.residentialCountryId,
+                                residentialState: res.customer.residentialState,
+                                residentialStateId: res.customer.residentialStateId,
+                                synergyProgramCustomer: res.customer.synergyProgramCustomer,
+                                updatedAt: '',
+                                userId: res.customer.userId,
+                                wallet: res.customer.wallet
+                               }
+                               let userObj = {
+                                token: user.token,
+                                userId: user.userId,
+                                userType: res.user.userType,
+                                isProfileComplete: res.user.isProfileCompleted,
+                                user: res.user,
+                                customer: customerObj,
+                                role: user.role
+                               }   
+                                this.users = [];
+                                this.users.push(userObj);
+                                this.storage.set('user', this.users); 
+                        }else{
+                            const toast = await this.toastCtrl.create({
+                                duration: 3000,
+                                message: data.message,
+                                color: "danger"
+                              });
+                              toast.present();
+                            if(data.message == "User is not authorized"){
+                                this.router.navigate(['login']);
+                            }
+                        }
+                     
+                       })
+                
+                          
+                }, 3000);  
             }
-        }
-     
-       })
-
-          
-}, 2000);
-
-         
+                                    
+                });
               }
 
         updateuser(user){        
