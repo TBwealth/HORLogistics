@@ -17,4 +17,6 @@ import { CheckoutPage } from './checkout.page';
   ],
   declarations: [CheckoutPage, RatingsComponent]
 })
-export class CheckoutPageModule {}
+export class CheckoutPageModule {
+  
+}
