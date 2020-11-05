@@ -48,16 +48,16 @@ export class AuthenticationService {
             this.storage.set('user', this.users);              
          }
 
-        addUser(user){      
+        async addUser(user){      
             let customerObj ={
                 aspNetUser:  {email: undefined, userName: undefined},
-                businessAnniversary: user.customer.businessAnniversary,
+                businessAnniversary: "",
                 businessName: user.customer.businessName,
                 closestBustopId: user.customer.closestBustopId,
                 closestLandmark: user.customer.closestLandmark,
                 companyLogo: user.customer.companyLogo,
                 phoneNumber: "",
-                createdAt: '',
+                createdAt: "",
                 fullName: user.customer.fullName,
                 homeAddress: user.customer.homeAddress,
                 location: user.customer.location,
@@ -81,65 +81,66 @@ export class AuthenticationService {
                  role: user.role
                }   
                 this.users = [];
+                console.log(this.users)
                 this.users.push(userObj);
-                this.storage.set('user', this.users);  
+                console.log(this.users)
 
-setTimeout(() => {
-    this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
-        if(data.code == "007"){
-            var res = data.data;
-            let customerObj ={
-                aspNetUser:  res.customer.aspNetUser,
-                businessAnniversary: res.customer.businessAnniversary,
-                businessName: res.customer.businessName,
-                closestBustopId: res.customer.closestBustopId,
-                closestLandmark: res.customer.closestLandmark,
-                companyLogo: res.customer.companyLogo,
-                phoneNumber: res.user.phoneNumber,
-                createdAt: '',
-                fullName: res.customer.fullName,
-                homeAddress: res.customer.homeAddress,
-                location: res.customer.location,
-                registerAsPartner: res.customer.registerAsPartner,
-                residentialCountry: res.customer.residentialCountry,
-                residentialCountryId: res.customer.residentialCountryId,
-                residentialState: res.customer.residentialState,
-                residentialStateId: res.customer.residentialStateId,
-                synergyProgramCustomer: res.customer.synergyProgramCustomer,
-                updatedAt: '',
-                userId: res.customer.userId,
-                wallet: res.customer.wallet
-               }
-               let userObj = {
-                token: user.token,
-                userId: user.userId,
-                userType: res.user.userType,
-                isProfileComplete: res.user.isProfileCompleted,
-                user: res.user,
-                customer: customerObj,
-                role: user.role
-               }   
-                this.users = [];
-                this.users.push(userObj);
-                this.storage.set('user', this.users); 
-        }else{
-            const toast = await this.toastCtrl.create({
-                duration: 3000,
-                message: data.message,
-                color: "danger"
-              });
-              toast.present();
-            if(data.message == "User is not authorized"){
-                this.router.navigate(['login']);
-            }
-        }
-     
-       })
-
-          
-}, 2000);
-
-         
+                this.storage.set('user', this.users).then(data => {
+                    this.storage.get('user').then(data => {
+                        console.log(data, 'sss')
+                    })
+                    this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
+                        if(data.code == "007"){
+                            var res = data.data;
+                            let customerObj ={
+                                aspNetUser:  res.customer.aspNetUser,
+                                businessAnniversary: "",
+                                businessName: res.customer.businessName,
+                                closestBustopId: res.customer.closestBustopId,
+                                closestLandmark: res.customer.closestLandmark,
+                                companyLogo: res.customer.companyLogo,
+                                phoneNumber: res.user.phoneNumber,
+                                createdAt: '',
+                                fullName: res.customer.fullName,
+                                homeAddress: res.customer.homeAddress,
+                                location: res.customer.location,
+                                registerAsPartner: res.customer.registerAsPartner,
+                                residentialCountry: res.customer.residentialCountry,
+                                residentialCountryId: res.customer.residentialCountryId,
+                                residentialState: res.customer.residentialState,
+                                residentialStateId: res.customer.residentialStateId,
+                                synergyProgramCustomer: res.customer.synergyProgramCustomer,
+                                updatedAt: '',
+                                userId: res.customer.userId,
+                                wallet: res.customer.wallet
+                               }
+                               let userObj = {
+                                token: user.token,
+                                userId: user.userId,
+                                userType: res.user.userType,
+                                isProfileComplete: res.user.isProfileCompleted,
+                                user: res.user,
+                                customer: customerObj,
+                                role: user.role
+                               }   
+                                this.users = [];
+                                this.users.push(userObj);
+                                this.storage.set('user', this.users); 
+                        }else{
+                            const toast = await this.toastCtrl.create({
+                                duration: 3000,
+                                message: data.message,
+                                color: "danger"
+                              });
+                              toast.present();
+                            if(data.message == "User is not authorized"){
+                                this.router.navigate(['login']);
+                            }
+                        }
+                     
+                       })
+                
+                })
               }
 
         updateuser(user){        

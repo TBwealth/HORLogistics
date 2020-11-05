@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { LocaldeliveryPageRoutingModule } from './localdelivery-routing.module';
 
 import { LocaldeliveryPage } from './localdelivery.page';
+import { CheckboxComponent } from '../components/checkbox/checkbox.component';
+import { TextInputComponent } from '../components/text-input/text-input.component';
 
 @NgModule({
   imports: [
@@ -16,6 +18,6 @@ import { LocaldeliveryPage } from './localdelivery.page';
     ReactiveFormsModule,
     LocaldeliveryPageRoutingModule
   ],
-  declarations: [LocaldeliveryPage]
+  declarations: [LocaldeliveryPage, CheckboxComponent, TextInputComponent]
 })
 export class LocaldeliveryPageModule {}

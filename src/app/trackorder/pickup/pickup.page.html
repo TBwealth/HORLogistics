@@ -1,69 +1,84 @@
 <ion-content>
-
-  <div #searbarContainer style="width: 90%;" class="searchContainer">
-   <div style="padding: 17px;"></div>
-   <div style="background-color: #ffff; border-radius: 4px;">
-     <ion-row>
- 
-       <ion-col sizeLg="2" sizeMd="2" sizesm="2" sizeXs="2" style="height: 42px;" >
-       <div style="padding: 2px;"></div>
-         <ion-buttons (click)="openMenu()">
-           <ion-icon name="menu-outline" class="iconstyle1"></ion-icon>
-       </ion-buttons>
-      </ion-col>
-      <ion-col sizeLg="8" sizeMd="8" sizesm="8" sizeXs="8" style="height: 42px;">
-       <ion-input #searchbar  placeholder="Address" type="text" ></ion-input>
-     </ion-col>
-     <ion-col sizeLg="2" sizeMd="2" sizesm="2" sizeXs="2" style="height: 42px;">
-       <div style="padding: 2px;"></div>
-       <ion-avatar>
-         <img src="assets/images/female-avatar.png" class="avatborder" >
-       </ion-avatar>
-     </ion-col>
-      </ion-row>
-     
-   
-     
-   </div>
-   
-   </div>
-   
-   <div id="map" style="width: 100%;height: 70%;"> </div>
- 
-   <div class="selectoptioncontainer">
-     <div *ngIf="false" style="display: flex; text-align: center; padding: 50px; color: white; flex-direction: column;">
-        <div style="font-size: 20px; margin-bottom: 50px;">
-          Requesting pickup
-        </div>
-        <div style="display: flex; flex: auto; width: 100%; font-size: 50px;">
-          <ion-icon name="close-circle-outline" style="width: 100%;"></ion-icon>
-        </div>
-    </div> 
-    <div>
-      <h4 style="color: white;">Pickup in 5mins</h4>
-    </div>
-    <div>
-      <div *ngFor="let a of [1, 2]" style="display: flex; margin-bottom: 10px;">
-        <div style="padding: 3px; border-radius: 5px;margin-right: 15px; background-color: white;">
-          <img src="assets/images/female-avatar.png" class="avatborder"  slot="start">
-        </div>
-        <div style="flex: auto;">
-          <span style="display: block; margin-bottom: 5px;">Dumebi</span>
-          <span style="color: #FFFFFF90; font-size: 14px;">4.5 stars</span>
-        </div>
-        <div slot="end">
-          <ion-button class="my-button" style="background-color: #2A2E43;" size="button">
-            <ion-icon name="call-outline"></ion-icon>
-          </ion-button>
-          <ion-button  class="my-button">
-            <ion-icon name="mail-outline"></ion-icon>
-          </ion-button>
-        </div>
+  <div style=" height: 100%; display: flex; flex-direction: column;">
+    <div #searbarContainer style="width: 90%;" class="searchContainer">
+      <div style="padding: 17px;"></div>
+      <div style="background-color: #ffff; border-radius: 4px;">
+        <ion-row>
+    
+          <ion-col sizeLg="2" sizeMd="2" sizesm="2" sizeXs="2" style="height: 42px;" >
+          <div style="padding: 2px;"></div>
+            <ion-buttons (click)="openMenu()">
+              <ion-icon name="menu-outline" class="iconstyle1"></ion-icon>
+          </ion-buttons>
+         </ion-col>
+         <ion-col sizeLg="8" sizeMd="8" sizesm="8" sizeXs="8" style="height: 42px;">
+          <ion-input #searchbar  placeholder="Address" type="text" ></ion-input>
+        </ion-col>
+        <ion-col sizeLg="2" sizeMd="2" sizesm="2" sizeXs="2" style="height: 42px;">
+          <div style="padding: 2px;"></div>
+          <ion-avatar>
+            <img src="assets/images/female-avatar.png" class="avatborder" >
+          </ion-avatar>
+        </ion-col>
+         </ion-row>
+        
+      
+        
       </div>
-    </div>
-    <div>
-      <ion-button class="my-button-2" expand="block">CANCEL</ion-button>
-    </div>
-   </div>
+      
+      </div>
+      
+      <div style="flex: auto;">
+       <div id="map" style="width: 100%;height: 100%;"></div>
+      </div>
+    
+      <div class="selectoptioncontainer">
+        <div *ngIf="false" style="display: flex; text-align: center; padding: 50px; color: white; flex-direction: column;">
+           <div style="font-size: 20px; margin-bottom: 50px;">
+             Requesting pickup
+           </div>
+           <div style="display: flex; flex: auto; width: 100%; font-size: 50px;">
+             <ion-icon name="close-circle-outline" style="width: 100%;"></ion-icon>
+           </div>
+       </div> 
+       <div *ngIf="false">
+         <div>
+           <h4 style="color: white;">Pickup in 5mins</h4>
+         </div>
+         <div>
+           <div *ngFor="let a of [1, 2]" style="display: flex; margin-bottom: 10px;">
+             <div style="padding: 3px; border-radius: 5px;margin-right: 15px; background-color: white;">
+               <img src="assets/images/female-avatar.png" class="avatborder"  slot="start">
+             </div>
+             <div style="flex: auto;">
+               <span style="display: block; margin-bottom: 5px;">Dumebi</span>
+               <span style="color: #FFFFFF90; font-size: 14px;">4.5 stars</span>
+             </div>
+             <div slot="end">
+               <ion-button class="my-button" style="background-color: #2A2E43;" size="button">
+                 <ion-icon name="call-outline"></ion-icon>
+               </ion-button>
+               <ion-button  class="my-button">
+                 <ion-icon name="mail-outline"></ion-icon>
+               </ion-button>
+             </div>
+           </div>
+         </div>
+         <div>
+           <ion-button class="my-button-2" expand="block">CANCEL</ion-button>
+         </div>
+      </div>
+      <div style="display: flex;">
+       <div style="text-align: center; display: flex; justify-items: center; margin-right: 10px;">
+        <ion-icon name="chevron-up-outline" style="font-size: 30px; color: white;"></ion-icon>
+         <!-- <ion-icon name="chevron-down-outline" style="font-size: 30px; color: white;"></ion-icon> -->
+       </div>
+       <div>
+         <div style="font-size: 20px; line-height: 30px; padding-bottom: 5px; color: white;">Package QSE1243 in Transit</div>
+         <span style="font-size: 16px; color: #FFFFFF50;">12 min - 6 miles</span>
+       </div>
+      </div>
+     </div>
+  </div>
  </ion-content>
  
