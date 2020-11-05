@@ -25,11 +25,7 @@
     <form name="pickup_detailsForm" id="pickup_detailsForm" #pickup_detailsForm="ngForm">
       <ion-grid>
           <ion-select (ionChange)="validatePickupForm()" placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
-            <ion-select-option value="withinLag">Within Lagos</ion-select-option>
-            <ion-select-option value="withinIB">Within Ibadan</ion-select-option>
-            <ion-select-option value="withinAbj">Within Abuja</ion-select-option>
-            <ion-select-option value="LagtoIB">Lagos to Ibadan</ion-select-option>
-            <ion-select-option value="LagtoAbj">Lagos to Abuja</ion-select-option>
+            <ion-select-option [value]="category.id" *ngFor="let category of bookingCategories">{{category.name}}</ion-select-option>
           </ion-select>
           <div *ngIf="booking_category.invalid && (booking_category.dirty || booking_category.touched)" class="error">
             <div *ngIf="booking_category.errors.required">
@@ -179,27 +175,12 @@
     </ion-row>
     <div *ngSwitchCase='package'>
       <ion-grid>
-        <form name="package_detailsForm" #package_detailsForm="ngForm">
+        <!-- <form name="package_detailsForm" #package_detailsForm="ngForm"> -->
+          <app-text-input *ngIf="pickup_details.booking_category != 1" [(value)]="package_details.package_weight" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
           <p>Is package greater than indomie carton size ?</p>
           <ion-grid>
-            <ion-radio-group>
-            <ion-row>
-              <ion-col>
-
-                   <ion-item lines="none">  
-                    <ion-checkbox slot="start" class="checker" [checked]="checkedIdx" (ionChange)="yesfn($event)"></ion-checkbox>
-                      <ion-label>Yes</ion-label>
-                 </ion-item>
-               </ion-col>
-          
-              <ion-col>
-                  <ion-item lines="none"> 
-                    <ion-checkbox slot="start" class="checker" [checked]="!checkedIdx"  (ionChange)="nofn($event)"></ion-checkbox>
-                      <ion-label>No</ion-label>
-                 </ion-item>
-              </ion-col>
-          </ion-row>   
-        </ion-radio-group>      
+            <app-checkbox [(value)]="showSize"></app-checkbox>
+            <app-text-input *ngIf="showSize" [(value)]="package_details.package_size" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_size" placeholder='No of indomie carton'></app-text-input>
             <ion-row>
               <p>*Insurance will cost you 1% of the package value</p>
               <ion-item lines="none">  
@@ -208,7 +189,7 @@
               </ion-item>
             </ion-row>
           </ion-grid>
-        </form> 
+        <!-- </form>  -->
 
       </ion-grid>
       <div style="display:flex;">

@@ -85,7 +85,7 @@ loading:any;
     this.customersData.homeAddress = this.routeField == 'Address'? this.fieldValue: this.usersdata.customer.homeAddress ;
   console.log(this.customersData)
     this.manageUsers.updateUser(this.customersData).subscribe(async data=>{
-    if(data.code == '007'){
+    if(data.code == '000'){
       this.AuthenService.addUser(this.usersdata);
       this.loading.dismiss()
       const toast = await this.toastCtrl.create({
