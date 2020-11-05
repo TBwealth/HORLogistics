@@ -14,7 +14,7 @@ const routes: Routes = [
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/review-booking', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
- {path: '', redirectTo: 'checkout/rating', pathMatch: 'full'},
+ {path: '', redirectTo: 'summary', pathMatch: 'full'},
  
   {
     path: 'login',
@@ -114,6 +114,11 @@ const routes: Routes = [
     path: 'payment',
     loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   },
+  {
+    path: 'summary',
+    loadChildren: () => import('./summary/summary.module').then( m => m.SummaryPageModule)
+  },
+
 
 
 ];

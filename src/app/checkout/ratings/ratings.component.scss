@@ -1,0 +1,47 @@
+.submit_rating {
+    --background:#EF6102;
+    --color: #fff;
+    --background-hover:#EF6102;
+    font-size: 13px;
+    display: block;
+    margin: 10px;
+    --border-radius: 4px;
+    opacity: 100%; 
+    text-transform: uppercase;
+}
+
+.items{
+    display: flex; 
+    align-items: center; 
+    flex-direction: column;
+
+}
+
+.content {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    justify-items: center; 
+    padding-top: 80px;
+
+}
+
+.myicons {
+    width: 18px;
+    height: 18px;
+
+}
+
+.rating{
+    color: #EF6102;
+    font-size: 16px;
+}
+
+
+.ratings-content{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -100px;
+}

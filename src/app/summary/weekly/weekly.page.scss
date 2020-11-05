@@ -1,0 +1,16 @@
+.tab {
+    --color-hover:#EF6102;
+    --color-focused:#EF6102;
+    --color-selected: #EF6102;
+}
+
+.item-center {
+    display: flex;
+    justify-content: center;;
+}
+
+.each-trip {
+    --ion-grid-column-padding: 2px;
+    color: #EF6102;
+    margin-top: 20px;
+}
