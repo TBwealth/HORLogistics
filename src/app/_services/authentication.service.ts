@@ -57,7 +57,6 @@ export class AuthenticationService {
                 closestBustopId: user.customer.closestBustopId,
                 closestLandmark: user.customer.closestLandmark,
                 companyLogo: user.customer.companyLogo,
-                phoneNumber: "",
                 createdAt: '',
                 fullName: user.customer.fullName,
                 homeAddress: user.customer.homeAddress,
@@ -74,12 +73,13 @@ export class AuthenticationService {
                }
                let userObj = {
                 token: user.token,
+                phone: user.phone,
                 userId: user.userId,
                 userType: user.userType,
                 isProfileComplete: user.isProfileComplete,
                 user: user.user,
                 customer: customerObj,
-                 role: user.role
+                role: user.role,
                }   
                 this.users = [];
                 this.users.push(userObj);
@@ -96,7 +96,6 @@ export class AuthenticationService {
                                 closestBustopId: res.customer.closestBustopId,
                                 closestLandmark: res.customer.closestLandmark,
                                 companyLogo: res.customer.companyLogo,
-                                phoneNumber: res.user.phoneNumber,
                                 createdAt: '',
                                 fullName: res.customer.fullName,
                                 homeAddress: res.customer.homeAddress,
@@ -113,6 +112,7 @@ export class AuthenticationService {
                                }
                                let userObj = {
                                 token: user.token,
+                                phone: res.user.phoneNumber,
                                 userId: user.userId,
                                 userType: res.user.userType,
                                 isProfileComplete: res.user.isProfileCompleted,

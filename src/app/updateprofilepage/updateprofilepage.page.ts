@@ -45,7 +45,7 @@ loading:any;
           this.customersData.email = this.usersdata.user.email;
           this.customersData.residentialCountryId = this.usersdata.customer.residentialCountryId;
           this.customersData.residentialStateId = this.usersdata.customer.residentialStateId;
-          this.customersData.phoneNumber = this.usersdata.customer.phoneNumber;
+          this.customersData.phoneNumber = this.usersdata.phone;
           this.customersData.businessName = this.usersdata.customer.businessName;
           this.customersData.closestLandmark = this.usersdata.customer.closestLandmark;
           this.customersData.closestBustop = this.usersdata.customer.closestBustopId;

@@ -41,6 +41,7 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { LocationsServiceProxy,AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy } from './_services/service-proxies';
 import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
+import { StoreService } from './_services/store.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -80,6 +81,7 @@ import {MaprouteService} from './_services/maproute.service';
     File,
     MaprouteService,
     LocationsServiceProxy,
+    StoreService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

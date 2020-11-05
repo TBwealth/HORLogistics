@@ -301,10 +301,9 @@ export class AccountServiceProxy {
         let url_ = this.baseUrl + "/api/Account/uploadprofilepic";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(payload);
 
         let options_ : any = {
-            body: content_,
+            body: payload,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
@@ -594,6 +593,115 @@ export class ApiServiceProxy {
     }
 
 
+    /**
+     * @return OK
+     */
+    bulkOrdersPost(usr: VmUserObj): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/BulkOrders";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(usr);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBulkOrdersPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBulkOrdersPost(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBulkOrdersPost(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    checkOutAssistance(usr: VmUserObj): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/CheckOutAssistance";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(usr);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCheckOutAssistance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCheckOutAssistance(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCheckOutAssistance(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 
     /**
      * @return OK
@@ -707,85 +815,18 @@ export class ApiServiceProxy {
     /**
      * @return OK
      */
-    internationalBookingsGet(page: number, booking_status: number, date_range: string, full_name: string): Observable<ObjectResourceOfIPagedListOfInternationalBookingResource> {
-        let url_ = this.baseUrl + "/api/InternationalBookings?";
-        if (page === undefined || page === null)
-            throw new Error("The parameter 'page' must be defined and cannot be null.");
-        else
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (booking_status === undefined || booking_status === null)
-            throw new Error("The parameter 'booking_status' must be defined and cannot be null.");
-        else
-            url_ += "booking_status=" + encodeURIComponent("" + booking_status) + "&";
-        if (date_range === undefined || date_range === null)
-            throw new Error("The parameter 'date_range' must be defined and cannot be null.");
-        else
-            url_ += "date_range=" + encodeURIComponent("" + date_range) + "&";
-        if (full_name === undefined || full_name === null)
-            throw new Error("The parameter 'full_name' must be defined and cannot be null.");
-        else
-            url_ += "full_name=" + encodeURIComponent("" + full_name) + "&";
+    internationalBookingsPost(usr: VmUserObj): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/InternationalBookings";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(usr);
+
         let options_ : any = {
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processInternationalBookingsGet(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processInternationalBookingsGet(<any>response_);
-                } catch (e) {
-                    return <Observable<ObjectResourceOfIPagedListOfInternationalBookingResource>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<ObjectResourceOfIPagedListOfInternationalBookingResource>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processInternationalBookingsGet(response: HttpResponseBase): Observable<ObjectResourceOfIPagedListOfInternationalBookingResource> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ObjectResourceOfIPagedListOfInternationalBookingResource.fromJS(resultData200);
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<ObjectResourceOfIPagedListOfInternationalBookingResource>(<any>null);
-    }
-
-
-    /**
-     * @return OK
-     */
-    internationalBookingsPost(id: number): Observable<ObjectResourceOfInternationalBookingResource> {
-        let url_ = this.baseUrl + "/api/InternationalBookings/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
+                "Content-Type": "application/json",
                 "Accept": "application/json"
             })
         };
@@ -797,14 +838,14 @@ export class ApiServiceProxy {
                 try {
                     return this.processInternationalBookingsPost(<any>response_);
                 } catch (e) {
-                    return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(e);
+                    return <Observable<boolean>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ObjectResourceOfInternationalBookingResource>><any>_observableThrow(response_);
+                return <Observable<boolean>><any>_observableThrow(response_);
         }));
     }
 
-    protected processInternationalBookingsPost(response: HttpResponseBase): Observable<ObjectResourceOfInternationalBookingResource> {
+    protected processInternationalBookingsPost(response: HttpResponseBase): Observable<boolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -815,7 +856,7 @@ export class ApiServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ObjectResourceOfInternationalBookingResource.fromJS(resultData200);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -823,7 +864,7 @@ export class ApiServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ObjectResourceOfInternationalBookingResource>(<any>null);
+        return _observableOf<boolean>(<any>null);
     }
 
     /**
@@ -1204,6 +1245,61 @@ export class ApiServiceProxy {
         }
         return _observableOf<ResidentialCountry>(<any>null);
     }
+
+    /**
+     * @return OK
+     */
+    rider(usr: VmUserObj): Observable<boolean> {
+        let url_ = this.baseUrl + "/api/Rider";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(usr);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRider(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRider(<any>response_);
+                } catch (e) {
+                    return <Observable<boolean>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<boolean>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRider(response: HttpResponseBase): Observable<boolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<boolean>(<any>null);
+    }
 }
 
 @Injectable()
@@ -1439,6 +1535,368 @@ export class BlogServiceProxy {
             }));
         }
         return _observableOf<any>(<any>null);
+    }
+}
+
+@Injectable()
+export class BulkorderServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
+    }
+
+    /**
+     * @param filter_full_Name (optional) 
+     * @param filter_payment_Type (optional) 
+     * @param filter_booking_Status (optional) 
+     * @param filter_page (optional) 
+     * @return OK
+     */
+    getBulkOrders(filter_full_Name: string | null | undefined, filter_payment_Type: number | null | undefined, filter_booking_Status: number | null | undefined, filter_page: number | null | undefined): Observable<ObjectResourceOfIPagedListOfBulkOrder> {
+        let url_ = this.baseUrl + "/api/bulkorder/GetBulkOrders?";
+        if (filter_full_Name !== undefined && filter_full_Name !== null)
+            url_ += "filter.full_Name=" + encodeURIComponent("" + filter_full_Name) + "&";
+        if (filter_payment_Type !== undefined && filter_payment_Type !== null)
+            url_ += "filter.payment_Type=" + encodeURIComponent("" + filter_payment_Type) + "&";
+        if (filter_booking_Status !== undefined && filter_booking_Status !== null)
+            url_ += "filter.booking_Status=" + encodeURIComponent("" + filter_booking_Status) + "&";
+        if (filter_page !== undefined && filter_page !== null)
+            url_ += "filter.page=" + encodeURIComponent("" + filter_page) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetBulkOrders(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetBulkOrders(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfIPagedListOfBulkOrder>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfIPagedListOfBulkOrder>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetBulkOrders(response: HttpResponseBase): Observable<ObjectResourceOfIPagedListOfBulkOrder> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfIPagedListOfBulkOrder.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfIPagedListOfBulkOrder>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    bulkorderdetail(id: number): Observable<ObjectResourceOfBulkOrder> {
+        let url_ = this.baseUrl + "/api/bulkorder/bulkorderdetail?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processBulkorderdetail(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processBulkorderdetail(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfBulkOrder>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfBulkOrder>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processBulkorderdetail(response: HttpResponseBase): Observable<ObjectResourceOfBulkOrder> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfBulkOrder.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfBulkOrder>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    createBulkOrder(bulkDTO: CreateLocalBookingDTO[]): Observable<ObjectResourceOfBulkOrderResource> {
+        let url_ = this.baseUrl + "/api/bulkorder/CreateBulkOrder";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(bulkDTO);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateBulkOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateBulkOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfBulkOrderResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfBulkOrderResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreateBulkOrder(response: HttpResponseBase): Observable<ObjectResourceOfBulkOrderResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfBulkOrderResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfBulkOrderResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    acceptBulkOrder(id: number): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/bulkorder/AcceptBulkOrder?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAcceptBulkOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAcceptBulkOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processAcceptBulkOrder(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    enableCancelOrder(id: number): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/bulkorder/EnableCancelOrder?";
+        if (id === undefined || id === null)
+            throw new Error("The parameter 'id' must be defined and cannot be null.");
+        else
+            url_ += "id=" + encodeURIComponent("" + id) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processEnableCancelOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processEnableCancelOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processEnableCancelOrder(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+}
+
+@Injectable()
+export class CheckoutassistanceServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
+    }
+
+    /**
+     * @return OK
+     */
+    create(payload: CheckOutAssistanceDTO): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/checkoutassistance/Create";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(payload);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCreate(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
     }
 }
 
@@ -2207,56 +2665,7 @@ export class OrderServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
-    /**
-     * @return OK
-     */
-    delivered(): Observable<any> {
-        let url_ = this.baseUrl + "/api/dispatcher/order/delivered";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDelivered(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDelivered(<any>response_);
-                } catch (e) {
-                    return <Observable<any>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<any>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processDelivered(response: HttpResponseBase): Observable<any> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<any>(<any>null);
-    }
+   
 
     /**
      * @return OK
@@ -2307,6 +2716,61 @@ export class OrderServiceProxy {
             }));
         }
         return _observableOf<any>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    deliveredPost(dTO: MarkOrderAsDeliveredDTO): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/order/delivered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dTO);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeliveredPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeliveredPost(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeliveredPost(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
     }
 }
 
@@ -2692,6 +3156,69 @@ export class InternationalbookingServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
+    }
+
+    /**
+     * @param intlFilter_page (optional) 
+     * @param intlFilter_booking_Status (optional) 
+     * @param intlFilter_date_Range (optional) 
+     * @param intlFilter_full_name (optional) 
+     * @return OK
+     */
+    getintlbookings(intlFilter_page: number | null | undefined, intlFilter_booking_Status: number | null | undefined, intlFilter_date_Range: string | null | undefined, intlFilter_full_name: string | null | undefined): Observable<ObjectResourceOfIPagedListOfInternationalBooking> {
+        let url_ = this.baseUrl + "/api/internationalbooking/getintlbookings?";
+        if (intlFilter_page !== undefined && intlFilter_page !== null)
+            url_ += "intlFilter.page=" + encodeURIComponent("" + intlFilter_page) + "&";
+        if (intlFilter_booking_Status !== undefined && intlFilter_booking_Status !== null)
+            url_ += "intlFilter.booking_Status=" + encodeURIComponent("" + intlFilter_booking_Status) + "&";
+        if (intlFilter_date_Range !== undefined && intlFilter_date_Range !== null)
+            url_ += "intlFilter.date_Range=" + encodeURIComponent("" + intlFilter_date_Range) + "&";
+        if (intlFilter_full_name !== undefined && intlFilter_full_name !== null)
+            url_ += "intlFilter.full_name=" + encodeURIComponent("" + intlFilter_full_name) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetintlbookings(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetintlbookings(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfIPagedListOfInternationalBooking>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfIPagedListOfInternationalBooking>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetintlbookings(response: HttpResponseBase): Observable<ObjectResourceOfIPagedListOfInternationalBooking> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfIPagedListOfInternationalBooking.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfIPagedListOfInternationalBooking>(<any>null);
     }
 
     /**
@@ -3515,8 +4042,8 @@ export class LocalBookingServiceProxy {
     /**
      * @return OK
      */
-    localbookingcategorygroup(): Observable<ListResourceOfLocalBookingCategoryResource> {
-        let url_ = this.baseUrl + "/api/LocalBooking/localbookingcategorygroup";
+    localbookingcategory(): Observable<ListResourceOfLocalBookingCategoryResource> {
+        let url_ = this.baseUrl + "/api/LocalBooking/localbookingcategory";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3528,11 +4055,11 @@ export class LocalBookingServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLocalbookingcategorygroup(response_);
+            return this.processLocalbookingcategory(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processLocalbookingcategorygroup(<any>response_);
+                    return this.processLocalbookingcategory(<any>response_);
                 } catch (e) {
                     return <Observable<ListResourceOfLocalBookingCategoryResource>><any>_observableThrow(e);
                 }
@@ -3541,7 +4068,7 @@ export class LocalBookingServiceProxy {
         }));
     }
 
-    protected processLocalbookingcategorygroup(response: HttpResponseBase): Observable<ListResourceOfLocalBookingCategoryResource> {
+    protected processLocalbookingcategory(response: HttpResponseBase): Observable<ListResourceOfLocalBookingCategoryResource> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3617,8 +4144,8 @@ export class LocalBookingServiceProxy {
     /**
      * @return OK
      */
-    localbookingcategory(): Observable<ListResourceOfLocalBookingCategoryGroupResource> {
-        let url_ = this.baseUrl + "/api/LocalBooking/localbookingcategory";
+    localbookingcategorygroup(): Observable<ListResourceOfLocalBookingCategoryGroupResource> {
+        let url_ = this.baseUrl + "/api/LocalBooking/localbookingcategorygroup";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -3630,11 +4157,11 @@ export class LocalBookingServiceProxy {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processLocalbookingcategory(response_);
+            return this.processLocalbookingcategorygroup(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processLocalbookingcategory(<any>response_);
+                    return this.processLocalbookingcategorygroup(<any>response_);
                 } catch (e) {
                     return <Observable<ListResourceOfLocalBookingCategoryGroupResource>><any>_observableThrow(e);
                 }
@@ -3643,7 +4170,7 @@ export class LocalBookingServiceProxy {
         }));
     }
 
-    protected processLocalbookingcategory(response: HttpResponseBase): Observable<ListResourceOfLocalBookingCategoryGroupResource> {
+    protected processLocalbookingcategorygroup(response: HttpResponseBase): Observable<ListResourceOfLocalBookingCategoryGroupResource> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -5769,6 +6296,242 @@ export class CountriesServiceProxy {
 }
 
 @Injectable()
+export class RiderServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
+    }
+
+    /**
+     * @return OK
+     */
+    completeProfile(dTO: CompleteRegistrationDTO): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/CompleteProfile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dTO);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCompleteProfile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCompleteProfile(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCompleteProfile(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    riderDocuments(status: UpdateStatus): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/RiderDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(status);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRiderDocuments(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRiderDocuments(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processRiderDocuments(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    getassignedorder(pageSize: number, dispatcherId: number): Observable<ListResourceOfOrder> {
+        let url_ = this.baseUrl + "/api/Rider/getassignedorder?";
+        if (pageSize === undefined || pageSize === null)
+            throw new Error("The parameter 'pageSize' must be defined and cannot be null.");
+        else
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
+        if (dispatcherId === undefined || dispatcherId === null)
+            throw new Error("The parameter 'dispatcherId' must be defined and cannot be null.");
+        else
+            url_ += "dispatcherId=" + encodeURIComponent("" + dispatcherId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetassignedorder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetassignedorder(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResourceOfOrder>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResourceOfOrder>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetassignedorder(response: HttpResponseBase): Observable<ListResourceOfOrder> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResourceOfOrder.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResourceOfOrder>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    carryover(dTO: MarkOrderAsDeliveredDTO): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/carryover";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dTO);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCarryover(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCarryover(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processCarryover(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+}
+
+@Injectable()
 export class SmsServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
@@ -5993,6 +6756,7 @@ export interface IObjectResourceOfLoginResource {
 
 export class LoginResource implements ILoginResource {
     token: string | undefined;
+    phone: string | undefined;
     userId: string | undefined;
     userType: LoginResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
@@ -6012,6 +6776,7 @@ export class LoginResource implements ILoginResource {
     init(_data?: any) {
         if (_data) {
             this.token = _data["token"];
+            this.phone = _data["phone"];
             this.userId = _data["userId"];
             this.userType = _data["userType"];
             this.isProfileComplete = _data["isProfileComplete"];
@@ -6035,6 +6800,7 @@ export class LoginResource implements ILoginResource {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["token"] = this.token;
+        data["phone"] = this.phone;
         data["userId"] = this.userId;
         data["userType"] = this.userType;
         data["isProfileComplete"] = this.isProfileComplete;
@@ -6058,6 +6824,7 @@ export class LoginResource implements ILoginResource {
 
 export interface ILoginResource {
     token: string | undefined;
+    phone: string | undefined;
     userId: string | undefined;
     userType: LoginResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
@@ -6832,6 +7599,7 @@ export class LocalBookingCategory implements ILocalBookingCategory {
     id: number | undefined;
     name: string;
     toggleBookingActivation: boolean | undefined;
+    estimatedPackageWeight: boolean | undefined;
     locations: Location[] | undefined;
     localBookings: LocalBooking[] | undefined;
 
@@ -6849,6 +7617,7 @@ export class LocalBookingCategory implements ILocalBookingCategory {
             this.id = _data["id"];
             this.name = _data["name"];
             this.toggleBookingActivation = _data["toggleBookingActivation"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
             if (Array.isArray(_data["locations"])) {
                 this.locations = [] as any;
                 for (let item of _data["locations"])
@@ -6874,6 +7643,7 @@ export class LocalBookingCategory implements ILocalBookingCategory {
         data["id"] = this.id;
         data["name"] = this.name;
         data["toggleBookingActivation"] = this.toggleBookingActivation;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
         if (Array.isArray(this.locations)) {
             data["locations"] = [];
             for (let item of this.locations)
@@ -6899,6 +7669,7 @@ export interface ILocalBookingCategory {
     id: number | undefined;
     name: string;
     toggleBookingActivation: boolean | undefined;
+    estimatedPackageWeight: boolean | undefined;
     locations: Location[] | undefined;
     localBookings: LocalBooking[] | undefined;
 }
@@ -7931,9 +8702,9 @@ export class Dispatcher implements IDispatcher {
     dispatcherStatusesId: number | undefined;
     userId: string | undefined;
     aspNetUser: AspNetUser | undefined;
-    phoneNumber: string;
-    sponsorName: string;
-    sponsorAddress: string;
+    phoneNumber: string | undefined;
+    sponsorName: string | undefined;
+    sponsorAddress: string | undefined;
     sponsorPhoneNumber: string | undefined;
     createdAt: moment.Moment | undefined;
     updatedAt: moment.Moment | undefined;
@@ -7949,6 +8720,15 @@ export class Dispatcher implements IDispatcher {
     fcmToken: string | undefined;
     trackingUsername: string | undefined;
     trackingPassword: string | undefined;
+    profilePicUrl: string | undefined;
+    dispatcherCertificate: DispatcherDocument | undefined;
+    isApproved: boolean | undefined;
+    plateNumber: string | undefined;
+    carName: string | undefined;
+    carModel: string | undefined;
+    carYear: string | undefined;
+    licenseNumber: string | undefined;
+    deviceId: string | undefined;
 
     constructor(data?: IDispatcher) {
         if (data) {
@@ -7988,6 +8768,15 @@ export class Dispatcher implements IDispatcher {
             this.fcmToken = _data["fcmToken"];
             this.trackingUsername = _data["trackingUsername"];
             this.trackingPassword = _data["trackingPassword"];
+            this.profilePicUrl = _data["profilePicUrl"];
+            this.dispatcherCertificate = _data["dispatcherCertificate"] ? DispatcherDocument.fromJS(_data["dispatcherCertificate"]) : <any>undefined;
+            this.isApproved = _data["isApproved"];
+            this.plateNumber = _data["plateNumber"];
+            this.carName = _data["carName"];
+            this.carModel = _data["carModel"];
+            this.carYear = _data["carYear"];
+            this.licenseNumber = _data["licenseNumber"];
+            this.deviceId = _data["deviceId"];
         }
     }
 
@@ -8027,6 +8816,15 @@ export class Dispatcher implements IDispatcher {
         data["fcmToken"] = this.fcmToken;
         data["trackingUsername"] = this.trackingUsername;
         data["trackingPassword"] = this.trackingPassword;
+        data["profilePicUrl"] = this.profilePicUrl;
+        data["dispatcherCertificate"] = this.dispatcherCertificate ? this.dispatcherCertificate.toJSON() : <any>undefined;
+        data["isApproved"] = this.isApproved;
+        data["plateNumber"] = this.plateNumber;
+        data["carName"] = this.carName;
+        data["carModel"] = this.carModel;
+        data["carYear"] = this.carYear;
+        data["licenseNumber"] = this.licenseNumber;
+        data["deviceId"] = this.deviceId;
         return data; 
     }
 
@@ -8044,9 +8842,9 @@ export interface IDispatcher {
     dispatcherStatusesId: number | undefined;
     userId: string | undefined;
     aspNetUser: AspNetUser | undefined;
-    phoneNumber: string;
-    sponsorName: string;
-    sponsorAddress: string;
+    phoneNumber: string | undefined;
+    sponsorName: string | undefined;
+    sponsorAddress: string | undefined;
     sponsorPhoneNumber: string | undefined;
     createdAt: moment.Moment | undefined;
     updatedAt: moment.Moment | undefined;
@@ -8062,6 +8860,15 @@ export interface IDispatcher {
     fcmToken: string | undefined;
     trackingUsername: string | undefined;
     trackingPassword: string | undefined;
+    profilePicUrl: string | undefined;
+    dispatcherCertificate: DispatcherDocument | undefined;
+    isApproved: boolean | undefined;
+    plateNumber: string | undefined;
+    carName: string | undefined;
+    carModel: string | undefined;
+    carYear: string | undefined;
+    licenseNumber: string | undefined;
+    deviceId: string | undefined;
 }
 
 export class CustomerActorState implements ICustomerActorState {
@@ -8631,6 +9438,69 @@ export interface IDispatcherStatus {
     id: number | undefined;
     name: string;
     dispatchers: Dispatcher[] | undefined;
+}
+
+export class DispatcherDocument implements IDispatcherDocument {
+    dispatcherId: number | undefined;
+    machinePictureUrl: string | undefined;
+    machineRegistrationUrl: string | undefined;
+    riderLincesUrl: string | undefined;
+    riderInsurance: string | undefined;
+    dispatcher: Dispatcher | undefined;
+
+    constructor(data?: IDispatcherDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dispatcherId = _data["dispatcherId"];
+            this.machinePictureUrl = _data["machinePictureUrl"];
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"];
+            this.riderLincesUrl = _data["riderLincesUrl"];
+            this.riderInsurance = _data["riderInsurance"];
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DispatcherDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new DispatcherDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dispatcherId"] = this.dispatcherId;
+        data["machinePictureUrl"] = this.machinePictureUrl;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl;
+        data["riderLincesUrl"] = this.riderLincesUrl;
+        data["riderInsurance"] = this.riderInsurance;
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): DispatcherDocument {
+        const json = this.toJSON();
+        let result = new DispatcherDocument();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDispatcherDocument {
+    dispatcherId: number | undefined;
+    machinePictureUrl: string | undefined;
+    machineRegistrationUrl: string | undefined;
+    riderLincesUrl: string | undefined;
+    riderInsurance: string | undefined;
+    dispatcher: Dispatcher | undefined;
 }
 
 export class InternationalBooking implements IInternationalBooking {
@@ -9938,6 +10808,7 @@ export interface IObjectResourceOfRegisterUserResource {
 export class RegisterUserResource implements IRegisterUserResource {
     token: string | undefined;
     userId: string | undefined;
+    phone: string | undefined;
     userType: RegisterUserResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
@@ -9957,6 +10828,7 @@ export class RegisterUserResource implements IRegisterUserResource {
         if (_data) {
             this.token = _data["token"];
             this.userId = _data["userId"];
+            this.phone = _data["phone"];
             this.userType = _data["userType"];
             this.isProfileComplete = _data["isProfileComplete"];
             this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
@@ -9980,6 +10852,7 @@ export class RegisterUserResource implements IRegisterUserResource {
         data = typeof data === 'object' ? data : {};
         data["token"] = this.token;
         data["userId"] = this.userId;
+        data["phone"] = this.phone;
         data["userType"] = this.userType;
         data["isProfileComplete"] = this.isProfileComplete;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
@@ -10003,6 +10876,7 @@ export class RegisterUserResource implements IRegisterUserResource {
 export interface IRegisterUserResource {
     token: string | undefined;
     userId: string | undefined;
+    phone: string | undefined;
     userType: RegisterUserResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
@@ -10984,6 +11858,621 @@ export interface IFormData {
     offset: number | undefined;
 }
 
+export class BulkOrderFilter implements IBulkOrderFilter {
+    full_Name: string | undefined;
+    payment_Type: number | undefined;
+    booking_Status: number | undefined;
+    page: number | undefined;
+
+    constructor(data?: IBulkOrderFilter) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.full_Name = _data["full_Name"];
+            this.payment_Type = _data["payment_Type"];
+            this.booking_Status = _data["booking_Status"];
+            this.page = _data["page"];
+        }
+    }
+
+    static fromJS(data: any): BulkOrderFilter {
+        data = typeof data === 'object' ? data : {};
+        let result = new BulkOrderFilter();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["full_Name"] = this.full_Name;
+        data["payment_Type"] = this.payment_Type;
+        data["booking_Status"] = this.booking_Status;
+        data["page"] = this.page;
+        return data; 
+    }
+
+    clone(): BulkOrderFilter {
+        const json = this.toJSON();
+        let result = new BulkOrderFilter();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBulkOrderFilter {
+    full_Name: string | undefined;
+    payment_Type: number | undefined;
+    booking_Status: number | undefined;
+    page: number | undefined;
+}
+
+export class ObjectResourceOfIPagedListOfBulkOrder implements IObjectResourceOfIPagedListOfBulkOrder {
+    data: BulkOrder[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfIPagedListOfBulkOrder) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(BulkOrder.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfIPagedListOfBulkOrder {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfIPagedListOfBulkOrder();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfIPagedListOfBulkOrder {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfIPagedListOfBulkOrder();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfIPagedListOfBulkOrder {
+    data: BulkOrder[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ObjectResourceOfBulkOrder implements IObjectResourceOfBulkOrder {
+    data: BulkOrder | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfBulkOrder) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? BulkOrder.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfBulkOrder {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfBulkOrder();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfBulkOrder {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfBulkOrder();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfBulkOrder {
+    data: BulkOrder | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class CreateLocalBookingDTO implements ICreateLocalBookingDTO {
+    deliveryDate: moment.Moment;
+    deliveryTypeId: number | undefined;
+    estimatedPackageWeight: number | undefined;
+    paymentTypeId: number | undefined;
+    localBookingCategoryId: number | undefined;
+    senderName: string;
+    pickUpAddress: string;
+    pickupLandmark: string | undefined;
+    phoneNumber: string;
+    recipientName: string;
+    deliveryAddress: string;
+    deliveryLandmark: string | undefined;
+    recipientPhoneNumber: string;
+    pickupLocationId: number | undefined;
+    deliveryLocationId: number | undefined;
+    packageDescription: string | undefined;
+    isInsured: boolean | undefined;
+    packageValue: number | undefined;
+    deliveryCost: number | undefined;
+    numberOfPackages: number | undefined;
+    insuranceCost: number | undefined;
+    totalCost: number | undefined;
+    customerActorStateId: number | undefined;
+    wantCashCollection: boolean | undefined;
+    cashCollectionAmount: number | undefined;
+    cashCollectionAccountNumber: string | undefined;
+
+    constructor(data?: ICreateLocalBookingDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.deliveryTypeId = _data["deliveryTypeId"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
+            this.paymentTypeId = _data["paymentTypeId"];
+            this.localBookingCategoryId = _data["localBookingCategoryId"];
+            this.senderName = _data["senderName"];
+            this.pickUpAddress = _data["pickUpAddress"];
+            this.pickupLandmark = _data["pickupLandmark"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.recipientName = _data["recipientName"];
+            this.deliveryAddress = _data["deliveryAddress"];
+            this.deliveryLandmark = _data["deliveryLandmark"];
+            this.recipientPhoneNumber = _data["recipientPhoneNumber"];
+            this.pickupLocationId = _data["pickupLocationId"];
+            this.deliveryLocationId = _data["deliveryLocationId"];
+            this.packageDescription = _data["packageDescription"];
+            this.isInsured = _data["isInsured"];
+            this.packageValue = _data["packageValue"];
+            this.deliveryCost = _data["deliveryCost"];
+            this.numberOfPackages = _data["numberOfPackages"];
+            this.insuranceCost = _data["insuranceCost"];
+            this.totalCost = _data["totalCost"];
+            this.customerActorStateId = _data["customerActorStateId"];
+            this.wantCashCollection = _data["wantCashCollection"];
+            this.cashCollectionAmount = _data["cashCollectionAmount"];
+            this.cashCollectionAccountNumber = _data["cashCollectionAccountNumber"];
+        }
+    }
+
+    static fromJS(data: any): CreateLocalBookingDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateLocalBookingDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
+        data["deliveryTypeId"] = this.deliveryTypeId;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
+        data["paymentTypeId"] = this.paymentTypeId;
+        data["localBookingCategoryId"] = this.localBookingCategoryId;
+        data["senderName"] = this.senderName;
+        data["pickUpAddress"] = this.pickUpAddress;
+        data["pickupLandmark"] = this.pickupLandmark;
+        data["phoneNumber"] = this.phoneNumber;
+        data["recipientName"] = this.recipientName;
+        data["deliveryAddress"] = this.deliveryAddress;
+        data["deliveryLandmark"] = this.deliveryLandmark;
+        data["recipientPhoneNumber"] = this.recipientPhoneNumber;
+        data["pickupLocationId"] = this.pickupLocationId;
+        data["deliveryLocationId"] = this.deliveryLocationId;
+        data["packageDescription"] = this.packageDescription;
+        data["isInsured"] = this.isInsured;
+        data["packageValue"] = this.packageValue;
+        data["deliveryCost"] = this.deliveryCost;
+        data["numberOfPackages"] = this.numberOfPackages;
+        data["insuranceCost"] = this.insuranceCost;
+        data["totalCost"] = this.totalCost;
+        data["customerActorStateId"] = this.customerActorStateId;
+        data["wantCashCollection"] = this.wantCashCollection;
+        data["cashCollectionAmount"] = this.cashCollectionAmount;
+        data["cashCollectionAccountNumber"] = this.cashCollectionAccountNumber;
+        return data; 
+    }
+
+    clone(): CreateLocalBookingDTO {
+        const json = this.toJSON();
+        let result = new CreateLocalBookingDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreateLocalBookingDTO {
+    deliveryDate: moment.Moment;
+    deliveryTypeId: number | undefined;
+    estimatedPackageWeight: number | undefined;
+    paymentTypeId: number | undefined;
+    localBookingCategoryId: number | undefined;
+    senderName: string;
+    pickUpAddress: string;
+    pickupLandmark: string | undefined;
+    phoneNumber: string;
+    recipientName: string;
+    deliveryAddress: string;
+    deliveryLandmark: string | undefined;
+    recipientPhoneNumber: string;
+    pickupLocationId: number | undefined;
+    deliveryLocationId: number | undefined;
+    packageDescription: string | undefined;
+    isInsured: boolean | undefined;
+    packageValue: number | undefined;
+    deliveryCost: number | undefined;
+    numberOfPackages: number | undefined;
+    insuranceCost: number | undefined;
+    totalCost: number | undefined;
+    customerActorStateId: number | undefined;
+    wantCashCollection: boolean | undefined;
+    cashCollectionAmount: number | undefined;
+    cashCollectionAccountNumber: string | undefined;
+}
+
+export class ObjectResourceOfBulkOrderResource implements IObjectResourceOfBulkOrderResource {
+    data: BulkOrderResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfBulkOrderResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? BulkOrderResource.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfBulkOrderResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfBulkOrderResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfBulkOrderResource {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfBulkOrderResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfBulkOrderResource {
+    data: BulkOrderResource | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class BulkOrderResource implements IBulkOrderResource {
+    bulkOrderId: number | undefined;
+    totalCost: number | undefined;
+    errorMessage: string[] | undefined;
+
+    constructor(data?: IBulkOrderResource) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.bulkOrderId = _data["bulkOrderId"];
+            this.totalCost = _data["totalCost"];
+            if (Array.isArray(_data["errorMessage"])) {
+                this.errorMessage = [] as any;
+                for (let item of _data["errorMessage"])
+                    this.errorMessage.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): BulkOrderResource {
+        data = typeof data === 'object' ? data : {};
+        let result = new BulkOrderResource();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["bulkOrderId"] = this.bulkOrderId;
+        data["totalCost"] = this.totalCost;
+        if (Array.isArray(this.errorMessage)) {
+            data["errorMessage"] = [];
+            for (let item of this.errorMessage)
+                data["errorMessage"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): BulkOrderResource {
+        const json = this.toJSON();
+        let result = new BulkOrderResource();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IBulkOrderResource {
+    bulkOrderId: number | undefined;
+    totalCost: number | undefined;
+    errorMessage: string[] | undefined;
+}
+
+export class CheckOutAssistanceDTO implements ICheckOutAssistanceDTO {
+    request: CheckOutAssistanceModel | undefined;
+    products: CheckOutAssistanceProductModel[] | undefined;
+
+    constructor(data?: ICheckOutAssistanceDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.request = _data["request"] ? CheckOutAssistanceModel.fromJS(_data["request"]) : <any>undefined;
+            if (Array.isArray(_data["products"])) {
+                this.products = [] as any;
+                for (let item of _data["products"])
+                    this.products.push(CheckOutAssistanceProductModel.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CheckOutAssistanceDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckOutAssistanceDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["request"] = this.request ? this.request.toJSON() : <any>undefined;
+        if (Array.isArray(this.products)) {
+            data["products"] = [];
+            for (let item of this.products)
+                data["products"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CheckOutAssistanceDTO {
+        const json = this.toJSON();
+        let result = new CheckOutAssistanceDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICheckOutAssistanceDTO {
+    request: CheckOutAssistanceModel | undefined;
+    products: CheckOutAssistanceProductModel[] | undefined;
+}
+
+export class CheckOutAssistanceModel implements ICheckOutAssistanceModel {
+    customerName: string | undefined;
+    customerPhone: string | undefined;
+    customerAddress: string | undefined;
+    checkoutProcessing: string | undefined;
+    pickupCenter: string | undefined;
+    shipToState: string | undefined;
+    deliveryLocationId: number | undefined;
+
+    constructor(data?: ICheckOutAssistanceModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.customerName = _data["customerName"];
+            this.customerPhone = _data["customerPhone"];
+            this.customerAddress = _data["customerAddress"];
+            this.checkoutProcessing = _data["checkoutProcessing"];
+            this.pickupCenter = _data["pickupCenter"];
+            this.shipToState = _data["shipToState"];
+            this.deliveryLocationId = _data["deliveryLocationId"];
+        }
+    }
+
+    static fromJS(data: any): CheckOutAssistanceModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckOutAssistanceModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customerName"] = this.customerName;
+        data["customerPhone"] = this.customerPhone;
+        data["customerAddress"] = this.customerAddress;
+        data["checkoutProcessing"] = this.checkoutProcessing;
+        data["pickupCenter"] = this.pickupCenter;
+        data["shipToState"] = this.shipToState;
+        data["deliveryLocationId"] = this.deliveryLocationId;
+        return data; 
+    }
+
+    clone(): CheckOutAssistanceModel {
+        const json = this.toJSON();
+        let result = new CheckOutAssistanceModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICheckOutAssistanceModel {
+    customerName: string | undefined;
+    customerPhone: string | undefined;
+    customerAddress: string | undefined;
+    checkoutProcessing: string | undefined;
+    pickupCenter: string | undefined;
+    shipToState: string | undefined;
+    deliveryLocationId: number | undefined;
+}
+
+export class CheckOutAssistanceProductModel implements ICheckOutAssistanceProductModel {
+    name: string | undefined;
+    url: string | undefined;
+    quantity: number | undefined;
+    delivery: string | undefined;
+    color: string | undefined;
+    size: string | undefined;
+    style: string | undefined;
+    itemNumber: string | undefined;
+    comment: string | undefined;
+
+    constructor(data?: ICheckOutAssistanceProductModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.name = _data["name"];
+            this.url = _data["url"];
+            this.quantity = _data["quantity"];
+            this.delivery = _data["delivery"];
+            this.color = _data["color"];
+            this.size = _data["size"];
+            this.style = _data["style"];
+            this.itemNumber = _data["itemNumber"];
+            this.comment = _data["comment"];
+        }
+    }
+
+    static fromJS(data: any): CheckOutAssistanceProductModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new CheckOutAssistanceProductModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["url"] = this.url;
+        data["quantity"] = this.quantity;
+        data["delivery"] = this.delivery;
+        data["color"] = this.color;
+        data["size"] = this.size;
+        data["style"] = this.style;
+        data["itemNumber"] = this.itemNumber;
+        data["comment"] = this.comment;
+        return data; 
+    }
+
+    clone(): CheckOutAssistanceProductModel {
+        const json = this.toJSON();
+        let result = new CheckOutAssistanceProductModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICheckOutAssistanceProductModel {
+    name: string | undefined;
+    url: string | undefined;
+    quantity: number | undefined;
+    delivery: string | undefined;
+    color: string | undefined;
+    size: string | undefined;
+    style: string | undefined;
+    itemNumber: string | undefined;
+    comment: string | undefined;
+}
+
 export class CreateLocalBooking implements ICreateLocalBooking {
     deliveryAddress: string;
     deliveryBustop: string;
@@ -11065,6 +12554,120 @@ export interface ICreateLocalBooking {
     packageDescription: string;
     usePartnerProfile: boolean | undefined;
     category: string | undefined;
+}
+
+export class IntlFilter implements IIntlFilter {
+    page: number | undefined;
+    booking_Status: number | undefined;
+    date_Range: string | undefined;
+    full_name: string | undefined;
+
+    constructor(data?: IIntlFilter) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.page = _data["page"];
+            this.booking_Status = _data["booking_Status"];
+            this.date_Range = _data["date_Range"];
+            this.full_name = _data["full_name"];
+        }
+    }
+
+    static fromJS(data: any): IntlFilter {
+        data = typeof data === 'object' ? data : {};
+        let result = new IntlFilter();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["page"] = this.page;
+        data["booking_Status"] = this.booking_Status;
+        data["date_Range"] = this.date_Range;
+        data["full_name"] = this.full_name;
+        return data; 
+    }
+
+    clone(): IntlFilter {
+        const json = this.toJSON();
+        let result = new IntlFilter();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIntlFilter {
+    page: number | undefined;
+    booking_Status: number | undefined;
+    date_Range: string | undefined;
+    full_name: string | undefined;
+}
+
+export class ObjectResourceOfIPagedListOfInternationalBooking implements IObjectResourceOfIPagedListOfInternationalBooking {
+    data: InternationalBooking[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfIPagedListOfInternationalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(InternationalBooking.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfIPagedListOfInternationalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfIPagedListOfInternationalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfIPagedListOfInternationalBooking {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfIPagedListOfInternationalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfIPagedListOfInternationalBooking {
+    data: InternationalBooking[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
 }
 
 export class ListResourceOfIntlBookingStatusResource implements IListResourceOfIntlBookingStatusResource {
@@ -12517,65 +14120,6 @@ export interface IProcessIntlBookingResource {
     id: number | undefined;
 }
 
-export class ObjectResourceOfIPagedListOfInternationalBookingResource implements IObjectResourceOfIPagedListOfInternationalBookingResource {
-    data: InternationalBookingResource[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
-
-    constructor(data?: IObjectResourceOfIPagedListOfInternationalBookingResource) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(InternationalBookingResource.fromJS(item));
-            }
-            this.code = _data["code"];
-            this.message = _data["message"];
-        }
-    }
-
-    static fromJS(data: any): ObjectResourceOfIPagedListOfInternationalBookingResource {
-        data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfIPagedListOfInternationalBookingResource();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["code"] = this.code;
-        data["message"] = this.message;
-        return data; 
-    }
-
-    clone(): ObjectResourceOfIPagedListOfInternationalBookingResource {
-        const json = this.toJSON();
-        let result = new ObjectResourceOfIPagedListOfInternationalBookingResource();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IObjectResourceOfIPagedListOfInternationalBookingResource {
-    data: InternationalBookingResource[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
-}
-
 export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjectResourceOfGetLocalBookingsForMobileResource {
     data: GetLocalBookingsForMobileResource | undefined;
     code: string | undefined;
@@ -12749,6 +14293,7 @@ export class LocalBookingCategoryResource implements ILocalBookingCategoryResour
     id: number | undefined;
     name: string | undefined;
     toggleBookingActivation: boolean | undefined;
+    estimatedPackageWeight: boolean | undefined;
 
     constructor(data?: ILocalBookingCategoryResource) {
         if (data) {
@@ -12764,6 +14309,7 @@ export class LocalBookingCategoryResource implements ILocalBookingCategoryResour
             this.id = _data["id"];
             this.name = _data["name"];
             this.toggleBookingActivation = _data["toggleBookingActivation"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
         }
     }
 
@@ -12779,6 +14325,7 @@ export class LocalBookingCategoryResource implements ILocalBookingCategoryResour
         data["id"] = this.id;
         data["name"] = this.name;
         data["toggleBookingActivation"] = this.toggleBookingActivation;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
         return data; 
     }
 
@@ -12794,6 +14341,7 @@ export interface ILocalBookingCategoryResource {
     id: number | undefined;
     name: string | undefined;
     toggleBookingActivation: boolean | undefined;
+    estimatedPackageWeight: boolean | undefined;
 }
 
 export class ListResourceOfLocalBookingStatusResource implements IListResourceOfLocalBookingStatusResource {
@@ -13360,149 +14908,6 @@ export interface IPaymentTypeResoiurce {
     id: number | undefined;
     name: string | undefined;
     isActive: boolean | undefined;
-}
-
-export class CreateLocalBookingDTO implements ICreateLocalBookingDTO {
-    deliveryDate: moment.Moment;
-    deliveryTypeId: number | undefined;
-    estimatedPackageWeight: number | undefined;
-    paymentTypeId: number | undefined;
-    localBookingCategoryId: number | undefined;
-    senderName: string;
-    pickUpAddress: string;
-    pickupLandmark: string | undefined;
-    phoneNumber: string;
-    recipientName: string;
-    deliveryAddress: string;
-    deliveryLandmark: string | undefined;
-    recipientPhoneNumber: string;
-    pickupLocationId: number | undefined;
-    deliveryLocationId: number | undefined;
-    packageDescription: string | undefined;
-    isInsured: boolean | undefined;
-    packageValue: number | undefined;
-    deliveryCost: number | undefined;
-    numberOfPackages: number | undefined;
-    insuranceCost: number | undefined;
-    totalCost: number | undefined;
-    customerActorStateId: number | undefined;
-    wantCashCollection: boolean | undefined;
-    cashCollectionAmount: number | undefined;
-    cashCollectionAccountNumber: string | undefined;
-
-    constructor(data?: ICreateLocalBookingDTO) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
-            this.deliveryTypeId = _data["deliveryTypeId"];
-            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
-            this.paymentTypeId = _data["paymentTypeId"];
-            this.localBookingCategoryId = _data["localBookingCategoryId"];
-            this.senderName = _data["senderName"];
-            this.pickUpAddress = _data["pickUpAddress"];
-            this.pickupLandmark = _data["pickupLandmark"];
-            this.phoneNumber = _data["phoneNumber"];
-            this.recipientName = _data["recipientName"];
-            this.deliveryAddress = _data["deliveryAddress"];
-            this.deliveryLandmark = _data["deliveryLandmark"];
-            this.recipientPhoneNumber = _data["recipientPhoneNumber"];
-            this.pickupLocationId = _data["pickupLocationId"];
-            this.deliveryLocationId = _data["deliveryLocationId"];
-            this.packageDescription = _data["packageDescription"];
-            this.isInsured = _data["isInsured"];
-            this.packageValue = _data["packageValue"];
-            this.deliveryCost = _data["deliveryCost"];
-            this.numberOfPackages = _data["numberOfPackages"];
-            this.insuranceCost = _data["insuranceCost"];
-            this.totalCost = _data["totalCost"];
-            this.customerActorStateId = _data["customerActorStateId"];
-            this.wantCashCollection = _data["wantCashCollection"];
-            this.cashCollectionAmount = _data["cashCollectionAmount"];
-            this.cashCollectionAccountNumber = _data["cashCollectionAccountNumber"];
-        }
-    }
-
-    static fromJS(data: any): CreateLocalBookingDTO {
-        data = typeof data === 'object' ? data : {};
-        let result = new CreateLocalBookingDTO();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
-        data["deliveryTypeId"] = this.deliveryTypeId;
-        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
-        data["paymentTypeId"] = this.paymentTypeId;
-        data["localBookingCategoryId"] = this.localBookingCategoryId;
-        data["senderName"] = this.senderName;
-        data["pickUpAddress"] = this.pickUpAddress;
-        data["pickupLandmark"] = this.pickupLandmark;
-        data["phoneNumber"] = this.phoneNumber;
-        data["recipientName"] = this.recipientName;
-        data["deliveryAddress"] = this.deliveryAddress;
-        data["deliveryLandmark"] = this.deliveryLandmark;
-        data["recipientPhoneNumber"] = this.recipientPhoneNumber;
-        data["pickupLocationId"] = this.pickupLocationId;
-        data["deliveryLocationId"] = this.deliveryLocationId;
-        data["packageDescription"] = this.packageDescription;
-        data["isInsured"] = this.isInsured;
-        data["packageValue"] = this.packageValue;
-        data["deliveryCost"] = this.deliveryCost;
-        data["numberOfPackages"] = this.numberOfPackages;
-        data["insuranceCost"] = this.insuranceCost;
-        data["totalCost"] = this.totalCost;
-        data["customerActorStateId"] = this.customerActorStateId;
-        data["wantCashCollection"] = this.wantCashCollection;
-        data["cashCollectionAmount"] = this.cashCollectionAmount;
-        data["cashCollectionAccountNumber"] = this.cashCollectionAccountNumber;
-        return data; 
-    }
-
-    clone(): CreateLocalBookingDTO {
-        const json = this.toJSON();
-        let result = new CreateLocalBookingDTO();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ICreateLocalBookingDTO {
-    deliveryDate: moment.Moment;
-    deliveryTypeId: number | undefined;
-    estimatedPackageWeight: number | undefined;
-    paymentTypeId: number | undefined;
-    localBookingCategoryId: number | undefined;
-    senderName: string;
-    pickUpAddress: string;
-    pickupLandmark: string | undefined;
-    phoneNumber: string;
-    recipientName: string;
-    deliveryAddress: string;
-    deliveryLandmark: string | undefined;
-    recipientPhoneNumber: string;
-    pickupLocationId: number | undefined;
-    deliveryLocationId: number | undefined;
-    packageDescription: string | undefined;
-    isInsured: boolean | undefined;
-    packageValue: number | undefined;
-    deliveryCost: number | undefined;
-    numberOfPackages: number | undefined;
-    insuranceCost: number | undefined;
-    totalCost: number | undefined;
-    customerActorStateId: number | undefined;
-    wantCashCollection: boolean | undefined;
-    cashCollectionAmount: number | undefined;
-    cashCollectionAccountNumber: string | undefined;
 }
 
 export class ObjectResourceOfLocalBookingResource implements IObjectResourceOfLocalBookingResource {
@@ -14450,12 +15855,12 @@ export interface IChangePasswordViewModel {
 }
 
 export class UpdateUserViewModel implements IUpdateUserViewModel {
-    fullName: string;
-    email: string;
-    homeAddress: string;
-    residentialCountryId: number;
-    residentialStateId: number;
-    phoneNumber: string;
+    fullName: string | undefined;
+    email: string | undefined;
+    homeAddress: string | undefined;
+    residentialCountryId: number | undefined;
+    residentialStateId: number | undefined;
+    phoneNumber: string | undefined;
     businessName: string | undefined;
     closestLandmark: string | undefined;
     closestBustop: number | undefined;
@@ -14516,12 +15921,12 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
 }
 
 export interface IUpdateUserViewModel {
-    fullName: string;
-    email: string;
-    homeAddress: string;
-    residentialCountryId: number;
-    residentialStateId: number;
-    phoneNumber: string;
+    fullName: string | undefined;
+    email: string | undefined;
+    homeAddress: string | undefined;
+    residentialCountryId: number | undefined;
+    residentialStateId: number | undefined;
+    phoneNumber: string | undefined;
     businessName: string | undefined;
     closestLandmark: string | undefined;
     closestBustop: number | undefined;
@@ -14612,6 +16017,389 @@ export class SelectedOrder implements ISelectedOrder {
 
 export interface ISelectedOrder {
     input: string | undefined;
+}
+
+export class CompleteRegistrationDTO implements ICompleteRegistrationDTO {
+    phoneNumber: string;
+    sponsorName: string;
+    sponsorAddress: string;
+    sponsorPhoneNumber: string;
+    plateNumber: string;
+    carName: string;
+    carModel: string;
+    carYear: string;
+    licenseNumber: string;
+
+    constructor(data?: ICompleteRegistrationDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.phoneNumber = _data["phoneNumber"];
+            this.sponsorName = _data["sponsorName"];
+            this.sponsorAddress = _data["sponsorAddress"];
+            this.sponsorPhoneNumber = _data["sponsorPhoneNumber"];
+            this.plateNumber = _data["plateNumber"];
+            this.carName = _data["carName"];
+            this.carModel = _data["carModel"];
+            this.carYear = _data["carYear"];
+            this.licenseNumber = _data["licenseNumber"];
+        }
+    }
+
+    static fromJS(data: any): CompleteRegistrationDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new CompleteRegistrationDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["phoneNumber"] = this.phoneNumber;
+        data["sponsorName"] = this.sponsorName;
+        data["sponsorAddress"] = this.sponsorAddress;
+        data["sponsorPhoneNumber"] = this.sponsorPhoneNumber;
+        data["plateNumber"] = this.plateNumber;
+        data["carName"] = this.carName;
+        data["carModel"] = this.carModel;
+        data["carYear"] = this.carYear;
+        data["licenseNumber"] = this.licenseNumber;
+        return data; 
+    }
+
+    clone(): CompleteRegistrationDTO {
+        const json = this.toJSON();
+        let result = new CompleteRegistrationDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICompleteRegistrationDTO {
+    phoneNumber: string;
+    sponsorName: string;
+    sponsorAddress: string;
+    sponsorPhoneNumber: string;
+    plateNumber: string;
+    carName: string;
+    carModel: string;
+    carYear: string;
+    licenseNumber: string;
+}
+
+export class UpdateStatus implements IUpdateStatus {
+    statusId: number;
+    dispatcherId: number;
+
+    constructor(data?: IUpdateStatus) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.statusId = _data["statusId"];
+            this.dispatcherId = _data["dispatcherId"];
+        }
+    }
+
+    static fromJS(data: any): UpdateStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["statusId"] = this.statusId;
+        data["dispatcherId"] = this.dispatcherId;
+        return data; 
+    }
+
+    clone(): UpdateStatus {
+        const json = this.toJSON();
+        let result = new UpdateStatus();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateStatus {
+    statusId: number;
+    dispatcherId: number;
+}
+
+export class ListResourceOfOrder implements IListResourceOfOrder {
+    total: number | undefined;
+    data: Order[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfOrder) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(Order.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfOrder {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfOrder();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfOrder {
+        const json = this.toJSON();
+        let result = new ListResourceOfOrder();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfOrder {
+    total: number | undefined;
+    data: Order[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class Order implements IOrder {
+    id: number | undefined;
+    deliveryDate: string | undefined;
+    deliveryType: string | undefined;
+    bookingNumber: string | undefined;
+    senderName: string | undefined;
+    pickupLocation: string | undefined;
+    deliveryLocation: string | undefined;
+    pickUpAddress: string | undefined;
+    pickupLandmark: string | undefined;
+    phoneNumber: string | undefined;
+    recipientName: string | undefined;
+    deliveryAddress: string | undefined;
+    deliveryLandmark: string | undefined;
+    recipientPhoneNumber: string | undefined;
+    packageDescription: string | undefined;
+    sizeDescription: string | undefined;
+    isInsured: boolean | undefined;
+    isDelivered: boolean | undefined;
+    packageValue: number | undefined;
+    deliveryCost: number | undefined;
+    numberOfPackages: number | undefined;
+    insuranceCost: number | undefined;
+    totalCost: number | undefined;
+    bookingStatusId: number | undefined;
+    estimatedPackageWeight: number | undefined;
+    createdAt: string | undefined;
+    updatedAt: string | undefined;
+    paymentType: string | undefined;
+
+    constructor(data?: IOrder) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.deliveryDate = _data["deliveryDate"];
+            this.deliveryType = _data["deliveryType"];
+            this.bookingNumber = _data["bookingNumber"];
+            this.senderName = _data["senderName"];
+            this.pickupLocation = _data["pickupLocation"];
+            this.deliveryLocation = _data["deliveryLocation"];
+            this.pickUpAddress = _data["pickUpAddress"];
+            this.pickupLandmark = _data["pickupLandmark"];
+            this.phoneNumber = _data["phoneNumber"];
+            this.recipientName = _data["recipientName"];
+            this.deliveryAddress = _data["deliveryAddress"];
+            this.deliveryLandmark = _data["deliveryLandmark"];
+            this.recipientPhoneNumber = _data["recipientPhoneNumber"];
+            this.packageDescription = _data["packageDescription"];
+            this.sizeDescription = _data["sizeDescription"];
+            this.isInsured = _data["isInsured"];
+            this.isDelivered = _data["isDelivered"];
+            this.packageValue = _data["packageValue"];
+            this.deliveryCost = _data["deliveryCost"];
+            this.numberOfPackages = _data["numberOfPackages"];
+            this.insuranceCost = _data["insuranceCost"];
+            this.totalCost = _data["totalCost"];
+            this.bookingStatusId = _data["bookingStatusId"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
+            this.createdAt = _data["createdAt"];
+            this.updatedAt = _data["updatedAt"];
+            this.paymentType = _data["paymentType"];
+        }
+    }
+
+    static fromJS(data: any): Order {
+        data = typeof data === 'object' ? data : {};
+        let result = new Order();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["deliveryDate"] = this.deliveryDate;
+        data["deliveryType"] = this.deliveryType;
+        data["bookingNumber"] = this.bookingNumber;
+        data["senderName"] = this.senderName;
+        data["pickupLocation"] = this.pickupLocation;
+        data["deliveryLocation"] = this.deliveryLocation;
+        data["pickUpAddress"] = this.pickUpAddress;
+        data["pickupLandmark"] = this.pickupLandmark;
+        data["phoneNumber"] = this.phoneNumber;
+        data["recipientName"] = this.recipientName;
+        data["deliveryAddress"] = this.deliveryAddress;
+        data["deliveryLandmark"] = this.deliveryLandmark;
+        data["recipientPhoneNumber"] = this.recipientPhoneNumber;
+        data["packageDescription"] = this.packageDescription;
+        data["sizeDescription"] = this.sizeDescription;
+        data["isInsured"] = this.isInsured;
+        data["isDelivered"] = this.isDelivered;
+        data["packageValue"] = this.packageValue;
+        data["deliveryCost"] = this.deliveryCost;
+        data["numberOfPackages"] = this.numberOfPackages;
+        data["insuranceCost"] = this.insuranceCost;
+        data["totalCost"] = this.totalCost;
+        data["bookingStatusId"] = this.bookingStatusId;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
+        data["createdAt"] = this.createdAt;
+        data["updatedAt"] = this.updatedAt;
+        data["paymentType"] = this.paymentType;
+        return data; 
+    }
+
+    clone(): Order {
+        const json = this.toJSON();
+        let result = new Order();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IOrder {
+    id: number | undefined;
+    deliveryDate: string | undefined;
+    deliveryType: string | undefined;
+    bookingNumber: string | undefined;
+    senderName: string | undefined;
+    pickupLocation: string | undefined;
+    deliveryLocation: string | undefined;
+    pickUpAddress: string | undefined;
+    pickupLandmark: string | undefined;
+    phoneNumber: string | undefined;
+    recipientName: string | undefined;
+    deliveryAddress: string | undefined;
+    deliveryLandmark: string | undefined;
+    recipientPhoneNumber: string | undefined;
+    packageDescription: string | undefined;
+    sizeDescription: string | undefined;
+    isInsured: boolean | undefined;
+    isDelivered: boolean | undefined;
+    packageValue: number | undefined;
+    deliveryCost: number | undefined;
+    numberOfPackages: number | undefined;
+    insuranceCost: number | undefined;
+    totalCost: number | undefined;
+    bookingStatusId: number | undefined;
+    estimatedPackageWeight: number | undefined;
+    createdAt: string | undefined;
+    updatedAt: string | undefined;
+    paymentType: string | undefined;
+}
+
+export class MarkOrderAsDeliveredDTO implements IMarkOrderAsDeliveredDTO {
+    orderId: number;
+    dispatcherId: number;
+
+    constructor(data?: IMarkOrderAsDeliveredDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.orderId = _data["orderId"];
+            this.dispatcherId = _data["dispatcherId"];
+        }
+    }
+
+    static fromJS(data: any): MarkOrderAsDeliveredDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new MarkOrderAsDeliveredDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["orderId"] = this.orderId;
+        data["dispatcherId"] = this.dispatcherId;
+        return data; 
+    }
+
+    clone(): MarkOrderAsDeliveredDTO {
+        const json = this.toJSON();
+        let result = new MarkOrderAsDeliveredDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMarkOrderAsDeliveredDTO {
+    orderId: number;
+    dispatcherId: number;
 }
 
 export enum LoginResourceUserType {
