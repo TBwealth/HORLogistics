@@ -108,7 +108,7 @@ if(data.code == '007'){
   
     fbonLoginSuccess(res: FacebookLoginResponse) {
       // const { token, secret } = res;
-      const credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+      const credential = firebase.default.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
       this.fireAuth.signInWithCredential(credential)
         .then((response) => {
           this.user = response.user;
@@ -138,7 +138,7 @@ if(data.code == '007'){
           console.log(error);          
         });
       } else{
-        this.fireAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(success => {
+        this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider()).then(success => {
           console.log('success in google login', success);
           this.isGoogleLogin = true;
           this.user = success.user;
@@ -150,8 +150,8 @@ if(data.code == '007'){
       }
     }
     onLoginSuccess(accessToken, accessSecret) {
-      const credential = accessSecret ? firebase.auth.GoogleAuthProvider
-          .credential(accessToken, accessSecret) : firebase.auth.GoogleAuthProvider
+      const credential = accessSecret ? firebase.default.auth.GoogleAuthProvider
+          .credential(accessToken, accessSecret) : firebase.default.auth.GoogleAuthProvider
               .credential(accessToken);
       this.fireAuth.signInWithCredential(credential)
         .then((success) => {  

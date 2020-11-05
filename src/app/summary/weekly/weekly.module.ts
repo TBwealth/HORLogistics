@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { WeeklyPageRoutingModule } from './weekly-routing.module';
 
 import { WeeklyPage } from './weekly.page';
-import { ChartsModule } from 'ng2-charts'
+
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { ChartsModule } from 'ng2-charts'
     FormsModule,
     IonicModule,
     WeeklyPageRoutingModule,
-    ChartsModule
+
   ],
   declarations: [WeeklyPage]
 })

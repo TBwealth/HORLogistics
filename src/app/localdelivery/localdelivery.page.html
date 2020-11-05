@@ -24,7 +24,7 @@
       <div *ngSwitchCase='pickup'>
     <form name="pickup_detailsForm" id="pickup_detailsForm" #pickup_detailsForm="ngForm">
       <ion-grid>
-          <ion-select (ionChange)="validatePickupForm()" placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
+          <ion-select (ionChange)="validatePickupForm(); getLocations()" placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
             <ion-select-option [value]="category.id" *ngFor="let category of bookingCategories">{{category.name}}</ion-select-option>
           </ion-select>
           <div *ngIf="booking_category.invalid && (booking_category.dirty || booking_category.touched)" class="error">
@@ -48,7 +48,9 @@
             </div>
         </div>
           <div style="padding: 5px;"></div>
-           
+          <ion-select (ionChange)="validatePickupForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="pickup_details.pickup_busstop" required>
+            <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
+          </ion-select>
           <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
             <ion-col size=2>
               <div style="padding: 5px;"></div>
@@ -81,12 +83,7 @@
             </div>
         </div>
           <div style="padding: 5px;"></div>
-          <ion-input (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" type="text" placeholder="Closest Bus Stop" [(ngModel)]="pickup_details.pickup_busstop" name="pickup_busstop" id="pickup_busstop" #pickup_busstop="ngModel" required></ion-input>
-          <div *ngIf="pickup_busstop.invalid && (pickup_busstop.dirty || pickup_busstop.touched)" class="error">
-            <div *ngIf="pickup_busstop.errors.required">
-              Pick-up Busstop is required
-            </div>
-        </div>
+
         </ion-grid>
   </form></div>
     
@@ -100,6 +97,10 @@
     </ion-row>
     <div *ngSwitchCase='delivery'>
       <ion-grid>
+        <ion-select (ionChange)="validateDeliveryForm()" placeholder="Delivery Type" name="booking_category" class="select" [(ngModel)]="local_delivery.categioryId" #booking_category="ngModel" required>
+          <ion-select-option [value]="1" >Standard delivery</ion-select-option>
+          <ion-select-option [value]="2" >Express delivery</ion-select-option>
+        </ion-select>
         <form name="delivery_detailsForm" #delivery_detailsForm="ngForm">
           <ion-datetime (ionChange)="validateDeliveryForm()" #delivery_date="ngModel" name="delivery_date" id="delivery_date" [(ngModel)]="local_delivery.delivery_date" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
           <div *ngIf="delivery_date.invalid && (delivery_date.dirty || delivery_date.touched)" class="error">
@@ -155,12 +156,9 @@
             </div>
         </div>
           <div style="padding: 5px;"></div>
-          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_busstop="ngModel" name="delivery_busstop" placeholder="Closest Bus Stop" [(ngModel)]="local_delivery.delivery_busstop" required></ion-input>
-          <div *ngIf="delivery_busstop.invalid && (delivery_busstop.dirty || delivery_busstop.touched)" class="error">
-            <div *ngIf="delivery_busstop.errors.required">
-              Delivery Busstop is required
-            </div>
-        </div>
+          <ion-select (ionChange)="validatePickupForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="local_delivery.delivery_busstop" required>
+            <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
+          </ion-select>
         </form>
       </ion-grid>
     </div>
@@ -176,6 +174,8 @@
     <div *ngSwitchCase='package'>
       <ion-grid>
         <!-- <form name="package_detailsForm" #package_detailsForm="ngForm"> -->
+          <app-text-input [(value)]="package_details.package_description" [validators]="[]" type='text' [extraErrors]="[]" label='' name="package_description" placeholder='Package description'></app-text-input>
+          <div style="padding: 5px;"></div>
           <app-text-input *ngIf="pickup_details.booking_category != 1" [(value)]="package_details.package_weight" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
           <p>Is package greater than indomie carton size ?</p>
           <ion-grid>

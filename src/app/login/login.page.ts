@@ -62,8 +62,11 @@ async loginUser(){
         color: "success"
       });
       toast.present();
-      this.loading.dismiss();
+      setTimeout(() => {
+        this.loading.dismiss();
       this.router.navigate(['home'])
+      }, 3000);
+      
     }else{
       const toast = await this.toastCtrl.create({
         duration: 3000,
@@ -124,7 +127,7 @@ this.router.navigate(['terms'])
 
   fbonLoginSuccess(res: FacebookLoginResponse) {
     // const { token, secret } = res;
-    const credential = firebase.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
+    const credential = firebase.default.auth.FacebookAuthProvider.credential(res.authResponse.accessToken);
     this.fireAuth.signInWithCredential(credential)
       .then((response) => {
         console.log(response.user);
@@ -155,7 +158,7 @@ this.router.navigate(['terms'])
       });
     } else{
       console.log('else...');
-      this.fireAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(success => {
+      this.fireAuth.signInWithPopup(new firebase.default.auth.GoogleAuthProvider()).then(success => {
         console.log('success in google login', success);
         this.isGoogleLogin = true;
         this.user = success.user;
@@ -167,8 +170,8 @@ this.router.navigate(['terms'])
     }
   }
   onLoginSuccess(accessToken, accessSecret) {
-    const credential = accessSecret ? firebase.auth.GoogleAuthProvider
-        .credential(accessToken, accessSecret) : firebase.auth.GoogleAuthProvider
+    const credential = accessSecret ? firebase.default.auth.GoogleAuthProvider
+        .credential(accessToken, accessSecret) : firebase.default.auth.GoogleAuthProvider
             .credential(accessToken);
     this.fireAuth.signInWithCredential(credential)
       .then((success) => {

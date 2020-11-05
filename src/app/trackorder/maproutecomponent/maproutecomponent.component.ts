@@ -30,7 +30,7 @@ addressEnd: any;
           const directionsService = new google.maps.DirectionsService();
           const directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
           var mapOptions = {
-            mapTypeId: google.maps.MapTypeId.roadmap,
+            mapTypeId: google.maps.MapTypeId.terrain,
             center: { lat: 9.077751, lng: 8.6774567},
             mapTypeControl: false,
             scaleControl: false,

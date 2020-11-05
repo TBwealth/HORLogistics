@@ -13,7 +13,7 @@ export interface User {
 }
 
 export interface Message {
-  createdAt: firebase.firestore.FieldValue;
+  createdAt: firebase.default.firestore.FieldValue
   id: string;
   from: string;
   msg: string;
@@ -42,7 +42,7 @@ export class ChatService {
       this.afs.collection('messages').doc(this.sessionId).collection(this.sessionId).add({
         msg: msg,
         from: this.currentUser.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.default.firestore.FieldValue.serverTimestamp()
       })
     }else{
       return this.afs.collection('messages').add({
@@ -51,7 +51,7 @@ export class ChatService {
         this.afs.collection('messages').doc(data.id).collection(data.id).add({
           msg: msg,
           from: this.currentUser.uid,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          createdAt: firebase.default.firestore.FieldValue.serverTimestamp()
         })
         this.storage.set('session',data.id);
       })
