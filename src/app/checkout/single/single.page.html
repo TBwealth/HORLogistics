@@ -73,7 +73,7 @@
         <div *ngSwitchCase="delivery_details">
           <ion-grid style="padding: 10px;">
           <p>Do you want home delivery?</p>
-            <ion-row style="background-color: cornsilk;">
+            <ion-row>
               <ion-col>
                    <ion-item lines="none">  
                     <ion-checkbox slot="start" class="checker" [checked]="checkedIdx" [(ngModel)]="product_desc.home_delivery" (ionChange)="yesfn($event); myoption($event)" value="yeshome" #yeshome></ion-checkbox>
@@ -115,7 +115,7 @@
             
           </ion-grid>
         </div>
-        <div style="background-color: cornsilk;">{{ diagnostic }}</div>
+        <div>{{ diagnostic }}</div>
     <div style="display:flex; padding: 8px;">
       <ion-button class="cta1" expand="block" fill="outline">
         <ion-label>Cancel</ion-label>

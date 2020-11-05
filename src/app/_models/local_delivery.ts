@@ -8,7 +8,7 @@ export interface local_deliveryModel{
 }
 
 export interface pickup_detailsModel {
-    booking_category?:string,
+    booking_category?:number,
     pickup_name?:string,
     pickup_address?:string,
     pickup_phone?:string,
@@ -17,8 +17,9 @@ export interface pickup_detailsModel {
 }
 
 export interface package_detailsModel {
-    package_size?:string,
-    package_insurance?:string
+    package_size?:number,
+    package_insurance?:boolean,
+    package_weight?: number
 }
 
 export interface LocaldeliveryButton {

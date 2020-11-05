@@ -9,7 +9,8 @@
   </ion-toolbar>
 </ion-header>
   
-  <ion-content style="background-color: cornsilk;">
+  <ion-content>
+    
     <ion-grid [ngSwitch]="activetab">
       <ion-row>
         <ion-col>
@@ -72,20 +73,6 @@
     <div *ngSwitchCase="delivery_details">
         <ion-grid>
         <p>Do you want home delivery?</p>
-          <!-- <ion-row style="background-color: cornsilk;">
-            <ion-col>
-                <ion-item lines="none">  
-                  <ion-checkbox slot="start" class="checker" (ionChange)="validateDeliveryDetailsForm(); logvalue($event)" [(ngModel)]="product_desc.home_delivery" [checked]="!checkedIdx" (ionChange)="yesfn($event)" #yeshome></ion-checkbox>
-                    <ion-label>Yes</ion-label>
-              </ion-item>
-            </ion-col>         
-            <ion-col>
-                <ion-item lines="none"> 
-                  <ion-checkbox slot="start" class="checker" (ionChange)="validateDeliveryDetailsForm(); logvalue($event)" [(ngModel)]="product_desc.home_delivery" [checked]="checkedIdx"  (ionChange)="nofn($event)" #nohome></ion-checkbox>
-                    <ion-label>No</ion-label>
-              </ion-item>
-            </ion-col>
-          </ion-row> -->
             <ion-row>
               <ion-col>
                    <ion-item lines="none">  
@@ -122,23 +109,32 @@
               </div>
           </div>
           <div *ngIf="checkedIdx==false">
-            <ion-select placeholder="Lagos Pickup" validateDeliveryDetailsForm() name="lagos_location" [(ngModel)]="product_desc.location" class="select" placeholder="Lagos Pickup" required>
-              <ion-select-option validateDeliveryDetailsForm() value="withinLag">Ikeja</ion-select-option>
-              <ion-select-option validateDeliveryDetailsForm() value="withinIB">Lekki</ion-select-option>
-              <ion-select-option validateDeliveryDetailsForm() value="withinAbj">Maryland</ion-select-option>
-            </ion-select>
+            <div style="padding: 5px;"></div>
+              <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_address="ngModel" name="delivery_address" placeholder="Pickup Location" [(ngModel)]="product_desc.pickup" required>
+                <ion-select-option>Ikeja</ion-select-option>
+                <ion-select-option>Lekki</ion-select-option>
+                <ion-select-option>Maryland</ion-select-option>
+              </ion-select>
           </div> 
         </ion-grid>
         
     </div>
       <ion-row>
+        <!-- <ion-col>
+          <ion-button [(disabled)]= "!product_descriptionForm.form.valid"  (click)="newOrder(product_descriptionForm)" expand="block" class="localdelivery" fill="clear">
+            <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
+            <p class="localheader">Add Another Product</p>
+          </ion-button>
+        </ion-col> -->
         <ion-col>
-          <ion-button [disabled]= "product_descriptionForm.form.valid"  (click)="newOrder(product_descriptionForm); product_descriptionForm.reset()" expand="block" class="localdelivery" fill="clear">
+          <ion-button [(disabled)]= "!product_descriptionForm.form.valid"  (click)="addOrder($event);" expand="block" class="localdelivery" fill="clear">
             <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
             <p class="localheader">Add Another Product</p>
           </ion-button>
         </ion-col>
       </ion-row>
+      <!-- <div>{{ diagnostic }}</div> -->
+      <div>{{ product_descriptionForm.form.valid }}</div>
       <div style="display:flex; padding: 10px;">
         <ion-button class="cta1" expand="block" fill="outline">
           <ion-label>Cancel</ion-label>

@@ -1,0 +1,21 @@
+<ion-content>
+  <ion-grid class="ratings-content">
+    <div class="content">  
+      <div class="items">
+        <ion-img src="assets/images/female.png" style="width: 80px; height: 80px; border-radius: 10px;"></ion-img>
+        <ion-label style="color: #313131; font-size: 11pt; opacity: 1; padding-top: 3px;">Dumebi</ion-label>
+        <ion-label style="color: #313131; font-size: 9pt; opacity: 0.6;">XYZ-182</ion-label>
+     </div>   
+     
+    </div>
+    <div class="items"> 
+        <h3>&#x20A6;48.98</h3>
+        <p style="color: #313131; font-size: 14pt; opacity: 0.56;">Rate your trip</p>
+        <span >
+          <ion-icon *ngFor="let item of stars" (click)="ratetrip(item)" name="star" style="font-size: 16px;padding: 5px;" [class.rating]="item <= rating"></ion-icon>
+        </span>    
+        
+    </div>
+    <ion-button expand="block" class="submit_rating" fill="clear">SUBMIT RATING</ion-button>
+  </ion-grid>
+</ion-content>

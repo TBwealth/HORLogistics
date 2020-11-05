@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { InternationalDeliveryPageRoutingModule } from './international-delivery-routing.module';
 
 import { InternationalDeliveryPage } from './international-delivery.page';
-import { CheckboxComponent } from '../components/checkbox/checkbox.component';
 
 @NgModule({
   imports: [
@@ -16,9 +15,6 @@ import { CheckboxComponent } from '../components/checkbox/checkbox.component';
     IonicModule,
     InternationalDeliveryPageRoutingModule
   ],
-  declarations: [
-    InternationalDeliveryPage,
-    CheckboxComponent
-  ]
+  declarations: [InternationalDeliveryPage]
 })
 export class InternationalDeliveryPageModule {}

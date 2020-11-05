@@ -10,19 +10,21 @@ import { ReviewBookingPageRoutingModule } from './review-booking-routing.module'
 import { ReviewBookingPage } from './review-booking.page';
 import { ListItemComponent } from 'src/app/components/list-item/list-item.component';
 import { ListKeyValueComponent } from 'src/app/components/list-key-value/list-key-value.component';
+import { MaproutecomponentComponent } from 'src/app/trackorder/maproutecomponent/maproutecomponent.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReviewBookingPageRoutingModule
+    ReviewBookingPageRoutingModule,
   ],
   declarations: [
     ReviewBookingPage, 
     PageStructureComponent,
     ListItemComponent,
-    ListKeyValueComponent
+    ListKeyValueComponent,
+    MaproutecomponentComponent
   ],
   entryComponents: []
 })

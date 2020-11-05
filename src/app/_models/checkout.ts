@@ -8,7 +8,8 @@ export interface product_descriptionModel {
     home_delivery?: boolean;
     state?: string;
     location?: string;
-    address?: string
+    address?: string;
+    pickup?: string;
 
 }
 

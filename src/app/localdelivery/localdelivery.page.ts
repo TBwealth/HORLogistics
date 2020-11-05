@@ -8,19 +8,30 @@ import {ICountry} from '../_models/country.type';
 import { CountryserviceService } from '../_services/countryservice.service';
 import { AddNewOrderModalComponent } from './add-new-order-modal/add-new-order-modal.component';
 import { Subject } from 'rxjs';
+import { ILocalBooking, ListResourceOfLocalBookingCategoryResource, LocalBooking , LocalBookingCategory, LocalBookingCategoryResource, LocalBookingResource} from '../_models/service-models';
+import { StoreService } from '../_services/store.service';
+import { LocalBookingServiceProxy } from '../_services/service-proxies';
+import * as moment from 'moment';
+
 @Component({
   selector: 'app-localdelivery',
   templateUrl: './localdelivery.page.html',
   styleUrls: ['./localdelivery.page.scss'],
 })
 export class LocaldeliveryPage implements OnInit {
+  bookings: ILocalBooking[] = []
   package_detailsForm:FormGroup;
   pickup_detailsForm: FormGroup; 
   delivery_detailsForm:FormGroup;
   
   local_delivery : local_deliveryModel ={};
   pickup_details : pickup_detailsModel = {};
-  package_details : package_detailsModel ={};
+  package_details : package_detailsModel ={
+    package_size: 1,
+    package_weight: 1
+
+  };
+  bookingCategories: LocalBookingCategoryResource[]
 
   localoptions : LocaldeliveryButton = {};
 
@@ -31,6 +42,8 @@ export class LocaldeliveryPage implements OnInit {
 
   checkedIdx= true;
   disVal = true;
+
+  showSize: false;
   // options = [
   //   'Yes',
   //   'No'
@@ -67,6 +80,8 @@ export class LocaldeliveryPage implements OnInit {
     private router: Router,
     public navCtrl: NavController,
     public popoverController: PopoverController,
+    private store: StoreService,
+    private bookingService: LocalBookingServiceProxy,
     private activatedroute: ActivatedRoute) { }
    
     yesfn(event){
@@ -78,6 +93,10 @@ export class LocaldeliveryPage implements OnInit {
      }
   
   ngOnInit() {
+    this.bookingService.localbookingcategory().subscribe(data => {
+      this.bookingCategories = data.data
+      console.log(this.bookingCategories)
+    })
     this.getcountry();
     this.getCountryFlag("NG",'')
     this.activatedroute.url.subscribe(url => {
@@ -85,7 +104,7 @@ export class LocaldeliveryPage implements OnInit {
         this.singleDelivery = true
       }
     })
-    this.showAddNewBookingModal()
+    // this.showAddNewBookingModal()
   }
 
   goback(){
@@ -226,7 +245,10 @@ if(isValidNumber){
     return await modal.present();
   }
   clearForm(){
-    
+    this.saveBooking()
+    this.packageDeliveryPanel = false
+    this.DeliveryDetailsPanel  = false
+    this.activetab = null
   }
   submitBooking(){
     if(this.singleDelivery){
@@ -236,7 +258,38 @@ if(isValidNumber){
     }
   }
 
+  saveBooking(){
+    let booking = new  LocalBooking();
+    // Pickup
+    booking.localBookingCategoryId = this.pickup_details.booking_category
+    booking.senderName = this.pickup_details.pickup_name
+    booking.pickUpAddress = this.pickup_details.pickup_address
+    booking.phoneNumber = this.pickup_details.pickup_phone
+    booking.pickupLandmark = this.pickup_details.pickup_landmark
+    this.pickup_details = {}
+    // booking.bus
+
+    //Delivery
+    booking.deliveryDate =  moment(this.local_delivery.delivery_date, "YYYY-MM-DDThh:mm:ssZ")
+    booking.deliveryLandmark = this.local_delivery.delivery_landmark
+    booking.recipientName = this.local_delivery.delivery_name
+    booking.deliveryAddress = this.local_delivery.delivery_address
+    booking.recipientPhoneNumber = this.local_delivery.delivery_phone
+    booking.pickupLandmark = this.local_delivery.delivery_landmark
+    this.local_delivery = {}
+
+    booking.isInsured = this.package_details.package_insurance
+    booking.numberOfPackages = this.package_details.package_size
+    booking.estimatedPackageWeight = this.package_details.package_weight
+    this.package_details = {}
+
+    this.bookings.push(booking)
+    // this.storage.setItem('booking', JSON.stringify(booking))
+  }
+
   gotoSummary(){
+    this.saveBooking()
+    this.store.saveBookings(this.bookings)
     this.router.navigate(['localdelivery/review-booking'])
   }
 
