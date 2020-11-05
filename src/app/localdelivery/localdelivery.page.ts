@@ -284,9 +284,13 @@ if(isValidNumber){
     this.local_delivery = {}
 
     booking.isInsured = this.package_details.package_insurance
+    booking.packageValue = this.package_details.package_value
     booking.numberOfPackages = this.package_details.package_size
     booking.estimatedPackageWeight = this.package_details.package_weight
     booking.packageDescription = this.package_details.package_description
+    booking.wantCashCollection = this.package_details.cash_collection
+    booking.cashCollectionAmount = this.package_details.cash_collection_amount
+    booking.cashCollectionAccountNumber = this.package_details.account_number
     this.package_details = {}
 
     this.bookings.push(booking)

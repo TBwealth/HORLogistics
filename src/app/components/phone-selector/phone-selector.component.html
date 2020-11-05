@@ -1,0 +1,19 @@
+<ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
+  <ion-col size=2>
+    <div style="padding: 5px;"></div>
+    <span *ngFor="let imgSrc of selectedFlag">
+      <img style="width: 30px;height:16px;" [src]="imgSrc.flag" />
+    </span>
+    
+  </ion-col>
+  <ion-col size=3>
+    <ion-select (change)="validatePhone()" #selectCount (click)="openCountries()" (ionChange)="getCountryFlag(selectCount.value,'delivery')"  [(ngModel)]="alpha2Code"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" required>
+      <ion-select-option *ngFor="let Ccode of ICountrys" value="{{Ccode.alpha2Code}}">
+        {{Ccode.name}}
+      </ion-select-option>             
+    </ion-select>
+  </ion-col>
+  <ion-col size=7>
+    <ion-input #deliveryphone (keyup)="validatePhone()" placeholder="Phone Number" type="tel" [(ngModel)]="phoneNo" name="delivery_phone" id="delivery_phone" #deliveryphone="ngModel"  required style="border: none;"></ion-input>
+  </ion-col>
+</ion-row> 

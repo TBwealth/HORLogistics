@@ -156,7 +156,7 @@
             </div>
         </div>
           <div style="padding: 5px;"></div>
-          <ion-select (ionChange)="validatePickupForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="local_delivery.delivery_busstop" required>
+          <ion-select (ionChange)="validateDeliveryForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="local_delivery.delivery_busstop" required>
             <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
           </ion-select>
         </form>
@@ -188,6 +188,16 @@
                 <ion-label style="font-size: 12px;">Insure</ion-label>
               </ion-item>
             </ion-row>
+            <app-text-input *ngIf="package_details.package_insurance" [(value)]="package_details.package_value" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_value" placeholder='Package value'></app-text-input>
+            <ion-row>
+              <p>*Do you require cash collection from recipient ?</p>
+              <ion-item lines="none">  
+                <ion-checkbox slot="start" class="checker" name="package_insurance" lines="none" [(ngModel)]="package_details.cash_collection" required></ion-checkbox>
+                <ion-label style="font-size: 12px;">Collect cash</ion-label>
+              </ion-item>
+            </ion-row>
+              <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.cash_collection_amount" [validators]="[]" type='number' [extraErrors]="[]" label='' name="cash_amount" placeholder='Cash collection amount'></app-text-input>
+              <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.account_number" [validators]="[]" type='text' [extraErrors]="[]" label='' name="cash_bank" placeholder='Cash collection amount'></app-text-input>
           </ion-grid>
         <!-- </form>  -->
 
