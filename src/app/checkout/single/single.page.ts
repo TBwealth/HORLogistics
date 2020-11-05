@@ -1,8 +1,11 @@
+// import { CheckoutAssistance } from './../../_services/service-proxies';
 import { product_descriptionModel} from './../../_models/checkout';
 import { FormsModule, FormControl, FormGroup, Validators} from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import {Router,ActivatedRoute} from '@angular/router';
 import { NavController,ToastController,AlertController} from '@ionic/angular';
+import {NgForm} from '@angular/forms';
+
 
 @Component({
   selector: 'app-single',
@@ -36,6 +39,18 @@ export class SinglePage implements OnInit {
   ngOnInit() {
   }
 
+  onSubmit(){
+    console.log(this.product_desc);
+  }
+
+//   addPost(form: NgForm){
+//     // this.newPost = {
+//     //     title: this.title,
+//     //     body: this.body
+//     // }
+//     // this._postService.addPost(this.newPost);
+//     form.resetForm(); // or form.reset();
+// }
     
   goback(){
     this.navCtrl.back();
@@ -81,7 +96,7 @@ if(this.product_desc.location &&
    this.product_desc.address){
        
     this.myorder = this.product_desc;
-    console.log(this.myorder)
+    //console.log(this.myorder)
 }
 }
 
@@ -91,6 +106,6 @@ myoption(event) {
   // alert(event.detail.value)
 }
 
-get diagnostic() { return JSON.stringify(this.product_desc); }
+// get diagnostic() { return JSON.stringify(this.product_desc); }
 
 }
