@@ -1,3 +1,4 @@
+import { RatingsComponent } from './ratings/ratings.component';
 import { CheckoutPageRoutingModule } from './checkout-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,6 @@ import { CheckoutPage } from './checkout.page';
     IonicModule,
     CheckoutPageRoutingModule
   ],
-  declarations: [CheckoutPage]
+  declarations: [CheckoutPage, RatingsComponent]
 })
 export class CheckoutPageModule {}

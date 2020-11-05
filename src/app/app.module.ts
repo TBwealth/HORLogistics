@@ -1,4 +1,3 @@
-// import { CheckoutPageRoutingModule } from './checkout/checkout-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -19,8 +18,7 @@ import {environment} from './environment'
 import { IonicStorageModule  } from '@ionic/storage';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {SocialSharing} from '@ionic-native/social-sharing/ngx';
-import { FCM } from '@ionic-native/fcm/ngx';
-import { Firebase } from '@ionic-native/firebase/ngx';
+import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import { Device } from '@ionic-native/device/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -40,7 +38,11 @@ import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
+<<<<<<< HEAD
 import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy } from './_services/service-proxies';
+=======
+import { LocationsServiceProxy,AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy } from './_services/service-proxies';
+>>>>>>> cbe64bf721b777e6e87617754d10497f68789ad5
 import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
 import { StoreService } from './_services/store.service';
@@ -60,8 +62,7 @@ import { StoreService } from './_services/store.service';
     HttpClient,
     StatusBar,
     SplashScreen,
-    Firebase,
-    FCM,
+    FirebaseX,
     Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     CountryserviceService,
@@ -83,6 +84,7 @@ import { StoreService } from './_services/store.service';
     Camera,
     File,
     MaprouteService,
+    LocationsServiceProxy,
     StoreService,
     LocalBookingServiceProxy,
     LocationsServiceProxy,

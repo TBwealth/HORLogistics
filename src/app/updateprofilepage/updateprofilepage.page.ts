@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
-import { CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy} from '../_services/service-proxies';
+import { CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy,LocationsServiceProxy} from '../_services/service-proxies';
 import {  LoginResource, UpdateUserViewModel,ResidentialCountry } from "../_models/service-models";
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ fieldValue: any = '';
 listData = [];
 loading:any;
   constructor(
+    private locationService: LocationsServiceProxy,
     private apiService: ApiServiceProxy,
     private countrySeervice: CountriesServiceProxy,
     private activatedroute: ActivatedRoute,
@@ -44,7 +45,7 @@ loading:any;
           this.customersData.email = this.usersdata.user.email;
           this.customersData.residentialCountryId = this.usersdata.customer.residentialCountryId;
           this.customersData.residentialStateId = this.usersdata.customer.residentialStateId;
-          this.customersData.phoneNumber = this.usersdata.customer.phoneNumber;
+          this.customersData.phoneNumber = this.usersdata.phone;
           this.customersData.businessName = this.usersdata.customer.businessName;
           this.customersData.closestLandmark = this.usersdata.customer.closestLandmark;
           this.customersData.closestBustop = this.usersdata.customer.closestBustopId;
@@ -94,6 +95,7 @@ loading:any;
         color: "success"
       });
       toast.present();
+      this.router.navigate(['profilepage'])
     }else{
       this.loading.dismiss()
       const toast = await this.toastCtrl.create({
@@ -109,19 +111,45 @@ this.router.navigate(['login']);
   })
 }
   }
-   getCountry(){
+  async getCountry(){
+    this.loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
+    });
+    await this.loading.present();
 this.apiService.countries().subscribe(data=>{
+
   this.listData = data;
+  this.loading.dismiss();
 })
    }
-   getState(CountryId){
+  async getState(CountryId){
+    this.loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
+    });
+    await this.loading.present();
 this.countrySeervice.states(CountryId).subscribe(data=>{
   this.listData = data;
+  this.loading.dismiss();
 })
   }
-  getBusStop(CountryId){
-    
+  
+ async getBusStop(StateId){
+  this.loading = await this.loadspinner.create({
+    message: "please wait...",
+    translucent: true,
+    spinner: "bubbles",
+  });
+  await this.loading.present();
+this.locationService.category(StateId).subscribe(data=>{
+this.listData = data;
+this.loading.dismiss();
+})
   }
+
   goback(){
     this.navCtrl.back();
   }

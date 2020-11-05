@@ -18,7 +18,7 @@ export class UserClass {
 
 }
 export interface Message {
-  createdAt: firebase.firestore.FieldValue;
+  createdAt: firebase.default.firestore.FieldValue;
   id: string;
   sessionId: string;
   from: string;

@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { MenuController, Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Firebase } from '@ionic-native/firebase/ngx';
-import { FCM } from '@ionic-native/fcm/';
+import { FirebaseX } from "@ionic-native/firebase-x/ngx";
+
 import { Badge } from '@ionic-native/badge/ngx'; 
 import { NetworkProvider } from "./_services/network";
 import { AuthenticationService } from './_services/authentication.service';
@@ -44,7 +44,7 @@ export class AppComponent {
    
   ];
   constructor(
-    private fbaseService: Firebase,
+    private fbaseService: FirebaseX,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,

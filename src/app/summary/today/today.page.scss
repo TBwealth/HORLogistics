@@ -1,0 +1,17 @@
+.tab {
+    --color-hover:#EF6102;
+    --color-focused:#EF6102;
+    --color-selected: #EF6102;
+}
+
+.item-center {
+    display: flex;
+    justify-content: center;;
+}
+
+.trip-time{
+    background:cadetblue; 
+    font-size: 9px; 
+    border-radius: 5px; 
+    padding: 2px 3px;
+}

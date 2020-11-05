@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { User, UserClass } from "../_models/user";
 import { Storage } from '@ionic/storage';
-import {ManageServiceProxy} from '../_services/service-proxies';
+import {ManageServiceProxy,} from '../_services/service-proxies';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
@@ -14,6 +14,7 @@ export class AuthenticationService {
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
      private toastCtrl: ToastController,
+     
      private router: Router){}
 
     getuser(){
@@ -48,7 +49,7 @@ export class AuthenticationService {
             this.storage.set('user', this.users);              
          }
 
-        async addUser(user){      
+        addUser(user){      
             let customerObj ={
                 aspNetUser:  {email: undefined, userName: undefined},
                 businessAnniversary: "",
@@ -56,8 +57,7 @@ export class AuthenticationService {
                 closestBustopId: user.customer.closestBustopId,
                 closestLandmark: user.customer.closestLandmark,
                 companyLogo: user.customer.companyLogo,
-                phoneNumber: "",
-                createdAt: "",
+                createdAt: '',
                 fullName: user.customer.fullName,
                 homeAddress: user.customer.homeAddress,
                 location: user.customer.location,
@@ -73,24 +73,21 @@ export class AuthenticationService {
                }
                let userObj = {
                 token: user.token,
+                phone: user.phone,
                 userId: user.userId,
                 userType: user.userType,
                 isProfileComplete: user.isProfileComplete,
                 user: user.user,
                 customer: customerObj,
-                 role: user.role
+                role: user.role,
                }   
                 this.users = [];
-                console.log(this.users)
                 this.users.push(userObj);
-                console.log(this.users)
-
-                this.storage.set('user', this.users).then(data => {
-                    this.storage.get('user').then(data => {
-                        console.log(data, 'sss')
-                    })
+                this.storage.set('user', this.users).then(data=>{
+            if(data.length > 1){
+                setTimeout(() => {
                     this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
-                        if(data.code == "007"){
+                        if(data.code == "000"){
                             var res = data.data;
                             let customerObj ={
                                 aspNetUser:  res.customer.aspNetUser,
@@ -99,7 +96,6 @@ export class AuthenticationService {
                                 closestBustopId: res.customer.closestBustopId,
                                 closestLandmark: res.customer.closestLandmark,
                                 companyLogo: res.customer.companyLogo,
-                                phoneNumber: res.user.phoneNumber,
                                 createdAt: '',
                                 fullName: res.customer.fullName,
                                 homeAddress: res.customer.homeAddress,
@@ -116,6 +112,7 @@ export class AuthenticationService {
                                }
                                let userObj = {
                                 token: user.token,
+                                phone: res.user.phoneNumber,
                                 userId: user.userId,
                                 userType: res.user.userType,
                                 isProfileComplete: res.user.isProfileCompleted,
@@ -140,7 +137,11 @@ export class AuthenticationService {
                      
                        })
                 
-                })
+                          
+                }, 3000);  
+            }
+                                    
+                });
               }
 
         updateuser(user){        
