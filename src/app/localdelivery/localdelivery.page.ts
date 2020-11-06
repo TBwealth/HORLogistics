@@ -10,7 +10,7 @@ import { AddNewOrderModalComponent } from './add-new-order-modal/add-new-order-m
 import { Subject } from 'rxjs';
 import { ILocalBooking, ListResourceOfLocalBookingCategoryResource, LocalBooking , LocalBookingCategory, LocalBookingCategoryResource, LocalBookingResource} from '../_models/service-models';
 import { StoreService } from '../_services/store.service';
-import { LocalBookingServiceProxy } from '../_services/service-proxies';
+import { LocalBookingServiceProxy, LocationsServiceProxy } from '../_services/service-proxies';
 import * as moment from 'moment';
 
 @Component({
@@ -20,6 +20,7 @@ import * as moment from 'moment';
 })
 export class LocaldeliveryPage implements OnInit {
   bookings: ILocalBooking[] = []
+  locations = []
   package_detailsForm:FormGroup;
   pickup_detailsForm: FormGroup; 
   delivery_detailsForm:FormGroup;
@@ -82,6 +83,7 @@ export class LocaldeliveryPage implements OnInit {
     public popoverController: PopoverController,
     private store: StoreService,
     private bookingService: LocalBookingServiceProxy,
+    private locationService: LocationsServiceProxy,
     private activatedroute: ActivatedRoute) { }
    
     yesfn(event){
@@ -266,6 +268,7 @@ if(isValidNumber){
     booking.pickUpAddress = this.pickup_details.pickup_address
     booking.phoneNumber = this.pickup_details.pickup_phone
     booking.pickupLandmark = this.pickup_details.pickup_landmark
+    booking.pickupLocationId = this.pickup_details.pickup_busstop
     this.pickup_details = {}
     // booking.bus
 
@@ -276,11 +279,18 @@ if(isValidNumber){
     booking.deliveryAddress = this.local_delivery.delivery_address
     booking.recipientPhoneNumber = this.local_delivery.delivery_phone
     booking.pickupLandmark = this.local_delivery.delivery_landmark
+    booking.deliveryLocationId = this.local_delivery.delivery_busstop
+    booking.deliveryTypeId = this.local_delivery.categioryId
     this.local_delivery = {}
 
     booking.isInsured = this.package_details.package_insurance
+    booking.packageValue = this.package_details.package_value
     booking.numberOfPackages = this.package_details.package_size
     booking.estimatedPackageWeight = this.package_details.package_weight
+    booking.packageDescription = this.package_details.package_description
+    booking.wantCashCollection = this.package_details.cash_collection
+    booking.cashCollectionAmount = this.package_details.cash_collection_amount
+    booking.cashCollectionAccountNumber = this.package_details.account_number
     this.package_details = {}
 
     this.bookings.push(booking)
@@ -291,6 +301,13 @@ if(isValidNumber){
     this.saveBooking()
     this.store.saveBookings(this.bookings)
     this.router.navigate(['localdelivery/review-booking'])
+  }
+
+  getLocations(){
+    this.locationService.category(this.pickup_details.booking_category).subscribe(data => {
+      console.log(data)
+      this.locations = data
+    })
   }
 
 }
