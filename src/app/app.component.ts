@@ -23,7 +23,7 @@ export class AppComponent {
     },
     {
       title: 'Orders',
-      url: '/order',
+      url: '/orders',
       icon: 'receipt-outline'
     },
     {

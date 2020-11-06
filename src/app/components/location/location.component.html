@@ -1,0 +1,6 @@
+<ion-select (ionChange)="stateChanged()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="state">
+  <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
+</ion-select>
+<ion-select (ionChange)="validatePickupForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="location">
+  <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
+</ion-select>

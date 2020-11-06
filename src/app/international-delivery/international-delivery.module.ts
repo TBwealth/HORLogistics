@@ -9,6 +9,7 @@ import { InternationalDeliveryPageRoutingModule } from './international-delivery
 import { InternationalDeliveryPage } from './international-delivery.page';
 import { CheckboxComponent } from '../components/checkbox/checkbox.component';
 import { PhoneSelectorComponent } from '../components/phone-selector/phone-selector.component';
+import { LocationComponent } from '../components/location/location.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { PhoneSelectorComponent } from '../components/phone-selector/phone-selec
     IonicModule,
     InternationalDeliveryPageRoutingModule
   ],
-  declarations: [InternationalDeliveryPage, CheckboxComponent, PhoneSelectorComponent]
+  declarations: [InternationalDeliveryPage, CheckboxComponent, PhoneSelectorComponent, LocationComponent]
 })
 export class InternationalDeliveryPageModule {}

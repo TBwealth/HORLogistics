@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ISelectedOrder, SelectedOrder } from '../_models/service-models';
+import { InternationalBooking, ISelectedOrder, LocalBooking, Order, SelectedOrder } from '../_models/service-models';
+import { InternationalbookingServiceProxy, LocalBookingServiceProxy, OrderServiceProxy, OrdersServiceProxy } from '../_services/service-proxies';
 
 enum SEGMENTS {
   PENDING,
@@ -20,10 +21,22 @@ export class OrdersPage implements OnInit {
 
   SEGMENTS = SEGMENTS
   selectedSegment = SEGMENTS.PENDING
+  localBookings: LocalBooking[] = []
+  internationalBookings: InternationalBooking[] = []
 
-  constructor() { }
+
+  constructor(
+    private localBookingService: LocalBookingServiceProxy,
+    private internationalBookingService: InternationalbookingServiceProxy
+  ) { }
 
   ngOnInit() {
+    // this.localBookingService.getlocalbooking().subscribe(data => {
+    //   this.localBookings = data.data.localBookings
+    // })
+    // this.internationalBookingService.getintlbookings().subscribe(data => {
+    //   this.internationalBookings = data.data
+    // })
   }
   segmentChanged(segment){
     this.selectedSegment = segment
