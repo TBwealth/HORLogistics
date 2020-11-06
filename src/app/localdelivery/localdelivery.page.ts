@@ -270,7 +270,7 @@ if(isValidNumber){
     // booking.bus
 
     //Delivery
-    booking.deliveryDate =  moment(this.local_delivery.delivery_date, "YYYY-MM-DDThh:mm:ssZ")
+    booking.deliveryDate = new Date(this.local_delivery.delivery_date);
     booking.deliveryLandmark = this.local_delivery.delivery_landmark
     booking.recipientName = this.local_delivery.delivery_name
     booking.deliveryAddress = this.local_delivery.delivery_address

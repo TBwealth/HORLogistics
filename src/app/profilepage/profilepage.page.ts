@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController, ToastController,ActionSheetController, LoadingController } from '@ionic/angular';
-import {  LoginResource, UpdateUserViewModel,UserPhotoViewModel } from "../_models/service-models";
+import {  UserViewModel,LoginResource, UpdateUserViewModel,UserPhotoViewModel } from "../_models/service-models";
 import { AuthenticationService } from '../_services/authentication.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
@@ -14,8 +14,10 @@ import {AccountServiceProxy} from '../_services/service-proxies';
 export class ProfilepagePage implements OnInit {
   customersData = new UpdateUserViewModel().clone();
   filemodel = new UserPhotoViewModel().clone()
-  usersdata = new LoginResource().clone();
+  usersdata:any;
   userRole = "";
+  userType = "";
+  userProfilePic = "";
   usersCustomersData: any='';
   userCustomerUser: any = '';
   public captureDataUrl: any;
@@ -32,24 +34,48 @@ export class ProfilepagePage implements OnInit {
     private file: File,
     private uploadService: AccountServiceProxy
   ) { 
-    this.AuthenService.getuser().then(async (usersdata:LoginResource[])=>{
-      if(usersdata.length > 0){
-        this.usersdata = usersdata[0];
-        this.customersData.fullName = this.usersdata.customer.fullName;
-        this.customersData.email = this.usersdata.user.email;
-        this.customersData.residentialCountryId = this.usersdata.customer.residentialCountryId;
-        this.customersData.residentialStateId = this.usersdata.customer.residentialStateId;
-        this.customersData.phoneNumber = "";
-        this.customersData.businessName = this.usersdata.customer.businessName;
-        this.customersData.closestLandmark = this.usersdata.customer.closestLandmark;
-        this.customersData.closestBustop = this.usersdata.customer.closestBustopId;
-        this.customersData.businessAnniversary = this.usersdata.customer.businessAnniversary;
-        this.customersData.homeAddress = this.usersdata.customer.homeAddress;
-  
-        this.userRole = this.usersdata.role[0].name;
-      }
+    //this.getlatestusers()
+    }
+    ionViewWillEnter(){
+      this.getlatestusers()  
+    }
+ async getlatestusers(){
+    this.loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
     });
+    await this.loading.present();
+setTimeout(() => {
+  if (this.AuthenService.users.length > 0) {
+   
+    this.usersdata = this.AuthenService.users[0];
 
+    this.customersData.fullName = this.usersdata.customer.fullName;
+    this.customersData.email = this.usersdata.user.email;
+    this.customersData.residentialCountryId = this.usersdata.customer.residentialCountryId;
+    this.customersData.residentialStateId = this.usersdata.customer.residentialStateId;
+    this.customersData.phoneNumber = this.usersdata.phone;
+    this.customersData.businessName = this.usersdata.customer.businessName;
+    this.customersData.closestLandmark = this.usersdata.customer.closestLandmark;
+    this.customersData.closestBustop = this.usersdata.customer.closestBustopId;
+    this.customersData.businessAnniversary = this.usersdata.customer.businessAnniversary;
+    this.customersData.homeAddress = this.usersdata.customer.homeAddress;
+
+    this.userRole = this.usersdata.role[0].name;
+    this.userType = this.usersdata.user.userType;
+    this.userProfilePic = this.usersdata.customer.companyLogo;
+
+  }
+  this.loading.dismiss()
+}, 2000);
+ 
+  }
+  updateSponsor(){
+    this.router.navigate(['sponsorsinformation']);
+  }
+  updateDocument(){
+    this.router.navigate(['documentupload']);
   }
 async updateUser(data,field){
 if(field == 'State' && !this.customersData.residentialCountryId){
@@ -77,7 +103,7 @@ this.router.navigate(['updateprofilepage'],{queryParams:{data:data,field: field}
     this.router.navigate(['providephone'],{queryParams:{phoneNumber:phoneNumber}})
   }
   goback(){
-    this.navCtrl.back();
+    this.navCtrl.navigateBack('/home');
   }
 
   choosePic() {
@@ -150,7 +176,13 @@ changePicFromFile() {
     });
   })
 }
-readFile(file: any) {
+async readFile(file: any) {
+  this.loading = await this.loadspinner.create({
+    message: "please wait...",
+    translucent: true,
+    spinner: "bubbles",
+  });
+  await this.loading.present();
   const reader = new FileReader();
   reader.onloadend = () => {
     const imgBlob = new Blob([reader.result], {
@@ -159,13 +191,39 @@ readFile(file: any) {
     const formData = new FormData();
     formData.append('userId', this.usersdata.userId);
     formData.append('file', imgBlob, file.name);
-    this.uploadService.uploadprofilepic(formData).subscribe(dataRes => {
-      console.log(dataRes);
+    this.uploadService.uploadprofilepic(formData).subscribe(async dataRes => {
+     
+      this.loading.present()
+      if(dataRes.code == '000'){
+        this.AuthenService.addUser(this.usersdata);
+        this.loading.dismiss()
+        this.getlatestusers();
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: dataRes.message,
+          color: "success"
+        });
+        toast.present();
+      }else{
+        this.loading.dismiss()
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: dataRes.message,
+          color: "danger"
+        });
+        toast.present();
+        if(dataRes.message == "Unauthorized"){
+  this.router.navigate(['login']);
+        }
+      }
+    
+      
     });
   };
   reader.readAsArrayBuffer(file);
 }
   ngOnInit() {
+    
   }
 
 }

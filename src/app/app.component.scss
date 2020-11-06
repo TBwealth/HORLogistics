@@ -1,8 +1,16 @@
 
 .menuWrapper{
-    --border: none;
-    --ion-background-color: transparent;
-    --side-width: 200px
+    --border: none !important;
+    --ion-background-color: transparent !important;
+    --ion-background: transparent !important;
+    --background: transparent !important;
+    background: transparent !important;
+    --side-width: 200px !important;
+    box-shadow: rgba(0, 0, 0, 0) 4px 0px 16px !important;
+}
+
+.menuWrapper .menu-type-overlay .menu-inner {
+    box-shadow: rgba(0, 0, 0, 0) 4px 0px 16px;
 }
 
 .profileSection{

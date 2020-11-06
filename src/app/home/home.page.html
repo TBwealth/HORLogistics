@@ -1,6 +1,6 @@
 <ion-content>
 
- <div #searbarContainer style="width: 90%;" class="searchContainer">
+ <div #searbarContainer style="width: 100%;" class="searchContainer">
   <div style="padding: 17px;"></div>
   <div style="background-color: #ffff; border-radius: 4px;">
     <ion-row>
@@ -17,7 +17,7 @@
     <ion-col sizeLg="2" sizeMd="2" sizesm="2" sizeXs="2" style="height: 42px;">
       <div style="padding: 2px;"></div>
       <ion-avatar>
-        <img src="assets/images/female-avatar.png" class="avatborder" >
+        <img (click)="gotoprofile()" src="{{usersdata?.customer?.companyLogo}}" onError="this.src='assets/images/female.png'" class="avatborder" >
       </ion-avatar>
     </ion-col>
      </ion-row>
