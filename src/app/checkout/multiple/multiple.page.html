@@ -142,7 +142,7 @@
         </div>
       <ion-row>
         <ion-col>
-          <ion-button [(disabled)]= "myForm.invalid"  (click)="addOrder($event);" expand="block" class="localdelivery" fill="clear">
+          <ion-button [(disabled)]= "myForm.invalid"  (click)="addNewProduct(); myForm.reset()" expand="block" class="localdelivery" fill="clear">
             <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
             <p class="localheader">Add Another Product</p>
           </ion-button>

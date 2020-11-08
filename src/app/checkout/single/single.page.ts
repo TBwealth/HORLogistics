@@ -101,7 +101,7 @@ console.log(this.authuserdetails)
       RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
       RequestDetails.shipToState = this.request_desc.shipToState;
       RequestDetails.pickupCenter = this.request_desc.pickupCenter;
-      RequestDetails.deliveryLocationId = this.request_desc.deliveryLocationId;
+      RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
       this.checkOutAsst.products = [];
       this.checkOutAsst.request;
       this.checkOutAsst.products.push(productDetails);

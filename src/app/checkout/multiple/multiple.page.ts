@@ -6,8 +6,8 @@ import {Router,ActivatedRoute} from '@angular/router';
 import { NavController,ToastController,AlertController} from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { CheckoutassistanceServiceProxy } from 'src/app/_services/service-proxies';
-import { CheckOutAssistanceProductModel,CheckOutAssistanceDTO,CheckoutAssistance, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
+import { CheckoutassistanceServiceProxy, ManageServiceProxy } from 'src/app/_services/service-proxies';
+import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO,CheckoutAssistance, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
 
 
 @Component({
@@ -45,7 +45,8 @@ export class MultiplePage implements OnInit {
     private navCtrl: NavController,
     public popoverController: PopoverController,
     private activatedroute: ActivatedRoute,
-    private checkout: CheckoutassistanceServiceProxy) { }
+    private checkout: CheckoutassistanceServiceProxy,
+    private activeUser: ManageServiceProxy) { }
 
   
       // async addOrder(ev: any) {
@@ -57,25 +58,25 @@ export class MultiplePage implements OnInit {
       //   });
       //   return await popover.present();
       // }
-      async addOrder(){
-        const subject = new Subject<boolean>()
-        const modal = await this.popoverController.create({
-          component: NeworderComponent,
-          cssClass: 'my-custom-class',
-          componentProps: {
-            subject
-          }
-        });
-        subject.subscribe(val => {
-          modal.dismiss()
-          if(val){
-            this.clearForm()
-          } else {
-            this.gotoSummary()
-          }
-        })
-        return await modal.present();
-      }
+      // async addOrder(){
+      //   const subject = new Subject<boolean>()
+      //   const modal = await this.popoverController.create({
+      //     component: NeworderComponent,
+      //     cssClass: 'my-custom-class',
+      //     componentProps: {
+      //       subject
+      //     }
+      //   });
+      //   subject.subscribe(val => {
+      //     modal.dismiss()
+      //     if(val){
+      //       this.clearForm()
+      //     } else {
+      //       this.gotoSummary()
+      //     }
+      //   })
+      //   return await modal.present();
+      // }
 
   ngOnInit() {
   }
@@ -184,17 +185,35 @@ onSubmit(){
 
   //Delivery Details
   let RequestDetails = new CheckOutAssistanceModel();
-  RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;
-  RequestDetails.customerAddress = this.authuserdetails.data.customer.homeAddress;
-  RequestDetails.customerName = this.authuserdetails.data.customer.fullName;
-  RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
-  RequestDetails.shipToState = this.request_desc.shipToState;
-  RequestDetails.pickupCenter = this.request_desc.pickupCenter;
-  RequestDetails.deliveryLocationId = this.request_desc.deliveryLocationId;
+  this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
+    this.authuserdetails = data;
+    
+    if(this.checkedIdx = true)
+    {
+      this.request_desc.checkoutProcessing = 'home';
+      this.request_desc.pickupCenter = null;
+    } else {
+      this.request_desc.checkoutProcessing = 'pickup';
+      this.request_desc.customerAddress = null;
+      this.request_desc.shipToState = null; 
+      this.request_desc.deliveryLocationId = 0;
+    }
+    RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;
+    RequestDetails.customerAddress = this.authuserdetails.data.customer.homeAddress;
+    RequestDetails.customerName = this.authuserdetails.data.customer.fullName;
+    RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
+    RequestDetails.shipToState = this.request_desc.shipToState;
+    RequestDetails.pickupCenter = this.request_desc.pickupCenter;
+    RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
+    this.checkOutAsst.products = [];
+    this.checkOutAsst.request;
+    this.checkOutAsst.products.push(productDetails);
+    this.checkOutAsst.request = RequestDetails;
+    console.log(this.checkOutAsst);
+    this.checkout.create(this.checkOutAsst).subscribe(data => {})
+  })
 
-  this.checkOutAsst.products.push(productDetails);
-  this.checkOutAsst.request = RequestDetails;
-  console.log(this.checkOutAsst);
+  //console.log(this.checkOutAsst);
 
   //  let singleProduct = new 
 //     console.log(myForm.value);
@@ -219,7 +238,7 @@ saveOrder() {
 gotoSummary(){
   this.onSubmit()
     //this.store.saveBookings(this.checkOutAsst)
-    this.router.navigate(['localdelivery/review-booking'])
+    //this.router.navigate(['localdelivery/review-booking'])
 
 }
 

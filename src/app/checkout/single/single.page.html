@@ -120,7 +120,7 @@
         
                   
                   <div style="padding: 5px;"></div>
-                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_location="ngModel" name="delivery_location" placeholder="Delivery Location" value="0" [(ngModel)]="request_desc.deliveryLocationId" required></ion-input>
+                  <ion-input (keyup)="validateDeliveryDetailsForm()" #delivery_location="ngModel" name="delivery_location" placeholder="Delivery Location" [(ngModel)]="request_desc.deliveryLocationId" required></ion-input>
                   <div *ngIf="delivery_location.invalid && (delivery_location.dirty || delivery_location.touched)" class="error">
                   <div *ngIf="delivery_location.errors.required">Location is required</div>
                   </div>
