@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild,ElementRef,AfterViewInit } from '@angular/core';
 import { Geolocation,Geoposition } from '@ionic-native/geolocation/ngx';
-import {Platform, NavController, AlertController,MenuController, PopoverController } from '@ionic/angular';
+import {Platform, NavController, AlertController,MenuController, PopoverController, LoadingController } from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
 import {  VerifiedPhoneUpdate,StatusResource, LoginResource } from "../_models/service-models";
@@ -21,6 +21,8 @@ completeShape:any;
 savedCircle:any;
 Lgpslatlng:any;
 usersdata = new LoginResource().clone();
+userRole = "";
+loading: any = "";
   constructor(
     public platform:Platform, public navCtrl: NavController, public alertCtrl: AlertController,
     public geolocation: Geolocation, public activatedroute: ActivatedRoute,
@@ -28,33 +30,49 @@ usersdata = new LoginResource().clone();
     private AuthenService: AuthenticationService,
     private router: Router,
     public popoverController: PopoverController,
-    
+    private loadspinner: LoadingController
 
-  ) { 
+  ) 
+  { 
 
-    this.platform.ready().then(()=>{
-      this.AuthenService.getuser().then(async (usersdata:LoginResource[])=>{
-        if(usersdata.length > 0){
-          this.usersdata = usersdata[0];
-          if(!this.usersdata.isProfileComplete){
-            this.router.navigate(['profilepage']);
-          }else{
-            if(!this.usersdata.customer.closestBustopId){
-              const popover = await this.popoverController.create({
-                component: PrimarylocationComponent,
-                cssClass: 'my-popover-class',
-                backdropDismiss: false,
-                // event: ev,
-                //translucent: true
-              });
-              return await popover.present();
+  }
+  ionViewWillEnter(){
+   
+    this.platform.ready().then(async()=>{
+      this.loading = await this.loadspinner.create({
+        message: "please wait...",
+        translucent: true,
+        spinner: "bubbles",
+      });
+      await this.loading.present();
+      setTimeout(async() => {  
+          this.AuthenService.users.length
+          if(this.AuthenService.users.length > 0){
+            this.usersdata = this.AuthenService.users[0];
+            this.userRole = this.usersdata.role[0].name;
+            console.log(this.userRole)
+            if(!this.usersdata.isProfileComplete){
+            //  this.router.navigate(['profilepage']);
+            }else{
+              if(this.userRole != 'Rider'){
+                if(!this.usersdata.customer.closestBustopId){
+                  const popover = await this.popoverController.create({
+                    component: PrimarylocationComponent,
+                    cssClass: 'my-popover-class',
+                    backdropDismiss: false,
+                    // event: ev,
+                    //translucent: true
+                  });
+                  return await popover.present();
+                }
+              }
+             
             }
+           
           }
-         
-        }
-        });
-     
-
+    
+        this.loading.dismiss()
+      }, 3000);  
 
       var mapOptions = {
         mapTypeId: 'roadmap',
@@ -126,11 +144,10 @@ ref.map.fitBounds(bounds);
 });
      
 
-          
+   
     })
-    
+   
   }
-
   gotoprofile(){
     this.router.navigate(['profilepage']);
   }

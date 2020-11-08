@@ -5514,14 +5514,14 @@ export class ManageServiceProxy {
     /**
      * @return OK
      */
-    updateUser(payload: UpdateUserViewModel): Observable<StatusResource> {
+    updateUser(payload: IUpdateUserViewModel): Observable<StatusResource> {
         let url_ = this.baseUrl + "/api/Manage/UpdateUser";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(payload);
+        // const content_ = JSON.stringify(payload);
 
         let options_ : any = {
-            body: content_,
+            body: payload,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
@@ -16362,10 +16362,10 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
             this.carModel = _data["carModel"];
             this.carYear = _data["carYear"];
             this.licenseNumber = _data["licenseNumber"];
-            this.machinePictureUrl = _data["machinePictureUrl"] ? HttpPostedFileBase.fromJS(_data["machinePictureUrl"]) : <any>undefined;
-            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? HttpPostedFileBase.fromJS(_data["machineRegistrationUrl"]) : <any>undefined;
-            this.riderLincesUrl = _data["riderLincesUrl"] ? HttpPostedFileBase.fromJS(_data["riderLincesUrl"]) : <any>undefined;
-            this.insuranceUrl = _data["insuranceUrl"] ? HttpPostedFileBase.fromJS(_data["insuranceUrl"]) : <any>undefined;
+            this.machinePictureUrl = _data["machinePictureUrl"] ? _data["machinePictureUrl"]: <any>undefined;
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? _data["machineRegistrationUrl"] : <any>undefined;
+            this.riderLincesUrl = _data["riderLincesUrl"] ? _data["riderLincesUrl"] : <any>undefined;
+            this.insuranceUrl = _data["insuranceUrl"] ? _data["insuranceUrl"] : <any>undefined;
         }
     }
 
@@ -16397,10 +16397,10 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
         data["carModel"] = this.carModel;
         data["carYear"] = this.carYear;
         data["licenseNumber"] = this.licenseNumber;
-        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl.toJSON() : <any>undefined;
-        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl.toJSON() : <any>undefined;
-        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl.toJSON() : <any>undefined;
-        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl.toJSON() : <any>undefined;
+        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl : <any>undefined;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl : <any>undefined;
+        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl : <any>undefined;
+        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl : <any>undefined;
         return data; 
     }
 
@@ -16432,10 +16432,10 @@ export interface IUpdateUserViewModel {
     carModel: string | undefined;
     carYear: string | undefined;
     licenseNumber: string | undefined;
-    machinePictureUrl: HttpPostedFileBase | undefined;
-    machineRegistrationUrl: HttpPostedFileBase | undefined;
-    riderLincesUrl: HttpPostedFileBase | undefined;
-    insuranceUrl: HttpPostedFileBase | undefined;
+    machinePictureUrl: any | undefined;
+    machineRegistrationUrl: any | undefined;
+    riderLincesUrl: any | undefined;
+    insuranceUrl: any | undefined;
 }
 
 export class ForgotPasswordViewModel implements IForgotPasswordViewModel {

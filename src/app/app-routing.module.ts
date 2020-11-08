@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 
 const routes: Routes = [
- {path: '', redirectTo: 'sponsorsinformation', pathMatch: 'full'},
+ {path: '', redirectTo: 'home', pathMatch: 'full'},
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
@@ -121,7 +121,16 @@ const routes: Routes = [
   {
     path: 'sponsorsinformation',
     loadChildren: () => import('./riders/sponsorsinformation/sponsorsinformation.module').then( m => m.SponsorsinformationPageModule)
+  },
+  {
+    path: 'ridershistory',
+    loadChildren: () => import('./riders/ridershistory/ridershistory.module').then( m => m.RidershistoryPageModule)
+  },
+  {
+    path: 'riderorders',
+    loadChildren: () => import('./riders/riderorders/riderorders.module').then( m => m.RiderordersPageModule)
   }
+
 
 
 

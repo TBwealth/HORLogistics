@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController, ToastController,ActionSheetController, LoadingController } from '@ionic/angular';
-import {  UserViewModel,LoginResource, UpdateUserViewModel,UserPhotoViewModel } from "../_models/service-models";
+import {  UserViewModel,LoginResource, UpdateUserViewModel,UserPhotoViewModel, Dispatcher } from "../_models/service-models";
 import { AuthenticationService } from '../_services/authentication.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
@@ -13,7 +13,8 @@ import {AccountServiceProxy} from '../_services/service-proxies';
 })
 export class ProfilepagePage implements OnInit {
   customersData = new UpdateUserViewModel().clone();
-  filemodel = new UserPhotoViewModel().clone()
+  filemodel = new UserPhotoViewModel().clone();
+  dispatcher = new Dispatcher().clone();
   usersdata:any;
   userRole = "";
   userType = "";
@@ -50,21 +51,27 @@ setTimeout(() => {
   if (this.AuthenService.users.length > 0) {
    
     this.usersdata = this.AuthenService.users[0];
-
-    this.customersData.fullName = this.usersdata.customer.fullName;
-    this.customersData.email = this.usersdata.user.email;
-    this.customersData.residentialCountryId = this.usersdata.customer.residentialCountryId;
-    this.customersData.residentialStateId = this.usersdata.customer.residentialStateId;
-    this.customersData.phoneNumber = this.usersdata.phone;
-    this.customersData.businessName = this.usersdata.customer.businessName;
+    this.userRole = this.usersdata.role[0].name;
+if(this.userRole != 'Rider'){
+  this.customersData.fullName = this.usersdata.customer.fullName;
+  this.customersData.residentialCountryId = this.usersdata.customer.residentialCountryId;
+  this.customersData.residentialStateId = this.usersdata.customer.residentialStateId;
+  this.customersData.businessName = this.usersdata.customer.businessName;
     this.customersData.closestLandmark = this.usersdata.customer.closestLandmark;
     this.customersData.closestBustop = this.usersdata.customer.closestBustopId;
     this.customersData.businessAnniversary = this.usersdata.customer.businessAnniversary;
     this.customersData.homeAddress = this.usersdata.customer.homeAddress;
-
-    this.userRole = this.usersdata.role[0].name;
-    this.userType = this.usersdata.user.userType;
     this.userProfilePic = this.usersdata.customer.companyLogo;
+}
+    
+    this.customersData.email = this.usersdata.user.email;
+    
+    this.customersData.phoneNumber = this.usersdata.phone;
+    
+    this.dispatcher = this.usersdata.dispatcher;
+    
+    this.userType = this.usersdata.user.userType;
+    
 
   }
   this.loading.dismiss()

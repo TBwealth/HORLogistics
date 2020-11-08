@@ -13,9 +13,12 @@
             </span>
             
             <ion-avatar slot="start">
-              <img (click)="gotoprofile()" src="{{usersdata?.customer?.companyLogo}}" onError="this.src='assets/images/female.png'">
+              <img *ngIf="userRole == 'Customer' || userRole == 'Partner'" (click)="gotoprofile()" src="{{usersdata?.customer?.companyLogo}}" onError="this.src='assets/images/female.png'">
+              <img *ngIf="userRole == 'Rider'" class="" (click)="gotoprofile()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{usersdata?.dispatcher?.profilePicUrl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
+ 
             </ion-avatar>
             <h4 *ngIf="userRole == 'Customer'">{{usersdata?.customer?.fullName}}</h4>
+            <h4 *ngIf="userRole == 'Rider'">{{usersdata?.dispatcher?.name}}</h4>
             <h4 *ngIf="userRole == 'Partner'">{{usersdata?.customer?.businessName}}</h4>
             <h6 style="color: #ffffff;opacity: 56%;">{{usersdata?.user?.email}}</h6>
           </div>
@@ -24,7 +27,7 @@
           <div >
             <ion-list>
                 <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-                    <ion-item lines="none" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active-link" class="menu-hover">
+                    <ion-item *ngIf="p.userRole == 'AllUsers' || p.userRole == userRole" lines="none" [routerDirection]="'root'" [routerLink]="[p.url]" routerLinkActive="active-link" class="menu-hover">
                         <ion-icon slot="start" [name]="p.icon"></ion-icon>
                         <ion-label>
                             <small><b>{{p.title}}</b></small>

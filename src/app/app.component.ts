@@ -21,23 +21,45 @@ export class AppComponent {
     {
       title: 'Home',
       url: '/home',
-      icon: 'home-outline'
+      icon: 'home-outline',
+      userRole: 'AllUsers'
+    },
+    {
+      title: 'Ride History',
+      url: '/ridershistory',
+      icon: 'reload-outline',
+      userRole: 'Rider'
     },
     {
       title: 'Orders',
       url: '/orders',
-      icon: 'receipt-outline'
+      icon: 'receipt-outline',
+      userRole: 'Customer'
+    },
+    {
+      title: 'Assigned Orders',
+      url: '/riderorders',
+      icon: 'receipt-outline',
+      userRole: 'Rider'
     },
   
     {
       title: 'Track',
       url: '/trackorder',
-      icon: 'aperture-outline'
+      icon: 'aperture-outline',
+      userRole: 'AllUsers'
     },
     {
       title: 'Help Center',
-      url: '/support',
-      icon: 'headset-outline'
+      url: '/helpcenter',
+      icon: 'headset-outline',
+      userRole: 'AllUsers'
+    },
+    {
+      title: 'Settings',
+      url: '/profilepage',
+      icon: 'settings-outline',
+      userRole: 'AllUsers'
     },
    
   ];
