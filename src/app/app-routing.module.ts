@@ -132,7 +132,16 @@ const routes: Routes = [
   {
     path: 'sponsorsinformation',
     loadChildren: () => import('./riders/sponsorsinformation/sponsorsinformation.module').then( m => m.SponsorsinformationPageModule)
+  },
+  {
+    path: 'ridershistory',
+    loadChildren: () => import('./riders/ridershistory/ridershistory.module').then( m => m.RidershistoryPageModule)
+  },
+  {
+    path: 'riderorders',
+    loadChildren: () => import('./riders/riderorders/riderorders.module').then( m => m.RiderordersPageModule)
   }
+
 
 
 

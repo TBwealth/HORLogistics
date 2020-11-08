@@ -1,3 +1,4 @@
+import { CheckboxComponent } from './../../components/checkbox/checkbox.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,6 @@ import { SinglePage } from './single.page';
     IonicModule,
     SinglePageRoutingModule
   ],
-  declarations: [SinglePage]
+  declarations: [SinglePage, CheckboxComponent]
 })
 export class SinglePageModule {}

@@ -1,11 +1,11 @@
-// import { CheckoutAssistance } from './../../_services/service-proxies';
-import { product_descriptionModel} from './../../_models/checkout';
-import { FormsModule, FormControl, FormGroup, Validators} from '@angular/forms';
+import { ICheckOutAssistanceDTO } from './../../_models/service-models';
+import { ManageServiceProxy } from './../../_services/service-proxies';
+import { FormsModule, FormControl, FormGroup, Validators, NgForm } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import {Router,ActivatedRoute} from '@angular/router';
 import { NavController,ToastController,AlertController} from '@ionic/angular';
-import {NgForm} from '@angular/forms';
-
+import { CheckoutassistanceServiceProxy } from 'src/app/_services/service-proxies';
+import { CheckOutAssistanceProductModel,CheckOutAssistanceDTO,CheckoutAssistance, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
 
 @Component({
   selector: 'app-single',
@@ -17,30 +17,105 @@ export class SinglePage implements OnInit {
   checkedIdx = true;
   activetab:string = "";
   homedelivery:string = ""
-  
-  myorder: product_descriptionModel = {};
-    
+  authuserdetails = new ObjectResourceOfUserViewModel().clone();
+  myorder: CheckOutAssistanceProductModel = new CheckOutAssistanceProductModel ();
+
+   
   productDescriptionPanel: boolean = false;
   deliveryDetailsPanel: boolean = true;
   
-  product_descriptionForm :FormGroup;
+ myForm :FormGroup = new FormGroup({});
   delivery_detailsForm : FormGroup;
 
   // delivery_details : delivery_details = {};
   // product_description : product_descriptionModel ={};
-  product_desc : product_descriptionModel = {};
+  product_desc = new CheckOutAssistanceProductModel().clone();
+  request_desc = new CheckOutAssistanceModel().clone();
+  all_product_desc: CheckOutAssistanceProductModel[];
+  
+  checkOutAsst = new CheckOutAssistanceDTO().clone();
 
-
+  
   constructor(private toastCtrl: ToastController,
     private router: Router,
     private navCtrl: NavController,
-    private activatedroute: ActivatedRoute) { }
+    private activatedroute: ActivatedRoute,
+    private checkout: CheckoutassistanceServiceProxy,
+    private activeUser: ManageServiceProxy) { }
 
   ngOnInit() {
+ 
+  }
+
+  get myUser(){
+   return this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
+this.authuserdetails = data;
+console.log(this.authuserdetails)
+// if(this.authuserdetails.code == "000"){
+  
+
+// }else{
+
+//   if(this.authuserdetails.message == "unAuthorized"){
+
+//   }
+// }
+   });
+  }
+
+  onReset(){
+    this.myForm.reset();
   }
 
   onSubmit(){
-    console.log(this.product_desc);
+    let productDetails = new CheckOutAssistanceProductModel()
+    //Product details
+    productDetails.name = this.product_desc.name;
+    productDetails.quantity = this.product_desc.quantity;
+    productDetails.size = this.product_desc.size;
+    productDetails.color = this.product_desc.color;
+    productDetails.url = this.product_desc.url;
+    productDetails.delivery = this.product_desc.delivery
+    productDetails.itemNumber = this.product_desc.itemNumber
+    productDetails.comment = this.product_desc.comment;
+    productDetails.style = this.product_desc.style;
+
+    //Delivery Details
+    let RequestDetails = new CheckOutAssistanceModel();
+    this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
+      this.authuserdetails = data;
+      
+      if(this.checkedIdx = true)
+      {
+        this.request_desc.checkoutProcessing = 'home';
+        this.request_desc.pickupCenter = null;
+      } else {
+        this.request_desc.checkoutProcessing = 'pickup';
+        this.request_desc.customerAddress = null;
+        this.request_desc.shipToState = null; 
+        this.request_desc.deliveryLocationId = 0;
+      }
+      RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;
+      RequestDetails.customerAddress = this.authuserdetails.data.customer.homeAddress;
+      RequestDetails.customerName = this.authuserdetails.data.customer.fullName;
+      RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
+      RequestDetails.shipToState = this.request_desc.shipToState;
+      RequestDetails.pickupCenter = this.request_desc.pickupCenter;
+      RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
+      this.checkOutAsst.products = [];
+      this.checkOutAsst.request;
+      this.checkOutAsst.products.push(productDetails);
+      this.checkOutAsst.request = RequestDetails;
+      console.log(this.checkOutAsst);
+      this.checkout.create(this.checkOutAsst).subscribe(data => {})
+    })
+
+    //console.log(this.checkOutAsst);
+  
+    //  let singleProduct = new 
+  //     console.log(myForm.value);
+  //     this.checkout.create(myForm.value).subscribe(data => {})
+    
   }
 
 //   addPost(form: NgForm){
@@ -78,9 +153,10 @@ myfunction($val){
 
 validateProductDescriptionForm(){
 
-if(this.product_desc.product_name &&
-   this.product_desc.product_url &&
-    this.product_desc.delivery_type &&
+if(this.product_desc.name &&
+   this.product_desc.url &&
+    this.product_desc.delivery &&
+    this.product_desc.quantity &&
      this.product_desc.color && this.product_desc.size){
   this.deliveryDetailsPanel = false;
 }else{
@@ -91,9 +167,9 @@ if(this.product_desc.product_name &&
 }
 
 validateDeliveryDetailsForm(){
-if(this.product_desc.location &&
-   this.product_desc.state &&
-   this.product_desc.address){
+if(this.request_desc.customerAddress &&
+   this.request_desc.deliveryLocationId &&
+   this.request_desc.shipToState){
        
     this.myorder = this.product_desc;
     //console.log(this.myorder)

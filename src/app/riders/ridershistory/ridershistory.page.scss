@@ -1,0 +1,35 @@
+h6{
+    color: #959DAD;
+    font-size: 12px;
+}
+
+span{
+    color: #454F63;
+    font-size: 14px;
+}
+
+.starting-point > span{
+    width: 8px;
+    height: 8px;
+    background-color: #78849E;
+    border-radius: 50%;
+    display: block;
+}
+.middle-point > span{
+    width: 2px;
+    height: 2px;
+    background-color: #78849E55;
+    border-radius: 50%;
+    display: block;
+}
+
+.middle-point{
+    flex: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.middle-point.top{
+    align-items: flex-start;
+}

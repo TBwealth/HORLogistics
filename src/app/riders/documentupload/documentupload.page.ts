@@ -5,6 +5,8 @@ import {FilePath} from '@ionic-native/file-path/ngx';
 import {FileTransfer,FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer/ngx';
 import {File} from '@ionic-native/file/ngx';
 import { Router } from '@angular/router';
+import { UpdateStatus } from 'src/app/_models/service-models';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
 
 @Component({
   selector: 'app-documentupload',
@@ -12,17 +14,41 @@ import { Router } from '@angular/router';
   styleUrls: ['./documentupload.page.scss'],
 })
 export class DocumentuploadPage implements OnInit {
+  UpdateStatus = new  UpdateStatus().clone();
   uploadText: any;
   downloadText: any;
   fileTransfer: FileTransferObject;
   arrayType = ["pdf", "doc", "docx", "png", "jpg", "gif","jpeg"];
   loading: any;
+  usersdata:any;
   constructor( public alertCtrl: AlertController, public navCtrl: NavController,
     private transfer:FileTransfer,private file: File, private filepath: FilePath, 
       private filechooser: FileChooser,
       private loadspinner: LoadingController,
       private router: Router,
-      private toastCtrl: ToastController) { }
+      private toastCtrl: ToastController,
+      private AuthenService: AuthenticationService,) { }
+      ionViewWillEnter(){
+        this.getlatestusers()  
+      }
+      async getlatestusers()  {
+        this.loading = await this.loadspinner.create({
+          message: "please wait...",
+          translucent: true,
+          spinner: "bubbles",
+        });
+        await this.loading.present();
+    setTimeout(() => {
+      if (this.AuthenService.users.length > 0) {   
+        this.usersdata = this.AuthenService.users[0];
+              this.UpdateStatus.dispatcherId = this.usersdata.userId;
+              this.UpdateStatus.statusId = this.usersdata.dispatcher.dispatcherStatusesId;
+      }
+      this.loading.dismiss()
+    }, 2000);
+     
+      }
+      
   goback(){
     this.navCtrl.back();
   }
@@ -41,8 +67,8 @@ let options: FileUploadOptions = {
   headers:{},
   mimeType: fileType,
   params: {
-    userId: '',
-    dispatcherId: ''
+    statusId: this.UpdateStatus.statusId,
+    dispatcherId: this.UpdateStatus.dispatcherId
   }
 }
 if(this.arrayType.indexOf(fileType) > -1){

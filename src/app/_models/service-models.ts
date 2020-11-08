@@ -9468,10 +9468,10 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
     carModel: string | undefined;
     carYear: string | undefined;
     licenseNumber: string | undefined;
-    machinePictureUrl: HttpPostedFileBase | undefined;
-    machineRegistrationUrl: HttpPostedFileBase | undefined;
-    riderLincesUrl: HttpPostedFileBase | undefined;
-    insuranceUrl: HttpPostedFileBase | undefined;
+    machinePictureUrl: any | undefined;
+    machineRegistrationUrl: any | undefined;
+    riderLincesUrl: any | undefined;
+    insuranceUrl: any | undefined;
 
     constructor(data?: IUpdateUserViewModel) {
         if (data) {
@@ -9573,10 +9573,10 @@ export interface IUpdateUserViewModel {
     carModel: string | undefined;
     carYear: string | undefined;
     licenseNumber: string | undefined;
-    machinePictureUrl: HttpPostedFileBase | undefined;
-    machineRegistrationUrl: HttpPostedFileBase | undefined;
-    riderLincesUrl: HttpPostedFileBase | undefined;
-    insuranceUrl: HttpPostedFileBase | undefined;
+    machinePictureUrl: any | undefined;
+    machineRegistrationUrl: any | undefined;
+    riderLincesUrl: any | undefined;
+    insuranceUrl: any | undefined;
 }
 
 export class ForgotPasswordViewModel implements IForgotPasswordViewModel {
