@@ -1,6 +1,6 @@
 @import '../../variables.scss';
 
-.main-container > *{
+.main-container > *, .main-container > div > *{
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 20px;

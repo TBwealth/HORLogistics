@@ -1,0 +1,54 @@
+<ion-header class="ion-no-border"> 
+  <ion-toolbar>    
+  <ion-title style="text-align: center;">Documents </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding: 10px;">
+    <ion-row>
+      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
+        <ion-button (click)="uploadFile('machinePictureUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
+        <p style="font-size: 16px;color:#444F63;">Bike/Vehicle Picture</p>
+        <p>Upload a full picture of your ride</p>      
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
+        <ion-button (click)="uploadFile('riderLincesUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
+        <p style="font-size: 16px;color:#444F63;">Driver's License</p>
+        <p>Upload a copy of your driver's license</p>      
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
+        <ion-button (click)="uploadFile('machineRegistrationUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
+        <p style="font-size: 16px;color:#444F63;">Registration Document</p>
+        <p>Upload Bike/Vehicle registration document </p>      
+
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
+        <ion-button (click)="uploadFile('insuranceUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
+        <p style="font-size: 16px;color:#444F63;">Insurance Certificate</p>
+        <p>Upload Insurance Certificate</p>      
+
+      </ion-col>
+    </ion-row>
+
+  </div>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-button (click)="update()" class="pryColor " expand="block" fill="fill">DONE</ion-button>
+  <div style="padding:5px;"></div>
+  <ion-button expand="block"  class="blacksecColor" (click)="goback()">
+    Cancel
+  </ion-button>
+</ion-footer>

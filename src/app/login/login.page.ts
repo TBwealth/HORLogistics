@@ -31,6 +31,7 @@ emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$";
 loading: any;
 isGoogleLogin = false;
 RegisterUserResource = new RegisterUserResource().clone();
+customerType: any;
   constructor(private router: Router,
     private navCtrl: NavController,
     private activatedroute: ActivatedRoute,
@@ -87,7 +88,7 @@ this.router.navigate(['terms'])
     this.navCtrl.back();
   }
   register(){
-    this.router.navigate(['customerspartneroption'])
+    this.router.navigate(['preferedaction'])
   }
 
   socialLogin(userDetails: socialUser){
@@ -136,7 +137,10 @@ this.router.navigate(['terms'])
       });
 
   }
-
+  getcustType(custType){
+    this.customerType = custType;
+   
+   }
   doLogin(){
     let params: any;
     if (this.platform.is('cordova')) {
@@ -188,7 +192,12 @@ this.router.navigate(['terms'])
 
 
   ngOnInit() {
-
+    this.activatedroute.queryParams.subscribe(data=>{
+      if(data.custType){
+        this.getcustType(data.custType);
+      }
+    
+    })
   }
 
 }

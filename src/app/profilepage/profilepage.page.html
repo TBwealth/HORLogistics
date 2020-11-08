@@ -18,7 +18,7 @@
   <ion-row>
   <ion-col size="3"></ion-col>  
   <ion-col size="6">
-    <img class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="assets/images/female.png" alt="" title="" itemprop="image">
+    <img class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{userProfilePic}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
  
   </ion-col>  
   <ion-col size="3"></ion-col>  
@@ -28,8 +28,10 @@
   <div style="position: absolute;top: 270px; width: 100%;">
     <div style="text-align: center;">
       <ion-label><small style="color: #757373;text-align: center; font-size: 16px;">{{userRole}}</small></ion-label> <br>
-      <ion-label style="font-size: 22px;font-style: bold; color: #303030;font-weight: bolder;text-align: center;font-family: 'avenir_ff_black';">{{customersData.fullName}}&nbsp; 
+      <ion-label *ngIf="userRole == 'Customer' || userRole == 'Rider'" style="font-size: 22px;font-style: bold; color: #303030;font-weight: bolder;text-align: center;font-family: 'avenir_ff_black';"><span >{{customersData.fullName}}</span>&nbsp; 
         <ion-icon (click)="updateUser(customersData.fullName,'Full Name')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon></ion-label>
+        <ion-label *ngIf="userRole == 'Partner'" style="font-size: 22px;font-style: bold; color: #303030;font-weight: bolder;text-align: center;font-family: 'avenir_ff_black';"><span >{{customersData.businessName}}</span>&nbsp; 
+          <ion-icon (click)="updateUser(customersData.businessName,'businessName')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon></ion-label>
     </div>
     <div style="padding: 10px;"></div>
 <div style="padding: 5px;">
@@ -38,7 +40,7 @@
       <ion-label>Phone</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label>{{customersData.phoneNumber}}</ion-label>
+      <ion-label style="float: right;">{{customersData.phoneNumber}}</ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="gotoverifyPhone(customersData.phoneNumber)" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
@@ -49,7 +51,7 @@
       <ion-label>Email</ion-label>
     </ion-col>
     <ion-col size="9" style="float: right;">
-      <ion-label>{{customersData.email}}</ion-label>
+      <ion-label style="float: right;">{{customersData.email}}</ion-label>
     </ion-col>
 
   </ion-row>
@@ -58,7 +60,7 @@
       <ion-label>Country</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label>{{customersData.residentialCountryId}}</ion-label>
+      <ion-label style="float: right;">{{customersData.residentialCountryId}}</ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.residentialCountryId,'Country')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
@@ -66,48 +68,74 @@
   </ion-row>
   <ion-row>
     <ion-col size="3">
-      <ion-label>State</ion-label>
+      <ion-label *ngIf="userRole == 'Rider' ">Coverage Location</ion-label>
+      <ion-label *ngIf="userRole != 'Rider' ">State</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label>{{customersData.residentialStateId}}</ion-label>
+      <ion-label style="float: right;" >{{customersData.residentialStateId}}</ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.residentialStateId,'State')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
     </ion-col>
   </ion-row>
-  <ion-row>
+
+  <ion-row *ngIf="userRole == 'Customer' || userRole == 'Partner'">
     <ion-col size="3">
       <ion-label>Home Address</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label>{{customersData.homeAddress}}</ion-label>
+      <ion-label style="float: right;">{{customersData.homeAddress}}</ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.homeAddress,'Address')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
     </ion-col>
   </ion-row>
-  <ion-row>
-    <ion-col size="3">
+  <ion-row *ngIf="userRole == 'Customer' || userRole == 'Partner'">
+    <ion-col size="3" >
       <ion-label>Closest Bus-stop</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label>{{customersData.closestBustop}}</ion-label>
+      <ion-label style="float: right;">{{customersData.closestBustop}}</ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.closestBustop,'Bus-stop')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
     </ion-col>
   </ion-row>
-  <ion-row>
+  <ion-row *ngIf="userRole == 'Customer' || userRole == 'Partner'">
     <ion-col size="3">
       <ion-label>Closest Landmark</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label>{{customersData.closestLandmark}}</ion-label>
+      <ion-label style="float: right;">{{customersData.closestLandmark}}</ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.closestLandmark,'Landmark')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
     </ion-col>
   </ion-row>
+
+  <ion-row *ngIf="userRole == 'Rider' ">
+    <ion-col size="3">
+      <ion-label>Sponsor's Information</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label style="color: #EF6102;float: right;">Update</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateSponsor()" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row *ngIf="userRole == 'Rider'">
+    <ion-col size="3">
+      <ion-label>Upload Documents</ion-label>
+    </ion-col>
+    <ion-col size="8" style="float: right;">
+      <ion-label style="color: #EF6102;float: right;">Upload</ion-label>
+    </ion-col>
+    <ion-col size="1">
+      <ion-icon (click)="updateDocument()" name="cloud-upload-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
+    </ion-col>
+  </ion-row>
+
 <div style="padding: 10px;"></div>
   <ion-row>
     <ion-col size="4">

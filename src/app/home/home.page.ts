@@ -27,7 +27,8 @@ usersdata = new LoginResource().clone();
     private menu: MenuController,
     private AuthenService: AuthenticationService,
     private router: Router,
-    public popoverController: PopoverController
+    public popoverController: PopoverController,
+    
 
   ) { 
 
@@ -60,6 +61,7 @@ usersdata = new LoginResource().clone();
         center: {lat: 9.077751, lng: 8.6774567},
         mapTypeControl: false,
         streetViewControl: false,
+        zoomControl: false,
         zoom: 2
       }
       this.map = new google.maps.Map(document.getElementById("map"),mapOptions);
@@ -127,6 +129,10 @@ ref.map.fitBounds(bounds);
           
     })
     
+  }
+
+  gotoprofile(){
+    this.router.navigate(['profilepage']);
   }
   openMenu(){
 this.menu.open();

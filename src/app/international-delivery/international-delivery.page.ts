@@ -24,6 +24,7 @@ enum BOOKING_KINDS {
   styleUrls: ['./international-delivery.page.scss'],
 })
 export class InternationalDeliveryPage implements OnInit {
+  homePickup = false
   BOOKING_KINDS = BOOKING_KINDS;
   booking: InternationalBooking = new InternationalBooking()
   activetab:string = "";
@@ -63,14 +64,17 @@ export class InternationalDeliveryPage implements OnInit {
     this.internationalBookingService.intlbookingshipmentmode().subscribe(data => {
       this.shipmentModes = data.data
     })
-    this.activatedroute.url.subscribe(url => {
-      if(url[0].path.includes('export')){
-        this.exportPage = true
-        this.booking.shipmentModeId = 2
-      } else {
-        this.booking.shipmentModeId = 1
-      }
-    })
+    // this.activatedroute.url.subscribe(url => {
+    //   // if(url[0].path.includes('export')){
+    //   //   this.exportPage = true
+    //   //   this.booking.shipmentModeId = 2
+    //   // } else {
+    //   //   this.booking.shipmentModeId = 1
+    //   // }
+    // })
+  }
+  shipmentModeChanged(shipmentMode: number){
+    this.exportPage = shipmentMode == 2
   }
 
   goback(){

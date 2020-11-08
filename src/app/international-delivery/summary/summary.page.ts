@@ -24,7 +24,7 @@ export class SummaryPage implements OnInit {
 
   submit(){
     const booking = this.store.getInternationalBookings()
-    booking.eta = moment(booking.eta)
+    if(booking.eta) booking.eta = new Date(booking.eta)
     this.internationalBookingService.createIntlBooking(booking).subscribe(data => {})
   }
 

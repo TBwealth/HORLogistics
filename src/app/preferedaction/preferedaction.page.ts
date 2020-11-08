@@ -8,11 +8,11 @@ import {Router} from '@angular/router';
 export class PreferedactionPage implements OnInit {
 
   constructor(private router: Router) { }
-  gotoplaceorder(){
-this.router.navigate(['loginsigninoptions']);
+  gotoplaceorder(usersType){
+this.router.navigate(['loginsigninoptions'],{queryParams:{usersType:usersType}});
   }
-  gotoriderorder(){
-this.router.navigate([''])
+  gotoriderorder(usersType){
+this.router.navigate(['loginsigninoptions'],{queryParams:{usersType:usersType}})
   }
   ngOnInit() {
   }

@@ -28,6 +28,11 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook } from '@ionic-native/facebook/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import {FileChooser} from '@ionic-native/file-chooser/ngx';
+import {FilePath} from '@ionic-native/file-path/ngx';
+import {FileTransfer} from '@ionic-native/file-transfer/ngx';
+
 
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
@@ -38,10 +43,11 @@ import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy } from './_services/service-proxies';
+import { LocalBookingServiceProxy,LocationsServiceProxy,AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, InternationalbookingServiceProxy } from './_services/service-proxies';
 import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
 import { StoreService } from './_services/store.service';
+import { InternationalBooking } from './_models/service-models';
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +90,10 @@ import { StoreService } from './_services/store.service';
     StoreService,
     LocalBookingServiceProxy,
     InternationalbookingServiceProxy,
-    LocationsServiceProxy,
+    FileOpener,
+    FileChooser,
+    FilePath,
+    FileTransfer,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

@@ -19,8 +19,10 @@ export class AuthGuardService implements CanActivate {
         this.AuthenService.getuser().then((usersdata:LoginResource[])=>{
           if(usersdata.length > 0){
             if(!usersdata[0].isProfileComplete){
-              // this.router.navigate(['profilepage']);
+              this.router.navigate(['profilepage']);
             }
+          }else{
+            this.router.navigate(['login']);
           }
         });
       }

@@ -27,6 +27,7 @@ export class AuthenticationService {
       
                         let saveduser = {
                             token: user.token,
+                            phone: user.phone,
                             userId: user.userId,
                             userType: user.userType,
                             isProfileComplete: user.isProfileComplete,
@@ -84,8 +85,7 @@ export class AuthenticationService {
                 this.users = [];
                 this.users.push(userObj);
                 this.storage.set('user', this.users).then(data=>{
-            if(data.length > 1){
-                setTimeout(() => {
+            if(data.length > 0){  
                     this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
                         if(data.code == "000"){
                             var res = data.data;
@@ -137,8 +137,6 @@ export class AuthenticationService {
                      
                        })
                 
-                          
-                }, 3000);  
             }
                                     
                 });
@@ -164,7 +162,8 @@ export class AuthenticationService {
 
         clearusers(){
             this.users = [];
-            this.storage.set('user', this.users);    
+            this.storage.remove('user');
+           // this.storage.set('user', this.users);    
         }
 
 }

@@ -19,9 +19,9 @@
       "useSingletonProvider": false,
       "injectionTokenType": "InjectionToken",
       "rxJsVersion": 6.0,
-      "dateTimeType": "MomentJS",
+      "dateTimeType": "Date",
       "nullValue": "Undefined",
-      "generateClientClasses": false,
+      "generateClientClasses": true,
       "generateClientInterfaces": false,
       "generateOptionalParameters": false,
       "exportTypes": true,
@@ -62,7 +62,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../src/app/_models/service-models.ts"
+      "output": "../src/app/_services/service-proxies.ts"
     },
     "openApiToCSharpClient": {
       "clientBaseClass": null,
