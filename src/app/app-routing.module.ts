@@ -3,18 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 
 const routes: Routes = [
-//  {path: '', redirectTo: 'checkout', pathMatch: 'full'},
-// {path: '', redirectTo: 'international-delivery/summary', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
-//  {path: '', redirectTo: 'trackorder/pickup', pathMatch: 'full'},
-{path: '', redirectTo: 'home', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery/review-booking', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
-//  {path: '', redirectTo: 'checkout/rating', pathMatch: 'full'},
- 
+ {path: '', redirectTo: 'home', pathMatch: 'full'},
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
@@ -114,9 +103,37 @@ const routes: Routes = [
     loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   },
   {
-    path: 'rider',
-    loadChildren: () => import('./rider/rider.module').then( m => m.RiderPageModule)
+    path: 'aboutus',
+    loadChildren: () => import('./about/aboutus/aboutus.module').then( m => m.AboutusPageModule)
   },
+  {
+    path: 'privacypolicy',
+    loadChildren: () => import('./about/privacypolicy/privacypolicy.module').then( m => m.PrivacypolicyPageModule)
+  },
+  {
+    path: 'promocode',
+    loadChildren: () => import('./payment/promocode/promocode.module').then( m => m.PromocodePageModule)
+  },
+  {
+    path: 'documentupload',
+    loadChildren: () => import('./riders/documentupload/documentupload.module').then( m => m.DocumentuploadPageModule)
+  },
+  {
+    path: 'sponsorsinformation',
+    loadChildren: () => import('./riders/sponsorsinformation/sponsorsinformation.module').then( m => m.SponsorsinformationPageModule)
+  },
+  {
+    path: 'ridershistory',
+    loadChildren: () => import('./riders/ridershistory/ridershistory.module').then( m => m.RidershistoryPageModule)
+  },
+  {
+    path: 'riderorders',
+    loadChildren: () => import('./riders/riderorders/riderorders.module').then( m => m.RiderordersPageModule)
+  }
+
+
+
+
 
 
 ];

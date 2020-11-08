@@ -7,7 +7,6 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-import * as moment from 'moment';
 
 
 export class LoginViewModel implements ILoginViewModel {
@@ -120,6 +119,7 @@ export class LoginResource implements ILoginResource {
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
     role: AspNetRole[] | undefined;
+    dispatcher: Dispatcher | undefined;
     customer: Customer | undefined;
 
     constructor(data?: ILoginResource) {
@@ -144,6 +144,7 @@ export class LoginResource implements ILoginResource {
                 for (let item of _data["role"])
                     this.role.push(AspNetRole.fromJS(item));
             }
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
         }
     }
@@ -168,6 +169,7 @@ export class LoginResource implements ILoginResource {
             for (let item of this.role)
                 data["role"].push(item.toJSON());
         }
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         return data; 
     }
@@ -188,6 +190,7 @@ export interface ILoginResource {
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
     role: AspNetRole[] | undefined;
+    dispatcher: Dispatcher | undefined;
     customer: Customer | undefined;
 }
 
@@ -293,6 +296,189 @@ export interface IAspNetRole {
     aspNetUsers: AspNetUser[] | undefined;
 }
 
+export class Dispatcher implements IDispatcher {
+    id: number | undefined;
+    name: string;
+    dispatcherStatusesId: number | undefined;
+    userId: string | undefined;
+    aspNetUser: AspNetUser | undefined;
+    phoneNumber: string | undefined;
+    sponsorName: string | undefined;
+    sponsorAddress: string | undefined;
+    sponsorPhoneNumber: string | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    dispatcherStatus: DispatcherStatus | undefined;
+    localBookings: LocalBooking[] | undefined;
+    tokenVerified: boolean | undefined;
+    appToken: string | undefined;
+    tokenCreatedAt: Date | undefined;
+    tokenVerifiedAt: Date | undefined;
+    appLastActivity: Date | undefined;
+    verificationCode: string | undefined;
+    verificationCodeCreatedAt: Date | undefined;
+    fcmToken: string | undefined;
+    trackingUsername: string | undefined;
+    trackingPassword: string | undefined;
+    profilePicUrl: string | undefined;
+    dispatcherCertificate: DispatcherDocument | undefined;
+    isApproved: boolean | undefined;
+    plateNumber: string | undefined;
+    carName: string | undefined;
+    carModel: string | undefined;
+    carYear: string | undefined;
+    licenseNumber: string | undefined;
+    deviceId: string | undefined;
+    residentialStateId: number | undefined;
+    residentialState: ResidentialState | undefined;
+
+    constructor(data?: IDispatcher) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.dispatcherStatusesId = _data["dispatcherStatusesId"];
+            this.userId = _data["userId"];
+            this.aspNetUser = _data["aspNetUser"] ? AspNetUser.fromJS(_data["aspNetUser"]) : <any>undefined;
+            this.phoneNumber = _data["phoneNumber"];
+            this.sponsorName = _data["sponsorName"];
+            this.sponsorAddress = _data["sponsorAddress"];
+            this.sponsorPhoneNumber = _data["sponsorPhoneNumber"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.dispatcherStatus = _data["dispatcherStatus"] ? DispatcherStatus.fromJS(_data["dispatcherStatus"]) : <any>undefined;
+            if (Array.isArray(_data["localBookings"])) {
+                this.localBookings = [] as any;
+                for (let item of _data["localBookings"])
+                    this.localBookings.push(LocalBooking.fromJS(item));
+            }
+            this.tokenVerified = _data["tokenVerified"];
+            this.appToken = _data["appToken"];
+            this.tokenCreatedAt = _data["tokenCreatedAt"] ? new Date(_data["tokenCreatedAt"].toString()) : <any>undefined;
+            this.tokenVerifiedAt = _data["tokenVerifiedAt"] ? new Date(_data["tokenVerifiedAt"].toString()) : <any>undefined;
+            this.appLastActivity = _data["appLastActivity"] ? new Date(_data["appLastActivity"].toString()) : <any>undefined;
+            this.verificationCode = _data["verificationCode"];
+            this.verificationCodeCreatedAt = _data["verificationCodeCreatedAt"] ? new Date(_data["verificationCodeCreatedAt"].toString()) : <any>undefined;
+            this.fcmToken = _data["fcmToken"];
+            this.trackingUsername = _data["trackingUsername"];
+            this.trackingPassword = _data["trackingPassword"];
+            this.profilePicUrl = _data["profilePicUrl"];
+            this.dispatcherCertificate = _data["dispatcherCertificate"] ? DispatcherDocument.fromJS(_data["dispatcherCertificate"]) : <any>undefined;
+            this.isApproved = _data["isApproved"];
+            this.plateNumber = _data["plateNumber"];
+            this.carName = _data["carName"];
+            this.carModel = _data["carModel"];
+            this.carYear = _data["carYear"];
+            this.licenseNumber = _data["licenseNumber"];
+            this.deviceId = _data["deviceId"];
+            this.residentialStateId = _data["residentialStateId"];
+            this.residentialState = _data["residentialState"] ? ResidentialState.fromJS(_data["residentialState"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): Dispatcher {
+        data = typeof data === 'object' ? data : {};
+        let result = new Dispatcher();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["dispatcherStatusesId"] = this.dispatcherStatusesId;
+        data["userId"] = this.userId;
+        data["aspNetUser"] = this.aspNetUser ? this.aspNetUser.toJSON() : <any>undefined;
+        data["phoneNumber"] = this.phoneNumber;
+        data["sponsorName"] = this.sponsorName;
+        data["sponsorAddress"] = this.sponsorAddress;
+        data["sponsorPhoneNumber"] = this.sponsorPhoneNumber;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["dispatcherStatus"] = this.dispatcherStatus ? this.dispatcherStatus.toJSON() : <any>undefined;
+        if (Array.isArray(this.localBookings)) {
+            data["localBookings"] = [];
+            for (let item of this.localBookings)
+                data["localBookings"].push(item.toJSON());
+        }
+        data["tokenVerified"] = this.tokenVerified;
+        data["appToken"] = this.appToken;
+        data["tokenCreatedAt"] = this.tokenCreatedAt ? this.tokenCreatedAt.toISOString() : <any>undefined;
+        data["tokenVerifiedAt"] = this.tokenVerifiedAt ? this.tokenVerifiedAt.toISOString() : <any>undefined;
+        data["appLastActivity"] = this.appLastActivity ? this.appLastActivity.toISOString() : <any>undefined;
+        data["verificationCode"] = this.verificationCode;
+        data["verificationCodeCreatedAt"] = this.verificationCodeCreatedAt ? this.verificationCodeCreatedAt.toISOString() : <any>undefined;
+        data["fcmToken"] = this.fcmToken;
+        data["trackingUsername"] = this.trackingUsername;
+        data["trackingPassword"] = this.trackingPassword;
+        data["profilePicUrl"] = this.profilePicUrl;
+        data["dispatcherCertificate"] = this.dispatcherCertificate ? this.dispatcherCertificate.toJSON() : <any>undefined;
+        data["isApproved"] = this.isApproved;
+        data["plateNumber"] = this.plateNumber;
+        data["carName"] = this.carName;
+        data["carModel"] = this.carModel;
+        data["carYear"] = this.carYear;
+        data["licenseNumber"] = this.licenseNumber;
+        data["deviceId"] = this.deviceId;
+        data["residentialStateId"] = this.residentialStateId;
+        data["residentialState"] = this.residentialState ? this.residentialState.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): Dispatcher {
+        const json = this.toJSON();
+        let result = new Dispatcher();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDispatcher {
+    id: number | undefined;
+    name: string;
+    dispatcherStatusesId: number | undefined;
+    userId: string | undefined;
+    aspNetUser: AspNetUser | undefined;
+    phoneNumber: string | undefined;
+    sponsorName: string | undefined;
+    sponsorAddress: string | undefined;
+    sponsorPhoneNumber: string | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    dispatcherStatus: DispatcherStatus | undefined;
+    localBookings: LocalBooking[] | undefined;
+    tokenVerified: boolean | undefined;
+    appToken: string | undefined;
+    tokenCreatedAt: Date | undefined;
+    tokenVerifiedAt: Date | undefined;
+    appLastActivity: Date | undefined;
+    verificationCode: string | undefined;
+    verificationCodeCreatedAt: Date | undefined;
+    fcmToken: string | undefined;
+    trackingUsername: string | undefined;
+    trackingPassword: string | undefined;
+    profilePicUrl: string | undefined;
+    dispatcherCertificate: DispatcherDocument | undefined;
+    isApproved: boolean | undefined;
+    plateNumber: string | undefined;
+    carName: string | undefined;
+    carModel: string | undefined;
+    carYear: string | undefined;
+    licenseNumber: string | undefined;
+    deviceId: string | undefined;
+    residentialStateId: number | undefined;
+    residentialState: ResidentialState | undefined;
+}
+
 export class Customer implements ICustomer {
     userId: string | undefined;
     fullName: string | undefined;
@@ -304,9 +490,9 @@ export class Customer implements ICustomer {
     companyLogo: string | undefined;
     residentialCountryId: number | undefined;
     residentialStateId: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    businessAnniversary: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    businessAnniversary: Date | undefined;
     aspNetUser: AspNetUser | undefined;
     wallet: Wallet | undefined;
     residentialCountry: ResidentialCountry | undefined;
@@ -335,9 +521,9 @@ export class Customer implements ICustomer {
             this.companyLogo = _data["companyLogo"];
             this.residentialCountryId = _data["residentialCountryId"];
             this.residentialStateId = _data["residentialStateId"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.businessAnniversary = _data["businessAnniversary"] ? new Date(_data["businessAnniversary"].toString()) : <any>undefined;
             this.aspNetUser = _data["aspNetUser"] ? AspNetUser.fromJS(_data["aspNetUser"]) : <any>undefined;
             this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
             this.residentialCountry = _data["residentialCountry"] ? ResidentialCountry.fromJS(_data["residentialCountry"]) : <any>undefined;
@@ -397,9 +583,9 @@ export interface ICustomer {
     companyLogo: string | undefined;
     residentialCountryId: number | undefined;
     residentialStateId: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    businessAnniversary: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    businessAnniversary: Date | undefined;
     aspNetUser: AspNetUser | undefined;
     wallet: Wallet | undefined;
     residentialCountry: ResidentialCountry | undefined;
@@ -408,100 +594,12 @@ export interface ICustomer {
     synergyProgramCustomer: SynergyProgramCustomer | undefined;
 }
 
-export class Wallet implements IWallet {
-    userId: string | undefined;
-    isActive: boolean | undefined;
-    customer: Customer | undefined;
-    balance: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    walletPayments: WalletPayment[] | undefined;
-    walletCredits: WalletCredit[] | undefined;
-
-    constructor(data?: IWallet) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.isActive = _data["isActive"];
-            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-            this.balance = _data["balance"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            if (Array.isArray(_data["walletPayments"])) {
-                this.walletPayments = [] as any;
-                for (let item of _data["walletPayments"])
-                    this.walletPayments.push(WalletPayment.fromJS(item));
-            }
-            if (Array.isArray(_data["walletCredits"])) {
-                this.walletCredits = [] as any;
-                for (let item of _data["walletCredits"])
-                    this.walletCredits.push(WalletCredit.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Wallet {
-        data = typeof data === 'object' ? data : {};
-        let result = new Wallet();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["isActive"] = this.isActive;
-        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        data["balance"] = this.balance;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        if (Array.isArray(this.walletPayments)) {
-            data["walletPayments"] = [];
-            for (let item of this.walletPayments)
-                data["walletPayments"].push(item.toJSON());
-        }
-        if (Array.isArray(this.walletCredits)) {
-            data["walletCredits"] = [];
-            for (let item of this.walletCredits)
-                data["walletCredits"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): Wallet {
-        const json = this.toJSON();
-        let result = new Wallet();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWallet {
-    userId: string | undefined;
-    isActive: boolean | undefined;
-    customer: Customer | undefined;
-    balance: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    walletPayments: WalletPayment[] | undefined;
-    walletCredits: WalletCredit[] | undefined;
-}
-
-export class ResidentialCountry implements IResidentialCountry {
+export class DispatcherStatus implements IDispatcherStatus {
     id: number | undefined;
     name: string;
-    countryCode: string | undefined;
-    residentialStates: ResidentialState[] | undefined;
+    dispatchers: Dispatcher[] | undefined;
 
-    constructor(data?: IResidentialCountry) {
+    constructor(data?: IDispatcherStatus) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -514,18 +612,17 @@ export class ResidentialCountry implements IResidentialCountry {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            this.countryCode = _data["countryCode"];
-            if (Array.isArray(_data["residentialStates"])) {
-                this.residentialStates = [] as any;
-                for (let item of _data["residentialStates"])
-                    this.residentialStates.push(ResidentialState.fromJS(item));
+            if (Array.isArray(_data["dispatchers"])) {
+                this.dispatchers = [] as any;
+                for (let item of _data["dispatchers"])
+                    this.dispatchers.push(Dispatcher.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): ResidentialCountry {
+    static fromJS(data: any): DispatcherStatus {
         data = typeof data === 'object' ? data : {};
-        let result = new ResidentialCountry();
+        let result = new DispatcherStatus();
         result.init(data);
         return result;
     }
@@ -534,604 +631,33 @@ export class ResidentialCountry implements IResidentialCountry {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        data["countryCode"] = this.countryCode;
-        if (Array.isArray(this.residentialStates)) {
-            data["residentialStates"] = [];
-            for (let item of this.residentialStates)
-                data["residentialStates"].push(item.toJSON());
+        if (Array.isArray(this.dispatchers)) {
+            data["dispatchers"] = [];
+            for (let item of this.dispatchers)
+                data["dispatchers"].push(item.toJSON());
         }
         return data; 
     }
 
-    clone(): ResidentialCountry {
+    clone(): DispatcherStatus {
         const json = this.toJSON();
-        let result = new ResidentialCountry();
+        let result = new DispatcherStatus();
         result.init(json);
         return result;
     }
 }
 
-export interface IResidentialCountry {
+export interface IDispatcherStatus {
     id: number | undefined;
     name: string;
-    countryCode: string | undefined;
-    residentialStates: ResidentialState[] | undefined;
-}
-
-export class ResidentialState implements IResidentialState {
-    id: number | undefined;
-    name: string;
-    residentialCountryId: number | undefined;
-
-    constructor(data?: IResidentialState) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.residentialCountryId = _data["residentialCountryId"];
-        }
-    }
-
-    static fromJS(data: any): ResidentialState {
-        data = typeof data === 'object' ? data : {};
-        let result = new ResidentialState();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["residentialCountryId"] = this.residentialCountryId;
-        return data; 
-    }
-
-    clone(): ResidentialState {
-        const json = this.toJSON();
-        let result = new ResidentialState();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IResidentialState {
-    id: number | undefined;
-    name: string;
-    residentialCountryId: number | undefined;
-}
-
-export class Location implements ILocation {
-    id: number | undefined;
-    name: string;
-    localBookingCategoryId: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroupId: number | undefined;
-    isActive: boolean | undefined;
-    locationRatesGroup: LocationRatesGroup | undefined;
-    localBookingsForPickup: LocalBooking[] | undefined;
-    localBookingsForDelivery: LocalBooking[] | undefined;
-    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
-
-    constructor(data?: ILocation) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.localBookingCategoryId = _data["localBookingCategoryId"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
-            this.locationRatesGroupId = _data["locationRatesGroupId"];
-            this.isActive = _data["isActive"];
-            this.locationRatesGroup = _data["locationRatesGroup"] ? LocationRatesGroup.fromJS(_data["locationRatesGroup"]) : <any>undefined;
-            if (Array.isArray(_data["localBookingsForPickup"])) {
-                this.localBookingsForPickup = [] as any;
-                for (let item of _data["localBookingsForPickup"])
-                    this.localBookingsForPickup.push(LocalBooking.fromJS(item));
-            }
-            if (Array.isArray(_data["localBookingsForDelivery"])) {
-                this.localBookingsForDelivery = [] as any;
-                for (let item of _data["localBookingsForDelivery"])
-                    this.localBookingsForDelivery.push(LocalBooking.fromJS(item));
-            }
-            if (Array.isArray(_data["customizedLocationGroups"])) {
-                this.customizedLocationGroups = [] as any;
-                for (let item of _data["customizedLocationGroups"])
-                    this.customizedLocationGroups.push(CustomizedLocationGroup.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): Location {
-        data = typeof data === 'object' ? data : {};
-        let result = new Location();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["localBookingCategoryId"] = this.localBookingCategoryId;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
-        data["locationRatesGroupId"] = this.locationRatesGroupId;
-        data["isActive"] = this.isActive;
-        data["locationRatesGroup"] = this.locationRatesGroup ? this.locationRatesGroup.toJSON() : <any>undefined;
-        if (Array.isArray(this.localBookingsForPickup)) {
-            data["localBookingsForPickup"] = [];
-            for (let item of this.localBookingsForPickup)
-                data["localBookingsForPickup"].push(item.toJSON());
-        }
-        if (Array.isArray(this.localBookingsForDelivery)) {
-            data["localBookingsForDelivery"] = [];
-            for (let item of this.localBookingsForDelivery)
-                data["localBookingsForDelivery"].push(item.toJSON());
-        }
-        if (Array.isArray(this.customizedLocationGroups)) {
-            data["customizedLocationGroups"] = [];
-            for (let item of this.customizedLocationGroups)
-                data["customizedLocationGroups"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): Location {
-        const json = this.toJSON();
-        let result = new Location();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILocation {
-    id: number | undefined;
-    name: string;
-    localBookingCategoryId: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroupId: number | undefined;
-    isActive: boolean | undefined;
-    locationRatesGroup: LocationRatesGroup | undefined;
-    localBookingsForPickup: LocalBooking[] | undefined;
-    localBookingsForDelivery: LocalBooking[] | undefined;
-    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
-}
-
-export class SynergyProgramCustomer implements ISynergyProgramCustomer {
-    userId: string | undefined;
-    createdAt: moment.Moment | undefined;
-    isApproved: boolean | undefined;
-    updatedAt: moment.Moment | undefined;
-    approvedAt: moment.Moment | undefined;
-    approvedByUserId: string | undefined;
-    approvedBy: AspNetUser | undefined;
-    customer: Customer | undefined;
-
-    constructor(data?: ISynergyProgramCustomer) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.userId = _data["userId"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.isApproved = _data["isApproved"];
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.approvedAt = _data["approvedAt"] ? moment(_data["approvedAt"].toString()) : <any>undefined;
-            this.approvedByUserId = _data["approvedByUserId"];
-            this.approvedBy = _data["approvedBy"] ? AspNetUser.fromJS(_data["approvedBy"]) : <any>undefined;
-            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): SynergyProgramCustomer {
-        data = typeof data === 'object' ? data : {};
-        let result = new SynergyProgramCustomer();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["userId"] = this.userId;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["isApproved"] = this.isApproved;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["approvedAt"] = this.approvedAt ? this.approvedAt.toISOString() : <any>undefined;
-        data["approvedByUserId"] = this.approvedByUserId;
-        data["approvedBy"] = this.approvedBy ? this.approvedBy.toJSON() : <any>undefined;
-        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): SynergyProgramCustomer {
-        const json = this.toJSON();
-        let result = new SynergyProgramCustomer();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ISynergyProgramCustomer {
-    userId: string | undefined;
-    createdAt: moment.Moment | undefined;
-    isApproved: boolean | undefined;
-    updatedAt: moment.Moment | undefined;
-    approvedAt: moment.Moment | undefined;
-    approvedByUserId: string | undefined;
-    approvedBy: AspNetUser | undefined;
-    customer: Customer | undefined;
-}
-
-export class WalletPayment implements IWalletPayment {
-    id: number | undefined;
-    paymentGatewayId: number | undefined;
-    transactionId: string | undefined;
-    transactionReference: string | undefined;
-    totalAmount: number | undefined;
-    currency: string | undefined;
-    paymentStatusId: number | undefined;
-    walletUserId: string | undefined;
-    isUsed: boolean | undefined;
-    paymentGateway: PaymentGateway | undefined;
-    paymentStatus: PaymentStatus | undefined;
-    wallet: Wallet | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-
-    constructor(data?: IWalletPayment) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.paymentGatewayId = _data["paymentGatewayId"];
-            this.transactionId = _data["transactionId"];
-            this.transactionReference = _data["transactionReference"];
-            this.totalAmount = _data["totalAmount"];
-            this.currency = _data["currency"];
-            this.paymentStatusId = _data["paymentStatusId"];
-            this.walletUserId = _data["walletUserId"];
-            this.isUsed = _data["isUsed"];
-            this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
-            this.paymentStatus = _data["paymentStatus"] ? PaymentStatus.fromJS(_data["paymentStatus"]) : <any>undefined;
-            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): WalletPayment {
-        data = typeof data === 'object' ? data : {};
-        let result = new WalletPayment();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["paymentGatewayId"] = this.paymentGatewayId;
-        data["transactionId"] = this.transactionId;
-        data["transactionReference"] = this.transactionReference;
-        data["totalAmount"] = this.totalAmount;
-        data["currency"] = this.currency;
-        data["paymentStatusId"] = this.paymentStatusId;
-        data["walletUserId"] = this.walletUserId;
-        data["isUsed"] = this.isUsed;
-        data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
-        data["paymentStatus"] = this.paymentStatus ? this.paymentStatus.toJSON() : <any>undefined;
-        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): WalletPayment {
-        const json = this.toJSON();
-        let result = new WalletPayment();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWalletPayment {
-    id: number | undefined;
-    paymentGatewayId: number | undefined;
-    transactionId: string | undefined;
-    transactionReference: string | undefined;
-    totalAmount: number | undefined;
-    currency: string | undefined;
-    paymentStatusId: number | undefined;
-    walletUserId: string | undefined;
-    isUsed: boolean | undefined;
-    paymentGateway: PaymentGateway | undefined;
-    paymentStatus: PaymentStatus | undefined;
-    wallet: Wallet | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-}
-
-export class WalletCredit implements IWalletCredit {
-    id: number | undefined;
-    walletId: string | undefined;
-    amount: number | undefined;
-    isPaid: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    wallet: Wallet | undefined;
-
-    constructor(data?: IWalletCredit) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.walletId = _data["walletId"];
-            this.amount = _data["amount"];
-            this.isPaid = _data["isPaid"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): WalletCredit {
-        data = typeof data === 'object' ? data : {};
-        let result = new WalletCredit();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["walletId"] = this.walletId;
-        data["amount"] = this.amount;
-        data["isPaid"] = this.isPaid;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): WalletCredit {
-        const json = this.toJSON();
-        let result = new WalletCredit();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IWalletCredit {
-    id: number | undefined;
-    walletId: string | undefined;
-    amount: number | undefined;
-    isPaid: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    wallet: Wallet | undefined;
-}
-
-export class LocalBookingCategory implements ILocalBookingCategory {
-    id: number | undefined;
-    name: string;
-    toggleBookingActivation: boolean | undefined;
-    estimatedPackageWeight: boolean | undefined;
-    locations: Location[] | undefined;
-    localBookings: LocalBooking[] | undefined;
-
-    constructor(data?: ILocalBookingCategory) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.toggleBookingActivation = _data["toggleBookingActivation"];
-            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
-            if (Array.isArray(_data["locations"])) {
-                this.locations = [] as any;
-                for (let item of _data["locations"])
-                    this.locations.push(Location.fromJS(item));
-            }
-            if (Array.isArray(_data["localBookings"])) {
-                this.localBookings = [] as any;
-                for (let item of _data["localBookings"])
-                    this.localBookings.push(LocalBooking.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): LocalBookingCategory {
-        data = typeof data === 'object' ? data : {};
-        let result = new LocalBookingCategory();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["toggleBookingActivation"] = this.toggleBookingActivation;
-        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
-        if (Array.isArray(this.locations)) {
-            data["locations"] = [];
-            for (let item of this.locations)
-                data["locations"].push(item.toJSON());
-        }
-        if (Array.isArray(this.localBookings)) {
-            data["localBookings"] = [];
-            for (let item of this.localBookings)
-                data["localBookings"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): LocalBookingCategory {
-        const json = this.toJSON();
-        let result = new LocalBookingCategory();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILocalBookingCategory {
-    id: number | undefined;
-    name: string;
-    toggleBookingActivation: boolean | undefined;
-    estimatedPackageWeight: boolean | undefined;
-    locations: Location[] | undefined;
-    localBookings: LocalBooking[] | undefined;
-}
-
-export class LocationRatesGroup implements ILocationRatesGroup {
-    id: number | undefined;
-    name: string;
-    locations: Location[] | undefined;
-    fromLocalRouteRates: LocalRouteRate[] | undefined;
-    toLocalRouteRates: LocalRouteRate[] | undefined;
-    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
-
-    constructor(data?: ILocationRatesGroup) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.name = _data["name"];
-            if (Array.isArray(_data["locations"])) {
-                this.locations = [] as any;
-                for (let item of _data["locations"])
-                    this.locations.push(Location.fromJS(item));
-            }
-            if (Array.isArray(_data["fromLocalRouteRates"])) {
-                this.fromLocalRouteRates = [] as any;
-                for (let item of _data["fromLocalRouteRates"])
-                    this.fromLocalRouteRates.push(LocalRouteRate.fromJS(item));
-            }
-            if (Array.isArray(_data["toLocalRouteRates"])) {
-                this.toLocalRouteRates = [] as any;
-                for (let item of _data["toLocalRouteRates"])
-                    this.toLocalRouteRates.push(LocalRouteRate.fromJS(item));
-            }
-            if (Array.isArray(_data["localBookingCategoryGroups"])) {
-                this.localBookingCategoryGroups = [] as any;
-                for (let item of _data["localBookingCategoryGroups"])
-                    this.localBookingCategoryGroups.push(LocalBookingCategoryGroup.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): LocationRatesGroup {
-        data = typeof data === 'object' ? data : {};
-        let result = new LocationRatesGroup();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["name"] = this.name;
-        if (Array.isArray(this.locations)) {
-            data["locations"] = [];
-            for (let item of this.locations)
-                data["locations"].push(item.toJSON());
-        }
-        if (Array.isArray(this.fromLocalRouteRates)) {
-            data["fromLocalRouteRates"] = [];
-            for (let item of this.fromLocalRouteRates)
-                data["fromLocalRouteRates"].push(item.toJSON());
-        }
-        if (Array.isArray(this.toLocalRouteRates)) {
-            data["toLocalRouteRates"] = [];
-            for (let item of this.toLocalRouteRates)
-                data["toLocalRouteRates"].push(item.toJSON());
-        }
-        if (Array.isArray(this.localBookingCategoryGroups)) {
-            data["localBookingCategoryGroups"] = [];
-            for (let item of this.localBookingCategoryGroups)
-                data["localBookingCategoryGroups"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): LocationRatesGroup {
-        const json = this.toJSON();
-        let result = new LocationRatesGroup();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface ILocationRatesGroup {
-    id: number | undefined;
-    name: string;
-    locations: Location[] | undefined;
-    fromLocalRouteRates: LocalRouteRate[] | undefined;
-    toLocalRouteRates: LocalRouteRate[] | undefined;
-    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
+    dispatchers: Dispatcher[] | undefined;
 }
 
 export class LocalBooking implements ILocalBooking {
     id: number | undefined;
     userId: string | undefined;
     customer: Customer | undefined;
-    deliveryDate: moment.Moment;
+    deliveryDate: Date;
     deliveryTypeId: number | undefined;
     deliveryType: DeliveryType | undefined;
     paymentTypeId: number;
@@ -1175,9 +701,9 @@ export class LocalBooking implements ILocalBooking {
     localBookingCategoryId: number | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
     estimatedPackageWeight: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     customerActorStateId: number | undefined;
     bulkOrderId: number | undefined;
     customerActorState: CustomerActorState | undefined;
@@ -1190,8 +716,8 @@ export class LocalBooking implements ILocalBooking {
     wantCashCollection: boolean | undefined;
     cashCollectionAmount: number | undefined;
     cashCollectionAccountNumber: string | undefined;
-    dispatchedAt: moment.Moment | undefined;
-    deliveredAt: moment.Moment | undefined;
+    dispatchedAt: Date | undefined;
+    deliveredAt: Date | undefined;
     createdFromEndpoint: boolean | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
@@ -1210,7 +736,7 @@ export class LocalBooking implements ILocalBooking {
             this.id = _data["id"];
             this.userId = _data["userId"];
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? new Date(_data["deliveryDate"].toString()) : <any>undefined;
             this.deliveryTypeId = _data["deliveryTypeId"];
             this.deliveryType = _data["deliveryType"] ? DeliveryType.fromJS(_data["deliveryType"]) : <any>undefined;
             this.paymentTypeId = _data["paymentTypeId"];
@@ -1254,9 +780,9 @@ export class LocalBooking implements ILocalBooking {
             this.localBookingCategoryId = _data["localBookingCategoryId"];
             this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
             this.estimatedPackageWeight = _data["estimatedPackageWeight"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.deletedAt = _data["deletedAt"] ? new Date(_data["deletedAt"].toString()) : <any>undefined;
             this.customerActorStateId = _data["customerActorStateId"];
             this.bulkOrderId = _data["bulkOrderId"];
             this.customerActorState = _data["customerActorState"] ? CustomerActorState.fromJS(_data["customerActorState"]) : <any>undefined;
@@ -1277,8 +803,8 @@ export class LocalBooking implements ILocalBooking {
             this.wantCashCollection = _data["wantCashCollection"];
             this.cashCollectionAmount = _data["cashCollectionAmount"];
             this.cashCollectionAccountNumber = _data["cashCollectionAccountNumber"];
-            this.dispatchedAt = _data["dispatchedAt"] ? moment(_data["dispatchedAt"].toString()) : <any>undefined;
-            this.deliveredAt = _data["deliveredAt"] ? moment(_data["deliveredAt"].toString()) : <any>undefined;
+            this.dispatchedAt = _data["dispatchedAt"] ? new Date(_data["dispatchedAt"].toString()) : <any>undefined;
+            this.deliveredAt = _data["deliveredAt"] ? new Date(_data["deliveredAt"].toString()) : <any>undefined;
             this.createdFromEndpoint = _data["createdFromEndpoint"];
             this.personalizedLocalRateId = _data["personalizedLocalRateId"];
             this.personalizedLocalRate = _data["personalizedLocalRate"] ? PersonalizedLocalRate.fromJS(_data["personalizedLocalRate"]) : <any>undefined;
@@ -1384,7 +910,7 @@ export interface ILocalBooking {
     id: number | undefined;
     userId: string | undefined;
     customer: Customer | undefined;
-    deliveryDate: moment.Moment;
+    deliveryDate: Date;
     deliveryTypeId: number | undefined;
     deliveryType: DeliveryType | undefined;
     paymentTypeId: number;
@@ -1428,9 +954,9 @@ export interface ILocalBooking {
     localBookingCategoryId: number | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
     estimatedPackageWeight: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     customerActorStateId: number | undefined;
     bulkOrderId: number | undefined;
     customerActorState: CustomerActorState | undefined;
@@ -1443,22 +969,22 @@ export interface ILocalBooking {
     wantCashCollection: boolean | undefined;
     cashCollectionAmount: number | undefined;
     cashCollectionAccountNumber: string | undefined;
-    dispatchedAt: moment.Moment | undefined;
-    deliveredAt: moment.Moment | undefined;
+    dispatchedAt: Date | undefined;
+    deliveredAt: Date | undefined;
     createdFromEndpoint: boolean | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
 }
 
-export class CustomizedLocationGroup implements ICustomizedLocationGroup {
-    id: number | undefined;
-    description: string | undefined;
-    name: string | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    locations: Location[] | undefined;
+export class DispatcherDocument implements IDispatcherDocument {
+    dispatcherId: number | undefined;
+    machinePictureUrl: string | undefined;
+    machineRegistrationUrl: string | undefined;
+    riderLincesUrl: string | undefined;
+    riderInsurance: string | undefined;
+    dispatcher: Dispatcher | undefined;
 
-    constructor(data?: ICustomizedLocationGroup) {
+    constructor(data?: IDispatcherDocument) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1469,135 +995,57 @@ export class CustomizedLocationGroup implements ICustomizedLocationGroup {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
-            this.description = _data["description"];
-            this.name = _data["name"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            if (Array.isArray(_data["locations"])) {
-                this.locations = [] as any;
-                for (let item of _data["locations"])
-                    this.locations.push(Location.fromJS(item));
-            }
+            this.dispatcherId = _data["dispatcherId"];
+            this.machinePictureUrl = _data["machinePictureUrl"];
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"];
+            this.riderLincesUrl = _data["riderLincesUrl"];
+            this.riderInsurance = _data["riderInsurance"];
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): CustomizedLocationGroup {
+    static fromJS(data: any): DispatcherDocument {
         data = typeof data === 'object' ? data : {};
-        let result = new CustomizedLocationGroup();
+        let result = new DispatcherDocument();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["description"] = this.description;
-        data["name"] = this.name;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        if (Array.isArray(this.locations)) {
-            data["locations"] = [];
-            for (let item of this.locations)
-                data["locations"].push(item.toJSON());
-        }
+        data["dispatcherId"] = this.dispatcherId;
+        data["machinePictureUrl"] = this.machinePictureUrl;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl;
+        data["riderLincesUrl"] = this.riderLincesUrl;
+        data["riderInsurance"] = this.riderInsurance;
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
         return data; 
     }
 
-    clone(): CustomizedLocationGroup {
+    clone(): DispatcherDocument {
         const json = this.toJSON();
-        let result = new CustomizedLocationGroup();
+        let result = new DispatcherDocument();
         result.init(json);
         return result;
     }
 }
 
-export interface ICustomizedLocationGroup {
-    id: number | undefined;
-    description: string | undefined;
-    name: string | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    locations: Location[] | undefined;
+export interface IDispatcherDocument {
+    dispatcherId: number | undefined;
+    machinePictureUrl: string | undefined;
+    machineRegistrationUrl: string | undefined;
+    riderLincesUrl: string | undefined;
+    riderInsurance: string | undefined;
+    dispatcher: Dispatcher | undefined;
 }
 
-export class PaymentGateway implements IPaymentGateway {
+export class ResidentialState implements IResidentialState {
     id: number | undefined;
-    gatewayKey: string | undefined;
-    active: boolean | undefined;
-    controller: string | undefined;
-    currencies: string | undefined;
-    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
+    name: string;
+    hasOfficeInState: boolean | undefined;
+    residentialCountryId: number | undefined;
 
-    constructor(data?: IPaymentGateway) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.gatewayKey = _data["gatewayKey"];
-            this.active = _data["active"];
-            this.controller = _data["controller"];
-            this.currencies = _data["currencies"];
-            if (Array.isArray(_data["paymentGatewayConfigs"])) {
-                this.paymentGatewayConfigs = [] as any;
-                for (let item of _data["paymentGatewayConfigs"])
-                    this.paymentGatewayConfigs.push(PaymentGatewayConfig.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PaymentGateway {
-        data = typeof data === 'object' ? data : {};
-        let result = new PaymentGateway();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["gatewayKey"] = this.gatewayKey;
-        data["active"] = this.active;
-        data["controller"] = this.controller;
-        data["currencies"] = this.currencies;
-        if (Array.isArray(this.paymentGatewayConfigs)) {
-            data["paymentGatewayConfigs"] = [];
-            for (let item of this.paymentGatewayConfigs)
-                data["paymentGatewayConfigs"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): PaymentGateway {
-        const json = this.toJSON();
-        let result = new PaymentGateway();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPaymentGateway {
-    id: number | undefined;
-    gatewayKey: string | undefined;
-    active: boolean | undefined;
-    controller: string | undefined;
-    currencies: string | undefined;
-    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
-}
-
-export class PaymentStatus implements IPaymentStatus {
-    id: number | undefined;
-    name: string | undefined;
-    payments: Payment[] | undefined;
-
-    constructor(data?: IPaymentStatus) {
+    constructor(data?: IResidentialState) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1610,17 +1058,14 @@ export class PaymentStatus implements IPaymentStatus {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            if (Array.isArray(_data["payments"])) {
-                this.payments = [] as any;
-                for (let item of _data["payments"])
-                    this.payments.push(Payment.fromJS(item));
-            }
+            this.hasOfficeInState = _data["hasOfficeInState"];
+            this.residentialCountryId = _data["residentialCountryId"];
         }
     }
 
-    static fromJS(data: any): PaymentStatus {
+    static fromJS(data: any): ResidentialState {
         data = typeof data === 'object' ? data : {};
-        let result = new PaymentStatus();
+        let result = new ResidentialState();
         result.init(data);
         return result;
     }
@@ -1629,50 +1074,121 @@ export class PaymentStatus implements IPaymentStatus {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        if (Array.isArray(this.payments)) {
-            data["payments"] = [];
-            for (let item of this.payments)
-                data["payments"].push(item.toJSON());
-        }
+        data["hasOfficeInState"] = this.hasOfficeInState;
+        data["residentialCountryId"] = this.residentialCountryId;
         return data; 
     }
 
-    clone(): PaymentStatus {
+    clone(): ResidentialState {
         const json = this.toJSON();
-        let result = new PaymentStatus();
+        let result = new ResidentialState();
         result.init(json);
         return result;
     }
 }
 
-export interface IPaymentStatus {
+export interface IResidentialState {
     id: number | undefined;
-    name: string | undefined;
-    payments: Payment[] | undefined;
+    name: string;
+    hasOfficeInState: boolean | undefined;
+    residentialCountryId: number | undefined;
 }
 
-export class LocalRouteRate implements ILocalRouteRate {
-    id: number | undefined;
-    fromLocationRatesGroupId: number | undefined;
-    toLocationRatesGroupId: number | undefined;
-    deliveryTypeId: number;
-    generalRate: number;
-    partnerRate: number;
-    scale: number | undefined;
-    chargeOnExtra: number | undefined;
-    fromLocationId: number | undefined;
-    fromLocation: Location | undefined;
-    toLocationId: number | undefined;
-    toLocation: Location | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    fromLocationRatesGroup: LocationRatesGroup | undefined;
-    toLocationRatesGroup: LocationRatesGroup | undefined;
-    deliveryType: DeliveryType | undefined;
-    usesGroup: boolean | undefined;
-    localBookings: LocalBooking[] | undefined;
+export class Wallet implements IWallet {
+    userId: string | undefined;
+    isActive: boolean | undefined;
+    customer: Customer | undefined;
+    balance: number | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    walletPayments: WalletPayment[] | undefined;
+    walletCredits: WalletCredit[] | undefined;
 
-    constructor(data?: ILocalRouteRate) {
+    constructor(data?: IWallet) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.isActive = _data["isActive"];
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+            this.balance = _data["balance"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["walletPayments"])) {
+                this.walletPayments = [] as any;
+                for (let item of _data["walletPayments"])
+                    this.walletPayments.push(WalletPayment.fromJS(item));
+            }
+            if (Array.isArray(_data["walletCredits"])) {
+                this.walletCredits = [] as any;
+                for (let item of _data["walletCredits"])
+                    this.walletCredits.push(WalletCredit.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): Wallet {
+        data = typeof data === 'object' ? data : {};
+        let result = new Wallet();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["isActive"] = this.isActive;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["balance"] = this.balance;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        if (Array.isArray(this.walletPayments)) {
+            data["walletPayments"] = [];
+            for (let item of this.walletPayments)
+                data["walletPayments"].push(item.toJSON());
+        }
+        if (Array.isArray(this.walletCredits)) {
+            data["walletCredits"] = [];
+            for (let item of this.walletCredits)
+                data["walletCredits"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): Wallet {
+        const json = this.toJSON();
+        let result = new Wallet();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IWallet {
+    userId: string | undefined;
+    isActive: boolean | undefined;
+    customer: Customer | undefined;
+    balance: number | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    walletPayments: WalletPayment[] | undefined;
+    walletCredits: WalletCredit[] | undefined;
+}
+
+export class ResidentialCountry implements IResidentialCountry {
+    id: number | undefined;
+    name: string;
+    countryCode: string | undefined;
+    isOfficeInCountry: boolean | undefined;
+    residentialStates: ResidentialState[] | undefined;
+
+    constructor(data?: IResidentialCountry) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1684,34 +1200,20 @@ export class LocalRouteRate implements ILocalRouteRate {
     init(_data?: any) {
         if (_data) {
             this.id = _data["id"];
-            this.fromLocationRatesGroupId = _data["fromLocationRatesGroupId"];
-            this.toLocationRatesGroupId = _data["toLocationRatesGroupId"];
-            this.deliveryTypeId = _data["deliveryTypeId"];
-            this.generalRate = _data["generalRate"];
-            this.partnerRate = _data["partnerRate"];
-            this.scale = _data["scale"];
-            this.chargeOnExtra = _data["chargeOnExtra"];
-            this.fromLocationId = _data["fromLocationId"];
-            this.fromLocation = _data["fromLocation"] ? Location.fromJS(_data["fromLocation"]) : <any>undefined;
-            this.toLocationId = _data["toLocationId"];
-            this.toLocation = _data["toLocation"] ? Location.fromJS(_data["toLocation"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.fromLocationRatesGroup = _data["fromLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["fromLocationRatesGroup"]) : <any>undefined;
-            this.toLocationRatesGroup = _data["toLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["toLocationRatesGroup"]) : <any>undefined;
-            this.deliveryType = _data["deliveryType"] ? DeliveryType.fromJS(_data["deliveryType"]) : <any>undefined;
-            this.usesGroup = _data["usesGroup"];
-            if (Array.isArray(_data["localBookings"])) {
-                this.localBookings = [] as any;
-                for (let item of _data["localBookings"])
-                    this.localBookings.push(LocalBooking.fromJS(item));
+            this.name = _data["name"];
+            this.countryCode = _data["countryCode"];
+            this.isOfficeInCountry = _data["isOfficeInCountry"];
+            if (Array.isArray(_data["residentialStates"])) {
+                this.residentialStates = [] as any;
+                for (let item of _data["residentialStates"])
+                    this.residentialStates.push(ResidentialState.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): LocalRouteRate {
+    static fromJS(data: any): ResidentialCountry {
         data = typeof data === 'object' ? data : {};
-        let result = new LocalRouteRate();
+        let result = new ResidentialCountry();
         result.init(data);
         return result;
     }
@@ -1719,72 +1221,52 @@ export class LocalRouteRate implements ILocalRouteRate {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
-        data["fromLocationRatesGroupId"] = this.fromLocationRatesGroupId;
-        data["toLocationRatesGroupId"] = this.toLocationRatesGroupId;
-        data["deliveryTypeId"] = this.deliveryTypeId;
-        data["generalRate"] = this.generalRate;
-        data["partnerRate"] = this.partnerRate;
-        data["scale"] = this.scale;
-        data["chargeOnExtra"] = this.chargeOnExtra;
-        data["fromLocationId"] = this.fromLocationId;
-        data["fromLocation"] = this.fromLocation ? this.fromLocation.toJSON() : <any>undefined;
-        data["toLocationId"] = this.toLocationId;
-        data["toLocation"] = this.toLocation ? this.toLocation.toJSON() : <any>undefined;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["fromLocationRatesGroup"] = this.fromLocationRatesGroup ? this.fromLocationRatesGroup.toJSON() : <any>undefined;
-        data["toLocationRatesGroup"] = this.toLocationRatesGroup ? this.toLocationRatesGroup.toJSON() : <any>undefined;
-        data["deliveryType"] = this.deliveryType ? this.deliveryType.toJSON() : <any>undefined;
-        data["usesGroup"] = this.usesGroup;
-        if (Array.isArray(this.localBookings)) {
-            data["localBookings"] = [];
-            for (let item of this.localBookings)
-                data["localBookings"].push(item.toJSON());
+        data["name"] = this.name;
+        data["countryCode"] = this.countryCode;
+        data["isOfficeInCountry"] = this.isOfficeInCountry;
+        if (Array.isArray(this.residentialStates)) {
+            data["residentialStates"] = [];
+            for (let item of this.residentialStates)
+                data["residentialStates"].push(item.toJSON());
         }
         return data; 
     }
 
-    clone(): LocalRouteRate {
+    clone(): ResidentialCountry {
         const json = this.toJSON();
-        let result = new LocalRouteRate();
+        let result = new ResidentialCountry();
         result.init(json);
         return result;
     }
 }
 
-export interface ILocalRouteRate {
+export interface IResidentialCountry {
     id: number | undefined;
-    fromLocationRatesGroupId: number | undefined;
-    toLocationRatesGroupId: number | undefined;
-    deliveryTypeId: number;
-    generalRate: number;
-    partnerRate: number;
-    scale: number | undefined;
-    chargeOnExtra: number | undefined;
-    fromLocationId: number | undefined;
-    fromLocation: Location | undefined;
-    toLocationId: number | undefined;
-    toLocation: Location | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    fromLocationRatesGroup: LocationRatesGroup | undefined;
-    toLocationRatesGroup: LocationRatesGroup | undefined;
-    deliveryType: DeliveryType | undefined;
-    usesGroup: boolean | undefined;
-    localBookings: LocalBooking[] | undefined;
+    name: string;
+    countryCode: string | undefined;
+    isOfficeInCountry: boolean | undefined;
+    residentialStates: ResidentialState[] | undefined;
 }
 
-export class LocalBookingCategoryGroup implements ILocalBookingCategoryGroup {
+export class Location implements ILocation {
     id: number | undefined;
     name: string;
     localBookingCategoryId: number | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroups: LocationRatesGroup[] | undefined;
-    toggleBookingActivation: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    locationRatesGroupId: number | undefined;
+    residentialCountryId: number | undefined;
+    residentialStateId: number | undefined;
+    isActive: boolean | undefined;
+    residentialCountry: ResidentialCountry | undefined;
+    residentialState: ResidentialState | undefined;
+    locationRatesGroup: LocationRatesGroup | undefined;
+    localBookingsForPickup: LocalBooking[] | undefined;
+    localBookingsForDelivery: LocalBooking[] | undefined;
+    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
 
-    constructor(data?: ILocalBookingCategoryGroup) {
+    constructor(data?: ILocation) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1798,21 +1280,37 @@ export class LocalBookingCategoryGroup implements ILocalBookingCategoryGroup {
             this.id = _data["id"];
             this.name = _data["name"];
             this.localBookingCategoryId = _data["localBookingCategoryId"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
             this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
-            if (Array.isArray(_data["locationRatesGroups"])) {
-                this.locationRatesGroups = [] as any;
-                for (let item of _data["locationRatesGroups"])
-                    this.locationRatesGroups.push(LocationRatesGroup.fromJS(item));
+            this.locationRatesGroupId = _data["locationRatesGroupId"];
+            this.residentialCountryId = _data["residentialCountryId"];
+            this.residentialStateId = _data["residentialStateId"];
+            this.isActive = _data["isActive"];
+            this.residentialCountry = _data["residentialCountry"] ? ResidentialCountry.fromJS(_data["residentialCountry"]) : <any>undefined;
+            this.residentialState = _data["residentialState"] ? ResidentialState.fromJS(_data["residentialState"]) : <any>undefined;
+            this.locationRatesGroup = _data["locationRatesGroup"] ? LocationRatesGroup.fromJS(_data["locationRatesGroup"]) : <any>undefined;
+            if (Array.isArray(_data["localBookingsForPickup"])) {
+                this.localBookingsForPickup = [] as any;
+                for (let item of _data["localBookingsForPickup"])
+                    this.localBookingsForPickup.push(LocalBooking.fromJS(item));
             }
-            this.toggleBookingActivation = _data["toggleBookingActivation"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["localBookingsForDelivery"])) {
+                this.localBookingsForDelivery = [] as any;
+                for (let item of _data["localBookingsForDelivery"])
+                    this.localBookingsForDelivery.push(LocalBooking.fromJS(item));
+            }
+            if (Array.isArray(_data["customizedLocationGroups"])) {
+                this.customizedLocationGroups = [] as any;
+                for (let item of _data["customizedLocationGroups"])
+                    this.customizedLocationGroups.push(CustomizedLocationGroup.fromJS(item));
+            }
         }
     }
 
-    static fromJS(data: any): LocalBookingCategoryGroup {
+    static fromJS(data: any): Location {
         data = typeof data === 'object' ? data : {};
-        let result = new LocalBookingCategoryGroup();
+        let result = new Location();
         result.init(data);
         return result;
     }
@@ -1822,35 +1320,130 @@ export class LocalBookingCategoryGroup implements ILocalBookingCategoryGroup {
         data["id"] = this.id;
         data["name"] = this.name;
         data["localBookingCategoryId"] = this.localBookingCategoryId;
-        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
-        if (Array.isArray(this.locationRatesGroups)) {
-            data["locationRatesGroups"] = [];
-            for (let item of this.locationRatesGroups)
-                data["locationRatesGroups"].push(item.toJSON());
-        }
-        data["toggleBookingActivation"] = this.toggleBookingActivation;
         data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
         data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
+        data["locationRatesGroupId"] = this.locationRatesGroupId;
+        data["residentialCountryId"] = this.residentialCountryId;
+        data["residentialStateId"] = this.residentialStateId;
+        data["isActive"] = this.isActive;
+        data["residentialCountry"] = this.residentialCountry ? this.residentialCountry.toJSON() : <any>undefined;
+        data["residentialState"] = this.residentialState ? this.residentialState.toJSON() : <any>undefined;
+        data["locationRatesGroup"] = this.locationRatesGroup ? this.locationRatesGroup.toJSON() : <any>undefined;
+        if (Array.isArray(this.localBookingsForPickup)) {
+            data["localBookingsForPickup"] = [];
+            for (let item of this.localBookingsForPickup)
+                data["localBookingsForPickup"].push(item.toJSON());
+        }
+        if (Array.isArray(this.localBookingsForDelivery)) {
+            data["localBookingsForDelivery"] = [];
+            for (let item of this.localBookingsForDelivery)
+                data["localBookingsForDelivery"].push(item.toJSON());
+        }
+        if (Array.isArray(this.customizedLocationGroups)) {
+            data["customizedLocationGroups"] = [];
+            for (let item of this.customizedLocationGroups)
+                data["customizedLocationGroups"].push(item.toJSON());
+        }
         return data; 
     }
 
-    clone(): LocalBookingCategoryGroup {
+    clone(): Location {
         const json = this.toJSON();
-        let result = new LocalBookingCategoryGroup();
+        let result = new Location();
         result.init(json);
         return result;
     }
 }
 
-export interface ILocalBookingCategoryGroup {
+export interface ILocation {
     id: number | undefined;
     name: string;
     localBookingCategoryId: number | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
-    locationRatesGroups: LocationRatesGroup[] | undefined;
-    toggleBookingActivation: boolean | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    locationRatesGroupId: number | undefined;
+    residentialCountryId: number | undefined;
+    residentialStateId: number | undefined;
+    isActive: boolean | undefined;
+    residentialCountry: ResidentialCountry | undefined;
+    residentialState: ResidentialState | undefined;
+    locationRatesGroup: LocationRatesGroup | undefined;
+    localBookingsForPickup: LocalBooking[] | undefined;
+    localBookingsForDelivery: LocalBooking[] | undefined;
+    customizedLocationGroups: CustomizedLocationGroup[] | undefined;
+}
+
+export class SynergyProgramCustomer implements ISynergyProgramCustomer {
+    userId: string | undefined;
+    createdAt: Date | undefined;
+    isApproved: boolean | undefined;
+    updatedAt: Date | undefined;
+    approvedAt: Date | undefined;
+    approvedByUserId: string | undefined;
+    approvedBy: AspNetUser | undefined;
+    customer: Customer | undefined;
+
+    constructor(data?: ISynergyProgramCustomer) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.userId = _data["userId"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.isApproved = _data["isApproved"];
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.approvedAt = _data["approvedAt"] ? new Date(_data["approvedAt"].toString()) : <any>undefined;
+            this.approvedByUserId = _data["approvedByUserId"];
+            this.approvedBy = _data["approvedBy"] ? AspNetUser.fromJS(_data["approvedBy"]) : <any>undefined;
+            this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): SynergyProgramCustomer {
+        data = typeof data === 'object' ? data : {};
+        let result = new SynergyProgramCustomer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["userId"] = this.userId;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["isApproved"] = this.isApproved;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["approvedAt"] = this.approvedAt ? this.approvedAt.toISOString() : <any>undefined;
+        data["approvedByUserId"] = this.approvedByUserId;
+        data["approvedBy"] = this.approvedBy ? this.approvedBy.toJSON() : <any>undefined;
+        data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): SynergyProgramCustomer {
+        const json = this.toJSON();
+        let result = new SynergyProgramCustomer();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ISynergyProgramCustomer {
+    userId: string | undefined;
+    createdAt: Date | undefined;
+    isApproved: boolean | undefined;
+    updatedAt: Date | undefined;
+    approvedAt: Date | undefined;
+    approvedByUserId: string | undefined;
+    approvedBy: AspNetUser | undefined;
+    customer: Customer | undefined;
 }
 
 export class DeliveryType implements IDeliveryType {
@@ -2054,41 +1647,138 @@ export interface IPaymentType {
     localBookings: LocalBooking[] | undefined;
 }
 
-export class Dispatcher implements IDispatcher {
+export class LocalRouteRate implements ILocalRouteRate {
+    id: number | undefined;
+    fromLocationRatesGroupId: number | undefined;
+    toLocationRatesGroupId: number | undefined;
+    deliveryTypeId: number;
+    generalRate: number;
+    partnerRate: number;
+    scale: number | undefined;
+    chargeOnExtra: number | undefined;
+    fromLocationId: number | undefined;
+    fromLocation: Location | undefined;
+    toLocationId: number | undefined;
+    toLocation: Location | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    fromLocationRatesGroup: LocationRatesGroup | undefined;
+    toLocationRatesGroup: LocationRatesGroup | undefined;
+    deliveryType: DeliveryType | undefined;
+    usesGroup: boolean | undefined;
+    localBookings: LocalBooking[] | undefined;
+
+    constructor(data?: ILocalRouteRate) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.fromLocationRatesGroupId = _data["fromLocationRatesGroupId"];
+            this.toLocationRatesGroupId = _data["toLocationRatesGroupId"];
+            this.deliveryTypeId = _data["deliveryTypeId"];
+            this.generalRate = _data["generalRate"];
+            this.partnerRate = _data["partnerRate"];
+            this.scale = _data["scale"];
+            this.chargeOnExtra = _data["chargeOnExtra"];
+            this.fromLocationId = _data["fromLocationId"];
+            this.fromLocation = _data["fromLocation"] ? Location.fromJS(_data["fromLocation"]) : <any>undefined;
+            this.toLocationId = _data["toLocationId"];
+            this.toLocation = _data["toLocation"] ? Location.fromJS(_data["toLocation"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.fromLocationRatesGroup = _data["fromLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["fromLocationRatesGroup"]) : <any>undefined;
+            this.toLocationRatesGroup = _data["toLocationRatesGroup"] ? LocationRatesGroup.fromJS(_data["toLocationRatesGroup"]) : <any>undefined;
+            this.deliveryType = _data["deliveryType"] ? DeliveryType.fromJS(_data["deliveryType"]) : <any>undefined;
+            this.usesGroup = _data["usesGroup"];
+            if (Array.isArray(_data["localBookings"])) {
+                this.localBookings = [] as any;
+                for (let item of _data["localBookings"])
+                    this.localBookings.push(LocalBooking.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): LocalRouteRate {
+        data = typeof data === 'object' ? data : {};
+        let result = new LocalRouteRate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["fromLocationRatesGroupId"] = this.fromLocationRatesGroupId;
+        data["toLocationRatesGroupId"] = this.toLocationRatesGroupId;
+        data["deliveryTypeId"] = this.deliveryTypeId;
+        data["generalRate"] = this.generalRate;
+        data["partnerRate"] = this.partnerRate;
+        data["scale"] = this.scale;
+        data["chargeOnExtra"] = this.chargeOnExtra;
+        data["fromLocationId"] = this.fromLocationId;
+        data["fromLocation"] = this.fromLocation ? this.fromLocation.toJSON() : <any>undefined;
+        data["toLocationId"] = this.toLocationId;
+        data["toLocation"] = this.toLocation ? this.toLocation.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["fromLocationRatesGroup"] = this.fromLocationRatesGroup ? this.fromLocationRatesGroup.toJSON() : <any>undefined;
+        data["toLocationRatesGroup"] = this.toLocationRatesGroup ? this.toLocationRatesGroup.toJSON() : <any>undefined;
+        data["deliveryType"] = this.deliveryType ? this.deliveryType.toJSON() : <any>undefined;
+        data["usesGroup"] = this.usesGroup;
+        if (Array.isArray(this.localBookings)) {
+            data["localBookings"] = [];
+            for (let item of this.localBookings)
+                data["localBookings"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): LocalRouteRate {
+        const json = this.toJSON();
+        let result = new LocalRouteRate();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILocalRouteRate {
+    id: number | undefined;
+    fromLocationRatesGroupId: number | undefined;
+    toLocationRatesGroupId: number | undefined;
+    deliveryTypeId: number;
+    generalRate: number;
+    partnerRate: number;
+    scale: number | undefined;
+    chargeOnExtra: number | undefined;
+    fromLocationId: number | undefined;
+    fromLocation: Location | undefined;
+    toLocationId: number | undefined;
+    toLocation: Location | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    fromLocationRatesGroup: LocationRatesGroup | undefined;
+    toLocationRatesGroup: LocationRatesGroup | undefined;
+    deliveryType: DeliveryType | undefined;
+    usesGroup: boolean | undefined;
+    localBookings: LocalBooking[] | undefined;
+}
+
+export class LocalBookingCategory implements ILocalBookingCategory {
     id: number | undefined;
     name: string;
-    dispatcherStatusesId: number | undefined;
-    userId: string | undefined;
-    aspNetUser: AspNetUser | undefined;
-    phoneNumber: string | undefined;
-    sponsorName: string | undefined;
-    sponsorAddress: string | undefined;
-    sponsorPhoneNumber: string | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    dispatcherStatus: DispatcherStatus | undefined;
+    toggleBookingActivation: boolean | undefined;
+    estimatedPackageWeight: boolean | undefined;
+    locations: Location[] | undefined;
     localBookings: LocalBooking[] | undefined;
-    tokenVerified: boolean | undefined;
-    appToken: string | undefined;
-    tokenCreatedAt: moment.Moment | undefined;
-    tokenVerifiedAt: moment.Moment | undefined;
-    appLastActivity: moment.Moment | undefined;
-    verificationCode: string | undefined;
-    verificationCodeCreatedAt: moment.Moment | undefined;
-    fcmToken: string | undefined;
-    trackingUsername: string | undefined;
-    trackingPassword: string | undefined;
-    profilePicUrl: string | undefined;
-    dispatcherCertificate: DispatcherDocument | undefined;
-    isApproved: boolean | undefined;
-    plateNumber: string | undefined;
-    carName: string | undefined;
-    carModel: string | undefined;
-    carYear: string | undefined;
-    licenseNumber: string | undefined;
-    deviceId: string | undefined;
 
-    constructor(data?: IDispatcher) {
+    constructor(data?: ILocalBookingCategory) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2101,46 +1791,24 @@ export class Dispatcher implements IDispatcher {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            this.dispatcherStatusesId = _data["dispatcherStatusesId"];
-            this.userId = _data["userId"];
-            this.aspNetUser = _data["aspNetUser"] ? AspNetUser.fromJS(_data["aspNetUser"]) : <any>undefined;
-            this.phoneNumber = _data["phoneNumber"];
-            this.sponsorName = _data["sponsorName"];
-            this.sponsorAddress = _data["sponsorAddress"];
-            this.sponsorPhoneNumber = _data["sponsorPhoneNumber"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.dispatcherStatus = _data["dispatcherStatus"] ? DispatcherStatus.fromJS(_data["dispatcherStatus"]) : <any>undefined;
+            this.toggleBookingActivation = _data["toggleBookingActivation"];
+            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
+            if (Array.isArray(_data["locations"])) {
+                this.locations = [] as any;
+                for (let item of _data["locations"])
+                    this.locations.push(Location.fromJS(item));
+            }
             if (Array.isArray(_data["localBookings"])) {
                 this.localBookings = [] as any;
                 for (let item of _data["localBookings"])
                     this.localBookings.push(LocalBooking.fromJS(item));
             }
-            this.tokenVerified = _data["tokenVerified"];
-            this.appToken = _data["appToken"];
-            this.tokenCreatedAt = _data["tokenCreatedAt"] ? moment(_data["tokenCreatedAt"].toString()) : <any>undefined;
-            this.tokenVerifiedAt = _data["tokenVerifiedAt"] ? moment(_data["tokenVerifiedAt"].toString()) : <any>undefined;
-            this.appLastActivity = _data["appLastActivity"] ? moment(_data["appLastActivity"].toString()) : <any>undefined;
-            this.verificationCode = _data["verificationCode"];
-            this.verificationCodeCreatedAt = _data["verificationCodeCreatedAt"] ? moment(_data["verificationCodeCreatedAt"].toString()) : <any>undefined;
-            this.fcmToken = _data["fcmToken"];
-            this.trackingUsername = _data["trackingUsername"];
-            this.trackingPassword = _data["trackingPassword"];
-            this.profilePicUrl = _data["profilePicUrl"];
-            this.dispatcherCertificate = _data["dispatcherCertificate"] ? DispatcherDocument.fromJS(_data["dispatcherCertificate"]) : <any>undefined;
-            this.isApproved = _data["isApproved"];
-            this.plateNumber = _data["plateNumber"];
-            this.carName = _data["carName"];
-            this.carModel = _data["carModel"];
-            this.carYear = _data["carYear"];
-            this.licenseNumber = _data["licenseNumber"];
-            this.deviceId = _data["deviceId"];
         }
     }
 
-    static fromJS(data: any): Dispatcher {
+    static fromJS(data: any): LocalBookingCategory {
         data = typeof data === 'object' ? data : {};
-        let result = new Dispatcher();
+        let result = new LocalBookingCategory();
         result.init(data);
         return result;
     }
@@ -2149,84 +1817,36 @@ export class Dispatcher implements IDispatcher {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        data["dispatcherStatusesId"] = this.dispatcherStatusesId;
-        data["userId"] = this.userId;
-        data["aspNetUser"] = this.aspNetUser ? this.aspNetUser.toJSON() : <any>undefined;
-        data["phoneNumber"] = this.phoneNumber;
-        data["sponsorName"] = this.sponsorName;
-        data["sponsorAddress"] = this.sponsorAddress;
-        data["sponsorPhoneNumber"] = this.sponsorPhoneNumber;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        data["dispatcherStatus"] = this.dispatcherStatus ? this.dispatcherStatus.toJSON() : <any>undefined;
+        data["toggleBookingActivation"] = this.toggleBookingActivation;
+        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
+        if (Array.isArray(this.locations)) {
+            data["locations"] = [];
+            for (let item of this.locations)
+                data["locations"].push(item.toJSON());
+        }
         if (Array.isArray(this.localBookings)) {
             data["localBookings"] = [];
             for (let item of this.localBookings)
                 data["localBookings"].push(item.toJSON());
         }
-        data["tokenVerified"] = this.tokenVerified;
-        data["appToken"] = this.appToken;
-        data["tokenCreatedAt"] = this.tokenCreatedAt ? this.tokenCreatedAt.toISOString() : <any>undefined;
-        data["tokenVerifiedAt"] = this.tokenVerifiedAt ? this.tokenVerifiedAt.toISOString() : <any>undefined;
-        data["appLastActivity"] = this.appLastActivity ? this.appLastActivity.toISOString() : <any>undefined;
-        data["verificationCode"] = this.verificationCode;
-        data["verificationCodeCreatedAt"] = this.verificationCodeCreatedAt ? this.verificationCodeCreatedAt.toISOString() : <any>undefined;
-        data["fcmToken"] = this.fcmToken;
-        data["trackingUsername"] = this.trackingUsername;
-        data["trackingPassword"] = this.trackingPassword;
-        data["profilePicUrl"] = this.profilePicUrl;
-        data["dispatcherCertificate"] = this.dispatcherCertificate ? this.dispatcherCertificate.toJSON() : <any>undefined;
-        data["isApproved"] = this.isApproved;
-        data["plateNumber"] = this.plateNumber;
-        data["carName"] = this.carName;
-        data["carModel"] = this.carModel;
-        data["carYear"] = this.carYear;
-        data["licenseNumber"] = this.licenseNumber;
-        data["deviceId"] = this.deviceId;
         return data; 
     }
 
-    clone(): Dispatcher {
+    clone(): LocalBookingCategory {
         const json = this.toJSON();
-        let result = new Dispatcher();
+        let result = new LocalBookingCategory();
         result.init(json);
         return result;
     }
 }
 
-export interface IDispatcher {
+export interface ILocalBookingCategory {
     id: number | undefined;
     name: string;
-    dispatcherStatusesId: number | undefined;
-    userId: string | undefined;
-    aspNetUser: AspNetUser | undefined;
-    phoneNumber: string | undefined;
-    sponsorName: string | undefined;
-    sponsorAddress: string | undefined;
-    sponsorPhoneNumber: string | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    dispatcherStatus: DispatcherStatus | undefined;
+    toggleBookingActivation: boolean | undefined;
+    estimatedPackageWeight: boolean | undefined;
+    locations: Location[] | undefined;
     localBookings: LocalBooking[] | undefined;
-    tokenVerified: boolean | undefined;
-    appToken: string | undefined;
-    tokenCreatedAt: moment.Moment | undefined;
-    tokenVerifiedAt: moment.Moment | undefined;
-    appLastActivity: moment.Moment | undefined;
-    verificationCode: string | undefined;
-    verificationCodeCreatedAt: moment.Moment | undefined;
-    fcmToken: string | undefined;
-    trackingUsername: string | undefined;
-    trackingPassword: string | undefined;
-    profilePicUrl: string | undefined;
-    dispatcherCertificate: DispatcherDocument | undefined;
-    isApproved: boolean | undefined;
-    plateNumber: string | undefined;
-    carName: string | undefined;
-    carModel: string | undefined;
-    carYear: string | undefined;
-    licenseNumber: string | undefined;
-    deviceId: string | undefined;
 }
 
 export class CustomerActorState implements ICustomerActorState {
@@ -2298,8 +1918,8 @@ export class Payment implements IPayment {
     internationalBooking: InternationalBooking | undefined;
     checkoutAssistance: CheckoutAssistance | undefined;
     invoice: Invoice | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 
     constructor(data?: IPayment) {
         if (data) {
@@ -2333,8 +1953,8 @@ export class Payment implements IPayment {
             this.internationalBooking = _data["internationalBooking"] ? InternationalBooking.fromJS(_data["internationalBooking"]) : <any>undefined;
             this.checkoutAssistance = _data["checkoutAssistance"] ? CheckoutAssistance.fromJS(_data["checkoutAssistance"]) : <any>undefined;
             this.invoice = _data["invoice"] ? Invoice.fromJS(_data["invoice"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
         }
     }
 
@@ -2403,8 +2023,8 @@ export interface IPayment {
     internationalBooking: InternationalBooking | undefined;
     checkoutAssistance: CheckoutAssistance | undefined;
     invoice: Invoice | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class BulkOrder implements IBulkOrder {
@@ -2416,9 +2036,9 @@ export class BulkOrder implements IBulkOrder {
     isPaid: boolean | undefined;
     bookingStatusesId: number | undefined;
     bookingStatus: BookingStatus | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    cancelledAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    cancelledAt: Date | undefined;
     customer: Customer | undefined;
     localBookings: LocalBooking[] | undefined;
     paymentTypeId: number | undefined;
@@ -2443,9 +2063,9 @@ export class BulkOrder implements IBulkOrder {
             this.isPaid = _data["isPaid"];
             this.bookingStatusesId = _data["bookingStatusesId"];
             this.bookingStatus = _data["bookingStatus"] ? BookingStatus.fromJS(_data["bookingStatus"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.cancelledAt = _data["cancelledAt"] ? moment(_data["cancelledAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.cancelledAt = _data["cancelledAt"] ? new Date(_data["cancelledAt"].toString()) : <any>undefined;
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
             if (Array.isArray(_data["localBookings"])) {
                 this.localBookings = [] as any;
@@ -2505,9 +2125,9 @@ export interface IBulkOrder {
     isPaid: boolean | undefined;
     bookingStatusesId: number | undefined;
     bookingStatus: BookingStatus | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    cancelledAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    cancelledAt: Date | undefined;
     customer: Customer | undefined;
     localBookings: LocalBooking[] | undefined;
     paymentTypeId: number | undefined;
@@ -2522,7 +2142,7 @@ export class DispatchRouteStatus implements IDispatchRouteStatus {
     isDispatched: boolean | undefined;
     isReRouted: boolean | undefined;
     isDelivered: boolean | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     localBooking: LocalBooking | undefined;
     dispatcher: Dispatcher | undefined;
 
@@ -2544,7 +2164,7 @@ export class DispatchRouteStatus implements IDispatchRouteStatus {
             this.isDispatched = _data["isDispatched"];
             this.isReRouted = _data["isReRouted"];
             this.isDelivered = _data["isDelivered"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
             this.localBooking = _data["localBooking"] ? LocalBooking.fromJS(_data["localBooking"]) : <any>undefined;
             this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
         }
@@ -2588,7 +2208,7 @@ export interface IDispatchRouteStatus {
     isDispatched: boolean | undefined;
     isReRouted: boolean | undefined;
     isDelivered: boolean | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     localBooking: LocalBooking | undefined;
     dispatcher: Dispatcher | undefined;
 }
@@ -2600,8 +2220,8 @@ export class PersonalizedLocalRate implements IPersonalizedLocalRate {
     enableScale: boolean | undefined;
     scale: number | undefined;
     chargeOnExtra: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     userId: string;
     customer: Customer | undefined;
     localBookingCategoryId: number | undefined;
@@ -2624,8 +2244,8 @@ export class PersonalizedLocalRate implements IPersonalizedLocalRate {
             this.enableScale = _data["enableScale"];
             this.scale = _data["scale"];
             this.chargeOnExtra = _data["chargeOnExtra"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
             this.userId = _data["userId"];
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
             this.localBookingCategoryId = _data["localBookingCategoryId"];
@@ -2672,22 +2292,31 @@ export interface IPersonalizedLocalRate {
     enableScale: boolean | undefined;
     scale: number | undefined;
     chargeOnExtra: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     userId: string;
     customer: Customer | undefined;
     localBookingCategoryId: number | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
 }
 
-export class PaymentGatewayConfig implements IPaymentGatewayConfig {
+export class WalletPayment implements IWalletPayment {
     id: number | undefined;
     paymentGatewayId: number | undefined;
-    name: string | undefined;
-    value: string | undefined;
+    transactionId: string | undefined;
+    transactionReference: string | undefined;
+    totalAmount: number | undefined;
+    currency: string | undefined;
+    paymentStatusId: number | undefined;
+    walletUserId: string | undefined;
+    isUsed: boolean | undefined;
     paymentGateway: PaymentGateway | undefined;
+    paymentStatus: PaymentStatus | undefined;
+    wallet: Wallet | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 
-    constructor(data?: IPaymentGatewayConfig) {
+    constructor(data?: IWalletPayment) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2700,15 +2329,24 @@ export class PaymentGatewayConfig implements IPaymentGatewayConfig {
         if (_data) {
             this.id = _data["id"];
             this.paymentGatewayId = _data["paymentGatewayId"];
-            this.name = _data["name"];
-            this.value = _data["value"];
+            this.transactionId = _data["transactionId"];
+            this.transactionReference = _data["transactionReference"];
+            this.totalAmount = _data["totalAmount"];
+            this.currency = _data["currency"];
+            this.paymentStatusId = _data["paymentStatusId"];
+            this.walletUserId = _data["walletUserId"];
+            this.isUsed = _data["isUsed"];
             this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
+            this.paymentStatus = _data["paymentStatus"] ? PaymentStatus.fromJS(_data["paymentStatus"]) : <any>undefined;
+            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
         }
     }
 
-    static fromJS(data: any): PaymentGatewayConfig {
+    static fromJS(data: any): WalletPayment {
         data = typeof data === 'object' ? data : {};
-        let result = new PaymentGatewayConfig();
+        let result = new WalletPayment();
         result.init(data);
         return result;
     }
@@ -2717,34 +2355,122 @@ export class PaymentGatewayConfig implements IPaymentGatewayConfig {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["paymentGatewayId"] = this.paymentGatewayId;
-        data["name"] = this.name;
-        data["value"] = this.value;
+        data["transactionId"] = this.transactionId;
+        data["transactionReference"] = this.transactionReference;
+        data["totalAmount"] = this.totalAmount;
+        data["currency"] = this.currency;
+        data["paymentStatusId"] = this.paymentStatusId;
+        data["walletUserId"] = this.walletUserId;
+        data["isUsed"] = this.isUsed;
         data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
+        data["paymentStatus"] = this.paymentStatus ? this.paymentStatus.toJSON() : <any>undefined;
+        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
         return data; 
     }
 
-    clone(): PaymentGatewayConfig {
+    clone(): WalletPayment {
         const json = this.toJSON();
-        let result = new PaymentGatewayConfig();
+        let result = new WalletPayment();
         result.init(json);
         return result;
     }
 }
 
-export interface IPaymentGatewayConfig {
+export interface IWalletPayment {
     id: number | undefined;
     paymentGatewayId: number | undefined;
-    name: string | undefined;
-    value: string | undefined;
+    transactionId: string | undefined;
+    transactionReference: string | undefined;
+    totalAmount: number | undefined;
+    currency: string | undefined;
+    paymentStatusId: number | undefined;
+    walletUserId: string | undefined;
+    isUsed: boolean | undefined;
     paymentGateway: PaymentGateway | undefined;
+    paymentStatus: PaymentStatus | undefined;
+    wallet: Wallet | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
-export class DispatcherStatus implements IDispatcherStatus {
+export class WalletCredit implements IWalletCredit {
+    id: number | undefined;
+    walletId: string | undefined;
+    amount: number | undefined;
+    isPaid: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    wallet: Wallet | undefined;
+
+    constructor(data?: IWalletCredit) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.walletId = _data["walletId"];
+            this.amount = _data["amount"];
+            this.isPaid = _data["isPaid"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.wallet = _data["wallet"] ? Wallet.fromJS(_data["wallet"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): WalletCredit {
+        data = typeof data === 'object' ? data : {};
+        let result = new WalletCredit();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["walletId"] = this.walletId;
+        data["amount"] = this.amount;
+        data["isPaid"] = this.isPaid;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["wallet"] = this.wallet ? this.wallet.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): WalletCredit {
+        const json = this.toJSON();
+        let result = new WalletCredit();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IWalletCredit {
+    id: number | undefined;
+    walletId: string | undefined;
+    amount: number | undefined;
+    isPaid: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    wallet: Wallet | undefined;
+}
+
+export class LocationRatesGroup implements ILocationRatesGroup {
     id: number | undefined;
     name: string;
-    dispatchers: Dispatcher[] | undefined;
+    locations: Location[] | undefined;
+    fromLocalRouteRates: LocalRouteRate[] | undefined;
+    toLocalRouteRates: LocalRouteRate[] | undefined;
+    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
 
-    constructor(data?: IDispatcherStatus) {
+    constructor(data?: ILocationRatesGroup) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2757,17 +2483,32 @@ export class DispatcherStatus implements IDispatcherStatus {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            if (Array.isArray(_data["dispatchers"])) {
-                this.dispatchers = [] as any;
-                for (let item of _data["dispatchers"])
-                    this.dispatchers.push(Dispatcher.fromJS(item));
+            if (Array.isArray(_data["locations"])) {
+                this.locations = [] as any;
+                for (let item of _data["locations"])
+                    this.locations.push(Location.fromJS(item));
+            }
+            if (Array.isArray(_data["fromLocalRouteRates"])) {
+                this.fromLocalRouteRates = [] as any;
+                for (let item of _data["fromLocalRouteRates"])
+                    this.fromLocalRouteRates.push(LocalRouteRate.fromJS(item));
+            }
+            if (Array.isArray(_data["toLocalRouteRates"])) {
+                this.toLocalRouteRates = [] as any;
+                for (let item of _data["toLocalRouteRates"])
+                    this.toLocalRouteRates.push(LocalRouteRate.fromJS(item));
+            }
+            if (Array.isArray(_data["localBookingCategoryGroups"])) {
+                this.localBookingCategoryGroups = [] as any;
+                for (let item of _data["localBookingCategoryGroups"])
+                    this.localBookingCategoryGroups.push(LocalBookingCategoryGroup.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): DispatcherStatus {
+    static fromJS(data: any): LocationRatesGroup {
         data = typeof data === 'object' ? data : {};
-        let result = new DispatcherStatus();
+        let result = new LocationRatesGroup();
         result.init(data);
         return result;
     }
@@ -2776,37 +2517,55 @@ export class DispatcherStatus implements IDispatcherStatus {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["name"] = this.name;
-        if (Array.isArray(this.dispatchers)) {
-            data["dispatchers"] = [];
-            for (let item of this.dispatchers)
-                data["dispatchers"].push(item.toJSON());
+        if (Array.isArray(this.locations)) {
+            data["locations"] = [];
+            for (let item of this.locations)
+                data["locations"].push(item.toJSON());
+        }
+        if (Array.isArray(this.fromLocalRouteRates)) {
+            data["fromLocalRouteRates"] = [];
+            for (let item of this.fromLocalRouteRates)
+                data["fromLocalRouteRates"].push(item.toJSON());
+        }
+        if (Array.isArray(this.toLocalRouteRates)) {
+            data["toLocalRouteRates"] = [];
+            for (let item of this.toLocalRouteRates)
+                data["toLocalRouteRates"].push(item.toJSON());
+        }
+        if (Array.isArray(this.localBookingCategoryGroups)) {
+            data["localBookingCategoryGroups"] = [];
+            for (let item of this.localBookingCategoryGroups)
+                data["localBookingCategoryGroups"].push(item.toJSON());
         }
         return data; 
     }
 
-    clone(): DispatcherStatus {
+    clone(): LocationRatesGroup {
         const json = this.toJSON();
-        let result = new DispatcherStatus();
+        let result = new LocationRatesGroup();
         result.init(json);
         return result;
     }
 }
 
-export interface IDispatcherStatus {
+export interface ILocationRatesGroup {
     id: number | undefined;
     name: string;
-    dispatchers: Dispatcher[] | undefined;
+    locations: Location[] | undefined;
+    fromLocalRouteRates: LocalRouteRate[] | undefined;
+    toLocalRouteRates: LocalRouteRate[] | undefined;
+    localBookingCategoryGroups: LocalBookingCategoryGroup[] | undefined;
 }
 
-export class DispatcherDocument implements IDispatcherDocument {
-    dispatcherId: number | undefined;
-    machinePictureUrl: string | undefined;
-    machineRegistrationUrl: string | undefined;
-    riderLincesUrl: string | undefined;
-    riderInsurance: string | undefined;
-    dispatcher: Dispatcher | undefined;
+export class CustomizedLocationGroup implements ICustomizedLocationGroup {
+    id: number | undefined;
+    description: string | undefined;
+    name: string | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    locations: Location[] | undefined;
 
-    constructor(data?: IDispatcherDocument) {
+    constructor(data?: ICustomizedLocationGroup) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2817,48 +2576,186 @@ export class DispatcherDocument implements IDispatcherDocument {
 
     init(_data?: any) {
         if (_data) {
-            this.dispatcherId = _data["dispatcherId"];
-            this.machinePictureUrl = _data["machinePictureUrl"];
-            this.machineRegistrationUrl = _data["machineRegistrationUrl"];
-            this.riderLincesUrl = _data["riderLincesUrl"];
-            this.riderInsurance = _data["riderInsurance"];
-            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.id = _data["id"];
+            this.description = _data["description"];
+            this.name = _data["name"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            if (Array.isArray(_data["locations"])) {
+                this.locations = [] as any;
+                for (let item of _data["locations"])
+                    this.locations.push(Location.fromJS(item));
+            }
         }
     }
 
-    static fromJS(data: any): DispatcherDocument {
+    static fromJS(data: any): CustomizedLocationGroup {
         data = typeof data === 'object' ? data : {};
-        let result = new DispatcherDocument();
+        let result = new CustomizedLocationGroup();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["dispatcherId"] = this.dispatcherId;
-        data["machinePictureUrl"] = this.machinePictureUrl;
-        data["machineRegistrationUrl"] = this.machineRegistrationUrl;
-        data["riderLincesUrl"] = this.riderLincesUrl;
-        data["riderInsurance"] = this.riderInsurance;
-        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["id"] = this.id;
+        data["description"] = this.description;
+        data["name"] = this.name;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        if (Array.isArray(this.locations)) {
+            data["locations"] = [];
+            for (let item of this.locations)
+                data["locations"].push(item.toJSON());
+        }
         return data; 
     }
 
-    clone(): DispatcherDocument {
+    clone(): CustomizedLocationGroup {
         const json = this.toJSON();
-        let result = new DispatcherDocument();
+        let result = new CustomizedLocationGroup();
         result.init(json);
         return result;
     }
 }
 
-export interface IDispatcherDocument {
-    dispatcherId: number | undefined;
-    machinePictureUrl: string | undefined;
-    machineRegistrationUrl: string | undefined;
-    riderLincesUrl: string | undefined;
-    riderInsurance: string | undefined;
-    dispatcher: Dispatcher | undefined;
+export interface ICustomizedLocationGroup {
+    id: number | undefined;
+    description: string | undefined;
+    name: string | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    locations: Location[] | undefined;
+}
+
+export class PaymentGateway implements IPaymentGateway {
+    id: number | undefined;
+    gatewayKey: string | undefined;
+    active: boolean | undefined;
+    controller: string | undefined;
+    currencies: string | undefined;
+    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
+
+    constructor(data?: IPaymentGateway) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.gatewayKey = _data["gatewayKey"];
+            this.active = _data["active"];
+            this.controller = _data["controller"];
+            this.currencies = _data["currencies"];
+            if (Array.isArray(_data["paymentGatewayConfigs"])) {
+                this.paymentGatewayConfigs = [] as any;
+                for (let item of _data["paymentGatewayConfigs"])
+                    this.paymentGatewayConfigs.push(PaymentGatewayConfig.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentGateway {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentGateway();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["gatewayKey"] = this.gatewayKey;
+        data["active"] = this.active;
+        data["controller"] = this.controller;
+        data["currencies"] = this.currencies;
+        if (Array.isArray(this.paymentGatewayConfigs)) {
+            data["paymentGatewayConfigs"] = [];
+            for (let item of this.paymentGatewayConfigs)
+                data["paymentGatewayConfigs"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PaymentGateway {
+        const json = this.toJSON();
+        let result = new PaymentGateway();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentGateway {
+    id: number | undefined;
+    gatewayKey: string | undefined;
+    active: boolean | undefined;
+    controller: string | undefined;
+    currencies: string | undefined;
+    paymentGatewayConfigs: PaymentGatewayConfig[] | undefined;
+}
+
+export class PaymentStatus implements IPaymentStatus {
+    id: number | undefined;
+    name: string | undefined;
+    payments: Payment[] | undefined;
+
+    constructor(data?: IPaymentStatus) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["payments"])) {
+                this.payments = [] as any;
+                for (let item of _data["payments"])
+                    this.payments.push(Payment.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PaymentStatus {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentStatus();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        if (Array.isArray(this.payments)) {
+            data["payments"] = [];
+            for (let item of this.payments)
+                data["payments"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): PaymentStatus {
+        const json = this.toJSON();
+        let result = new PaymentStatus();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentStatus {
+    id: number | undefined;
+    name: string | undefined;
+    payments: Payment[] | undefined;
 }
 
 export class InternationalBooking implements IInternationalBooking {
@@ -2866,7 +2763,7 @@ export class InternationalBooking implements IInternationalBooking {
     userId: string | undefined;
     customer: Customer | undefined;
     kindOfBooking: string | undefined;
-    eta: moment.Moment | undefined;
+    eta: Date | undefined;
     shipmentModeId: number | undefined;
     shipmentMode: ShipmentMode | undefined;
     shipmentDeliveryTypeId: number;
@@ -2892,9 +2789,9 @@ export class InternationalBooking implements IInternationalBooking {
     pickupLocation: Location | undefined;
     shippingCost: number | undefined;
     exchangeRate: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     bookingNumber: string | undefined;
     processNote: string | undefined;
     rejectionNote: string | undefined;
@@ -2909,7 +2806,7 @@ export class InternationalBooking implements IInternationalBooking {
     trackingNumber: string | undefined;
     shippingBatchId: number | undefined;
     shippingBatch: ShippingBatch | undefined;
-    receivedAt: moment.Moment | undefined;
+    receivedAt: Date | undefined;
     intlStatusTimeline: IntlStatusTimeline[] | undefined;
     bookingStatusId: number | undefined;
     bookingStatus: IntlBookingStatus | undefined;
@@ -2933,7 +2830,7 @@ export class InternationalBooking implements IInternationalBooking {
             this.userId = _data["userId"];
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
             this.kindOfBooking = _data["kindOfBooking"];
-            this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
+            this.eta = _data["eta"] ? new Date(_data["eta"].toString()) : <any>undefined;
             this.shipmentModeId = _data["shipmentModeId"];
             this.shipmentMode = _data["shipmentMode"] ? ShipmentMode.fromJS(_data["shipmentMode"]) : <any>undefined;
             this.shipmentDeliveryTypeId = _data["shipmentDeliveryTypeId"];
@@ -2959,9 +2856,9 @@ export class InternationalBooking implements IInternationalBooking {
             this.pickupLocation = _data["pickupLocation"] ? Location.fromJS(_data["pickupLocation"]) : <any>undefined;
             this.shippingCost = _data["shippingCost"];
             this.exchangeRate = _data["exchangeRate"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.deletedAt = _data["deletedAt"] ? new Date(_data["deletedAt"].toString()) : <any>undefined;
             this.bookingNumber = _data["bookingNumber"];
             this.processNote = _data["processNote"];
             this.rejectionNote = _data["rejectionNote"];
@@ -2976,7 +2873,7 @@ export class InternationalBooking implements IInternationalBooking {
             this.trackingNumber = _data["trackingNumber"];
             this.shippingBatchId = _data["shippingBatchId"];
             this.shippingBatch = _data["shippingBatch"] ? ShippingBatch.fromJS(_data["shippingBatch"]) : <any>undefined;
-            this.receivedAt = _data["receivedAt"] ? moment(_data["receivedAt"].toString()) : <any>undefined;
+            this.receivedAt = _data["receivedAt"] ? new Date(_data["receivedAt"].toString()) : <any>undefined;
             if (Array.isArray(_data["intlStatusTimeline"])) {
                 this.intlStatusTimeline = [] as any;
                 for (let item of _data["intlStatusTimeline"])
@@ -3083,7 +2980,7 @@ export interface IInternationalBooking {
     userId: string | undefined;
     customer: Customer | undefined;
     kindOfBooking: string | undefined;
-    eta: moment.Moment | undefined;
+    eta: Date | undefined;
     shipmentModeId: number | undefined;
     shipmentMode: ShipmentMode | undefined;
     shipmentDeliveryTypeId: number;
@@ -3109,9 +3006,9 @@ export interface IInternationalBooking {
     pickupLocation: Location | undefined;
     shippingCost: number | undefined;
     exchangeRate: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     bookingNumber: string | undefined;
     processNote: string | undefined;
     rejectionNote: string | undefined;
@@ -3126,7 +3023,7 @@ export interface IInternationalBooking {
     trackingNumber: string | undefined;
     shippingBatchId: number | undefined;
     shippingBatch: ShippingBatch | undefined;
-    receivedAt: moment.Moment | undefined;
+    receivedAt: Date | undefined;
     intlStatusTimeline: IntlStatusTimeline[] | undefined;
     bookingStatusId: number | undefined;
     bookingStatus: IntlBookingStatus | undefined;
@@ -3140,8 +3037,8 @@ export class CheckoutAssistance implements ICheckoutAssistance {
     id: number | undefined;
     userId: string | undefined;
     customer: Customer | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     customerName: string;
     customerPhone: string;
     customerAddress: string | undefined;
@@ -3161,7 +3058,7 @@ export class CheckoutAssistance implements ICheckoutAssistance {
     shippingCostTax: number | undefined;
     trackingNumber: string | undefined;
     bookingStatus: IntlBookingStatus | undefined;
-    receivedAt: moment.Moment | undefined;
+    receivedAt: Date | undefined;
     numberOfProcessedWebsites: number | undefined;
     checkoutAssistanceWebsites: CheckoutAssistanceWebsite[] | undefined;
     checkoutAssistanceStatus: CheckoutAssistanceStatus[] | undefined;
@@ -3181,8 +3078,8 @@ export class CheckoutAssistance implements ICheckoutAssistance {
             this.id = _data["id"];
             this.userId = _data["userId"];
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
             this.customerName = _data["customerName"];
             this.customerPhone = _data["customerPhone"];
             this.customerAddress = _data["customerAddress"];
@@ -3202,7 +3099,7 @@ export class CheckoutAssistance implements ICheckoutAssistance {
             this.shippingCostTax = _data["shippingCostTax"];
             this.trackingNumber = _data["trackingNumber"];
             this.bookingStatus = _data["bookingStatus"] ? IntlBookingStatus.fromJS(_data["bookingStatus"]) : <any>undefined;
-            this.receivedAt = _data["receivedAt"] ? moment(_data["receivedAt"].toString()) : <any>undefined;
+            this.receivedAt = _data["receivedAt"] ? new Date(_data["receivedAt"].toString()) : <any>undefined;
             this.numberOfProcessedWebsites = _data["numberOfProcessedWebsites"];
             if (Array.isArray(_data["checkoutAssistanceWebsites"])) {
                 this.checkoutAssistanceWebsites = [] as any;
@@ -3287,8 +3184,8 @@ export interface ICheckoutAssistance {
     id: number | undefined;
     userId: string | undefined;
     customer: Customer | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     customerName: string;
     customerPhone: string;
     customerAddress: string | undefined;
@@ -3308,7 +3205,7 @@ export interface ICheckoutAssistance {
     shippingCostTax: number | undefined;
     trackingNumber: string | undefined;
     bookingStatus: IntlBookingStatus | undefined;
-    receivedAt: moment.Moment | undefined;
+    receivedAt: Date | undefined;
     numberOfProcessedWebsites: number | undefined;
     checkoutAssistanceWebsites: CheckoutAssistanceWebsite[] | undefined;
     checkoutAssistanceStatus: CheckoutAssistanceStatus[] | undefined;
@@ -3328,16 +3225,16 @@ export class Invoice implements IInvoice {
     exchangeRate: number;
     deliveryCost: number;
     grandTotal: number;
-    dueDate: moment.Moment;
+    dueDate: Date;
     invoiceNumber: string | undefined;
     terms: string;
     adminFee: number;
     pricePerUnitWeight: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     isPaid: boolean | undefined;
     shippingBatchId: number | undefined;
-    paidAt: moment.Moment | undefined;
+    paidAt: Date | undefined;
     customer: Customer | undefined;
 
     constructor(data?: IInvoice) {
@@ -3363,16 +3260,16 @@ export class Invoice implements IInvoice {
             this.exchangeRate = _data["exchangeRate"];
             this.deliveryCost = _data["deliveryCost"];
             this.grandTotal = _data["grandTotal"];
-            this.dueDate = _data["dueDate"] ? moment(_data["dueDate"].toString()) : <any>undefined;
+            this.dueDate = _data["dueDate"] ? new Date(_data["dueDate"].toString()) : <any>undefined;
             this.invoiceNumber = _data["invoiceNumber"];
             this.terms = _data["terms"];
             this.adminFee = _data["adminFee"];
             this.pricePerUnitWeight = _data["pricePerUnitWeight"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
             this.isPaid = _data["isPaid"];
             this.shippingBatchId = _data["shippingBatchId"];
-            this.paidAt = _data["paidAt"] ? moment(_data["paidAt"].toString()) : <any>undefined;
+            this.paidAt = _data["paidAt"] ? new Date(_data["paidAt"].toString()) : <any>undefined;
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
         }
     }
@@ -3433,17 +3330,155 @@ export interface IInvoice {
     exchangeRate: number;
     deliveryCost: number;
     grandTotal: number;
-    dueDate: moment.Moment;
+    dueDate: Date;
     invoiceNumber: string | undefined;
     terms: string;
     adminFee: number;
     pricePerUnitWeight: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     isPaid: boolean | undefined;
     shippingBatchId: number | undefined;
-    paidAt: moment.Moment | undefined;
+    paidAt: Date | undefined;
     customer: Customer | undefined;
+}
+
+export class LocalBookingCategoryGroup implements ILocalBookingCategoryGroup {
+    id: number | undefined;
+    name: string;
+    localBookingCategoryId: number | undefined;
+    localBookingCategory: LocalBookingCategory | undefined;
+    locationRatesGroups: LocationRatesGroup[] | undefined;
+    toggleBookingActivation: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+
+    constructor(data?: ILocalBookingCategoryGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.localBookingCategoryId = _data["localBookingCategoryId"];
+            this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
+            if (Array.isArray(_data["locationRatesGroups"])) {
+                this.locationRatesGroups = [] as any;
+                for (let item of _data["locationRatesGroups"])
+                    this.locationRatesGroups.push(LocationRatesGroup.fromJS(item));
+            }
+            this.toggleBookingActivation = _data["toggleBookingActivation"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): LocalBookingCategoryGroup {
+        data = typeof data === 'object' ? data : {};
+        let result = new LocalBookingCategoryGroup();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["localBookingCategoryId"] = this.localBookingCategoryId;
+        data["localBookingCategory"] = this.localBookingCategory ? this.localBookingCategory.toJSON() : <any>undefined;
+        if (Array.isArray(this.locationRatesGroups)) {
+            data["locationRatesGroups"] = [];
+            for (let item of this.locationRatesGroups)
+                data["locationRatesGroups"].push(item.toJSON());
+        }
+        data["toggleBookingActivation"] = this.toggleBookingActivation;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): LocalBookingCategoryGroup {
+        const json = this.toJSON();
+        let result = new LocalBookingCategoryGroup();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILocalBookingCategoryGroup {
+    id: number | undefined;
+    name: string;
+    localBookingCategoryId: number | undefined;
+    localBookingCategory: LocalBookingCategory | undefined;
+    locationRatesGroups: LocationRatesGroup[] | undefined;
+    toggleBookingActivation: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+}
+
+export class PaymentGatewayConfig implements IPaymentGatewayConfig {
+    id: number | undefined;
+    paymentGatewayId: number | undefined;
+    name: string | undefined;
+    value: string | undefined;
+    paymentGateway: PaymentGateway | undefined;
+
+    constructor(data?: IPaymentGatewayConfig) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.paymentGatewayId = _data["paymentGatewayId"];
+            this.name = _data["name"];
+            this.value = _data["value"];
+            this.paymentGateway = _data["paymentGateway"] ? PaymentGateway.fromJS(_data["paymentGateway"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): PaymentGatewayConfig {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentGatewayConfig();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["paymentGatewayId"] = this.paymentGatewayId;
+        data["name"] = this.name;
+        data["value"] = this.value;
+        data["paymentGateway"] = this.paymentGateway ? this.paymentGateway.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): PaymentGatewayConfig {
+        const json = this.toJSON();
+        let result = new PaymentGatewayConfig();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentGatewayConfig {
+    id: number | undefined;
+    paymentGatewayId: number | undefined;
+    name: string | undefined;
+    value: string | undefined;
+    paymentGateway: PaymentGateway | undefined;
 }
 
 export class ShipmentMode implements IShipmentMode {
@@ -3554,9 +3589,9 @@ export interface IShipmentDeliveryType {
 
 export class HoldInstruction implements IHoldInstruction {
     internationalBookingId: number | undefined;
-    shippingDate: moment.Moment;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    shippingDate: Date;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     comment: string | undefined;
     internationalBooking: InternationalBooking | undefined;
 
@@ -3572,9 +3607,9 @@ export class HoldInstruction implements IHoldInstruction {
     init(_data?: any) {
         if (_data) {
             this.internationalBookingId = _data["internationalBookingId"];
-            this.shippingDate = _data["shippingDate"] ? moment(_data["shippingDate"].toString()) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.shippingDate = _data["shippingDate"] ? new Date(_data["shippingDate"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
             this.comment = _data["comment"];
             this.internationalBooking = _data["internationalBooking"] ? InternationalBooking.fromJS(_data["internationalBooking"]) : <any>undefined;
         }
@@ -3608,9 +3643,9 @@ export class HoldInstruction implements IHoldInstruction {
 
 export interface IHoldInstruction {
     internationalBookingId: number | undefined;
-    shippingDate: moment.Moment;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    shippingDate: Date;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     comment: string | undefined;
     internationalBooking: InternationalBooking | undefined;
 }
@@ -3618,7 +3653,7 @@ export interface IHoldInstruction {
 export class ShippingBatch implements IShippingBatch {
     id: number | undefined;
     name: string | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     internationalBookings: InternationalBooking[] | undefined;
 
     constructor(data?: IShippingBatch) {
@@ -3634,7 +3669,7 @@ export class ShippingBatch implements IShippingBatch {
         if (_data) {
             this.id = _data["id"];
             this.name = _data["name"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
             if (Array.isArray(_data["internationalBookings"])) {
                 this.internationalBookings = [] as any;
                 for (let item of _data["internationalBookings"])
@@ -3674,7 +3709,7 @@ export class ShippingBatch implements IShippingBatch {
 export interface IShippingBatch {
     id: number | undefined;
     name: string | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     internationalBookings: InternationalBooking[] | undefined;
 }
 
@@ -3682,7 +3717,7 @@ export class IntlStatusTimeline implements IIntlStatusTimeline {
     id: number | undefined;
     internationalBookingId: number | undefined;
     comment: string | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     internationalBooking: InternationalBooking | undefined;
 
     constructor(data?: IIntlStatusTimeline) {
@@ -3699,7 +3734,7 @@ export class IntlStatusTimeline implements IIntlStatusTimeline {
             this.id = _data["id"];
             this.internationalBookingId = _data["internationalBookingId"];
             this.comment = _data["comment"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
             this.internationalBooking = _data["internationalBooking"] ? InternationalBooking.fromJS(_data["internationalBooking"]) : <any>undefined;
         }
     }
@@ -3733,7 +3768,7 @@ export interface IIntlStatusTimeline {
     id: number | undefined;
     internationalBookingId: number | undefined;
     comment: string | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     internationalBooking: InternationalBooking | undefined;
 }
 
@@ -3791,8 +3826,8 @@ export class CheckoutAssistanceWebsite implements ICheckoutAssistanceWebsite {
     checkoutAssistanceId: number | undefined;
     checkoutAssistance: CheckoutAssistance | undefined;
     checkoutAssistanceProducts: CheckoutAssistanceProduct[] | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     productsCost: number | undefined;
     shippingCost: number | undefined;
     isProcessed: boolean | undefined;
@@ -3820,8 +3855,8 @@ export class CheckoutAssistanceWebsite implements ICheckoutAssistanceWebsite {
                 for (let item of _data["checkoutAssistanceProducts"])
                     this.checkoutAssistanceProducts.push(CheckoutAssistanceProduct.fromJS(item));
             }
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
             this.productsCost = _data["productsCost"];
             this.shippingCost = _data["shippingCost"];
             this.isProcessed = _data["isProcessed"];
@@ -3874,8 +3909,8 @@ export interface ICheckoutAssistanceWebsite {
     checkoutAssistanceId: number | undefined;
     checkoutAssistance: CheckoutAssistance | undefined;
     checkoutAssistanceProducts: CheckoutAssistanceProduct[] | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
     productsCost: number | undefined;
     shippingCost: number | undefined;
     isProcessed: boolean | undefined;
@@ -3887,7 +3922,7 @@ export class CheckoutAssistanceStatus implements ICheckoutAssistanceStatus {
     id: number | undefined;
     checkoutAssistanceId: number | undefined;
     status: string | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     checkoutAssistance: CheckoutAssistance | undefined;
 
     constructor(data?: ICheckoutAssistanceStatus) {
@@ -3904,7 +3939,7 @@ export class CheckoutAssistanceStatus implements ICheckoutAssistanceStatus {
             this.id = _data["id"];
             this.checkoutAssistanceId = _data["checkoutAssistanceId"];
             this.status = _data["status"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
             this.checkoutAssistance = _data["checkoutAssistance"] ? CheckoutAssistance.fromJS(_data["checkoutAssistance"]) : <any>undefined;
         }
     }
@@ -3938,7 +3973,7 @@ export interface ICheckoutAssistanceStatus {
     id: number | undefined;
     checkoutAssistanceId: number | undefined;
     status: string | undefined;
-    createdAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
     checkoutAssistance: CheckoutAssistance | undefined;
 }
 
@@ -3955,8 +3990,8 @@ export class CheckoutAssistanceProduct implements ICheckoutAssistanceProduct {
     comment: string | undefined;
     checkoutAssistanceWebsiteId: number | undefined;
     checkoutAssistanceWebsite: CheckoutAssistanceWebsite | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 
     constructor(data?: ICheckoutAssistanceProduct) {
         if (data) {
@@ -3981,8 +4016,8 @@ export class CheckoutAssistanceProduct implements ICheckoutAssistanceProduct {
             this.comment = _data["comment"];
             this.checkoutAssistanceWebsiteId = _data["checkoutAssistanceWebsiteId"];
             this.checkoutAssistanceWebsite = _data["checkoutAssistanceWebsite"] ? CheckoutAssistanceWebsite.fromJS(_data["checkoutAssistanceWebsite"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
         }
     }
 
@@ -4033,18 +4068,18 @@ export interface ICheckoutAssistanceProduct {
     comment: string | undefined;
     checkoutAssistanceWebsiteId: number | undefined;
     checkoutAssistanceWebsite: CheckoutAssistanceWebsite | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class RegisterUserVieModel implements IRegisterUserVieModel {
     email: string;
-    fullName: string | undefined;
+    fullName: string;
     password: string;
     confirmPassword: string | undefined;
     userType: RegisterUserVieModelUserType;
     businessName: string | undefined;
-    businessAnniversary: moment.Moment | undefined;
+    businessAnniversary: Date | undefined;
     tcAccepted: boolean | undefined;
     profileUrl: string | undefined;
 
@@ -4065,7 +4100,7 @@ export class RegisterUserVieModel implements IRegisterUserVieModel {
             this.confirmPassword = _data["confirmPassword"];
             this.userType = _data["userType"];
             this.businessName = _data["businessName"];
-            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
+            this.businessAnniversary = _data["businessAnniversary"] ? new Date(_data["businessAnniversary"].toString()) : <any>undefined;
             this.tcAccepted = _data["tcAccepted"];
             this.profileUrl = _data["profileUrl"];
         }
@@ -4102,12 +4137,12 @@ export class RegisterUserVieModel implements IRegisterUserVieModel {
 
 export interface IRegisterUserVieModel {
     email: string;
-    fullName: string | undefined;
+    fullName: string;
     password: string;
     confirmPassword: string | undefined;
     userType: RegisterUserVieModelUserType;
     businessName: string | undefined;
-    businessAnniversary: moment.Moment | undefined;
+    businessAnniversary: Date | undefined;
     tcAccepted: boolean | undefined;
     profileUrl: string | undefined;
 }
@@ -4170,6 +4205,7 @@ export class RegisterUserResource implements IRegisterUserResource {
     userType: RegisterUserResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
+    dispatcher: Dispatcher | undefined;
     role: AspNetRole[] | undefined;
     customer: Customer | undefined;
 
@@ -4190,6 +4226,7 @@ export class RegisterUserResource implements IRegisterUserResource {
             this.userType = _data["userType"];
             this.isProfileComplete = _data["isProfileComplete"];
             this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
             if (Array.isArray(_data["role"])) {
                 this.role = [] as any;
                 for (let item of _data["role"])
@@ -4214,6 +4251,7 @@ export class RegisterUserResource implements IRegisterUserResource {
         data["userType"] = this.userType;
         data["isProfileComplete"] = this.isProfileComplete;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
         if (Array.isArray(this.role)) {
             data["role"] = [];
             for (let item of this.role)
@@ -4238,6 +4276,7 @@ export interface IRegisterUserResource {
     userType: RegisterUserResourceUserType | undefined;
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
+    dispatcher: Dispatcher | undefined;
     role: AspNetRole[] | undefined;
     customer: Customer | undefined;
 }
@@ -5382,11 +5421,11 @@ export interface IObjectResourceOfBulkOrder {
 }
 
 export class CreateLocalBookingDTO implements ICreateLocalBookingDTO {
-    deliveryDate: moment.Moment;
+    deliveryDate: Date;
     deliveryTypeId: number | undefined;
     estimatedPackageWeight: number | undefined;
     paymentTypeId: number | undefined;
-    localBookingCategoryId: number | undefined;
+    localBookingCategoryId: number;
     senderName: string;
     pickUpAddress: string;
     pickupLandmark: string | undefined;
@@ -5420,7 +5459,7 @@ export class CreateLocalBookingDTO implements ICreateLocalBookingDTO {
 
     init(_data?: any) {
         if (_data) {
-            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? new Date(_data["deliveryDate"].toString()) : <any>undefined;
             this.deliveryTypeId = _data["deliveryTypeId"];
             this.estimatedPackageWeight = _data["estimatedPackageWeight"];
             this.paymentTypeId = _data["paymentTypeId"];
@@ -5496,11 +5535,11 @@ export class CreateLocalBookingDTO implements ICreateLocalBookingDTO {
 }
 
 export interface ICreateLocalBookingDTO {
-    deliveryDate: moment.Moment;
+    deliveryDate: Date;
     deliveryTypeId: number | undefined;
     estimatedPackageWeight: number | undefined;
     paymentTypeId: number | undefined;
-    localBookingCategoryId: number | undefined;
+    localBookingCategoryId: number;
     senderName: string;
     pickUpAddress: string;
     pickupLandmark: string | undefined;
@@ -6485,7 +6524,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
     estimatedPackageSize: string | undefined;
     packageDescription: string;
     kindOfBooking: string | undefined;
-    eta: moment.Moment | undefined;
+    eta: Date | undefined;
     homeDeliveryLocationId: number | undefined;
     pickupLocationId: number | undefined;
 
@@ -6516,7 +6555,7 @@ export class InternationalBookingCtreatDTO implements IInternationalBookingCtrea
             this.estimatedPackageSize = _data["estimatedPackageSize"];
             this.packageDescription = _data["packageDescription"];
             this.kindOfBooking = _data["kindOfBooking"];
-            this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
+            this.eta = _data["eta"] ? new Date(_data["eta"].toString()) : <any>undefined;
             this.homeDeliveryLocationId = _data["homeDeliveryLocationId"];
             this.pickupLocationId = _data["pickupLocationId"];
         }
@@ -6578,7 +6617,7 @@ export interface IInternationalBookingCtreatDTO {
     estimatedPackageSize: string | undefined;
     packageDescription: string;
     kindOfBooking: string | undefined;
-    eta: moment.Moment | undefined;
+    eta: Date | undefined;
     homeDeliveryLocationId: number | undefined;
     pickupLocationId: number | undefined;
 }
@@ -6895,7 +6934,7 @@ export interface IHoldInstructionDates {
 
 export class HoldInstructionDTO implements IHoldInstructionDTO {
     internationalBookingId: number;
-    shippingDate: moment.Moment;
+    shippingDate: Date;
     comment: string;
 
     constructor(data?: IHoldInstructionDTO) {
@@ -6910,7 +6949,7 @@ export class HoldInstructionDTO implements IHoldInstructionDTO {
     init(_data?: any) {
         if (_data) {
             this.internationalBookingId = _data["internationalBookingId"];
-            this.shippingDate = _data["shippingDate"] ? moment(_data["shippingDate"].toString()) : <any>undefined;
+            this.shippingDate = _data["shippingDate"] ? new Date(_data["shippingDate"].toString()) : <any>undefined;
             this.comment = _data["comment"];
         }
     }
@@ -6940,7 +6979,7 @@ export class HoldInstructionDTO implements IHoldInstructionDTO {
 
 export interface IHoldInstructionDTO {
     internationalBookingId: number;
-    shippingDate: moment.Moment;
+    shippingDate: Date;
     comment: string;
 }
 
@@ -7055,7 +7094,7 @@ export class InternationalBookingResource implements IInternationalBookingResour
     userId: string | undefined;
     customer: Customer | undefined;
     kindOfBooking: string | undefined;
-    eta: moment.Moment | undefined;
+    eta: Date | undefined;
     shipmentModeId: number | undefined;
     shipmentMode: ShipmentMode | undefined;
     shipmentDeliveryTypeId: number;
@@ -7081,9 +7120,9 @@ export class InternationalBookingResource implements IInternationalBookingResour
     pickupLocation: Location | undefined;
     shippingCost: number | undefined;
     exchangeRate: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     bookingNumber: string | undefined;
     processNote: string | undefined;
     rejectionNote: string | undefined;
@@ -7098,7 +7137,7 @@ export class InternationalBookingResource implements IInternationalBookingResour
     trackingNumber: string | undefined;
     shippingBatchId: number | undefined;
     shippingBatch: ShippingBatch | undefined;
-    receivedAt: moment.Moment | undefined;
+    receivedAt: Date | undefined;
     intlStatusTimeline: IntlStatusTimeline[] | undefined;
     bookingStatusId: number | undefined;
     bookingStatus: IntlBookingStatus | undefined;
@@ -7122,7 +7161,7 @@ export class InternationalBookingResource implements IInternationalBookingResour
             this.userId = _data["userId"];
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
             this.kindOfBooking = _data["kindOfBooking"];
-            this.eta = _data["eta"] ? moment(_data["eta"].toString()) : <any>undefined;
+            this.eta = _data["eta"] ? new Date(_data["eta"].toString()) : <any>undefined;
             this.shipmentModeId = _data["shipmentModeId"];
             this.shipmentMode = _data["shipmentMode"] ? ShipmentMode.fromJS(_data["shipmentMode"]) : <any>undefined;
             this.shipmentDeliveryTypeId = _data["shipmentDeliveryTypeId"];
@@ -7148,9 +7187,9 @@ export class InternationalBookingResource implements IInternationalBookingResour
             this.pickupLocation = _data["pickupLocation"] ? Location.fromJS(_data["pickupLocation"]) : <any>undefined;
             this.shippingCost = _data["shippingCost"];
             this.exchangeRate = _data["exchangeRate"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.deletedAt = _data["deletedAt"] ? new Date(_data["deletedAt"].toString()) : <any>undefined;
             this.bookingNumber = _data["bookingNumber"];
             this.processNote = _data["processNote"];
             this.rejectionNote = _data["rejectionNote"];
@@ -7165,7 +7204,7 @@ export class InternationalBookingResource implements IInternationalBookingResour
             this.trackingNumber = _data["trackingNumber"];
             this.shippingBatchId = _data["shippingBatchId"];
             this.shippingBatch = _data["shippingBatch"] ? ShippingBatch.fromJS(_data["shippingBatch"]) : <any>undefined;
-            this.receivedAt = _data["receivedAt"] ? moment(_data["receivedAt"].toString()) : <any>undefined;
+            this.receivedAt = _data["receivedAt"] ? new Date(_data["receivedAt"].toString()) : <any>undefined;
             if (Array.isArray(_data["intlStatusTimeline"])) {
                 this.intlStatusTimeline = [] as any;
                 for (let item of _data["intlStatusTimeline"])
@@ -7272,7 +7311,7 @@ export interface IInternationalBookingResource {
     userId: string | undefined;
     customer: Customer | undefined;
     kindOfBooking: string | undefined;
-    eta: moment.Moment | undefined;
+    eta: Date | undefined;
     shipmentModeId: number | undefined;
     shipmentMode: ShipmentMode | undefined;
     shipmentDeliveryTypeId: number;
@@ -7298,9 +7337,9 @@ export interface IInternationalBookingResource {
     pickupLocation: Location | undefined;
     shippingCost: number | undefined;
     exchangeRate: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     bookingNumber: string | undefined;
     processNote: string | undefined;
     rejectionNote: string | undefined;
@@ -7315,7 +7354,7 @@ export interface IInternationalBookingResource {
     trackingNumber: string | undefined;
     shippingBatchId: number | undefined;
     shippingBatch: ShippingBatch | undefined;
-    receivedAt: moment.Moment | undefined;
+    receivedAt: Date | undefined;
     intlStatusTimeline: IntlStatusTimeline[] | undefined;
     bookingStatusId: number | undefined;
     bookingStatus: IntlBookingStatus | undefined;
@@ -8425,7 +8464,7 @@ export class DetailResource implements IDetailResource {
     id: number | undefined;
     userId: string | undefined;
     customer: Customer | undefined;
-    deliveryDate: moment.Moment | undefined;
+    deliveryDate: Date | undefined;
     deliveryTypeId: number | undefined;
     deliveryType: DeliveryType | undefined;
     paymentTypeId: number | undefined;
@@ -8469,9 +8508,9 @@ export class DetailResource implements IDetailResource {
     localBookingCategoryId: number | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
     estimatedPackageWeight: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     customerActorStateId: number | undefined;
     bulkOrderId: number | undefined;
     customerActorState: CustomerActorState | undefined;
@@ -8484,8 +8523,8 @@ export class DetailResource implements IDetailResource {
     wantCashCollection: boolean | undefined;
     cashCollectionAmount: number | undefined;
     cashCollectionAccountNumber: string | undefined;
-    dispatchedAt: moment.Moment | undefined;
-    deliveredAt: moment.Moment | undefined;
+    dispatchedAt: Date | undefined;
+    deliveredAt: Date | undefined;
     createdFromEndpoint: boolean | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
@@ -8504,7 +8543,7 @@ export class DetailResource implements IDetailResource {
             this.id = _data["id"];
             this.userId = _data["userId"];
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
-            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? new Date(_data["deliveryDate"].toString()) : <any>undefined;
             this.deliveryTypeId = _data["deliveryTypeId"];
             this.deliveryType = _data["deliveryType"] ? DeliveryType.fromJS(_data["deliveryType"]) : <any>undefined;
             this.paymentTypeId = _data["paymentTypeId"];
@@ -8548,9 +8587,9 @@ export class DetailResource implements IDetailResource {
             this.localBookingCategoryId = _data["localBookingCategoryId"];
             this.localBookingCategory = _data["localBookingCategory"] ? LocalBookingCategory.fromJS(_data["localBookingCategory"]) : <any>undefined;
             this.estimatedPackageWeight = _data["estimatedPackageWeight"];
-            this.createdAt = _data["createdAt"] ? moment(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? moment(_data["updatedAt"].toString()) : <any>undefined;
-            this.deletedAt = _data["deletedAt"] ? moment(_data["deletedAt"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.deletedAt = _data["deletedAt"] ? new Date(_data["deletedAt"].toString()) : <any>undefined;
             this.customerActorStateId = _data["customerActorStateId"];
             this.bulkOrderId = _data["bulkOrderId"];
             this.customerActorState = _data["customerActorState"] ? CustomerActorState.fromJS(_data["customerActorState"]) : <any>undefined;
@@ -8571,8 +8610,8 @@ export class DetailResource implements IDetailResource {
             this.wantCashCollection = _data["wantCashCollection"];
             this.cashCollectionAmount = _data["cashCollectionAmount"];
             this.cashCollectionAccountNumber = _data["cashCollectionAccountNumber"];
-            this.dispatchedAt = _data["dispatchedAt"] ? moment(_data["dispatchedAt"].toString()) : <any>undefined;
-            this.deliveredAt = _data["deliveredAt"] ? moment(_data["deliveredAt"].toString()) : <any>undefined;
+            this.dispatchedAt = _data["dispatchedAt"] ? new Date(_data["dispatchedAt"].toString()) : <any>undefined;
+            this.deliveredAt = _data["deliveredAt"] ? new Date(_data["deliveredAt"].toString()) : <any>undefined;
             this.createdFromEndpoint = _data["createdFromEndpoint"];
             this.personalizedLocalRateId = _data["personalizedLocalRateId"];
             this.personalizedLocalRate = _data["personalizedLocalRate"] ? PersonalizedLocalRate.fromJS(_data["personalizedLocalRate"]) : <any>undefined;
@@ -8678,7 +8717,7 @@ export interface IDetailResource {
     id: number | undefined;
     userId: string | undefined;
     customer: Customer | undefined;
-    deliveryDate: moment.Moment | undefined;
+    deliveryDate: Date | undefined;
     deliveryTypeId: number | undefined;
     deliveryType: DeliveryType | undefined;
     paymentTypeId: number | undefined;
@@ -8722,9 +8761,9 @@ export interface IDetailResource {
     localBookingCategoryId: number | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
     estimatedPackageWeight: number | undefined;
-    createdAt: moment.Moment | undefined;
-    updatedAt: moment.Moment | undefined;
-    deletedAt: moment.Moment | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    deletedAt: Date | undefined;
     customerActorStateId: number | undefined;
     bulkOrderId: number | undefined;
     customerActorState: CustomerActorState | undefined;
@@ -8737,8 +8776,8 @@ export interface IDetailResource {
     wantCashCollection: boolean | undefined;
     cashCollectionAmount: number | undefined;
     cashCollectionAccountNumber: string | undefined;
-    dispatchedAt: moment.Moment | undefined;
-    deliveredAt: moment.Moment | undefined;
+    dispatchedAt: Date | undefined;
+    deliveredAt: Date | undefined;
     createdFromEndpoint: boolean | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
@@ -8816,7 +8855,7 @@ export interface IEditLocalBookingViewModel {
 }
 
 export class ModifyLocalBookingViewModel implements IModifyLocalBookingViewModel {
-    deliveryDate: moment.Moment;
+    deliveryDate: Date;
     paymentTypeId: number;
     id: number | undefined;
     localBooking: LocalBooking | undefined;
@@ -8832,7 +8871,7 @@ export class ModifyLocalBookingViewModel implements IModifyLocalBookingViewModel
 
     init(_data?: any) {
         if (_data) {
-            this.deliveryDate = _data["deliveryDate"] ? moment(_data["deliveryDate"].toString()) : <any>undefined;
+            this.deliveryDate = _data["deliveryDate"] ? new Date(_data["deliveryDate"].toString()) : <any>undefined;
             this.paymentTypeId = _data["paymentTypeId"];
             this.id = _data["id"];
             this.localBooking = _data["localBooking"] ? LocalBooking.fromJS(_data["localBooking"]) : <any>undefined;
@@ -8864,7 +8903,7 @@ export class ModifyLocalBookingViewModel implements IModifyLocalBookingViewModel
 }
 
 export interface IModifyLocalBookingViewModel {
-    deliveryDate: moment.Moment;
+    deliveryDate: Date;
     paymentTypeId: number;
     id: number | undefined;
     localBooking: LocalBooking | undefined;
@@ -8919,6 +8958,183 @@ export interface ICancelLocalBookingViewModel {
     note: string;
     id: number | undefined;
     localBooking: LocalBooking | undefined;
+}
+
+export class ListResourceOfLocation implements IListResourceOfLocation {
+    total: number | undefined;
+    data: Location[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfLocation) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(Location.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfLocation {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfLocation();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfLocation {
+        const json = this.toJSON();
+        let result = new ListResourceOfLocation();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfLocation {
+    total: number | undefined;
+    data: Location[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ListResourceOfResidentialState implements IListResourceOfResidentialState {
+    total: number | undefined;
+    data: ResidentialState[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfResidentialState) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(ResidentialState.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfResidentialState {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfResidentialState();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfResidentialState {
+        const json = this.toJSON();
+        let result = new ListResourceOfResidentialState();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfResidentialState {
+    total: number | undefined;
+    data: ResidentialState[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class ObjectResourceOfLocation implements IObjectResourceOfLocation {
+    data: Location | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfLocation) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? Location.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfLocation {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfLocation();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfLocation {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfLocation();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfLocation {
+    data: Location | undefined;
+    code: string | undefined;
+    message: string | undefined;
 }
 
 export class ObjectResourceOfUserViewModel implements IObjectResourceOfUserViewModel {
@@ -8979,6 +9195,11 @@ export class UserViewModel implements IUserViewModel {
     user: User | undefined;
     role: Role[] | undefined;
     customer: Customer | undefined;
+    dispatcher: Dispatcher | undefined;
+    totalAsignedOrder: number | undefined;
+    totalDelivered: number | undefined;
+    totalCarryOver: number | undefined;
+    totalDispatched: number | undefined;
 
     constructor(data?: IUserViewModel) {
         if (data) {
@@ -9001,6 +9222,11 @@ export class UserViewModel implements IUserViewModel {
                     this.role.push(Role.fromJS(item));
             }
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.totalAsignedOrder = _data["totalAsignedOrder"];
+            this.totalDelivered = _data["totalDelivered"];
+            this.totalCarryOver = _data["totalCarryOver"];
+            this.totalDispatched = _data["totalDispatched"];
         }
     }
 
@@ -9023,6 +9249,11 @@ export class UserViewModel implements IUserViewModel {
                 data["role"].push(item.toJSON());
         }
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["totalAsignedOrder"] = this.totalAsignedOrder;
+        data["totalDelivered"] = this.totalDelivered;
+        data["totalCarryOver"] = this.totalCarryOver;
+        data["totalDispatched"] = this.totalDispatched;
         return data; 
     }
 
@@ -9041,6 +9272,11 @@ export interface IUserViewModel {
     user: User | undefined;
     role: Role[] | undefined;
     customer: Customer | undefined;
+    dispatcher: Dispatcher | undefined;
+    totalAsignedOrder: number | undefined;
+    totalDelivered: number | undefined;
+    totalCarryOver: number | undefined;
+    totalDispatched: number | undefined;
 }
 
 export class User implements IUser {
@@ -9214,6 +9450,7 @@ export interface IChangePasswordViewModel {
 
 export class UpdateUserViewModel implements IUpdateUserViewModel {
     fullName: string | undefined;
+    userId: string | undefined;
     email: string | undefined;
     homeAddress: string | undefined;
     residentialCountryId: number | undefined;
@@ -9222,7 +9459,19 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
     businessName: string | undefined;
     closestLandmark: string | undefined;
     closestBustop: number | undefined;
-    businessAnniversary: moment.Moment | undefined;
+    businessAnniversary: Date | undefined;
+    sponsorName: string | undefined;
+    sponsorAddress: string | undefined;
+    sponsorPhoneNumber: string | undefined;
+    plateNumber: string | undefined;
+    carName: string | undefined;
+    carModel: string | undefined;
+    carYear: string | undefined;
+    licenseNumber: string | undefined;
+    machinePictureUrl: any | undefined;
+    machineRegistrationUrl: any | undefined;
+    riderLincesUrl: any | undefined;
+    insuranceUrl: any | undefined;
 
     constructor(data?: IUpdateUserViewModel) {
         if (data) {
@@ -9236,6 +9485,7 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
     init(_data?: any) {
         if (_data) {
             this.fullName = _data["fullName"];
+            this.userId = _data["userId"];
             this.email = _data["email"];
             this.homeAddress = _data["homeAddress"];
             this.residentialCountryId = _data["residentialCountryId"];
@@ -9244,7 +9494,19 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
             this.businessName = _data["businessName"];
             this.closestLandmark = _data["closestLandmark"];
             this.closestBustop = _data["closestBustop"];
-            this.businessAnniversary = _data["businessAnniversary"] ? moment(_data["businessAnniversary"].toString()) : <any>undefined;
+            this.businessAnniversary = _data["businessAnniversary"] ? new Date(_data["businessAnniversary"].toString()) : <any>undefined;
+            this.sponsorName = _data["sponsorName"];
+            this.sponsorAddress = _data["sponsorAddress"];
+            this.sponsorPhoneNumber = _data["sponsorPhoneNumber"];
+            this.plateNumber = _data["plateNumber"];
+            this.carName = _data["carName"];
+            this.carModel = _data["carModel"];
+            this.carYear = _data["carYear"];
+            this.licenseNumber = _data["licenseNumber"];
+            this.machinePictureUrl = _data["machinePictureUrl"] ? HttpPostedFileBase.fromJS(_data["machinePictureUrl"]) : <any>undefined;
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? HttpPostedFileBase.fromJS(_data["machineRegistrationUrl"]) : <any>undefined;
+            this.riderLincesUrl = _data["riderLincesUrl"] ? HttpPostedFileBase.fromJS(_data["riderLincesUrl"]) : <any>undefined;
+            this.insuranceUrl = _data["insuranceUrl"] ? HttpPostedFileBase.fromJS(_data["insuranceUrl"]) : <any>undefined;
         }
     }
 
@@ -9258,6 +9520,7 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["fullName"] = this.fullName;
+        data["userId"] = this.userId;
         data["email"] = this.email;
         data["homeAddress"] = this.homeAddress;
         data["residentialCountryId"] = this.residentialCountryId;
@@ -9267,6 +9530,18 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
         data["closestLandmark"] = this.closestLandmark;
         data["closestBustop"] = this.closestBustop;
         data["businessAnniversary"] = this.businessAnniversary ? this.businessAnniversary.toISOString() : <any>undefined;
+        data["sponsorName"] = this.sponsorName;
+        data["sponsorAddress"] = this.sponsorAddress;
+        data["sponsorPhoneNumber"] = this.sponsorPhoneNumber;
+        data["plateNumber"] = this.plateNumber;
+        data["carName"] = this.carName;
+        data["carModel"] = this.carModel;
+        data["carYear"] = this.carYear;
+        data["licenseNumber"] = this.licenseNumber;
+        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl.toJSON() : <any>undefined;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl.toJSON() : <any>undefined;
+        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl.toJSON() : <any>undefined;
+        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -9280,6 +9555,7 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
 
 export interface IUpdateUserViewModel {
     fullName: string | undefined;
+    userId: string | undefined;
     email: string | undefined;
     homeAddress: string | undefined;
     residentialCountryId: number | undefined;
@@ -9288,7 +9564,19 @@ export interface IUpdateUserViewModel {
     businessName: string | undefined;
     closestLandmark: string | undefined;
     closestBustop: number | undefined;
-    businessAnniversary: moment.Moment | undefined;
+    businessAnniversary: Date | undefined;
+    sponsorName: string | undefined;
+    sponsorAddress: string | undefined;
+    sponsorPhoneNumber: string | undefined;
+    plateNumber: string | undefined;
+    carName: string | undefined;
+    carModel: string | undefined;
+    carYear: string | undefined;
+    licenseNumber: string | undefined;
+    machinePictureUrl: any | undefined;
+    machineRegistrationUrl: any | undefined;
+    riderLincesUrl: any | undefined;
+    insuranceUrl: any | undefined;
 }
 
 export class ForgotPasswordViewModel implements IForgotPasswordViewModel {
@@ -9375,6 +9663,57 @@ export class SelectedOrder implements ISelectedOrder {
 
 export interface ISelectedOrder {
     input: string | undefined;
+}
+
+export class ObjectResourceOfResidentialState implements IObjectResourceOfResidentialState {
+    data: ResidentialState | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfResidentialState) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? ResidentialState.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfResidentialState {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfResidentialState();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfResidentialState {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfResidentialState();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfResidentialState {
+    data: ResidentialState | undefined;
+    code: string | undefined;
+    message: string | undefined;
 }
 
 export class CompleteRegistrationDTO implements ICompleteRegistrationDTO {

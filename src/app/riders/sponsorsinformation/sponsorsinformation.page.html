@@ -1,0 +1,94 @@
+<ion-header class="ion-no-border"> 
+  <ion-toolbar>    
+  <ion-title style="text-align: center;">Sponsor Information </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div style="padding:10px; width: 100%;">
+    <div style="padding: 7px;"></div>
+    <form name="sponsorForm" id="sponsorForm" #sponsorForm="ngForm">
+      <ion-label for="" class="control-label">Sponsor's Name</ion-label>
+      <div style="padding: 5px;"></div>
+      <ion-input placeholder="Sponsor's Name" type="text" name="sponsorname" id="sponsorname" [(ngModel)]="sponsorUpdate.sponsorname" #sponsorname="ngModel" required></ion-input>
+      <div *ngIf="sponsorname.invalid && (sponsorname.dirty || sponsorname.touched) " class="error">
+        <div *ngIf="(sponsorname.errors.required || sponsorname.errors)">
+          Sponsor's Name is required
+        </div>
+    </div>
+    <div style="padding: 5px;"></div>
+    <ion-label for="" class="control-label">Sponsor's Address</ion-label>
+    <div style="padding: 5px;"></div>
+    <ion-textarea placeholder="Sponsor's Address" type="text" name="sponsoraddress" id="sponsoraddress" [(ngModel)]="sponsorUpdate.sponsoraddress" #sponsoraddress="ngModel" required></ion-textarea>
+    <div *ngIf="sponsoraddress.invalid && (sponsoraddress.dirty || sponsoraddress.touched) " class="error">
+      <div *ngIf="(sponsoraddress.errors.required || sponsoraddress.errors)">
+        Sponsor's Address is required
+      </div>
+  </div>
+  <div style="padding: 5px;"></div>
+  <ion-label for="" class="control-label">Sponsor's Phone Number</ion-label>
+  <div style="padding: 5px;"></div>
+  <ion-input placeholder="Phone Number" type="text" name="sponsorphone" id="sponsorphone" [(ngModel)]="sponsorUpdate.sponsorphone" #sponsorphone="ngModel" required></ion-input>
+  <div *ngIf="sponsorphone.invalid && (sponsorphone.dirty || sponsorphone.touched) " class="error">
+    <div *ngIf="(sponsorphone.errors.required || sponsorphone.errors)">
+      Phone Number is required
+    </div>
+</div>
+
+<div style="padding: 5px;"></div>
+<ion-label for="" class="control-label">Bike/Vehicle Plate Number</ion-label>
+<div style="padding: 5px;"></div>
+<ion-input placeholder="Bike/Vehicle Plate Number" type="text" name="platenumber" id="platenumber" [(ngModel)]="sponsorUpdate.platenumber" #platenumber="ngModel" required></ion-input>
+<div *ngIf="platenumber.invalid && (platenumber.dirty || platenumber.touched) " class="error">
+  <div *ngIf="(platenumber.errors.required || platenumber.errors)">
+    Plate Number is required
+  </div>
+</div>
+
+<div style="padding: 5px;"></div>
+<ion-label for="" class="control-label">Bike/Vehicle Name</ion-label>
+<div style="padding: 5px;"></div>
+<ion-input placeholder="Business Name" type="text" name="carname" id="carname" [(ngModel)]="sponsorUpdate.carname" #carname="ngModel" required></ion-input>
+<div *ngIf="carname.invalid && (carname.dirty || carname.touched) " class="error">
+  <div *ngIf="(carname.errors.required || carname.errors)">
+    Bike/Vehicle Name is required
+  </div>
+</div>
+
+<div style="padding: 5px;"></div>
+<ion-label for="" class="control-label">Bike/Vehicle Model</ion-label>
+<div style="padding: 5px;"></div>
+<ion-input placeholder="Bike/Vehicle Model" type="text" name="carmodel" id="carmodel" [(ngModel)]="sponsorUpdate.carmodel" #carmodel="ngModel" required></ion-input>
+<div *ngIf="carmodel.invalid && (carmodel.dirty || carmodel.touched) " class="error">
+  <div *ngIf="(carmodel.errors.required || carmodel.errors)">
+    Bike/Vehicle Model is required
+  </div>
+</div>
+
+<div style="padding: 5px;"></div>
+<ion-label for="" class="control-label">Bike/Vehicle Year</ion-label>
+<div style="padding: 5px;"></div>
+<ion-input placeholder="Bike/Vehicle Year" type="text" name="caryear" id="caryear" [(ngModel)]="sponsorUpdate.caryear" #caryear="ngModel" required></ion-input>
+<div *ngIf="caryear.invalid && (caryear.dirty || caryear.touched) " class="error">
+  <div *ngIf="(caryear.errors.required || caryear.errors)">
+    Bike/Vehicle Year is required
+  </div>
+</div>
+
+<div style="padding: 5px;"></div>
+<ion-label for="" class="control-label">Bike/Vehicle License Number</ion-label>
+<div style="padding: 5px;"></div>
+<ion-input placeholder="Bike/Vehicle License Number" type="text" name="licenseNumber" id="licenseNumber" [(ngModel)]="sponsorUpdate.licenseNumber" #licenseNumber="ngModel" required></ion-input>
+<div *ngIf="licenseNumber.invalid && (licenseNumber.dirty || licenseNumber.touched) " class="error">
+  <div *ngIf="(licenseNumber.errors.required || licenseNumber.errors)">
+    Bike/Vehicle License Number is required
+  </div>
+</div>
+      </form>
+      <div style="padding:5px;"></div>
+      <ion-button [disabled]="sponsorForm.invalid" (click)="update()"  class="pryColor " expand="block" fill="fill">SAVE</ion-button>
+      <div style="padding:5px;"></div>
+      <ion-button (click)="goback()" expand="block"  class="blacksecColor" >
+        Cancel
+      </ion-button>
+  </div>
+</ion-content>

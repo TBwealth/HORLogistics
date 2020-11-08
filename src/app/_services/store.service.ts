@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalBooking, LocalBookingResource } from '../_models/service-models';
+import { InternationalBooking, LocalBooking, LocalBookingResource } from '../_models/service-models';
 
 @Injectable({
   providedIn: 'root'
@@ -7,9 +7,15 @@ import { LocalBooking, LocalBookingResource } from '../_models/service-models';
 export class StoreService {
 
   bookings: LocalBooking[] = []
+  internationalBooking: InternationalBooking;
 
   constructor() { }
-  
+  saveInternationalBooking(booking: InternationalBooking){
+    this.internationalBooking = booking
+  }
+  getInternationalBookings(){
+    return this.internationalBooking
+  }
   saveBookings(bookings){
     this.bookings = bookings
   }

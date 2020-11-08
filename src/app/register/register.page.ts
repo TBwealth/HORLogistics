@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators,ReactiveFormsModule, FormsModule } from "@angular/forms";
-import { NavController, ToastController,Platform} from '@ionic/angular';
+import { NavController, ToastController,Platform, LoadingController} from '@ionic/angular';
 import { from } from 'rxjs';
 import { User, socialUser} from "../_models/user";
 import { RegisterUserVieModel,ObjectResourceOfRegisterUserResource,RegisterUserResource } from "../_models/service-models";
@@ -42,7 +42,8 @@ export class RegisterPage implements OnInit {
       private google: GooglePlus,
       private fireAuth: AngularFireAuth,
       private fb: Facebook,
-      private platform: Platform,) { }
+      private platform: Platform,
+      private loadspinner: LoadingController) { }
 
 
     async forgotPassword(){}
@@ -53,7 +54,7 @@ export class RegisterPage implements OnInit {
       this.navCtrl.back();
     }
     userlogin(){
-      this.router.navigate(['login'])
+      this.router.navigate(['login'],{queryParams:{custType:this.customerType }})
     }
     getcustType(custType){
      this.customerType = custType;
@@ -68,6 +69,12 @@ export class RegisterPage implements OnInit {
         });
         toast.present();
       }else{
+        this.loading = await this.loadspinner.create({
+          message: "please wait...",
+          translucent: true,
+          spinner: "bubbles",
+        });
+        await this.loading.present();
       this.registerService.register(this.regUser).subscribe(async (data:ObjectResourceOfRegisterUserResource)=>{
 if(data.code == '007'){
   this.RegisterUserResource = data.data;
@@ -78,6 +85,7 @@ if(data.code == '007'){
     color: "success"
   });
   toast.present();
+  this.loading.dismiss();
   this.router.navigate(['providephone'])
 }else{
   const toast = await this.toastCtrl.create({
@@ -86,6 +94,7 @@ if(data.code == '007'){
     color: "danger"
   });
   toast.present();
+  this.loading.dismiss();
 }
       });
         

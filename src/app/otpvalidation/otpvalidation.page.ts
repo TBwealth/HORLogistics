@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseAuthentication } from '@ionic-native/firebase-authentication/ngx';
 import { NavController,ToastController,AlertController, LoadingController } from '@ionic/angular';
-import * as firebase from 'firebase';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountServiceProxy } from '../_services/service-proxies';
 import { AuthenticationService } from '../_services/authentication.service';
@@ -104,7 +103,7 @@ async verifyOTP(){
                     this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
                     this.VerifiedPhoneUpdate.isVerified = true;
                     this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe(async(data:StatusResource)=>{
-                      if(data.code == "007"){
+                      if(data.code == "000"){
                         this.AuthenService.addUser(usersdata[0]);
                         const toast = await this.toastCtrl.create({
                           duration: 3000,
@@ -112,7 +111,7 @@ async verifyOTP(){
                           color: "success"
                         });
                         toast.present();
-                        this.router.navigate(['home'])
+                        this.router.navigate(['profilepage'])
                         loading.dismiss();
                       }else{
                         const toast = await this.toastCtrl.create({

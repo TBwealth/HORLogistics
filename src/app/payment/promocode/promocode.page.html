@@ -1,0 +1,48 @@
+<ion-header class="zindex">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1" style="color: #454F63;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="headertitle" >Promo Code </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding-top:20px;"></div>
+  <div style="padding: 10px;">
+    <div style="padding: 20px;"></div>
+    <div style="color: #303030;text-align: left;">
+      <div class="txt">
+        <h2>Enter Promo <br> Code:</h2>
+      </div>
+      </div>    
+ 
+
+      <div style="padding:10px;"></div>
+      <form name="regForm" id="regForm" #regForm="ngForm">  
+        <ion-row >
+          <ion-col size=3>
+            <ion-input #smscode1 placeholder="0" type="tel" maxlength="1" (keyup)="codeValidation('code1',smscode1.value)" name="code1" [(ngModel)]="code1" required ></ion-input>
+           </ion-col>
+           <ion-col size=3>
+            <ion-input #smscode2 placeholder="0" type="tel" maxlength="1" name="code2" (keyup)="codeValidation('code2',smscode2.value)" [(ngModel)]="code2" required ></ion-input>
+           </ion-col>
+           <ion-col size=3>
+            <ion-input #smscode3 placeholder="0" type="tel" maxlength="1" name="code3" (keyup)="codeValidation('code3',smscode3.value)"  [(ngModel)]="code3" required ></ion-input>
+           </ion-col>
+           <ion-col size=3>
+            <ion-input #smscode4 placeholder="0" type="tel" maxlength="1" name="code4" (keyup)="codeValidation('code4',smscode4.value)" [(ngModel)]="code4" required ></ion-input>
+           </ion-col>
+        </ion-row>
+         <div style="padding: 5px;"></div>
+   
+          <ion-button [disabled]="regForm.invalid"  class="pryColor"  expand="block" >NEXT STEP</ion-button>
+
+           
+      </form>
+ 
+  </div>
+</ion-content>
+

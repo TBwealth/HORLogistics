@@ -41,7 +41,7 @@
            <a href="javascript:void(0)" style="float: right;text-transform: none;"(click)="forgotPassword()" ><span style="color: #EF6102;font-size: 12px;">Forgot Password?</span></a>
            <div style="padding: 10px;"></div>
           <ion-button [disabled]="loginForm.invalid" class="pryColor"  expand="block" (click)="loginUser()">CONTINUE</ion-button>
-     
+     <div *ngIf="customerType != 'rider'">
           <div style="color: #313131;text-align: center;">
             <div class="txt">
               <h6>Or Sign in with</h6>
@@ -61,7 +61,7 @@
                   </ion-button>
                 </ion-col>
                 </ion-row>
-           
+           </div>
             
            
       </form>

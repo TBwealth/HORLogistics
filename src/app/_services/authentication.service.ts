@@ -27,11 +27,13 @@ export class AuthenticationService {
       
                         let saveduser = {
                             token: user.token,
+                            phone: user.phone,
                             userId: user.userId,
                             userType: user.userType,
                             isProfileComplete: user.isProfileComplete,
                             user: user.user,
                             customer: user.customer,
+                            dispatcher: user.dispatcher,
                             role: user.role
                         };
                         this.users.push(saveduser);      
@@ -50,27 +52,27 @@ export class AuthenticationService {
          }
 
         addUser(user){      
-            let customerObj ={
-                aspNetUser:  {email: undefined, userName: undefined},
-                businessAnniversary: "",
-                businessName: user.customer.businessName,
-                closestBustopId: user.customer.closestBustopId,
-                closestLandmark: user.customer.closestLandmark,
-                companyLogo: user.customer.companyLogo,
-                createdAt: '',
-                fullName: user.customer.fullName,
-                homeAddress: user.customer.homeAddress,
-                location: user.customer.location,
-                registerAsPartner: user.customer.registerAsPartner,
-                residentialCountry: user.customer.residentialCountry,
-                residentialCountryId: user.customer.residentialCountryId,
-                residentialState: user.customer.residentialState,
-                residentialStateId: user.customer.residentialStateId,
-                synergyProgramCustomer: user.customer.synergyProgramCustomer,
-                updatedAt: '',
-                userId: user.customer.userId,
-                wallet: user.customer.wallet
-               }
+            // let customerObj ={
+            //     aspNetUser:  {email: undefined, userName: undefined},
+            //     businessAnniversary: new Date(user.customer.businessAnniversary),
+            //     businessName: user.customer.businessName,
+            //     closestBustopId: user.customer.closestBustopId,
+            //     closestLandmark: user.customer.closestLandmark,
+            //     companyLogo: user.customer.companyLogo,
+            //     createdAt: '',
+            //     fullName: user.customer.fullName,
+            //     homeAddress: user.customer.homeAddress,
+            //     location: user.customer.location,
+            //     registerAsPartner: user.customer.registerAsPartner,
+            //     residentialCountry: user.customer.residentialCountry,
+            //     residentialCountryId: user.customer.residentialCountryId,
+            //     residentialState: user.customer.residentialState,
+            //     residentialStateId: user.customer.residentialStateId,
+            //     synergyProgramCustomer: user.customer.synergyProgramCustomer,
+            //     updatedAt: '',
+            //     userId: user.customer.userId,
+            //     wallet: user.customer.wallet
+            //    }
                let userObj = {
                 token: user.token,
                 phone: user.phone,
@@ -78,38 +80,38 @@ export class AuthenticationService {
                 userType: user.userType,
                 isProfileComplete: user.isProfileComplete,
                 user: user.user,
-                customer: customerObj,
+                customer: user.customer,
+                dispatcher: user.dispatcher,
                 role: user.role,
                }   
                 this.users = [];
                 this.users.push(userObj);
                 this.storage.set('user', this.users).then(data=>{
-            if(data.length > 1){
-                setTimeout(() => {
+            if(data.length > 0){  
                     this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
                         if(data.code == "000"){
                             var res = data.data;
-                            let customerObj ={
-                                aspNetUser:  res.customer.aspNetUser,
-                                businessAnniversary: "",
-                                businessName: res.customer.businessName,
-                                closestBustopId: res.customer.closestBustopId,
-                                closestLandmark: res.customer.closestLandmark,
-                                companyLogo: res.customer.companyLogo,
-                                createdAt: '',
-                                fullName: res.customer.fullName,
-                                homeAddress: res.customer.homeAddress,
-                                location: res.customer.location,
-                                registerAsPartner: res.customer.registerAsPartner,
-                                residentialCountry: res.customer.residentialCountry,
-                                residentialCountryId: res.customer.residentialCountryId,
-                                residentialState: res.customer.residentialState,
-                                residentialStateId: res.customer.residentialStateId,
-                                synergyProgramCustomer: res.customer.synergyProgramCustomer,
-                                updatedAt: '',
-                                userId: res.customer.userId,
-                                wallet: res.customer.wallet
-                               }
+                            // let customerObj ={
+                            //     aspNetUser:  res.customer.aspNetUser,
+                            //     businessAnniversary: new Date(res.customer.businessAnniversary),
+                            //     businessName: res.customer.businessName,
+                            //     closestBustopId: res.customer.closestBustopId,
+                            //     closestLandmark: res.customer.closestLandmark,
+                            //     companyLogo: res.customer.companyLogo,
+                            //     createdAt: '',
+                            //     fullName: res.customer.fullName,
+                            //     homeAddress: res.customer.homeAddress,
+                            //     location: res.customer.location,
+                            //     registerAsPartner: res.customer.registerAsPartner,
+                            //     residentialCountry: res.customer.residentialCountry,
+                            //     residentialCountryId: res.customer.residentialCountryId,
+                            //     residentialState: res.customer.residentialState,
+                            //     residentialStateId: res.customer.residentialStateId,
+                            //     synergyProgramCustomer: res.customer.synergyProgramCustomer,
+                            //     updatedAt: '',
+                            //     userId: res.customer.userId,
+                            //     wallet: res.customer.wallet
+                            //    }
                                let userObj = {
                                 token: user.token,
                                 phone: res.user.phoneNumber,
@@ -117,7 +119,8 @@ export class AuthenticationService {
                                 userType: res.user.userType,
                                 isProfileComplete: res.user.isProfileCompleted,
                                 user: res.user,
-                                customer: customerObj,
+                                customer: res.customer,
+                                dispatcher: res.dispatcher,
                                 role: user.role
                                }   
                                 this.users = [];
@@ -137,8 +140,6 @@ export class AuthenticationService {
                      
                        })
                 
-                          
-                }, 3000);  
             }
                                     
                 });
@@ -164,7 +165,8 @@ export class AuthenticationService {
 
         clearusers(){
             this.users = [];
-            this.storage.set('user', this.users);    
+            this.storage.remove('user');
+           // this.storage.set('user', this.users);    
         }
 
 }

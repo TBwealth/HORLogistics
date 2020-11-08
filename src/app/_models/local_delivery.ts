@@ -21,7 +21,11 @@ export interface package_detailsModel {
     package_size?:number,
     package_insurance?:boolean,
     package_weight?: number,
-    package_description?: string
+    package_description?: string,
+    cash_collection?: boolean,
+    cash_collection_amount?: number,
+    account_number?: string,
+    package_value?: number
 }
 
 export interface LocaldeliveryButton {

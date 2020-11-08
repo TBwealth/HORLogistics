@@ -9,6 +9,8 @@ import { Badge } from '@ionic-native/badge/ngx';
 import { NetworkProvider } from "./_services/network";
 import { AuthenticationService } from './_services/authentication.service';
 import { Router } from '@angular/router';
+import {  LoginResource} from "./_models/service-models";
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -19,30 +21,51 @@ export class AppComponent {
     {
       title: 'Home',
       url: '/home',
-      icon: 'home-outline'
+      icon: 'home-outline',
+      userRole: 'AllUsers'
+    },
+    {
+      title: 'Ride History',
+      url: '/ridershistory',
+      icon: 'reload-outline',
+      userRole: 'Rider'
     },
     {
       title: 'Orders',
-      url: '/order',
-      icon: 'receipt-outline'
+      url: '/orders',
+      icon: 'receipt-outline',
+      userRole: 'Customer'
     },
     {
-      title: 'Payments',
-      url: '/payment',
-      icon: 'cash-outline'
+      title: 'Assigned Orders',
+      url: '/riderorders',
+      icon: 'receipt-outline',
+      userRole: 'Rider'
     },
+  
     {
       title: 'Track',
       url: '/trackorder',
-      icon: 'aperture-outline'
+      icon: 'aperture-outline',
+      userRole: 'AllUsers'
     },
     {
       title: 'Help Center',
-      url: '/support',
-      icon: 'headset-outline'
+      url: '/helpcenter',
+      icon: 'headset-outline',
+      userRole: 'AllUsers'
+    },
+    {
+      title: 'Settings',
+      url: '/profilepage',
+      icon: 'settings-outline',
+      userRole: 'AllUsers'
     },
    
   ];
+  usersdata: any;
+  userRole = "";
+  userType = "";
   constructor(
     private fbaseService: FirebaseX,
     private platform: Platform,
@@ -63,8 +86,28 @@ this.router.navigate(['preferedaction']);
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.network.checkNetwork();      
+      this.network.checkNetwork();   
+      this.getUser();   
     });
+  }
+  gotoprofile(){
+    this.router.navigate(['profilepage']);
+    this.menu.close();
+  }
+  getUser(){
+    this.AuthenService.getuser().then(async (usersdata:any[])=>{
+      if(usersdata.length > 0){
+        this.usersdata = usersdata[0];
+        this.userRole = this.usersdata.role[0].name;
+        this.userType = this.usersdata.user.userType;
+      }
+    });
+  }
+  gotoabout(){
+    this.router.navigate(['aboutus']);
+  }
+  gotoprivacypolicy(){
+    this.router.navigate(['privacypolicy']);
   }
   closeMenu(){
 this.menu.close();

@@ -273,7 +273,7 @@ if(isValidNumber){
     // booking.bus
 
     //Delivery
-    booking.deliveryDate =  moment(this.local_delivery.delivery_date, "YYYY-MM-DDThh:mm:ssZ")
+    booking.deliveryDate = new Date(this.local_delivery.delivery_date);
     booking.deliveryLandmark = this.local_delivery.delivery_landmark
     booking.recipientName = this.local_delivery.delivery_name
     booking.deliveryAddress = this.local_delivery.delivery_address
@@ -284,9 +284,13 @@ if(isValidNumber){
     this.local_delivery = {}
 
     booking.isInsured = this.package_details.package_insurance
+    booking.packageValue = this.package_details.package_value
     booking.numberOfPackages = this.package_details.package_size
     booking.estimatedPackageWeight = this.package_details.package_weight
     booking.packageDescription = this.package_details.package_description
+    booking.wantCashCollection = this.package_details.cash_collection
+    booking.cashCollectionAmount = this.package_details.cash_collection_amount
+    booking.cashCollectionAccountNumber = this.package_details.account_number
     this.package_details = {}
 
     this.bookings.push(booking)
