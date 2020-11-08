@@ -10,7 +10,7 @@
 </ion-header>
   
   <ion-content>
-    
+    <!-- {{ myUser }} -->
     <ion-grid [ngSwitch]="activetab">
       <ion-row>
         <ion-col>
@@ -20,18 +20,18 @@
           </ion-button>
         </ion-col>
       </ion-row>
-        
+      <form  #myForm="ngForm" name="myForm">
       <div *ngSwitchCase="product_description">
           <ion-grid style="padding: 10px;">
-            <form  #myForm="ngForm" (ngSubmit)= "onSubmit()">
+            
               <div style="padding: 5px;"></div>
-              <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_name="ngModel" name="product_name" placeholder="Product Name" [(ngModel)]="product_desc.product_name" required></ion-input>
+              <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_name="ngModel" name="product_name" placeholder="Product Name" [(ngModel)]="product_desc.name" required></ion-input>
               <div *ngIf="product_name.invalid && (product_name.dirty || product_name.touched)" class="error">
               <div *ngIf="product_name.errors.required">Product name is required</div>
               </div>
               
               <div style="padding: 5px;"></div>
-              <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_url="ngModel" name="product_url" placeholder="Product URL" [(ngModel)]="product_desc.product_url" required></ion-input>
+              <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_url="ngModel" name="product_url" placeholder="Product URL" [(ngModel)]="product_desc.url" required></ion-input>
               <div *ngIf="product_url.invalid && (product_url.dirty || product_url.touched)" class="error">
               <div *ngIf="product_url.errors.required">Product URL is required</div>
               </div>
@@ -43,7 +43,14 @@
               </div>
 
               <div style="padding: 5px;"></div>
-              <ion-input (keyup)="validateProductDescriptionForm()" type="text" #delivery_type="ngModel" name="delivery_type" placeholder="Delivery Type" [(ngModel)]="product_desc.delivery_type" required></ion-input>
+              <!-- <ion-input (keyup)="validateProductDescriptionForm()" type="text" #delivery_type="ngModel" name="delivery_type" placeholder="Delivery Type" [(ngModel)]="product_desc.delivery" required></ion-input>
+              <div *ngIf="delivery_type.invalid && (delivery_type.dirty || delivery_type.touched)" class="error">
+              <div *ngIf="delivery_type.errors.required">Delivery type is required</div>
+              </div> -->
+              <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_type="ngModel" name="delivery_type" placeholder="Delivery Type" [(ngModel)]="product_desc.delivery" required>
+                <ion-select-option value="standard">Standard</ion-select-option>
+                <ion-select-option value="express">Express</ion-select-option>
+              </ion-select>
               <div *ngIf="delivery_type.invalid && (delivery_type.dirty || delivery_type.touched)" class="error">
               <div *ngIf="delivery_type.errors.required">Delivery type is required</div>
               </div>
@@ -59,31 +66,42 @@
               <div *ngIf="product_size.invalid && (product_size.dirty || product_size.touched)" class="error">
               <div *ngIf="product_size.errors.required">Size is required</div>
               </div>
-            </form>
+
+              <div style="padding: 5px;"></div>
+              <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_number="ngModel" name="product_style" placeholder="Product Style" [(ngModel)]="product_desc.style" required></ion-input>
+               
+
+              <div style="padding: 5px;"></div>
+              <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_number="ngModel" name="product_number" placeholder="Product Number" [(ngModel)]="product_desc.itemNumber" required></ion-input>
+               
+              <div style="padding: 5px;"></div>
+              <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_comment="ngModel" name="product_comment" placeholder="Comment" [(ngModel)]="product_desc.comment" required></ion-input>
+                  
+           
           </ion-grid>
         </div>
 
         <ion-col>
-        <ion-button type="submit" [disabled]="deliveryDetailsPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
+        <ion-button [disabled]="deliveryDetailsPanel" expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
           <ion-img src="assets/images/plane.png" class="myicons"></ion-img>
           <p class="localheader">Delivery Details</p>
         </ion-button>
         </ion-col>
         
-        <div *ngSwitchCase="delivery_details">
+      <div *ngSwitchCase="delivery_details">
           <ion-grid>
             <p>Do you want home delivery?</p>
                 <ion-row>
                   <ion-col>
                        <ion-item lines="none">  
-                        <ion-checkbox slot="start" class="checker" [checked]="checkedIdx" (ionChange)="yesfn($event)"></ion-checkbox>
+                        <ion-checkbox slot="start" class="checker" value="delivery" [checked]="checkedIdx" (ionChange)="yesfn($event)" name="home"></ion-checkbox>
                           <ion-label>Yes</ion-label>
                      </ion-item>
                    </ion-col>
               
                   <ion-col>
                       <ion-item lines="none"> 
-                        <ion-checkbox slot="start" class="checker" [checked]="!checkedIdx"  (ionChange)="nofn($event)"></ion-checkbox>
+                        <ion-checkbox slot="start" class="checker" value="pickup" [checked]="!checkedIdx"  (ionChange)="nofn($event)" name="pickup"></ion-checkbox>
                           <ion-label>No</ion-label>
                      </ion-item>
                   </ion-col>
@@ -91,40 +109,48 @@
              
               <div *ngIf="checkedIdx==true">
                   <div style="padding: 5px;"></div>
-                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_state="ngModel" name="delivery_state" placeholder="Delivery Address" [(ngModel)]="product_desc.state" required></ion-input>
+                  <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_state="ngModel" name="delivery_state" placeholder="State" [(ngModel)]="request_desc.shipToState" required>
+                    <ion-select-option value="Lagos">Lagos</ion-select-option>
+                    <ion-select-option value="Abuja">Abuja</ion-select-option>
+                    <ion-select-option value="Ibadan">Ibadan</ion-select-option>
+                  </ion-select>
                   <div *ngIf="delivery_state.invalid && (delivery_state.dirty || delivery_state.touched)" class="error">
                   <div *ngIf="delivery_state.errors.required">State is required</div>
-                  </div> 
+                  </div>  
+        
                   
                   <div style="padding: 5px;"></div>
-                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_location="ngModel" name="delivery_location" placeholder="Delivery Location" [(ngModel)]="product_desc.location" required></ion-input>
+                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_location="ngModel" name="delivery_location" placeholder="Delivery Location" value="0" [(ngModel)]="request_desc.deliveryLocationId" required></ion-input>
                   <div *ngIf="delivery_location.invalid && (delivery_location.dirty || delivery_location.touched)" class="error">
                   <div *ngIf="delivery_location.errors.required">Location is required</div>
                   </div>
         
                   <div style="padding: 5px;"></div>
-                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_address="ngModel" name="delivery_address" placeholder="Delivery Address" [(ngModel)]="product_desc.address" required></ion-input>
+                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_address="ngModel" name="delivery_address" placeholder="Delivery Address" [(ngModel)]="request_desc.customerAddress" required></ion-input>
                   <div *ngIf="delivery_address.invalid && (delivery_address.dirty || delivery_address.touched)" class="error">
                   <div *ngIf="delivery_address.errors.required">Delivery Address is required</div>
                   </div>
               </div>
-              <div *ngIf="checkedIdx==false">
+              <div *ngIf="!checkedIdx">
                 <div style="padding: 5px;"></div>
-                  <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_address="ngModel" name="delivery_address" placeholder="Pickup Location" [(ngModel)]="product_desc.pickup" required>
-                    <ion-select-option>Ikeja</ion-select-option>
-                    <ion-select-option>Lekki</ion-select-option>
-                    <ion-select-option>Maryland</ion-select-option>
+                  <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_location="ngModel" name="delivery_location" placeholder="Pickup Location" [(ngModel)]="request_desc.pickupCenter" required>
+                    <ion-select-option value="Lagos Pickup">Ikeja</ion-select-option>
+                    <ion-select-option value="UK Pickup">Lekki</ion-select-option>
+                    <ion-select-option value="USA Pickup">Maryland</ion-select-option>
                   </ion-select>
               </div> 
             </ion-grid>
             
         </div>
+      
     <div style="display:flex; padding: 8px;">
       <ion-button class="cta1" expand="block" fill="outline">
         <ion-label>Cancel</ion-label>
       </ion-button>
-      <ion-button class="cta" expand="block" (click)="onSubmit(); myForm.resetForm()" fill="default">
+      <ion-button class="cta" expand="block" (click)="onSubmit()" fill="default">
         <ion-label>Apply</ion-label>
       </ion-button>
-    </div></ion-grid>
+    </div>
+  </form>
+  </ion-grid>
   </ion-content>
