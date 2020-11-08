@@ -34,45 +34,7 @@ loading: any = "";
 
   ) 
   { 
-
-  }
-  ionViewWillEnter(){
-   
     this.platform.ready().then(async()=>{
-      this.loading = await this.loadspinner.create({
-        message: "please wait...",
-        translucent: true,
-        spinner: "bubbles",
-      });
-      await this.loading.present();
-      setTimeout(async() => {  
-          this.AuthenService.users.length
-          if(this.AuthenService.users.length > 0){
-            this.usersdata = this.AuthenService.users[0];
-            this.userRole = this.usersdata.role[0].name;
-            console.log(this.userRole)
-            if(!this.usersdata.isProfileComplete){
-            //  this.router.navigate(['profilepage']);
-            }else{
-              if(this.userRole != 'Rider'){
-                if(!this.usersdata.customer.closestBustopId){
-                  const popover = await this.popoverController.create({
-                    component: PrimarylocationComponent,
-                    cssClass: 'my-popover-class',
-                    backdropDismiss: false,
-                    // event: ev,
-                    //translucent: true
-                  });
-                  return await popover.present();
-                }
-              }
-             
-            }
-           
-          }
-    
-        this.loading.dismiss()
-      }, 3000);  
 
       var mapOptions = {
         mapTypeId: 'roadmap',
@@ -146,8 +108,46 @@ ref.map.fitBounds(bounds);
 
    
     })
-   
   }
+ 
+  async ionViewWillEnter(){
+    this.loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
+    });
+    await this.loading.present();
+    setTimeout(async() => {  
+        this.AuthenService.users.length
+        if(this.AuthenService.users.length > 0){
+          this.usersdata = this.AuthenService.users[0];
+          this.userRole = this.usersdata.role[0].name;
+          console.log(this.userRole)
+          if(!this.usersdata.isProfileComplete){
+          //  this.router.navigate(['profilepage']);
+          }else{
+            if(this.userRole != 'Rider'){
+              if(!this.usersdata.customer.closestBustopId){
+                const popover = await this.popoverController.create({
+                  component: PrimarylocationComponent,
+                  cssClass: 'my-popover-class',
+                  backdropDismiss: false,
+                  // event: ev,
+                  //translucent: true
+                });
+                return await popover.present();
+              }
+            }
+           
+          }
+         
+        }
+  
+      this.loading.dismiss()
+    }, 3000); 
+  }
+    
+
   gotoprofile(){
     this.router.navigate(['profilepage']);
   }
