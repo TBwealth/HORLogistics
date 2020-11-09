@@ -174,7 +174,8 @@
     <div *ngSwitchCase='package'>
       <ion-grid>
         <!-- <form name="package_detailsForm" #package_detailsForm="ngForm"> -->
-          <app-text-input [(value)]="package_details.package_description" [validators]="[]" type='text' [extraErrors]="[]" label='' name="package_description" placeholder='Package description'></app-text-input>
+          <ion-textarea [(ngModel)]="package_details.package_description" placeholder="Package description"></ion-textarea>
+          <!-- <app-text-input [(value)]="package_details.package_description" [validators]="[]" type='text' [extraErrors]="[]" label='' name="package_description" placeholder='Package description'></app-text-input> -->
           <div style="padding: 5px;"></div>
           <app-text-input *ngIf="pickup_details.booking_category != 1" [(value)]="package_details.package_weight" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
           <p>Is package greater than indomie carton size ?</p>
@@ -197,7 +198,12 @@
               </ion-item>
             </ion-row>
               <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.cash_collection_amount" [validators]="[]" type='number' [extraErrors]="[]" label='' name="cash_amount" placeholder='Cash collection amount'></app-text-input>
-              <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.account_number" [validators]="[]" type='text' [extraErrors]="[]" label='' name="cash_bank" placeholder='Cash collection amount'></app-text-input>
+              <div style="padding: 5px;"></div>
+              <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.account_number" [validators]="[]" type='text' [extraErrors]="[]" label='' name="cash_bank" placeholder='Cash collection account number'></app-text-input>
+              <ion-select name="delivery_type" class="select" [(ngModel)]="package_details.payment_type" #booking_category="ngModel" required placeholder="Payment type">
+                <ion-select-option [value]="mode.id" *ngFor="let mode of paymentTypes">{{mode.name}}</ion-select-option>
+              </ion-select>
+              <div style="padding: 5px;"></div>
           </ion-grid>
         <!-- </form>  -->
 

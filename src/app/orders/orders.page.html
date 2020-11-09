@@ -5,16 +5,16 @@
       <ion-label style="color: #EF6102;">PENDING</ion-label>
     </ion-segment-button>
     <ion-segment-button [value]="SEGMENTS.APPROVED">
-      <ion-label style="color: #049B1B;">APPROVED</ion-label>
+      <ion-label style="color: #049B1B;">COMPLETED</ion-label>
     </ion-segment-button>
-    <ion-segment-button [value]="SEGMENTS.REJECTED">
+    <!-- <ion-segment-button [value]="SEGMENTS.REJECTED">
       <ion-label style="color: #E1440B;">REJECTED</ion-label>
-    </ion-segment-button>
+    </ion-segment-button> -->
   </ion-segment>
-  <div *ngFor="let item of [1,2,3,4,5,6,67]">
+  <div *ngFor="let booking of filteredLocalBookings" (click)="selectLocalBooking(booking)">
     <ion-label>
       <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
-        JAN 10 - 12:30 PM
+        {{booking.deliveryDate}}
       </div>
     </ion-label>
     <ion-card>    
@@ -45,7 +45,7 @@
             </div>
             <div style="width: 100%;">
               <h6>Pickup Location</h6>
-              <span>Fresh Market</span>
+              <span>{{booking.pickUpAddress}}</span>
               <hr style="background-color:  #00000005; margin: 0px;"/>
             </div>
           </ion-col>
@@ -65,13 +65,81 @@
             </div>
             <div>
               <h6>Destination Location</h6>
-              <span>My Home</span>
+              <span>{{booking.deliveryAddress}}</span>
             </div>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <h6>Order Status <span [style.color]="statusColor.pending">Pending</span></h6>
+            <h6>Order Status <span [style.color]="statusColor.pending"><ng-template [ngIf]="booking.bookingStatus">{{booking.bookingStatus.name}}</ng-template>
+            </span></h6>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngFor="let booking of filteredInternationalBookings" (click)="selectInternationalBooking(booking)">
+    <ion-label>
+      <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
+        {{booking.trackingNumber}}
+      </div>
+    </ion-label>
+    <ion-card>    
+      <ion-card-content>
+        <ion-row>
+          <ion-col style="display: flex">
+            <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: 2px;">
+              <div class="starting-point">
+                <span></span>
+              </div>
+              <div class="middle-point">
+                <span></span>
+              </div>
+              <div class="middle-point">
+                <span></span>
+              </div>
+              <div class="middle-point">
+                <span></span>
+              </div>
+              <div class="middle-point">
+                <span></span>
+              </div>
+              <div class="middle-point">
+                <span></span>
+              </div>
+              <!-- <div class="middle-point"></div> -->
+              <!-- <div class="middle-point"></div> -->
+            </div>
+            <div style="width: 100%;">
+              <h6>Pickup Location</h6>
+              <span>{{booking.pickupAddress || booking.country}}</span>
+              <hr style="background-color:  #00000005; margin: 0px;"/>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col style="display: flex">
+            <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: -6px; height: 19px;">
+              <div class="middle-point top">
+                <span></span>
+              </div>
+              <div class="middle-point top">
+                <span></span>
+              </div>
+              <div class="starting-point">
+                <span></span>
+              </div>
+            </div>
+            <div>
+              <h6>Destination Location</h6>
+              <span>{{booking.deliveryAddress || 'Nigeria'}}</span>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h6>Order Status <span [style.color]="statusColor.pending"><ng-template [ngIf]="booking.bookingStatus">{{booking.bookingStatus.name}}</ng-template>
+            </span></h6>
           </ion-col>
         </ion-row>
       </ion-card-content>

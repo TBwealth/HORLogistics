@@ -8,7 +8,7 @@ import {ICountry} from '../_models/country.type';
 import { CountryserviceService } from '../_services/countryservice.service';
 import { AddNewOrderModalComponent } from './add-new-order-modal/add-new-order-modal.component';
 import { Subject } from 'rxjs';
-import { ILocalBooking, ListResourceOfLocalBookingCategoryResource, LocalBooking , LocalBookingCategory, LocalBookingCategoryResource, LocalBookingResource} from '../_models/service-models';
+import { ILocalBooking, ListResourceOfLocalBookingCategoryResource, LocalBooking , LocalBookingCategory, LocalBookingCategoryResource, LocalBookingResource, PaymentTypeResoiurce} from '../_models/service-models';
 import { StoreService } from '../_services/store.service';
 import { LocalBookingServiceProxy, LocationsServiceProxy } from '../_services/service-proxies';
 import * as moment from 'moment';
@@ -21,6 +21,7 @@ import * as moment from 'moment';
 export class LocaldeliveryPage implements OnInit {
   bookings: ILocalBooking[] = []
   locations = []
+  paymentTypes: PaymentTypeResoiurce[] = []
   package_detailsForm:FormGroup;
   pickup_detailsForm: FormGroup; 
   delivery_detailsForm:FormGroup;
@@ -95,6 +96,9 @@ export class LocaldeliveryPage implements OnInit {
      }
   
   ngOnInit() {
+    this.bookingService.paymenttypes().subscribe(data => {
+      this.paymentTypes = data.data
+    })
     this.bookingService.localbookingcategory().subscribe(data => {
       this.bookingCategories = data.data
       console.log(this.bookingCategories)
@@ -291,6 +295,7 @@ if(isValidNumber){
     booking.wantCashCollection = this.package_details.cash_collection
     booking.cashCollectionAmount = this.package_details.cash_collection_amount
     booking.cashCollectionAccountNumber = this.package_details.account_number
+    booking.paymentTypeId = this.package_details.payment_type
     this.package_details = {}
 
     this.bookings.push(booking)
