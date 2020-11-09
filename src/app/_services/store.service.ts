@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking, LocalBookingResource, ObjectResourceOfGetLocalBookingsForMobileResource } from '../_models/service-models';
+import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking } from '../_models/service-models';
 
 interface APIListResult<T>{
   data: {

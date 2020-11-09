@@ -5,9 +5,9 @@ import {FilePath} from '@ionic-native/file-path/ngx';
 import {FileTransfer,FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer/ngx';
 import {File} from '@ionic-native/file/ngx';
 import { Router } from '@angular/router';
-import { UpdateStatus } from 'src/app/_models/service-models';
+import { Dispatcher, IUpdateUserViewModel, UpdateStatus } from 'src/app/_models/service-models';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
-
+import {customConfig} from "../../custumConfig";
 @Component({
   selector: 'app-documentupload',
   templateUrl: './documentupload.page.html',
@@ -21,6 +21,34 @@ export class DocumentuploadPage implements OnInit {
   arrayType = ["pdf", "doc", "docx", "png", "jpg", "gif","jpeg"];
   loading: any;
   usersdata:any;
+  dispatcher = new Dispatcher().clone();
+  userRole = "";
+  customersData :IUpdateUserViewModel ={
+    businessAnniversary: new Date(),
+    businessName: "",
+    carModel: "",
+    carName: "",
+    carYear: "",
+    closestBustop: 0,
+    closestLandmark: "",
+    email: "",
+    fullName: "",
+    homeAddress: "",
+    insuranceUrl: "",
+    licenseNumber: "",
+    machinePictureUrl: "",
+    machineRegistrationUrl: "",
+    phoneNumber: "",
+    plateNumber: "",
+    residentialCountryId: 0,
+    residentialStateId: 0,
+    riderLincesUrl: "",
+    sponsorAddress: "",
+    sponsorName: "",
+    sponsorPhoneNumber: "",
+    userId: ""
+      };
+      Urlbase: string = customConfig.baseUrl;
   constructor( public alertCtrl: AlertController, public navCtrl: NavController,
     private transfer:FileTransfer,private file: File, private filepath: FilePath, 
       private filechooser: FileChooser,
@@ -41,8 +69,8 @@ export class DocumentuploadPage implements OnInit {
     setTimeout(() => {
       if (this.AuthenService.users.length > 0) {   
         this.usersdata = this.AuthenService.users[0];
-              this.UpdateStatus.dispatcherId = this.usersdata.userId;
-              this.UpdateStatus.statusId = this.usersdata.dispatcher.dispatcherStatusesId;
+        this.userRole = this.usersdata.role[0].name;
+        this.dispatcher = this.usersdata.dispatcher;              
       }
       this.loading.dismiss()
     }, 2000);
@@ -54,6 +82,18 @@ export class DocumentuploadPage implements OnInit {
   }
  async uploadFile(filekey){
    
+  this.customersData.fullName = this.dispatcher.name;
+  this.customersData.residentialCountryId  = 1;    
+  this.customersData.residentialStateId  = this.dispatcher.residentialStateId;
+  this.customersData.userId = this.usersdata.userId;
+  this.customersData.email = this.usersdata.user.email;       
+  this.customersData.phoneNumber = this.usersdata.phone; 
+
+  this.customersData.insuranceUrl  = null;
+  this.customersData.machinePictureUrl  = null;
+  this.customersData.machineRegistrationUrl  = null;
+  this.customersData.riderLincesUrl  = null;   
+
     this.filechooser.open().then((uri)=>{
 this.filepath.resolveNativePath(uri).then(async(nativepath)=>{
   console.log(nativepath);
@@ -67,8 +107,7 @@ let options: FileUploadOptions = {
   headers:{},
   mimeType: fileType,
   params: {
-    statusId: this.UpdateStatus.statusId,
-    dispatcherId: this.UpdateStatus.dispatcherId
+    customersData: this.customersData
   }
 }
 if(this.arrayType.indexOf(fileType) > -1){
@@ -78,7 +117,8 @@ if(this.arrayType.indexOf(fileType) > -1){
     spinner: "bubbles",
   });
   await this.loading.present();
-this.fileTransfer.upload(nativepath,'',options,false).then(async(data:any)=>{
+  
+this.fileTransfer.upload(nativepath,this.Urlbase+'/api/Manage/UpdateUser',options,false).then(async(data:any)=>{
 if(data.code == "000"){
   const toast = await this.toastCtrl.create({
     duration: 3000,

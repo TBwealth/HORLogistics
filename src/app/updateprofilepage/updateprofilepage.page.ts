@@ -13,6 +13,7 @@ import * as moment from 'moment';
 })
 export class UpdateprofilepagePage implements OnInit {
   dispatcher = new Dispatcher().clone();
+  
   customersData :IUpdateUserViewModel ={
 businessAnniversary: new Date(),
 businessName: "",
@@ -44,6 +45,7 @@ userId: ""
 routeField: any;
 routeData: any;
 fieldValue: any = '';
+
 listData = [];
 loading:any;
   constructor(
@@ -63,7 +65,7 @@ loading:any;
       this.routeField = routeData.field;
       this.routeData = routeData.data;
       this.fieldValue = routeData.data;
-   
+      
       this.AuthenService.getuser().then(async (usersdata:LoginResource[])=>{
         if(usersdata.length > 0){
           this.usersdata = usersdata[0];
@@ -83,14 +85,14 @@ loading:any;
             this.customersData.carModel = this.dispatcher.carModel;
             this.customersData.carName  = this.dispatcher.carName;
             this.customersData.carYear  = this.dispatcher.carYear;
-            this.customersData.insuranceUrl  = "string";
+            this.customersData.insuranceUrl  = null;
             this.customersData.licenseNumber  = this.dispatcher.licenseNumber;
-            this.customersData.machinePictureUrl  = "string";
-            this.customersData.machineRegistrationUrl  = "string";
+            this.customersData.machinePictureUrl  = null;
+            this.customersData.machineRegistrationUrl  = null;
             this.customersData.plateNumber  = this.dispatcher.plateNumber;
-            this.customersData.residentialCountryId  = 0;
+            this.customersData.residentialCountryId  = 1;
             this.customersData.residentialStateId  = this.dispatcher.residentialStateId;
-            this.customersData.riderLincesUrl  = "string";
+            this.customersData.riderLincesUrl  = null;
             this.customersData.sponsorAddress  = this.dispatcher.sponsorAddress;
             this.customersData.sponsorName  = this.dispatcher.sponsorName;
             this.customersData.sponsorPhoneNumber  = this.dispatcher.sponsorPhoneNumber;
@@ -126,13 +128,15 @@ loading:any;
     });
     await this.loading.present();
     if(this.userRole == 'Rider' ){
+
       this.customersData.fullName = this.routeField == 'Full Name'? this.fieldValue:  this.usersdata.dispatcher.name;
-      this.customersData.residentialStateId = this.routeField == 'State'? this.fieldValue: this.usersdata.dispatcher.residentialStateId;
+      this.customersData.residentialStateId = (this.routeField == 'State'? this.fieldValue: this.usersdata.dispatcher.residentialStateId) | 0;
       
       }else{
+  
       this.customersData.fullName = this.routeField == 'Full Name'? this.fieldValue:  this.usersdata.customer.fullName;
       this.customersData.residentialCountryId = this.routeField == 'Country'? this.fieldValue: this.usersdata.customer.residentialCountryId;
-      this.customersData.residentialStateId = this.routeField == 'State'? this.fieldValue: this.usersdata.customer.residentialStateId;
+      this.customersData.residentialStateId = (this.routeField == 'State'? this.fieldValue: this.usersdata.customer.residentialStateId) | 0;
       this.customersData.businessName = this.routeField == 'businessName'? this.fieldValue: this.usersdata.customer.businessName;
       this.customersData.closestLandmark = this.routeField == 'Landmark'? this.fieldValue: this.usersdata.customer.closestLandmark;
       this.customersData.closestBustop = this.routeField == 'Bus-stop'? this.fieldValue: this.usersdata.customer.closestBustopId;
@@ -179,7 +183,6 @@ this.router.navigate(['login']);
     });
     await this.loading.present();
 this.apiService.countries().subscribe(data=>{
-
   this.listData = data;
   this.loading.dismiss();
 })
@@ -213,6 +216,11 @@ this.loading.dismiss();
   goback(){
     this.navCtrl.back();
   }
+
+  
+
+
+
   ngOnInit() {
   }
 

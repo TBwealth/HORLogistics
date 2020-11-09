@@ -10,9 +10,10 @@
 </ion-header>
 
 <ion-content>
+  <div *ngFor="let assignedOrder of ListResourceOfOrder;">
   <ion-label>
     <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
-     JAN 10 - 12:30 PM
+     {{assignedOrder.deliveryDate | date : 'MMM d - h:mm a'}}
     
     </div>
   </ion-label>
@@ -44,7 +45,7 @@
           </div>
           <div style="width: 100%;">
             <h6>Pickup Location</h6>
-            <span>Fresh Market</span>
+            <span>{{assignedOrder.pickUpAddress}}</span>
             <hr style="background-color:  #00000005; margin: 0px;"/>
           </div>
         </ion-col>
@@ -64,27 +65,29 @@
           </div>
           <div>
             <h6>Destination Location</h6>
-            <span>My Home</span>
+            <span>{{assignedOrder.deliveryAddress}}</span>
           </div>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col >
-          <h6>Order Status <span [style.color]="statusColor.pending">Pending</span></h6>
+          <h6>Order Status <span [style.color]="statusColor.pending">
+            {{getOrderStatusName(assignedOrder.bookingStatusId)}}
+          </span></h6>
         </ion-col>
     
       </ion-row>
       <ion-row>
         <ion-col size="5">
           <div style="padding: 7px;"></div>
-          <a href="javascript:void(0)" style="color: #EF6102;font-size: 12px;" fill="clear" (click)="updateOrderStatus()">Direction</a>
+          <a href="javascript:void(0)" style="color: #EF6102;font-size: 12px;" fill="clear" (click)=" gotodirection(assignedOrder)">Direction</a>
         </ion-col>
         <ion-col size="5">
           <div style="padding: 7px;"></div>
-          <a href="javascript:void(0)" style="float: right;color: #EF6102;font-size: 12px;" fill="clear" (click)="updateOrderStatus()">Update Status</a>
+          <a href="javascript:void(0)" style="float: right;color: #EF6102;font-size: 12px;" fill="clear" (click)="updateOrderStatus(assignedOrder.bookingStatusId,id)">Update Status</a>
         </ion-col>
         <ion-col size="2">
-          <ion-button style="font-size: 12px;" fill="clear">
+          <ion-button (click)="gotoorderdetails(assignedOrder)" style="font-size: 12px;" fill="clear">
             <ion-icon name="ellipsis-vertical-outline"></ion-icon>
           </ion-button>
           
@@ -92,4 +95,5 @@
       </ion-row>
     </ion-card-content>
   </ion-card>
+</div>
 </ion-content>

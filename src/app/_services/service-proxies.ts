@@ -591,7 +591,9 @@ export class ApiServiceProxy {
         return _observableOf<boolean>(<any>null);
     }
 
-      /**
+
+
+    /**
      * @return OK
      */
     bulkOrdersPost(usr: VmUserObj): Observable<boolean> {
@@ -700,8 +702,6 @@ export class ApiServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
-
- 
 
     /**
      * @return OK
@@ -812,7 +812,7 @@ export class ApiServiceProxy {
         return _observableOf<void>(<any>null);
     }
 
-   
+
     /**
      * @return OK
      */
@@ -1899,6 +1899,69 @@ export class CheckoutassistanceServiceProxy {
         }
         return _observableOf<StatusResource>(<any>null);
     }
+
+    /**
+     * @param filter_full_name (optional) 
+     * @param filter_date_range (optional) 
+     * @param filter_booking_status (optional) 
+     * @param filter_page (optional) 
+     * @return OK
+     */
+    getcheckassistance(filter_full_name: string | null | undefined, filter_date_range: string | null | undefined, filter_booking_status: number | null | undefined, filter_page: number | null | undefined): Observable<ObjectResourceOfPagedListOfCheckoutAssistance> {
+        let url_ = this.baseUrl + "/api/checkoutassistance/Getcheckassistance?";
+        if (filter_full_name !== undefined && filter_full_name !== null)
+            url_ += "filter.full_name=" + encodeURIComponent("" + filter_full_name) + "&";
+        if (filter_date_range !== undefined && filter_date_range !== null)
+            url_ += "filter.date_range=" + encodeURIComponent("" + filter_date_range) + "&";
+        if (filter_booking_status !== undefined && filter_booking_status !== null)
+            url_ += "filter.booking_status=" + encodeURIComponent("" + filter_booking_status) + "&";
+        if (filter_page !== undefined && filter_page !== null)
+            url_ += "filter.page=" + encodeURIComponent("" + filter_page) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetcheckassistance(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetcheckassistance(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfPagedListOfCheckoutAssistance>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfPagedListOfCheckoutAssistance>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetcheckassistance(response: HttpResponseBase): Observable<ObjectResourceOfPagedListOfCheckoutAssistance> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfPagedListOfCheckoutAssistance.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfPagedListOfCheckoutAssistance>(<any>null);
+    }
 }
 
 @Injectable()
@@ -2666,6 +2729,56 @@ export class OrderServiceProxy {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "http://104.40.215.33:8008";
     }
 
+    /**
+     * @return OK
+     */
+    delivered(): Observable<any> {
+        let url_ = this.baseUrl + "/api/dispatcher/order/delivered";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDelivered(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDelivered(<any>response_);
+                } catch (e) {
+                    return <Observable<any>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<any>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDelivered(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 !== undefined ? resultData200 : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<any>(<any>null);
+    }
 
     /**
      * @return OK
@@ -2721,8 +2834,8 @@ export class OrderServiceProxy {
     /**
      * @return OK
      */
-    deliveredPost(dTO: MarkOrderAsDeliveredDTO): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/api/Rider/order/delivered";
+    markasdelivered(dTO: MarkOrderAsDeliveredDTO): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/order/markasdelivered";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(dTO);
@@ -2738,11 +2851,11 @@ export class OrderServiceProxy {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeliveredPost(response_);
+            return this.processMarkasdelivered(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processDeliveredPost(<any>response_);
+                    return this.processMarkasdelivered(<any>response_);
                 } catch (e) {
                     return <Observable<StatusResource>><any>_observableThrow(e);
                 }
@@ -2751,7 +2864,7 @@ export class OrderServiceProxy {
         }));
     }
 
-    protected processDeliveredPost(response: HttpResponseBase): Observable<StatusResource> {
+    protected processMarkasdelivered(response: HttpResponseBase): Observable<StatusResource> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3165,7 +3278,7 @@ export class InternationalbookingServiceProxy {
      * @param intlFilter_full_name (optional) 
      * @return OK
      */
-    getintlbookings(intlFilter_page: number | null | undefined, intlFilter_booking_Status: number | null | undefined, intlFilter_date_Range: string | null | undefined, intlFilter_full_name: string | null | undefined): Observable<ObjectResourceOfIPagedListOfInternationalBooking> {
+    getintlbookings(intlFilter_page: number | null | undefined, intlFilter_booking_Status: number | null | undefined, intlFilter_date_Range: string | null | undefined, intlFilter_full_name: string | null | undefined): Observable<ObjectResourceOfInternationalBookingOrder> {
         let url_ = this.baseUrl + "/api/internationalbooking/getintlbookings?";
         if (intlFilter_page !== undefined && intlFilter_page !== null)
             url_ += "intlFilter.page=" + encodeURIComponent("" + intlFilter_page) + "&";
@@ -3192,14 +3305,14 @@ export class InternationalbookingServiceProxy {
                 try {
                     return this.processGetintlbookings(<any>response_);
                 } catch (e) {
-                    return <Observable<ObjectResourceOfIPagedListOfInternationalBooking>><any>_observableThrow(e);
+                    return <Observable<ObjectResourceOfInternationalBookingOrder>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ObjectResourceOfIPagedListOfInternationalBooking>><any>_observableThrow(response_);
+                return <Observable<ObjectResourceOfInternationalBookingOrder>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetintlbookings(response: HttpResponseBase): Observable<ObjectResourceOfIPagedListOfInternationalBooking> {
+    protected processGetintlbookings(response: HttpResponseBase): Observable<ObjectResourceOfInternationalBookingOrder> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3210,7 +3323,7 @@ export class InternationalbookingServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ObjectResourceOfIPagedListOfInternationalBooking.fromJS(resultData200);
+            result200 = ObjectResourceOfInternationalBookingOrder.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -3218,7 +3331,7 @@ export class InternationalbookingServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ObjectResourceOfIPagedListOfInternationalBooking>(<any>null);
+        return _observableOf<ObjectResourceOfInternationalBookingOrder>(<any>null);
     }
 
     /**
@@ -3478,6 +3591,57 @@ export class InternationalbookingServiceProxy {
             }));
         }
         return _observableOf<ObjectResourceOfIntlCreateResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    internationlbookingRoute(): Observable<ListResourceOfInternationalRoute> {
+        let url_ = this.baseUrl + "/api/internationalbooking/internationlbookingRoute";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processInternationlbookingRoute(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processInternationlbookingRoute(<any>response_);
+                } catch (e) {
+                    return <Observable<ListResourceOfInternationalRoute>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ListResourceOfInternationalRoute>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processInternationlbookingRoute(response: HttpResponseBase): Observable<ListResourceOfInternationalRoute> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ListResourceOfInternationalRoute.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ListResourceOfInternationalRoute>(<any>null);
     }
 
     /**
@@ -3860,6 +4024,60 @@ export class InternationalbookingServiceProxy {
         }
         return _observableOf<StatusResource>(<any>null);
     }
+
+    /**
+     * @param rate (optional) 
+     * @return OK
+     */
+    getInterntaionalRoute(rate: string | null | undefined): Observable<ObjectResourceOfInternationaRate> {
+        let url_ = this.baseUrl + "/api/internationalbooking/GetInterntaionalRoute?";
+        if (rate !== undefined && rate !== null)
+            url_ += "rate=" + encodeURIComponent("" + rate) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetInterntaionalRoute(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetInterntaionalRoute(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfInternationaRate>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfInternationaRate>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetInterntaionalRoute(response: HttpResponseBase): Observable<ObjectResourceOfInternationaRate> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfInternationaRate.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfInternationaRate>(<any>null);
+    }
 }
 
 @Injectable()
@@ -3941,58 +4159,46 @@ export class LocalBookingServiceProxy {
     }
 
     /**
+     * @param filter_booking_category (optional) 
+     * @param filter_booking_status (optional) 
+     * @param filter_page (optional) 
+     * @param filter_dispatcher_id (optional) 
+     * @param filter_category_group (optional) 
+     * @param filter_made_by (optional) 
+     * @param filter_full_name (optional) 
+     * @param filter_date_range (optional) 
+     * @param filter_delivery_date (optional) 
+     * @param filter_booking_number (optional) 
+     * @param filter_display_mode (optional) 
+     * @param filter_selected_orders (optional) 
      * @return OK
      */
-    getlocalbooking(booking_category: number[], booking_status: number, page: number, dispatcher_id: number, category_group: number, made_by: string, full_name: string, date_range: string, delivery_date: string, booking_number: string, display_mode: string, selected_orders: number[]): Observable<ObjectResourceOfGetLocalBookingsForMobileResource> {
+    getlocalbooking(filter_booking_category: number[] | null | undefined, filter_booking_status: number | null | undefined, filter_page: number | null | undefined, filter_dispatcher_id: number | null | undefined, filter_category_group: number | null | undefined, filter_made_by: string | null | undefined, filter_full_name: string | null | undefined, filter_date_range: string | null | undefined, filter_delivery_date: string | null | undefined, filter_booking_number: string | null | undefined, filter_display_mode: string | null | undefined, filter_selected_orders: number[] | null | undefined): Observable<ObjectResourceOfOrders> {
         let url_ = this.baseUrl + "/api/LocalBooking/getlocalbooking?";
-        if (booking_category === undefined || booking_category === null)
-            throw new Error("The parameter 'booking_category' must be defined and cannot be null.");
-        else
-            booking_category && booking_category.forEach(item => { url_ += "booking_category=" + encodeURIComponent("" + item) + "&"; });
-        if (booking_status === undefined || booking_status === null)
-            throw new Error("The parameter 'booking_status' must be defined and cannot be null.");
-        else
-            url_ += "booking_status=" + encodeURIComponent("" + booking_status) + "&";
-        if (page === undefined || page === null)
-            throw new Error("The parameter 'page' must be defined and cannot be null.");
-        else
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (dispatcher_id === undefined || dispatcher_id === null)
-            throw new Error("The parameter 'dispatcher_id' must be defined and cannot be null.");
-        else
-            url_ += "dispatcher_id=" + encodeURIComponent("" + dispatcher_id) + "&";
-        if (category_group === undefined || category_group === null)
-            throw new Error("The parameter 'category_group' must be defined and cannot be null.");
-        else
-            url_ += "category_group=" + encodeURIComponent("" + category_group) + "&";
-        if (made_by === undefined || made_by === null)
-            throw new Error("The parameter 'made_by' must be defined and cannot be null.");
-        else
-            url_ += "made_by=" + encodeURIComponent("" + made_by) + "&";
-        if (full_name === undefined || full_name === null)
-            throw new Error("The parameter 'full_name' must be defined and cannot be null.");
-        else
-            url_ += "full_name=" + encodeURIComponent("" + full_name) + "&";
-        if (date_range === undefined || date_range === null)
-            throw new Error("The parameter 'date_range' must be defined and cannot be null.");
-        else
-            url_ += "date_range=" + encodeURIComponent("" + date_range) + "&";
-        if (delivery_date === undefined || delivery_date === null)
-            throw new Error("The parameter 'delivery_date' must be defined and cannot be null.");
-        else
-            url_ += "delivery_date=" + encodeURIComponent("" + delivery_date) + "&";
-        if (booking_number === undefined || booking_number === null)
-            throw new Error("The parameter 'booking_number' must be defined and cannot be null.");
-        else
-            url_ += "booking_number=" + encodeURIComponent("" + booking_number) + "&";
-        if (display_mode === undefined || display_mode === null)
-            throw new Error("The parameter 'display_mode' must be defined and cannot be null.");
-        else
-            url_ += "display_mode=" + encodeURIComponent("" + display_mode) + "&";
-        if (selected_orders === undefined || selected_orders === null)
-            throw new Error("The parameter 'selected_orders' must be defined and cannot be null.");
-        else
-            selected_orders && selected_orders.forEach(item => { url_ += "selected_orders=" + encodeURIComponent("" + item) + "&"; });
+        if (filter_booking_category !== undefined && filter_booking_category !== null)
+            filter_booking_category && filter_booking_category.forEach(item => { url_ += "filter.booking_category=" + encodeURIComponent("" + item) + "&"; });
+        if (filter_booking_status !== undefined && filter_booking_status !== null)
+            url_ += "filter.booking_status=" + encodeURIComponent("" + filter_booking_status) + "&";
+        if (filter_page !== undefined && filter_page !== null)
+            url_ += "filter.page=" + encodeURIComponent("" + filter_page) + "&";
+        if (filter_dispatcher_id !== undefined && filter_dispatcher_id !== null)
+            url_ += "filter.dispatcher_id=" + encodeURIComponent("" + filter_dispatcher_id) + "&";
+        if (filter_category_group !== undefined && filter_category_group !== null)
+            url_ += "filter.category_group=" + encodeURIComponent("" + filter_category_group) + "&";
+        if (filter_made_by !== undefined && filter_made_by !== null)
+            url_ += "filter.made_by=" + encodeURIComponent("" + filter_made_by) + "&";
+        if (filter_full_name !== undefined && filter_full_name !== null)
+            url_ += "filter.full_name=" + encodeURIComponent("" + filter_full_name) + "&";
+        if (filter_date_range !== undefined && filter_date_range !== null)
+            url_ += "filter.date_range=" + encodeURIComponent("" + filter_date_range) + "&";
+        if (filter_delivery_date !== undefined && filter_delivery_date !== null)
+            url_ += "filter.delivery_date=" + encodeURIComponent("" + filter_delivery_date) + "&";
+        if (filter_booking_number !== undefined && filter_booking_number !== null)
+            url_ += "filter.booking_number=" + encodeURIComponent("" + filter_booking_number) + "&";
+        if (filter_display_mode !== undefined && filter_display_mode !== null)
+            url_ += "filter.display_mode=" + encodeURIComponent("" + filter_display_mode) + "&";
+        if (filter_selected_orders !== undefined && filter_selected_orders !== null)
+            filter_selected_orders && filter_selected_orders.forEach(item => { url_ += "filter.selected_orders=" + encodeURIComponent("" + item) + "&"; });
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -4010,14 +4216,14 @@ export class LocalBookingServiceProxy {
                 try {
                     return this.processGetlocalbooking(<any>response_);
                 } catch (e) {
-                    return <Observable<ObjectResourceOfGetLocalBookingsForMobileResource>><any>_observableThrow(e);
+                    return <Observable<ObjectResourceOfOrders>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ObjectResourceOfGetLocalBookingsForMobileResource>><any>_observableThrow(response_);
+                return <Observable<ObjectResourceOfOrders>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetlocalbooking(response: HttpResponseBase): Observable<ObjectResourceOfGetLocalBookingsForMobileResource> {
+    protected processGetlocalbooking(response: HttpResponseBase): Observable<ObjectResourceOfOrders> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -4028,7 +4234,7 @@ export class LocalBookingServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ObjectResourceOfGetLocalBookingsForMobileResource.fromJS(resultData200);
+            result200 = ObjectResourceOfOrders.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -4036,7 +4242,7 @@ export class LocalBookingServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ObjectResourceOfGetLocalBookingsForMobileResource>(<any>null);
+        return _observableOf<ObjectResourceOfOrders>(<any>null);
     }
 
     /**
@@ -5514,14 +5720,14 @@ export class ManageServiceProxy {
     /**
      * @return OK
      */
-    updateUser(payload: IUpdateUserViewModel): Observable<StatusResource> {
+    updateUser(payload): Observable<StatusResource> {
         let url_ = this.baseUrl + "/api/Manage/UpdateUser";
         url_ = url_.replace(/[?&]$/, "");
 
-        // const content_ = JSON.stringify(payload);
+        const content_ = JSON.stringify(payload);
 
         let options_ : any = {
-            body: payload,
+            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
@@ -6580,11 +6786,121 @@ export class RiderServiceProxy {
     /**
      * @return OK
      */
-    riderDocuments(status: UpdateStatus): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/api/Rider/RiderDocuments";
+    changedispatcherstatus(status: UpdateStatus): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/changedispatcherstatus";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(status);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processChangedispatcherstatus(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processChangedispatcherstatus(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processChangedispatcherstatus(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    updateOrder(status: UpdateOrderByDispatcher): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/UpdateOrder";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(status);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdateOrder(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    riderDocuments(dTO: RiderDocument): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/RiderDocuments";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(dTO);
 
         let options_ : any = {
             body: content_,
@@ -6633,18 +6949,17 @@ export class RiderServiceProxy {
     }
 
     /**
+     * @param filter_pageNumber (optional) 
      * @return OK
      */
-    getassignedorder(pageSize: number, dispatcherId: number): Observable<ListResourceOfOrder> {
+    getassignedorder(filter_pageNumber: number | null | undefined, filter_dispatcherId: number): Observable<ObjectResourceOfOrders> {
         let url_ = this.baseUrl + "/api/Rider/getassignedorder?";
-        if (pageSize === undefined || pageSize === null)
-            throw new Error("The parameter 'pageSize' must be defined and cannot be null.");
+        if (filter_pageNumber !== undefined && filter_pageNumber !== null)
+            url_ += "filter.pageNumber=" + encodeURIComponent("" + filter_pageNumber) + "&";
+        if (filter_dispatcherId === undefined || filter_dispatcherId === null)
+            throw new Error("The parameter 'filter_dispatcherId' must be defined and cannot be null.");
         else
-            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
-        if (dispatcherId === undefined || dispatcherId === null)
-            throw new Error("The parameter 'dispatcherId' must be defined and cannot be null.");
-        else
-            url_ += "dispatcherId=" + encodeURIComponent("" + dispatcherId) + "&";
+            url_ += "filter.dispatcherId=" + encodeURIComponent("" + filter_dispatcherId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -6662,14 +6977,14 @@ export class RiderServiceProxy {
                 try {
                     return this.processGetassignedorder(<any>response_);
                 } catch (e) {
-                    return <Observable<ListResourceOfOrder>><any>_observableThrow(e);
+                    return <Observable<ObjectResourceOfOrders>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<ListResourceOfOrder>><any>_observableThrow(response_);
+                return <Observable<ObjectResourceOfOrders>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetassignedorder(response: HttpResponseBase): Observable<ListResourceOfOrder> {
+    protected processGetassignedorder(response: HttpResponseBase): Observable<ObjectResourceOfOrders> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6680,7 +6995,7 @@ export class RiderServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = ListResourceOfOrder.fromJS(resultData200);
+            result200 = ObjectResourceOfOrders.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6688,7 +7003,68 @@ export class RiderServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<ListResourceOfOrder>(<any>null);
+        return _observableOf<ObjectResourceOfOrders>(<any>null);
+    }
+
+    /**
+     * @param filter_date_range (optional) 
+     * @param filter_pageNumber (optional) 
+     * @return OK
+     */
+    getcompltedOrder(filter_dispatcherId: number, filter_date_range: string | null | undefined, filter_pageNumber: number | null | undefined): Observable<ObjectResourceOfOrders> {
+        let url_ = this.baseUrl + "/api/Rider/getcompltedOrder?";
+        if (filter_dispatcherId === undefined || filter_dispatcherId === null)
+            throw new Error("The parameter 'filter_dispatcherId' must be defined and cannot be null.");
+        else
+            url_ += "filter.dispatcherId=" + encodeURIComponent("" + filter_dispatcherId) + "&";
+        if (filter_date_range !== undefined && filter_date_range !== null)
+            url_ += "filter.date_range=" + encodeURIComponent("" + filter_date_range) + "&";
+        if (filter_pageNumber !== undefined && filter_pageNumber !== null)
+            url_ += "filter.pageNumber=" + encodeURIComponent("" + filter_pageNumber) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetcompltedOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetcompltedOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfOrders>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfOrders>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetcompltedOrder(response: HttpResponseBase): Observable<ObjectResourceOfOrders> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfOrders.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfOrders>(<any>null);
     }
 
     /**
@@ -7842,6 +8218,8 @@ export class DispatcherDocument implements IDispatcherDocument {
     riderLincesUrl: string | undefined;
     riderInsurance: string | undefined;
     dispatcher: Dispatcher | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 
     constructor(data?: IDispatcherDocument) {
         if (data) {
@@ -7860,6 +8238,8 @@ export class DispatcherDocument implements IDispatcherDocument {
             this.riderLincesUrl = _data["riderLincesUrl"];
             this.riderInsurance = _data["riderInsurance"];
             this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
         }
     }
 
@@ -7878,6 +8258,8 @@ export class DispatcherDocument implements IDispatcherDocument {
         data["riderLincesUrl"] = this.riderLincesUrl;
         data["riderInsurance"] = this.riderInsurance;
         data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
         return data; 
     }
 
@@ -7896,6 +8278,8 @@ export interface IDispatcherDocument {
     riderLincesUrl: string | undefined;
     riderInsurance: string | undefined;
     dispatcher: Dispatcher | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class ResidentialState implements IResidentialState {
@@ -12729,6 +13113,187 @@ export interface ICheckOutAssistanceProductModel {
     comment: string | undefined;
 }
 
+export class FilterCheckout implements IFilterCheckout {
+    full_name: string | undefined;
+    date_range: string | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+
+    constructor(data?: IFilterCheckout) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.full_name = _data["full_name"];
+            this.date_range = _data["date_range"];
+            this.booking_status = _data["booking_status"];
+            this.page = _data["page"];
+        }
+    }
+
+    static fromJS(data: any): FilterCheckout {
+        data = typeof data === 'object' ? data : {};
+        let result = new FilterCheckout();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["full_name"] = this.full_name;
+        data["date_range"] = this.date_range;
+        data["booking_status"] = this.booking_status;
+        data["page"] = this.page;
+        return data; 
+    }
+
+    clone(): FilterCheckout {
+        const json = this.toJSON();
+        let result = new FilterCheckout();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFilterCheckout {
+    full_name: string | undefined;
+    date_range: string | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+}
+
+export class ObjectResourceOfPagedListOfCheckoutAssistance implements IObjectResourceOfPagedListOfCheckoutAssistance {
+    data: PagedListOfCheckoutAssistance | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfPagedListOfCheckoutAssistance) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? PagedListOfCheckoutAssistance.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfPagedListOfCheckoutAssistance {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfPagedListOfCheckoutAssistance();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfPagedListOfCheckoutAssistance {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfPagedListOfCheckoutAssistance();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfPagedListOfCheckoutAssistance {
+    data: PagedListOfCheckoutAssistance | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class PagedListOfCheckoutAssistance implements IPagedListOfCheckoutAssistance {
+    items: CheckoutAssistance[] | undefined;
+    readonly currentPage: number | undefined;
+    readonly totalPages: number | undefined;
+    readonly pageSize: number | undefined;
+    readonly totalCount: number | undefined;
+    readonly hasPrevious: boolean | undefined;
+    readonly hasNext: boolean | undefined;
+
+    constructor(data?: IPagedListOfCheckoutAssistance) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(CheckoutAssistance.fromJS(item));
+            }
+            (<any>this).currentPage = _data["currentPage"];
+            (<any>this).totalPages = _data["totalPages"];
+            (<any>this).pageSize = _data["pageSize"];
+            (<any>this).totalCount = _data["totalCount"];
+            (<any>this).hasPrevious = _data["hasPrevious"];
+            (<any>this).hasNext = _data["hasNext"];
+        }
+    }
+
+    static fromJS(data: any): PagedListOfCheckoutAssistance {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedListOfCheckoutAssistance();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["pageSize"] = this.pageSize;
+        data["totalCount"] = this.totalCount;
+        data["hasPrevious"] = this.hasPrevious;
+        data["hasNext"] = this.hasNext;
+        return data; 
+    }
+
+    clone(): PagedListOfCheckoutAssistance {
+        const json = this.toJSON();
+        let result = new PagedListOfCheckoutAssistance();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedListOfCheckoutAssistance {
+    items: CheckoutAssistance[] | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    totalCount: number | undefined;
+    hasPrevious: boolean | undefined;
+    hasNext: boolean | undefined;
+}
+
 export class CreateLocalBooking implements ICreateLocalBooking {
     deliveryAddress: string;
     deliveryBustop: string;
@@ -12867,12 +13432,12 @@ export interface IIntlFilter {
     full_name: string | undefined;
 }
 
-export class ObjectResourceOfIPagedListOfInternationalBooking implements IObjectResourceOfIPagedListOfInternationalBooking {
-    data: InternationalBooking[] | undefined;
+export class ObjectResourceOfInternationalBookingOrder implements IObjectResourceOfInternationalBookingOrder {
+    data: InternationalBookingOrder | undefined;
     code: string | undefined;
     message: string | undefined;
 
-    constructor(data?: IObjectResourceOfIPagedListOfInternationalBooking) {
+    constructor(data?: IObjectResourceOfInternationalBookingOrder) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -12883,47 +13448,114 @@ export class ObjectResourceOfIPagedListOfInternationalBooking implements IObject
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(InternationalBooking.fromJS(item));
-            }
+            this.data = _data["data"] ? InternationalBookingOrder.fromJS(_data["data"]) : <any>undefined;
             this.code = _data["code"];
             this.message = _data["message"];
         }
     }
 
-    static fromJS(data: any): ObjectResourceOfIPagedListOfInternationalBooking {
+    static fromJS(data: any): ObjectResourceOfInternationalBookingOrder {
         data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfIPagedListOfInternationalBooking();
+        let result = new ObjectResourceOfInternationalBookingOrder();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         data["code"] = this.code;
         data["message"] = this.message;
         return data; 
     }
 
-    clone(): ObjectResourceOfIPagedListOfInternationalBooking {
+    clone(): ObjectResourceOfInternationalBookingOrder {
         const json = this.toJSON();
-        let result = new ObjectResourceOfIPagedListOfInternationalBooking();
+        let result = new ObjectResourceOfInternationalBookingOrder();
         result.init(json);
         return result;
     }
 }
 
-export interface IObjectResourceOfIPagedListOfInternationalBooking {
-    data: InternationalBooking[] | undefined;
+export interface IObjectResourceOfInternationalBookingOrder {
+    data: InternationalBookingOrder | undefined;
     code: string | undefined;
     message: string | undefined;
+}
+
+export class InternationalBookingOrder implements IInternationalBookingOrder {
+    internationalBookings: InternationalBooking[] | undefined;
+    totalCount: number | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    readonly hasPrevious: boolean | undefined;
+    readonly hasNext: boolean | undefined;
+
+    constructor(data?: IInternationalBookingOrder) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["internationalBookings"])) {
+                this.internationalBookings = [] as any;
+                for (let item of _data["internationalBookings"])
+                    this.internationalBookings.push(InternationalBooking.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            this.currentPage = _data["currentPage"];
+            this.totalPages = _data["totalPages"];
+            this.pageSize = _data["pageSize"];
+            (<any>this).hasPrevious = _data["hasPrevious"];
+            (<any>this).hasNext = _data["hasNext"];
+        }
+    }
+
+    static fromJS(data: any): InternationalBookingOrder {
+        data = typeof data === 'object' ? data : {};
+        let result = new InternationalBookingOrder();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.internationalBookings)) {
+            data["internationalBookings"] = [];
+            for (let item of this.internationalBookings)
+                data["internationalBookings"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["pageSize"] = this.pageSize;
+        data["hasPrevious"] = this.hasPrevious;
+        data["hasNext"] = this.hasNext;
+        return data; 
+    }
+
+    clone(): InternationalBookingOrder {
+        const json = this.toJSON();
+        let result = new InternationalBookingOrder();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInternationalBookingOrder {
+    internationalBookings: InternationalBooking[] | undefined;
+    totalCount: number | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    hasPrevious: boolean | undefined;
+    hasNext: boolean | undefined;
 }
 
 export class ListResourceOfIntlBookingStatusResource implements IListResourceOfIntlBookingStatusResource {
@@ -13585,6 +14217,192 @@ export interface IIntlCreateResource {
     bookingNumber: string | undefined;
     successMessage: string | undefined;
     customer: Customer | undefined;
+}
+
+export class ListResourceOfInternationalRoute implements IListResourceOfInternationalRoute {
+    total: number | undefined;
+    data: InternationalRoute[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfInternationalRoute) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(InternationalRoute.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfInternationalRoute {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfInternationalRoute();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfInternationalRoute {
+        const json = this.toJSON();
+        let result = new ListResourceOfInternationalRoute();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfInternationalRoute {
+    total: number | undefined;
+    data: InternationalRoute[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class InternationalRoute implements IInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+
+    constructor(data?: IInternationalRoute) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adminFee = _data["adminFee"];
+            this.exportRatePerUnitWeight = _data["exportRatePerUnitWeight"];
+            this.convertExportRateToNaira = _data["convertExportRateToNaira"];
+            this.importRatePerUnitWeight = _data["importRatePerUnitWeight"];
+            this.convertImportRateToNaira = _data["convertImportRateToNaira"];
+            this.mininumQtyExport = _data["mininumQtyExport"];
+            this.mininumQtyImport = _data["mininumQtyImport"];
+            this.country = _data["country"];
+            this.currencySymbol = _data["currencySymbol"];
+            this.currencyName = _data["currencyName"];
+            this.exchangeRate = _data["exchangeRate"];
+            this.deliveryTimeline = _data["deliveryTimeline"];
+            this.canImport = _data["canImport"];
+            this.canExport = _data["canExport"];
+            this.weightSymbol = _data["weightSymbol"];
+            this.weightName = _data["weightName"];
+            this.isActive = _data["isActive"];
+            this.markAsNew = _data["markAsNew"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): InternationalRoute {
+        data = typeof data === 'object' ? data : {};
+        let result = new InternationalRoute();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adminFee"] = this.adminFee;
+        data["exportRatePerUnitWeight"] = this.exportRatePerUnitWeight;
+        data["convertExportRateToNaira"] = this.convertExportRateToNaira;
+        data["importRatePerUnitWeight"] = this.importRatePerUnitWeight;
+        data["convertImportRateToNaira"] = this.convertImportRateToNaira;
+        data["mininumQtyExport"] = this.mininumQtyExport;
+        data["mininumQtyImport"] = this.mininumQtyImport;
+        data["country"] = this.country;
+        data["currencySymbol"] = this.currencySymbol;
+        data["currencyName"] = this.currencyName;
+        data["exchangeRate"] = this.exchangeRate;
+        data["deliveryTimeline"] = this.deliveryTimeline;
+        data["canImport"] = this.canImport;
+        data["canExport"] = this.canExport;
+        data["weightSymbol"] = this.weightSymbol;
+        data["weightName"] = this.weightName;
+        data["isActive"] = this.isActive;
+        data["markAsNew"] = this.markAsNew;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): InternationalRoute {
+        const json = this.toJSON();
+        let result = new InternationalRoute();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class ObjectResourceOfHoldInstructionResource implements IObjectResourceOfHoldInstructionResource {
@@ -14376,12 +15194,12 @@ export interface IProcessIntlBookingResource {
     id: number | undefined;
 }
 
-export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjectResourceOfGetLocalBookingsForMobileResource {
-    data: GetLocalBookingsForMobileResource | undefined;
+export class ObjectResourceOfInternationaRate implements IObjectResourceOfInternationaRate {
+    data: InternationaRate | undefined;
     code: string | undefined;
     message: string | undefined;
 
-    constructor(data?: IObjectResourceOfGetLocalBookingsForMobileResource) {
+    constructor(data?: IObjectResourceOfInternationaRate) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14392,15 +15210,15 @@ export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjec
 
     init(_data?: any) {
         if (_data) {
-            this.data = _data["data"] ? GetLocalBookingsForMobileResource.fromJS(_data["data"]) : <any>undefined;
+            this.data = _data["data"] ? InternationaRate.fromJS(_data["data"]) : <any>undefined;
             this.code = _data["code"];
             this.message = _data["message"];
         }
     }
 
-    static fromJS(data: any): ObjectResourceOfGetLocalBookingsForMobileResource {
+    static fromJS(data: any): ObjectResourceOfInternationaRate {
         data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfGetLocalBookingsForMobileResource();
+        let result = new ObjectResourceOfInternationaRate();
         result.init(data);
         return result;
     }
@@ -14413,25 +15231,386 @@ export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjec
         return data; 
     }
 
-    clone(): ObjectResourceOfGetLocalBookingsForMobileResource {
+    clone(): ObjectResourceOfInternationaRate {
         const json = this.toJSON();
-        let result = new ObjectResourceOfGetLocalBookingsForMobileResource();
+        let result = new ObjectResourceOfInternationaRate();
         result.init(json);
         return result;
     }
 }
 
-export interface IObjectResourceOfGetLocalBookingsForMobileResource {
-    data: GetLocalBookingsForMobileResource | undefined;
+export interface IObjectResourceOfInternationaRate {
+    data: InternationaRate | undefined;
     code: string | undefined;
     message: string | undefined;
 }
 
-export class GetLocalBookingsForMobileResource implements IGetLocalBookingsForMobileResource {
-    localBookings: LocalBooking[] | undefined;
-    dispatcher: Dispatcher | undefined;
+export class InternationaRate implements IInternationaRate {
+    internationalRoute: InternationalRoute[] | undefined;
+    lspInternationalRoute: LSPInternationalRoute[] | undefined;
 
-    constructor(data?: IGetLocalBookingsForMobileResource) {
+    constructor(data?: IInternationaRate) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["internationalRoute"])) {
+                this.internationalRoute = [] as any;
+                for (let item of _data["internationalRoute"])
+                    this.internationalRoute.push(InternationalRoute.fromJS(item));
+            }
+            if (Array.isArray(_data["lspInternationalRoute"])) {
+                this.lspInternationalRoute = [] as any;
+                for (let item of _data["lspInternationalRoute"])
+                    this.lspInternationalRoute.push(LSPInternationalRoute.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): InternationaRate {
+        data = typeof data === 'object' ? data : {};
+        let result = new InternationaRate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.internationalRoute)) {
+            data["internationalRoute"] = [];
+            for (let item of this.internationalRoute)
+                data["internationalRoute"].push(item.toJSON());
+        }
+        if (Array.isArray(this.lspInternationalRoute)) {
+            data["lspInternationalRoute"] = [];
+            for (let item of this.lspInternationalRoute)
+                data["lspInternationalRoute"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): InternationaRate {
+        const json = this.toJSON();
+        let result = new InternationaRate();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInternationaRate {
+    internationalRoute: InternationalRoute[] | undefined;
+    lspInternationalRoute: LSPInternationalRoute[] | undefined;
+}
+
+export class LSPInternationalRoute implements ILSPInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    isFlatRate: boolean | undefined;
+    lowerMarginWeight: number | undefined;
+    lowerMarginExportRatePerUnitWeight: number | undefined;
+    lowerMarginImportRatePerUnitWeight: number | undefined;
+
+    constructor(data?: ILSPInternationalRoute) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adminFee = _data["adminFee"];
+            this.exportRatePerUnitWeight = _data["exportRatePerUnitWeight"];
+            this.convertExportRateToNaira = _data["convertExportRateToNaira"];
+            this.importRatePerUnitWeight = _data["importRatePerUnitWeight"];
+            this.convertImportRateToNaira = _data["convertImportRateToNaira"];
+            this.mininumQtyExport = _data["mininumQtyExport"];
+            this.mininumQtyImport = _data["mininumQtyImport"];
+            this.country = _data["country"];
+            this.currencySymbol = _data["currencySymbol"];
+            this.currencyName = _data["currencyName"];
+            this.exchangeRate = _data["exchangeRate"];
+            this.deliveryTimeline = _data["deliveryTimeline"];
+            this.canImport = _data["canImport"];
+            this.canExport = _data["canExport"];
+            this.weightSymbol = _data["weightSymbol"];
+            this.weightName = _data["weightName"];
+            this.isActive = _data["isActive"];
+            this.markAsNew = _data["markAsNew"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.isFlatRate = _data["isFlatRate"];
+            this.lowerMarginWeight = _data["lowerMarginWeight"];
+            this.lowerMarginExportRatePerUnitWeight = _data["lowerMarginExportRatePerUnitWeight"];
+            this.lowerMarginImportRatePerUnitWeight = _data["lowerMarginImportRatePerUnitWeight"];
+        }
+    }
+
+    static fromJS(data: any): LSPInternationalRoute {
+        data = typeof data === 'object' ? data : {};
+        let result = new LSPInternationalRoute();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adminFee"] = this.adminFee;
+        data["exportRatePerUnitWeight"] = this.exportRatePerUnitWeight;
+        data["convertExportRateToNaira"] = this.convertExportRateToNaira;
+        data["importRatePerUnitWeight"] = this.importRatePerUnitWeight;
+        data["convertImportRateToNaira"] = this.convertImportRateToNaira;
+        data["mininumQtyExport"] = this.mininumQtyExport;
+        data["mininumQtyImport"] = this.mininumQtyImport;
+        data["country"] = this.country;
+        data["currencySymbol"] = this.currencySymbol;
+        data["currencyName"] = this.currencyName;
+        data["exchangeRate"] = this.exchangeRate;
+        data["deliveryTimeline"] = this.deliveryTimeline;
+        data["canImport"] = this.canImport;
+        data["canExport"] = this.canExport;
+        data["weightSymbol"] = this.weightSymbol;
+        data["weightName"] = this.weightName;
+        data["isActive"] = this.isActive;
+        data["markAsNew"] = this.markAsNew;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["isFlatRate"] = this.isFlatRate;
+        data["lowerMarginWeight"] = this.lowerMarginWeight;
+        data["lowerMarginExportRatePerUnitWeight"] = this.lowerMarginExportRatePerUnitWeight;
+        data["lowerMarginImportRatePerUnitWeight"] = this.lowerMarginImportRatePerUnitWeight;
+        return data; 
+    }
+
+    clone(): LSPInternationalRoute {
+        const json = this.toJSON();
+        let result = new LSPInternationalRoute();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILSPInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    isFlatRate: boolean | undefined;
+    lowerMarginWeight: number | undefined;
+    lowerMarginExportRatePerUnitWeight: number | undefined;
+    lowerMarginImportRatePerUnitWeight: number | undefined;
+}
+
+export class FilterBooking implements IFilterBooking {
+    booking_category: number[] | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+    dispatcher_id: number | undefined;
+    category_group: number | undefined;
+    made_by: string | undefined;
+    full_name: string | undefined;
+    date_range: string | undefined;
+    delivery_date: string | undefined;
+    booking_number: string | undefined;
+    display_mode: string | undefined;
+    selected_orders: number[] | undefined;
+
+    constructor(data?: IFilterBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["booking_category"])) {
+                this.booking_category = [] as any;
+                for (let item of _data["booking_category"])
+                    this.booking_category.push(item);
+            }
+            this.booking_status = _data["booking_status"];
+            this.page = _data["page"];
+            this.dispatcher_id = _data["dispatcher_id"];
+            this.category_group = _data["category_group"];
+            this.made_by = _data["made_by"];
+            this.full_name = _data["full_name"];
+            this.date_range = _data["date_range"];
+            this.delivery_date = _data["delivery_date"];
+            this.booking_number = _data["booking_number"];
+            this.display_mode = _data["display_mode"];
+            if (Array.isArray(_data["selected_orders"])) {
+                this.selected_orders = [] as any;
+                for (let item of _data["selected_orders"])
+                    this.selected_orders.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): FilterBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new FilterBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.booking_category)) {
+            data["booking_category"] = [];
+            for (let item of this.booking_category)
+                data["booking_category"].push(item);
+        }
+        data["booking_status"] = this.booking_status;
+        data["page"] = this.page;
+        data["dispatcher_id"] = this.dispatcher_id;
+        data["category_group"] = this.category_group;
+        data["made_by"] = this.made_by;
+        data["full_name"] = this.full_name;
+        data["date_range"] = this.date_range;
+        data["delivery_date"] = this.delivery_date;
+        data["booking_number"] = this.booking_number;
+        data["display_mode"] = this.display_mode;
+        if (Array.isArray(this.selected_orders)) {
+            data["selected_orders"] = [];
+            for (let item of this.selected_orders)
+                data["selected_orders"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): FilterBooking {
+        const json = this.toJSON();
+        let result = new FilterBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFilterBooking {
+    booking_category: number[] | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+    dispatcher_id: number | undefined;
+    category_group: number | undefined;
+    made_by: string | undefined;
+    full_name: string | undefined;
+    date_range: string | undefined;
+    delivery_date: string | undefined;
+    booking_number: string | undefined;
+    display_mode: string | undefined;
+    selected_orders: number[] | undefined;
+}
+
+export class ObjectResourceOfOrders implements IObjectResourceOfOrders {
+    data: Orders | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfOrders) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? Orders.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfOrders {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfOrders();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfOrders {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfOrders();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfOrders {
+    data: Orders | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class Orders implements IOrders {
+    localBookings: LocalBooking[] | undefined;
+    totalCount: number | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    readonly hasPrevious: boolean | undefined;
+    readonly hasNext: boolean | undefined;
+
+    constructor(data?: IOrders) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -14447,13 +15626,18 @@ export class GetLocalBookingsForMobileResource implements IGetLocalBookingsForMo
                 for (let item of _data["localBookings"])
                     this.localBookings.push(LocalBooking.fromJS(item));
             }
-            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.totalCount = _data["totalCount"];
+            this.currentPage = _data["currentPage"];
+            this.totalPages = _data["totalPages"];
+            this.pageSize = _data["pageSize"];
+            (<any>this).hasPrevious = _data["hasPrevious"];
+            (<any>this).hasNext = _data["hasNext"];
         }
     }
 
-    static fromJS(data: any): GetLocalBookingsForMobileResource {
+    static fromJS(data: any): Orders {
         data = typeof data === 'object' ? data : {};
-        let result = new GetLocalBookingsForMobileResource();
+        let result = new Orders();
         result.init(data);
         return result;
     }
@@ -14465,21 +15649,31 @@ export class GetLocalBookingsForMobileResource implements IGetLocalBookingsForMo
             for (let item of this.localBookings)
                 data["localBookings"].push(item.toJSON());
         }
-        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["totalCount"] = this.totalCount;
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["pageSize"] = this.pageSize;
+        data["hasPrevious"] = this.hasPrevious;
+        data["hasNext"] = this.hasNext;
         return data; 
     }
 
-    clone(): GetLocalBookingsForMobileResource {
+    clone(): Orders {
         const json = this.toJSON();
-        let result = new GetLocalBookingsForMobileResource();
+        let result = new Orders();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetLocalBookingsForMobileResource {
+export interface IOrders {
     localBookings: LocalBooking[] | undefined;
-    dispatcher: Dispatcher | undefined;
+    totalCount: number | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    hasPrevious: boolean | undefined;
+    hasNext: boolean | undefined;
 }
 
 export class ListResourceOfLocalBookingCategoryResource implements IListResourceOfLocalBookingCategoryResource {
@@ -16362,10 +17556,10 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
             this.carModel = _data["carModel"];
             this.carYear = _data["carYear"];
             this.licenseNumber = _data["licenseNumber"];
-            this.machinePictureUrl = _data["machinePictureUrl"] ? _data["machinePictureUrl"]: <any>undefined;
-            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? _data["machineRegistrationUrl"] : <any>undefined;
-            this.riderLincesUrl = _data["riderLincesUrl"] ? _data["riderLincesUrl"] : <any>undefined;
-            this.insuranceUrl = _data["insuranceUrl"] ? _data["insuranceUrl"] : <any>undefined;
+            this.machinePictureUrl = _data["machinePictureUrl"] ? HttpPostedFileBase.fromJS(_data["machinePictureUrl"]) : <any>undefined;
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? HttpPostedFileBase.fromJS(_data["machineRegistrationUrl"]) : <any>undefined;
+            this.riderLincesUrl = _data["riderLincesUrl"] ? HttpPostedFileBase.fromJS(_data["riderLincesUrl"]) : <any>undefined;
+            this.insuranceUrl = _data["insuranceUrl"] ? HttpPostedFileBase.fromJS(_data["insuranceUrl"]) : <any>undefined;
         }
     }
 
@@ -16397,10 +17591,10 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
         data["carModel"] = this.carModel;
         data["carYear"] = this.carYear;
         data["licenseNumber"] = this.licenseNumber;
-        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl : <any>undefined;
-        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl : <any>undefined;
-        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl : <any>undefined;
-        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl : <any>undefined;
+        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl.toJSON() : <any>undefined;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl.toJSON() : <any>undefined;
+        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl.toJSON() : <any>undefined;
+        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -16432,10 +17626,10 @@ export interface IUpdateUserViewModel {
     carModel: string | undefined;
     carYear: string | undefined;
     licenseNumber: string | undefined;
-    machinePictureUrl: any | undefined;
-    machineRegistrationUrl: any | undefined;
-    riderLincesUrl: any | undefined;
-    insuranceUrl: any | undefined;
+    machinePictureUrl: HttpPostedFileBase | undefined;
+    machineRegistrationUrl: HttpPostedFileBase | undefined;
+    riderLincesUrl: HttpPostedFileBase | undefined;
+    insuranceUrl: HttpPostedFileBase | undefined;
 }
 
 export class ForgotPasswordViewModel implements IForgotPasswordViewModel {
@@ -16697,13 +17891,12 @@ export interface IUpdateStatus {
     dispatcherId: number;
 }
 
-export class ListResourceOfOrder implements IListResourceOfOrder {
-    total: number | undefined;
-    data: Order[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
+export class UpdateOrderByDispatcher implements IUpdateOrderByDispatcher {
+    statusId: number;
+    dispatcherId: number;
+    orderId: number;
 
-    constructor(data?: IListResourceOfOrder) {
+    constructor(data?: IUpdateOrderByDispatcher) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -16714,83 +17907,115 @@ export class ListResourceOfOrder implements IListResourceOfOrder {
 
     init(_data?: any) {
         if (_data) {
-            this.total = _data["total"];
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(Order.fromJS(item));
-            }
-            this.code = _data["code"];
-            this.message = _data["message"];
+            this.statusId = _data["statusId"];
+            this.dispatcherId = _data["dispatcherId"];
+            this.orderId = _data["orderId"];
         }
     }
 
-    static fromJS(data: any): ListResourceOfOrder {
+    static fromJS(data: any): UpdateOrderByDispatcher {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResourceOfOrder();
+        let result = new UpdateOrderByDispatcher();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["total"] = this.total;
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["code"] = this.code;
-        data["message"] = this.message;
+        data["statusId"] = this.statusId;
+        data["dispatcherId"] = this.dispatcherId;
+        data["orderId"] = this.orderId;
         return data; 
     }
 
-    clone(): ListResourceOfOrder {
+    clone(): UpdateOrderByDispatcher {
         const json = this.toJSON();
-        let result = new ListResourceOfOrder();
+        let result = new UpdateOrderByDispatcher();
         result.init(json);
         return result;
     }
 }
 
-export interface IListResourceOfOrder {
-    total: number | undefined;
-    data: Order[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
+export interface IUpdateOrderByDispatcher {
+    statusId: number;
+    dispatcherId: number;
+    orderId: number;
 }
 
-export class Order implements IOrder {
-    id: number | undefined;
-    deliveryDate: string | undefined;
-    deliveryType: string | undefined;
-    bookingNumber: string | undefined;
-    senderName: string | undefined;
-    pickupLocation: string | undefined;
-    deliveryLocation: string | undefined;
-    pickUpAddress: string | undefined;
-    pickupLandmark: string | undefined;
-    phoneNumber: string | undefined;
-    recipientName: string | undefined;
-    deliveryAddress: string | undefined;
-    deliveryLandmark: string | undefined;
-    recipientPhoneNumber: string | undefined;
-    packageDescription: string | undefined;
-    sizeDescription: string | undefined;
-    isInsured: boolean | undefined;
-    isDelivered: boolean | undefined;
-    packageValue: number | undefined;
-    deliveryCost: number | undefined;
-    numberOfPackages: number | undefined;
-    insuranceCost: number | undefined;
-    totalCost: number | undefined;
-    bookingStatusId: number | undefined;
-    estimatedPackageWeight: number | undefined;
-    createdAt: string | undefined;
-    updatedAt: string | undefined;
-    paymentType: string | undefined;
+export class RiderDocument implements IRiderDocument {
+    machinePictureUrl: HttpPostedFileBase;
+    machineRegistrationUrl: HttpPostedFileBase;
+    riderLincesUrl: HttpPostedFileBase;
+    insuranceUrl: HttpPostedFileBase;
+    userId: string;
+    dispatcherId: number | undefined;
 
-    constructor(data?: IOrder) {
+    constructor(data?: IRiderDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.machinePictureUrl = new HttpPostedFileBase();
+            this.machineRegistrationUrl = new HttpPostedFileBase();
+            this.riderLincesUrl = new HttpPostedFileBase();
+            this.insuranceUrl = new HttpPostedFileBase();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.machinePictureUrl = _data["machinePictureUrl"] ? HttpPostedFileBase.fromJS(_data["machinePictureUrl"]) : new HttpPostedFileBase();
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? HttpPostedFileBase.fromJS(_data["machineRegistrationUrl"]) : new HttpPostedFileBase();
+            this.riderLincesUrl = _data["riderLincesUrl"] ? HttpPostedFileBase.fromJS(_data["riderLincesUrl"]) : new HttpPostedFileBase();
+            this.insuranceUrl = _data["insuranceUrl"] ? HttpPostedFileBase.fromJS(_data["insuranceUrl"]) : new HttpPostedFileBase();
+            this.userId = _data["userId"];
+            this.dispatcherId = _data["dispatcherId"];
+        }
+    }
+
+    static fromJS(data: any): RiderDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new RiderDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl.toJSON() : <any>undefined;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl.toJSON() : <any>undefined;
+        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl.toJSON() : <any>undefined;
+        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl.toJSON() : <any>undefined;
+        data["userId"] = this.userId;
+        data["dispatcherId"] = this.dispatcherId;
+        return data; 
+    }
+
+    clone(): RiderDocument {
+        const json = this.toJSON();
+        let result = new RiderDocument();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRiderDocument {
+    machinePictureUrl: HttpPostedFileBase;
+    machineRegistrationUrl: HttpPostedFileBase;
+    riderLincesUrl: HttpPostedFileBase;
+    insuranceUrl: HttpPostedFileBase;
+    userId: string;
+    dispatcherId: number | undefined;
+}
+
+export class Filter implements IFilter {
+    pageNumber: number | undefined;
+    dispatcherId: number;
+
+    constructor(data?: IFilter) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -16801,114 +18026,87 @@ export class Order implements IOrder {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
-            this.deliveryDate = _data["deliveryDate"];
-            this.deliveryType = _data["deliveryType"];
-            this.bookingNumber = _data["bookingNumber"];
-            this.senderName = _data["senderName"];
-            this.pickupLocation = _data["pickupLocation"];
-            this.deliveryLocation = _data["deliveryLocation"];
-            this.pickUpAddress = _data["pickUpAddress"];
-            this.pickupLandmark = _data["pickupLandmark"];
-            this.phoneNumber = _data["phoneNumber"];
-            this.recipientName = _data["recipientName"];
-            this.deliveryAddress = _data["deliveryAddress"];
-            this.deliveryLandmark = _data["deliveryLandmark"];
-            this.recipientPhoneNumber = _data["recipientPhoneNumber"];
-            this.packageDescription = _data["packageDescription"];
-            this.sizeDescription = _data["sizeDescription"];
-            this.isInsured = _data["isInsured"];
-            this.isDelivered = _data["isDelivered"];
-            this.packageValue = _data["packageValue"];
-            this.deliveryCost = _data["deliveryCost"];
-            this.numberOfPackages = _data["numberOfPackages"];
-            this.insuranceCost = _data["insuranceCost"];
-            this.totalCost = _data["totalCost"];
-            this.bookingStatusId = _data["bookingStatusId"];
-            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
-            this.createdAt = _data["createdAt"];
-            this.updatedAt = _data["updatedAt"];
-            this.paymentType = _data["paymentType"];
+            this.pageNumber = _data["pageNumber"];
+            this.dispatcherId = _data["dispatcherId"];
         }
     }
 
-    static fromJS(data: any): Order {
+    static fromJS(data: any): Filter {
         data = typeof data === 'object' ? data : {};
-        let result = new Order();
+        let result = new Filter();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["deliveryDate"] = this.deliveryDate;
-        data["deliveryType"] = this.deliveryType;
-        data["bookingNumber"] = this.bookingNumber;
-        data["senderName"] = this.senderName;
-        data["pickupLocation"] = this.pickupLocation;
-        data["deliveryLocation"] = this.deliveryLocation;
-        data["pickUpAddress"] = this.pickUpAddress;
-        data["pickupLandmark"] = this.pickupLandmark;
-        data["phoneNumber"] = this.phoneNumber;
-        data["recipientName"] = this.recipientName;
-        data["deliveryAddress"] = this.deliveryAddress;
-        data["deliveryLandmark"] = this.deliveryLandmark;
-        data["recipientPhoneNumber"] = this.recipientPhoneNumber;
-        data["packageDescription"] = this.packageDescription;
-        data["sizeDescription"] = this.sizeDescription;
-        data["isInsured"] = this.isInsured;
-        data["isDelivered"] = this.isDelivered;
-        data["packageValue"] = this.packageValue;
-        data["deliveryCost"] = this.deliveryCost;
-        data["numberOfPackages"] = this.numberOfPackages;
-        data["insuranceCost"] = this.insuranceCost;
-        data["totalCost"] = this.totalCost;
-        data["bookingStatusId"] = this.bookingStatusId;
-        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
-        data["createdAt"] = this.createdAt;
-        data["updatedAt"] = this.updatedAt;
-        data["paymentType"] = this.paymentType;
+        data["pageNumber"] = this.pageNumber;
+        data["dispatcherId"] = this.dispatcherId;
         return data; 
     }
 
-    clone(): Order {
+    clone(): Filter {
         const json = this.toJSON();
-        let result = new Order();
+        let result = new Filter();
         result.init(json);
         return result;
     }
 }
 
-export interface IOrder {
-    id: number | undefined;
-    deliveryDate: string | undefined;
-    deliveryType: string | undefined;
-    bookingNumber: string | undefined;
-    senderName: string | undefined;
-    pickupLocation: string | undefined;
-    deliveryLocation: string | undefined;
-    pickUpAddress: string | undefined;
-    pickupLandmark: string | undefined;
-    phoneNumber: string | undefined;
-    recipientName: string | undefined;
-    deliveryAddress: string | undefined;
-    deliveryLandmark: string | undefined;
-    recipientPhoneNumber: string | undefined;
-    packageDescription: string | undefined;
-    sizeDescription: string | undefined;
-    isInsured: boolean | undefined;
-    isDelivered: boolean | undefined;
-    packageValue: number | undefined;
-    deliveryCost: number | undefined;
-    numberOfPackages: number | undefined;
-    insuranceCost: number | undefined;
-    totalCost: number | undefined;
-    bookingStatusId: number | undefined;
-    estimatedPackageWeight: number | undefined;
-    createdAt: string | undefined;
-    updatedAt: string | undefined;
-    paymentType: string | undefined;
+export interface IFilter {
+    pageNumber: number | undefined;
+    dispatcherId: number;
+}
+
+export class FiterOrderByComplted implements IFiterOrderByComplted {
+    dispatcherId: number;
+    date_range: string | undefined;
+    pageNumber: number | undefined;
+
+    constructor(data?: IFiterOrderByComplted) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dispatcherId = _data["dispatcherId"];
+            this.date_range = _data["date_range"];
+            this.pageNumber = _data["pageNumber"];
+        }
+    }
+
+    static fromJS(data: any): FiterOrderByComplted {
+        data = typeof data === 'object' ? data : {};
+        let result = new FiterOrderByComplted();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dispatcherId"] = this.dispatcherId;
+        data["date_range"] = this.date_range;
+        data["pageNumber"] = this.pageNumber;
+        return data; 
+    }
+
+    clone(): FiterOrderByComplted {
+        const json = this.toJSON();
+        let result = new FiterOrderByComplted();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFiterOrderByComplted {
+    dispatcherId: number;
+    date_range: string | undefined;
+    pageNumber: number | undefined;
 }
 
 export class MarkOrderAsDeliveredDTO implements IMarkOrderAsDeliveredDTO {

@@ -5,152 +5,86 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"  style="color: #454F63;"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="headertitle" >Orders History</ion-title>
+    <ion-title class="headertitle" >Delivery History</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-segment [(ngModel)]="selectedSegment" #ionsgmnt (ionChange)="segmentChanged(ionsgmnt.value)" >
-    <ion-segment-button [value]="SEGMENTS.PENDING">
-      <ion-label style="color: #EF6102;">PENDING</ion-label>
-    </ion-segment-button>
-    <ion-segment-button [value]="SEGMENTS.COMPLETED">
-      <ion-label style="color: #049B1B;">COMPLETED</ion-label>
-    </ion-segment-button>
+  <div *ngFor="let assignedOrder of ListResourceOfOrder;">
+  <ion-label>
+    <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
+     {{assignedOrder.deliveryDate | date : 'MMM d - h:mm a'}}
+    
+    </div>
+  </ion-label>
+  <ion-card>    
+    <ion-card-content>
+      <ion-row>
+        <ion-col style="display: flex">
+          <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: 2px;">
+            <div class="starting-point">
+              <span></span>
+            </div>
+            <div class="middle-point">
+              <span></span>
+            </div>
+            <div class="middle-point">
+              <span></span>
+            </div>
+            <div class="middle-point">
+              <span></span>
+            </div>
+            <div class="middle-point">
+              <span></span>
+            </div>
+            <div class="middle-point">
+              <span></span>
+            </div>
+            <!-- <div class="middle-point"></div> -->
+            <!-- <div class="middle-point"></div> -->
+          </div>
+          <div style="width: 100%;">
+            <h6>Pickup Location</h6>
+            <span>{{assignedOrder.pickUpAddress}}</span>
+            <hr style="background-color:  #00000005; margin: 0px;"/>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col style="display: flex">
+          <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: -6px; height: 19px;">
+            <div class="middle-point top">
+              <span></span>
+            </div>
+            <div class="middle-point top">
+              <span></span>
+            </div>
+            <div class="starting-point">
+              <span></span>
+            </div>
+          </div>
+          <div>
+            <h6>Destination Location</h6>
+            <span>{{assignedOrder.deliveryAddress}}</span>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="10">
+          <div style="padding: 7px;"></div>
+          <h6>Order Status <span [style.color]="statusColor.completed">
+            {{getOrderStatusName(assignedOrder.bookingStatusId)}}
+          </span></h6>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button (click)="gotoorderdetails(assignedOrder)" style="font-size: 12px;" fill="clear">
+            <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+          </ion-button>
+          
+        </ion-col>
+      </ion-row>
 
-  </ion-segment>
-  <div [ngSwitch]="selectedSegment" >
-    <ion-list *ngSwitchCase="0" >
-      <ion-label>
-        <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
-          JAN 10 - 12:30 PM
-        </div>
-      </ion-label>
-      <ion-card>    
-        <ion-card-content>
-          <ion-row>
-            <ion-col style="display: flex">
-              <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: 2px;">
-                <div class="starting-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <!-- <div class="middle-point"></div> -->
-                <!-- <div class="middle-point"></div> -->
-              </div>
-              <div style="width: 100%;">
-                <h6>Pickup Location</h6>
-                <span>Fresh Market</span>
-                <hr style="background-color:  #00000005; margin: 0px;"/>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col style="display: flex">
-              <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: -6px; height: 19px;">
-                <div class="middle-point top">
-                  <span></span>
-                </div>
-                <div class="middle-point top">
-                  <span></span>
-                </div>
-                <div class="starting-point">
-                  <span></span>
-                </div>
-              </div>
-              <div>
-                <h6>Destination Location</h6>
-                <span>My Home</span>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <h6>Order Status <span [style.color]="statusColor.pending">Pending</span></h6>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
-    <ion-list *ngSwitchCase="1" >
-      <ion-label>
-        <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
-          JAN 10 - 12:30 PM
-        </div>
-      </ion-label>
-      <ion-card>    
-        <ion-card-content>
-          <ion-row>
-            <ion-col style="display: flex">
-              <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: 2px;">
-                <div class="starting-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <div class="middle-point">
-                  <span></span>
-                </div>
-                <!-- <div class="middle-point"></div> -->
-                <!-- <div class="middle-point"></div> -->
-              </div>
-              <div style="width: 100%;">
-                <h6>Pickup Location</h6>
-                <span>Fresh Market</span>
-                <hr style="background-color:  #00000005; margin: 0px;"/>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col style="display: flex">
-              <div style="width: 10px; display: flex; flex-direction: column; align-items: center; margin-right: 5px; margin-top: -6px; height: 19px;">
-                <div class="middle-point top">
-                  <span></span>
-                </div>
-                <div class="middle-point top">
-                  <span></span>
-                </div>
-                <div class="starting-point">
-                  <span></span>
-                </div>
-              </div>
-              <div>
-                <h6>Destination Location</h6>
-                <span>My Home</span>
-              </div>
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <h6>Order Status <span [style.color]="statusColor.completed">Completed</span></h6>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </ion-list>
-  </div>
+    </ion-card-content>
+  </ion-card>
+</div>
 </ion-content>

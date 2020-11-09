@@ -1,0 +1,117 @@
+<ion-header class="zindex">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1" style="color: #454F63;"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="headertitle" >Delivery Details </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding: 25px;">
+    <ion-row>
+      <ion-col size="1">
+        <ion-icon name="ellipse" style="color:#444F63;"></ion-icon>
+      </ion-col>
+      <ion-col size="11">
+        <ion-label>{{maproute.addressStart}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="1">
+        <ion-icon name="square" style="color: #FFB900;"></ion-icon>
+      </ion-col>
+      <ion-col size="11">
+        <ion-label>{{maproute.addressEnd}}</ion-label>
+      </ion-col>
+    </ion-row>
+  <div style="padding: 5px;"></div>
+  </div>
+  <app-riderroute></app-riderroute>
+<div style="width: 100%;background-color: #F7F7FA;padding: 5px 25px 5px 25px;">
+<h5>LOCAL DELIVERY</h5>
+</div>
+<div style="padding: 5px 20px 5px 25px; width: 100%;">
+  <ion-row>
+    <ion-col size="4" >
+    <ion-label style="float: left; font-style:bold;">
+      Order Number
+    </ion-label>
+    </ion-col>
+    <ion-col size="8" >
+      <ion-label style="float: right;font-style:normal;">
+      {{orderdetails.bookingNumber}}
+      </ion-label>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="4" >
+    <ion-label style="float: left; font-style:bold;">
+      Estimated Package Weight
+    </ion-label>
+    </ion-col>
+    <ion-col size="8" >
+      <ion-label style="float: right;font-style:normal;">
+      {{orderdetails.estimatedPackageWeight}} kg
+      </ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4" >
+    <ion-label style="float: left; font-style:bold;">
+      Pick up Date & Time
+    </ion-label>
+    </ion-col>
+    <ion-col size="8" >
+      <ion-label style="float: right;font-style:normal;">
+      {{orderdetails.createdAt | date : 'd MMM y, h:mm:ss a'}}
+      </ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4" >
+    <ion-label style="float: left; font-style:bold;">
+      Sender’s Name
+    </ion-label>
+    </ion-col>
+    <ion-col size="8" >
+      <ion-label style="float: right;font-style:normal;">
+      {{orderdetails.senderName}}
+      </ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4" >
+    <ion-label style="float: left; font-style:bold;">
+      Receiver’s Name
+    </ion-label>
+    </ion-col>
+    <ion-col size="8" >
+      <ion-label style="float: right;font-style:normal;">
+      {{orderdetails.recipientName}}
+      </ion-label>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="4" >
+    <ion-label style="float: left; font-style:bold;">
+      Receiver’s Number
+    </ion-label>
+    </ion-col>
+    <ion-col size="7" >
+      <ion-label style="float: right;font-style:normal;">
+      {{orderdetails.recipientPhoneNumber}}
+      </ion-label>
+    </ion-col>
+    <ion-col size="1" >
+      <ion-icon style="font-size: 22px;" (click)="NumberDialer(orderdetails.recipientPhoneNumber)" name="call-outline"></ion-icon>
+     
+    </ion-col>
+  </ion-row>
+
+</div>
+
+</ion-content>

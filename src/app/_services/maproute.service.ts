@@ -6,5 +6,6 @@ import { Injectable } from '@angular/core';
 export class MaprouteService {
   addressStart: any;
   addressEnd: any;
+  mapType: any;
   constructor() { }
 }

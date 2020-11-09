@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { CheckoutAssistance, InternationalBooking, ISelectedOrder, LocalBooking, Order, SelectedOrder } from '../_models/service-models';
-import { InternationalbookingServiceProxy, LocalBookingServiceProxy, OrderServiceProxy, OrdersServiceProxy } from '../_services/service-proxies';
+import { CheckoutAssistance, InternationalBooking, ISelectedOrder, LocalBooking, SelectedOrder } from '../_models/service-models';
+import { InternationalbookingServiceProxy, LocalBookingServiceProxy } from '../_services/service-proxies';
 import { Booking, INTERNATIONAL_BOOKING_STATUS, LOCAL_BOOKING_STATUS, StoreService } from '../_services/store.service';
 
 enum SEGMENTS {

@@ -140,7 +140,23 @@ const routes: Routes = [
   {
     path: 'riderorders',
     loadChildren: () => import('./riders/riderorders/riderorders.module').then( m => m.RiderordersPageModule)
-  }
+  },
+  {
+    path: 'pickup',
+    loadChildren: () => import('./trackorder/pickup/pickup.module').then( m => m.PickupPageModule)
+  },  {
+    path: 'assignedorderdetails',
+    loadChildren: () => import('./riders/assignedorderdetails/assignedorderdetails.module').then( m => m.AssignedorderdetailsPageModule)
+  },
+  {
+    path: 'riderroute',
+    loadChildren: () => import('./riders/riderroute/riderroute.module').then( m => m.RiderroutePageModule)
+  },
+  {
+    path: 'deliverydirection',
+    loadChildren: () => import('./riders/deliverydirection/deliverydirection.module').then( m => m.DeliverydirectionPageModule)
+  },
+
 
 
 

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
+import { Dispatcher } from 'src/app/_models/service-models';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { MaprouteService } from 'src/app/_services/maproute.service';
+import { RiderServiceProxy } from 'src/app/_services/service-proxies';
 
 enum SEGMENTS {
   PENDING,
@@ -17,14 +22,84 @@ export class RidershistoryPage implements OnInit {
   }
   SEGMENTS = SEGMENTS
   selectedSegment = SEGMENTS.PENDING
-  constructor(private navCtrl: NavController) { }
+  loading: any;
+  usersdata:any;
+  dispatcher = new Dispatcher().clone();
+  dispatcherId: number;
+  ListResourceOfOrder = [];
+  pageNumber: number = 1;
+  constructor(private navCtrl: NavController,
+    private router: Router,
+    private toastCtrl: ToastController,
+    private alertController: AlertController,
+    private loadspinner: LoadingController,
+    private riderService: RiderServiceProxy,
+    private AuthenService: AuthenticationService,
+    private maprouteService: MaprouteService) { }
+
+    ionViewWillEnter(){
+      this.getAssignedOrder();
+    }
+
+  async getAssignedOrder(){
+    this.loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
+    });
+    await this.loading.present();
+
+    setTimeout(() => {
+      if (this.AuthenService.users.length > 0) {
+    
+        this.usersdata = this.AuthenService.users[0]          
+        this.dispatcher = this.usersdata.dispatcher;
+   
+        this.dispatcherId = this.dispatcher.id;
+this.riderService.getcompltedOrder(this.dispatcherId,'',this.pageNumber).subscribe(async (res:any)=>{
+if(res.code == "000"){
+  const toast = await this.toastCtrl.create({
+    duration: 3000,
+    message: res.message,
+    color: "success"
+  });
+  toast.present();
+  this.ListResourceOfOrder = res.data.items;
+
+}else{
+  if(res.code == "004"){
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: 'Unauthorized Call',
+      color: "danger"
+    });
+    toast.present();
+    this.router.navigate(['preferedaction']);
+  }
+}
+
+});
+      }
+      this.loading.dismiss()
+    }, 2000);
+  }
+
+
   segmentChanged(segment){
     this.selectedSegment = segment
 
   }
+
   goback(){
     this.navCtrl.back()
       }
+
+      gotoorderdetails(assignedOrder){
+        this.maprouteService.addressStart = assignedOrder.pickUpAddress;
+        this.maprouteService.addressEnd = assignedOrder.deliveryAddress;
+        this.maprouteService.mapType = "short"
+        this.router.navigate(['assignedorderdetails'],{queryParams:{orderDetails: JSON.stringify(assignedOrder)}})
+          }
   ngOnInit() {
   }
 
