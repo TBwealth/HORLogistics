@@ -142,7 +142,7 @@
         </div>
       <ion-row>
         <ion-col>
-          <ion-button [(disabled)]= "myForm.invalid"  (click)="addNewProduct(); myForm.reset()" expand="block" class="localdelivery" fill="clear">
+          <ion-button [(disabled)]= "addNewPanel"  (click)="addNewProduct()" expand="block" class="localdelivery" fill="clear">
             <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
             <p class="localheader">Add Another Product</p>
           </ion-button>
@@ -155,7 +155,7 @@
         <ion-button class="cta1" expand="block" fill="outline">
           <ion-label>Cancel</ion-label>
         </ion-button>
-        <ion-button class="cta" expand="block" (click)="onSubmit(myForm)" fill="default">
+        <ion-button class="cta" expand="block" (click)="submitOrders()" [disabled]="!myForm.valid" fill="default">
           <ion-label>Apply</ion-label>
         </ion-button>
         </div>

@@ -48,37 +48,8 @@ export class MultiplePage implements OnInit {
     private checkout: CheckoutassistanceServiceProxy,
     private activeUser: ManageServiceProxy) { }
 
-  
-      // async addOrder(ev: any) {
-      //   const popover = await this.popoverController.create({
-      //     component: NeworderComponent,
-      //     cssClass: 'my-custom-class',
-      //     event: ev,
-      //     translucent: true
-      //   });
-      //   return await popover.present();
-      // }
-      // async addOrder(){
-      //   const subject = new Subject<boolean>()
-      //   const modal = await this.popoverController.create({
-      //     component: NeworderComponent,
-      //     cssClass: 'my-custom-class',
-      //     componentProps: {
-      //       subject
-      //     }
-      //   });
-      //   subject.subscribe(val => {
-      //     modal.dismiss()
-      //     if(val){
-      //       this.clearForm()
-      //     } else {
-      //       this.gotoSummary()
-      //     }
-      //   })
-      //   return await modal.present();
-      // }
-
   ngOnInit() {
+    this.checkOutAsst.products = [];
   }
 
   authuserdetails = new ObjectResourceOfUserViewModel().clone();
@@ -119,10 +90,10 @@ validateProductDescriptionForm(){
   validateDeliveryDetailsForm(){
   if(this.request_desc.customerAddress &&
      this.request_desc.deliveryLocationId &&
-     this.request_desc.shipToState){
-         
-      this.myorder = this.product_desc;
+     this.request_desc.shipToState){   
+      // this.myorder = this.product_desc;
       //console.log(this.myorder)
+      this.addNewPanel = false;
   }
   }
 
@@ -164,10 +135,10 @@ async addNewProduct(){
 }
 
 clearForm(){
-  this.saveOrder()
+  this.onSubmit();
   this.productDescriptionPanel = false
   this.deliveryDetailsPanel  = false
-  this.activetab = null
+  this.activetab = "";
 }
 
 onSubmit(){
@@ -205,21 +176,24 @@ onSubmit(){
     RequestDetails.shipToState = this.request_desc.shipToState;
     RequestDetails.pickupCenter = this.request_desc.pickupCenter;
     RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
-    this.checkOutAsst.products = [];
     this.checkOutAsst.request;
     this.checkOutAsst.products.push(productDetails);
     this.checkOutAsst.request = RequestDetails;
     console.log(this.checkOutAsst);
-    this.checkout.create(this.checkOutAsst).subscribe(data => {})
+    this.product_desc = new CheckOutAssistanceProductModel().clone();
+    this.request_desc = new CheckOutAssistanceModel().clone();
+    
   })
 
-  //console.log(this.checkOutAsst);
-
-  //  let singleProduct = new 
-//     console.log(myForm.value);
-//     this.checkout.create(myForm.value).subscribe(data => {})
   
 }
+
+submitOrders()
+  {
+    this.onSubmit();
+    this.checkout.create(this.checkOutAsst).subscribe(data => {})
+    
+  }
 
 
 saveOrder() {
@@ -227,13 +201,6 @@ saveOrder() {
   
 }
 
-// submitBooking(){
-//   if(this.singleDelivery){
-//     this.gotoSummary()
-//   } else {
-//     this.showAddNewBookingModal()
-//   }
-// }
 
 gotoSummary(){
   this.onSubmit()
@@ -241,12 +208,5 @@ gotoSummary(){
     //this.router.navigate(['localdelivery/review-booking'])
 
 }
-
-// onSubmit(myForm){
-   
-//   console.log(myForm.value);
-//   this.checkout.create(myForm.value).subscribe(data => {})
-
-// }
 
 }
