@@ -6,6 +6,28 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 import { MaprouteService } from 'src/app/_services/maproute.service';
 import { LocalBookingServiceProxy, RiderServiceProxy } from 'src/app/_services/service-proxies';
 
+import { JSXBase } from '../../../../node_modules/@ionic/core/dist/types/stencil-public-runtime';
+import { AnimationBuilder, Mode, TextFieldTypes } from '../../../../node_modules/@ionic/core/dist/types/interface';
+
+export interface AlertInputAttributes extends JSXBase.InputHTMLAttributes<HTMLInputElement> {
+}
+export interface AlertTextareaAttributes extends JSXBase.TextareaHTMLAttributes<HTMLTextAreaElement> {
+}
+export interface AlertInput {
+  type?: TextFieldTypes | 'checkbox' | 'radio' | 'textarea';
+  name?: string;
+  placeholder?: string;
+  value?: any;
+  label?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  id?: string;
+  handler?: (input: AlertInput) => void;
+  min?: string | number;
+  max?: string | number;
+  cssClass?: string | string[];
+  attributes?: AlertInputAttributes | AlertTextareaAttributes;
+}
 @Component({
   selector: 'app-riderorders',
   templateUrl: './riderorders.page.html',
@@ -17,7 +39,12 @@ export class RiderordersPage implements OnInit {
     approved: '#049B1B',
     rejected: '#E1440B'
   }
-orderStatus = ['In-Transit Pickup','Awaiting Delivery','In-Transit Delivery','Delivered']
+orderStatus = [
+  {statusName: 'Carry Over', statusId: 6},
+  {statusName:'On transit', statusId: 3},
+  {statusName:'Delivered', statusId: 5},
+  {statusName:'Dispatched', statusId: 4}
+]
 loading: any;
 pageSize = 1;
 dispatcherId: number;
@@ -71,7 +98,8 @@ this.riderService.getassignedorder(this.pageSize,this.dispatcherId).subscribe(as
       color: "success"
     });
     toast.present();
-    this.ListResourceOfOrder = res.data.items;
+    this.ListResourceOfOrder = res.data.localBookings;
+    console.log(this.ListResourceOfOrder);
   }else{
     if(res.code == "004"){
       const toast = await this.toastCtrl.create({
@@ -101,93 +129,107 @@ return stFound.name
 }
 }
  async updateOrderStatus(orderStatus, orderId){
-// var cIndex = this.orderStatus.findIndex(x=>x == orderStatus);
-// if((cIndex + 1) >= this.orderStatus.length){
-//   const toast = await this.toastCtrl.create({
-//     duration: 3000,
-//     message: 'Order Completed',
-//     color: "danger"
-//   });
-//   toast.present();
-// }else{  }  
 
-    const alert = await this.alertController.create({
-      cssClass: 'myalertradiocustom-class',
-      header: 'New Order Status',
-      inputs: [
-        {
-          name: 'newOrderStatus',
-          type: 'radio',
-          label: 'Carry Over',
-          value: 6,  
-        },
-        {
-          name: 'newOrderStatus',
-          type: 'radio',
-          label: 'Dispatched',
-          value: 4,  
-        },
-        {
-        name: 'newOrderStatus',
-        type: 'radio',
-        label: 'On transit',
-        value: 3,  
-      } ,
+var cIndex = this.orderStatus.find(x=>x.statusId == orderStatus);
+if(cIndex.statusName == 'Delivered'){
+  const toast = await this.toastCtrl.create({
+    duration: 3000,
+    message: 'Order Delivered',
+    color: "danger"
+  });
+  toast.present();
+}else{ 
+  if(cIndex.statusName == 'On transit'){
+    var alertInput:AlertInput[] = [
       {
-        name: 'newOrderStatus',
-        type: 'radio',
-        label: 'Delivered',
-        value: 5,  
-      }
-    ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'alertCtrlbtncancel',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Update',
-          cssClass: 'alertCtrlbtnpry',
-          handler: async (newOrderStatus) => {
-            if(newOrderStatus){
-              this.orderStatusResource.statusId = newOrderStatus;
-              this.orderStatusResource.orderId = orderId;
-            
-              this.riderService.updateOrder(this.orderStatusResource).subscribe(async data=>{
-                if(data.code == "000"){
-                  const toast = await this.toastCtrl.create({
-                    duration: 3000,
-                    message: data.message,
-                    color: "success"
-                  });
-                  toast.present();
-                }else{
-                  const toast = await this.toastCtrl.create({
-                    duration: 3000,
-                    message: data.message,
-                    color: "danger"
-                  });
-                  toast.present();
-                }
-              })
-            }else{
-              const toast = await this.toastCtrl.create({
-                duration: 3000,
-                message: 'Please select a status',
-                color: "danger"
-              });
-              toast.present();
-              return false;
-            }
+      name: 'newOrderStatus',
+      type: 'radio',
+      label: 'Carry Over',
+      value: 6,  
+    },
+    {
+      name: 'newOrderStatus',
+      type: 'radio',
+      label: 'Delivered',
+      value: 5,  
+    },
+  ];
+  }
+  if(cIndex.statusName == 'Dispatched'){
+    var alertInput:AlertInput[] = [
+      {
+      name: 'newOrderStatus',
+      type: 'radio',
+      label: 'Carry Over',
+      value: 6,  
+    },
+    {
+      name: 'newOrderStatus',
+      type: 'radio',
+      label: 'On transit',
+      value: 3,  
+    },
+  ];
+  }
+  const alert = await this.alertController.create({
+    cssClass: 'myalertradiocustom-class',
+    header: 'New Order Status',
+    inputs: alertInput,    
+    buttons: [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'alertCtrlbtncancel',
+        handler: () => {
+          console.log('Confirm Cancel');
+        }
+      }, {
+        text: 'Update',
+        cssClass: 'alertCtrlbtnpry',
+        handler: async (newOrderStatus) => {
+          if(newOrderStatus){
+            this.orderStatusResource.statusId = newOrderStatus;
+            this.orderStatusResource.orderId = orderId;
+            this.orderStatusResource.dispatcherId = this.dispatcherId;
+
+            this.riderService.updateOrder(this.orderStatusResource).subscribe(async data=>{
+              if(data.code == "000"){
+                const toast = await this.toastCtrl.create({
+                  duration: 3000,
+                  message: data.message,
+                  color: "success"
+                });
+                toast.present();
+              }else{
+                const toast = await this.toastCtrl.create({
+                  duration: 3000,
+                  message: data.message,
+                  color: "danger"
+                });
+                toast.present();
+              }
+            })
+          }else{
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: 'Please select a status',
+              color: "danger"
+            });
+            toast.present();
+            return false;
           }
         }
-      ]
-    });
+      }
+    ]
+  });
 
-    await alert.present();
+  await alert.present();
+ 
+ }  
+
+
+
+
 
    
  
@@ -203,7 +245,7 @@ this.router.navigate(['deliverydirection'])
     this.maprouteService.addressStart = assignedOrder.pickUpAddress;
     this.maprouteService.addressEnd = assignedOrder.deliveryAddress;
     this.maprouteService.mapType = "short"
-    this.router.navigate(['assignedorderdetails'],{queryParams:{orderDetails: assignedOrder}})
+    this.router.navigate(['assignedorderdetails'],{queryParams:{orderDetails: JSON.stringify(assignedOrder)}})
       }
   ngOnInit() {
   }

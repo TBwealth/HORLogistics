@@ -1,10 +1,11 @@
 import { Component, OnInit,ViewChild,ElementRef,AfterViewInit } from '@angular/core';
 import { Geolocation,Geoposition } from '@ionic-native/geolocation/ngx';
-import {Platform, NavController, AlertController,MenuController, PopoverController, LoadingController } from '@ionic/angular';
+import {Platform, NavController, AlertController,MenuController, PopoverController, LoadingController, ToastController } from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AuthenticationService } from '../_services/authentication.service';
-import {  VerifiedPhoneUpdate,StatusResource, LoginResource } from "../_models/service-models";
+import {  VerifiedPhoneUpdate,StatusResource, LoginResource, Dispatcher,UpdateStatus } from "../_models/service-models";
 import {PrimarylocationComponent} from './primarylocation/primarylocation.component';
+import { RiderServiceProxy } from '../_services/service-proxies';
 declare var google;
 @Component({
   selector: 'app-home',
@@ -23,6 +24,9 @@ Lgpslatlng:any;
 usersdata = new LoginResource().clone();
 userRole = "";
 loading: any = "";
+dispatcher = new Dispatcher().clone();
+riderStatus: any = '';
+UpdateStatus = new UpdateStatus().clone();
   constructor(
     public platform:Platform, public navCtrl: NavController, public alertCtrl: AlertController,
     public geolocation: Geolocation, public activatedroute: ActivatedRoute,
@@ -30,7 +34,9 @@ loading: any = "";
     private AuthenService: AuthenticationService,
     private router: Router,
     public popoverController: PopoverController,
-    private loadspinner: LoadingController
+    private loadspinner: LoadingController,
+    private riderService: RiderServiceProxy,
+    private toastCtrl: ToastController
 
   ) 
   { 
@@ -140,7 +146,10 @@ ref.map.fitBounds(bounds);
             }
            
           }
-         
+          if(this.userRole == 'Rider'){
+            this.dispatcher = this.usersdata.dispatcher;
+            this.riderStatus = this.dispatcher.dispatcherStatusesId;
+          }
         }
   
       this.loading.dismiss()
@@ -202,7 +211,34 @@ this.menu.open();
     }) 
    
   }
+toggledriverStatus(){
+var newStatus = this.riderStatus == 1?2:1;
+this.UpdateStatus.dispatcherId = this.dispatcher.id;
+this.UpdateStatus.statusId = newStatus;
+this.riderService.changedispatcherstatus(this.UpdateStatus).subscribe(async data=>{
+if(data.code == "000"){
+  this.AuthenService.addUser(this.usersdata);
+  this.riderStatus = newStatus;
+  const toast = await this.toastCtrl.create({
+    duration: 3000,
+    message: data.message,
+    color: "success"
+  });
+  toast.present();
+}else{
+  const toast = await this.toastCtrl.create({
+    duration: 3000,
+    message: data.message,
+    color: "danger"
+  });
+  toast.present();
+  if(data.code == "004"){
+this.router.navigate(['preferedaction']);
+  }
+}
+})
 
+}
   ngOnInit() {
   }
 

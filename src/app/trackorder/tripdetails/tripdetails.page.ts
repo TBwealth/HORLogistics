@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AlertController, LoadingController, NavController, Platform } from '@ionic/angular';
 import { from } from 'rxjs';
+import { LocalbookingServiceProxy } from 'src/app/_services/service-proxies';
 import {MaprouteService} from '../../_services/maproute.service';
 
 @Component({
@@ -16,8 +18,16 @@ export class TripdetailsPage implements OnInit {
     public platform:Platform, 
     public alertCtrl: AlertController,
     private maproute: MaprouteService,
-    private loadspinner: LoadingController
+    private loadspinner: LoadingController,
+    private activatedroute : ActivatedRoute,
+    private localbookingService: LocalbookingServiceProxy
   ) { 
+this.activatedroute.queryParams.subscribe(data=>{
+if(data.orderNumber){
+  this.localbookingService
+}
+});
+
      maproute.addressEnd = this.addressEnd;
      maproute.addressStart = this.addressStart;
     }

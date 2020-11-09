@@ -16,7 +16,7 @@
         <ion-icon name="ellipse" style="color:#444F63;"></ion-icon>
       </ion-col>
       <ion-col size="11">
-        <ion-label>{{maproute.addressStart | async}}</ion-label>
+        <ion-label>{{maproute.addressStart }}</ion-label>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -24,11 +24,13 @@
         <ion-icon name="square" style="color: #FFB900;"></ion-icon>
       </ion-col>
       <ion-col size="11">
-        <ion-label>{{maproute.addressEnd | async}}</ion-label>
+        <ion-label>{{maproute.addressEnd }}</ion-label>
       </ion-col>
     </ion-row>
-  <div style="padding: 5px;"></div>
+
   </div>
   
-  <app-riderroute></app-riderroute>
+  <app-riderroute>
+    </app-riderroute>
+
 </ion-content>

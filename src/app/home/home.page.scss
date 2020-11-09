@@ -120,4 +120,29 @@ height: 75%;
         color: #fff;
         font-weight: bold;
         font-size: 16px;
+      
+      }
+
+      .riderStatusClass2{   
+        padding: 5px;    
+        width:62px;
+        height: 62px;
+        border-radius: 50%;
+        background-color: #FFF;
+        box-shadow: 0px 4px 4px #b2b2b4;
+      }
+
+      .innerriderStatusClass2{
+        align-items: center; 
+        display: flex;
+        justify-content: center;
+        width:52px;
+        height: 52px;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 1px solid #DF2F45;
+        text-align: center;
+        color: #DF2F45;
+        font-weight: bold;
+        font-size: 16px;
       }
