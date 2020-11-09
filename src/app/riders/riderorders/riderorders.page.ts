@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
-import { Dispatcher, LocalBooking, LocalBookingResource } from 'src/app/_models/service-models';
+import { Dispatcher, LocalBooking, LocalBookingResource,UpdateOrderByDispatcher } from 'src/app/_models/service-models';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { MaprouteService } from 'src/app/_services/maproute.service';
 import { LocalBookingServiceProxy, RiderServiceProxy } from 'src/app/_services/service-proxies';
@@ -19,12 +19,13 @@ export class RiderordersPage implements OnInit {
   }
 orderStatus = ['In-Transit Pickup','Awaiting Delivery','In-Transit Delivery','Delivered']
 loading: any;
-pageSize = 10;
+pageSize = 1;
 dispatcherId: number;
 dispatcher = new Dispatcher().clone();
 usersdata:any;
 ListResourceOfOrder = [];
 bookingStatus=[];
+orderStatusResource = new UpdateOrderByDispatcher().clone();
   constructor(private navCtrl: NavController,
     private alertController: AlertController,
     private loadspinner: LoadingController,
@@ -62,7 +63,7 @@ this.localBookingService.localbookingstatus().subscribe(data=>{
           this.dispatcher = this.usersdata.dispatcher;
      
           this.dispatcherId = this.dispatcher.id;
-this.riderService.getassignedorder(this.pageSize,this.dispatcherId).subscribe(async res=>{
+this.riderService.getassignedorder(this.pageSize,this.dispatcherId).subscribe(async (res:any)=>{
   if(res.code == "000"){
     const toast = await this.toastCtrl.create({
       duration: 3000,
@@ -70,7 +71,7 @@ this.riderService.getassignedorder(this.pageSize,this.dispatcherId).subscribe(as
       color: "success"
     });
     toast.present();
-    this.ListResourceOfOrder = res.data;
+    this.ListResourceOfOrder = res.data.items;
   }else{
     if(res.code == "004"){
       const toast = await this.toastCtrl.create({
@@ -99,7 +100,7 @@ return stFound.name
   return null
 }
 }
- async updateOrderStatus(orderStatus){
+ async updateOrderStatus(orderStatus, orderId){
 // var cIndex = this.orderStatus.findIndex(x=>x == orderStatus);
 // if((cIndex + 1) >= this.orderStatus.length){
 //   const toast = await this.toastCtrl.create({
@@ -109,6 +110,7 @@ return stFound.name
 //   });
 //   toast.present();
 // }else{  }  
+
     const alert = await this.alertController.create({
       cssClass: 'myalertradiocustom-class',
       header: 'New Order Status',
@@ -151,7 +153,26 @@ return stFound.name
           cssClass: 'alertCtrlbtnpry',
           handler: async (newOrderStatus) => {
             if(newOrderStatus){
-
+              this.orderStatusResource.statusId = newOrderStatus;
+              this.orderStatusResource.orderId = orderId;
+            
+              this.riderService.updateOrder(this.orderStatusResource).subscribe(async data=>{
+                if(data.code == "000"){
+                  const toast = await this.toastCtrl.create({
+                    duration: 3000,
+                    message: data.message,
+                    color: "success"
+                  });
+                  toast.present();
+                }else{
+                  const toast = await this.toastCtrl.create({
+                    duration: 3000,
+                    message: data.message,
+                    color: "danger"
+                  });
+                  toast.present();
+                }
+              })
             }else{
               const toast = await this.toastCtrl.create({
                 duration: 3000,
