@@ -3,13 +3,13 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 
 const routes: Routes = [
-//  {path: '', redirectTo: 'checkout', pathMatch: 'full'},
+{path: '', redirectTo: 'admin-orders', pathMatch: 'full'},
 // {path: '', redirectTo: 'international-delivery/summary', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
 //  {path: '', redirectTo: 'trackorder/pickup', pathMatch: 'full'},
-{path: '', redirectTo: 'home', pathMatch: 'full'},
+//{path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/review-booking', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
@@ -144,7 +144,8 @@ const routes: Routes = [
   {
     path: 'pickup',
     loadChildren: () => import('./trackorder/pickup/pickup.module').then( m => m.PickupPageModule)
-  },  {
+  },
+  {
     path: 'assignedorderdetails',
     loadChildren: () => import('./riders/assignedorderdetails/assignedorderdetails.module').then( m => m.AssignedorderdetailsPageModule)
   },
@@ -156,11 +157,10 @@ const routes: Routes = [
     path: 'deliverydirection',
     loadChildren: () => import('./riders/deliverydirection/deliverydirection.module').then( m => m.DeliverydirectionPageModule)
   },
-
-
-
-
-
+  {
+    path: 'admin-orders',
+    loadChildren: () => import('./admin/admin-orders/admin-orders.module').then( m => m.AdminOrdersPageModule)
+  },
 
 
 ];

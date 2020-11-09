@@ -48,9 +48,10 @@ import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
 import { StoreService } from './_services/store.service';
 import { InternationalBooking } from './_models/service-models';
+
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
     // CheckboxComponent
     // PageStructureComponent
   ],

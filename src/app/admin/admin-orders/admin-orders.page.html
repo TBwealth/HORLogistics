@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Orders</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="main-content" style="background-color: #F7F7FA;">
+  <ion-grid>
+    <!-- <ion-row>
+        <ion-col sizeLg="9" sizeMd="9" sizesm="9" sizeXs="8" style="height: 42px;">
+          <ion-input #searchbar  placeholder="Search Orders" type="text" ></ion-input>
+        </ion-col>
+        <ion-col sizeLg="3" sizeMd="2" sizesm="3" sizeXs="3" style="height: 42px;">
+          <div style="padding: 2px;"></div>
+            <ion-buttons (click)="openMenu()">
+              <ion-icon name="menu-outline" class="iconstyle1"></ion-icon>
+          </ion-buttons>
+         </ion-col>
+    </ion-row> -->
+
+  <!-- <ion-tabs lines="full" style="display: block;">
+    <ion-tab-bar>
+        <ion-tab-button id="pending-orders" tab="pending-orders" class="tab">
+          <ion-label>PENDING</ion-label>
+        </ion-tab-button>
+      
+      <ion-tab-button id="assigned-orders" tab="assigned-orders" class="tab">
+        <ion-label>ASSIGNED</ion-label>
+      </ion-tab-button>      
+ 
+    </ion-tab-bar>
+  </ion-tabs> -->
+  <ion-segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="friends">
+      <ion-label>Friends</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="enemies">
+      <ion-label>Enemies</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  </ion-grid>
+</ion-content>

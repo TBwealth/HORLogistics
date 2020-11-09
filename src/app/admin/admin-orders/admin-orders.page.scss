@@ -1,0 +1,25 @@
+.main-content {
+    background: transparent linear-gradient(180deg, #FFFFFF 0%, #F7F7FA 100%) 0% 0% no-repeat padding-box;
+opacity: 1;
+background-color: #F7F7FA;
+}
+
+
+.tab {
+    --color-hover:#EF6102;
+    --color-focused:#EF6102;
+    --color-selected: #EF6102;
+}
+
+.item-center {
+    display: flex;
+    justify-content: center;
+    padding-top: 55px;
+}
+
+.order-item{
+    background:cadetblue; 
+    font-size: 9px; 
+    border-radius: 5px; 
+    padding: 2px 3px;
+}
