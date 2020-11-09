@@ -5,7 +5,7 @@ import {  UserViewModel,LoginResource, UpdateUserViewModel,UserPhotoViewModel, D
 import { AuthenticationService } from '../_services/authentication.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
-import {AccountServiceProxy} from '../_services/service-proxies';
+import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy} from '../_services/service-proxies';
 @Component({
   selector: 'app-profilepage',
   templateUrl: './profilepage.page.html',
@@ -22,8 +22,11 @@ export class ProfilepagePage implements OnInit {
   usersCustomersData: any='';
   userCustomerUser: any = '';
   public captureDataUrl: any;
-  loading: any
+  loading: any;
+  countryList = [];
+stateList = [];
   constructor(
+    private apiService: ApiServiceProxy,
     public alertController: AlertController,
     private AuthenService: AuthenticationService,
     private navCtrl: NavController,
@@ -33,7 +36,8 @@ export class ProfilepagePage implements OnInit {
     private camera: Camera,
     private loadspinner: LoadingController,
     private file: File,
-    private uploadService: AccountServiceProxy
+    private uploadService: AccountServiceProxy,
+    private countrySeervice: CountriesServiceProxy,
   ) { 
     //this.getlatestusers()
     }
@@ -63,7 +67,9 @@ if(this.userRole != 'Rider'){
     this.customersData.homeAddress = this.usersdata.customer.homeAddress;
     this.userProfilePic = this.usersdata.customer.companyLogo;
 }
-    
+    var countryId = this.userRole != 'Rider' ? this.customersData.residentialCountryId : 1 ;
+    this.defaultStateList(countryId);
+    this.defaultCountryList();
     this.customersData.email = this.usersdata.user.email;
     
     this.customersData.phoneNumber = this.usersdata.phone;
@@ -85,7 +91,7 @@ if(this.userRole != 'Rider'){
     this.router.navigate(['documentupload']);
   }
 async updateUser(data,field){
-if(field == 'State' && !this.customersData.residentialCountryId){
+if(field == 'State' && this.userRole != 'Rider' && !this.customersData.residentialCountryId){
   const toast = await this.toastCtrl.create({
     duration: 3000,
     message: 'Please update Country, to enable modification on state field',
@@ -228,6 +234,33 @@ async readFile(file: any) {
     });
   };
   reader.readAsArrayBuffer(file);
+}
+getstateName(stateId){
+if(this.stateList.length > 0){
+ var stateName = this.stateList.find(x => x.id === stateId).name;
+ return stateName;
+}else{
+  return null;
+}
+}
+getCountryName(countryId){
+if(this.countryList.length > 0){
+  var countryName = this.countryList.find(x => x.id === countryId).name;
+  return countryName;
+}else{
+  return null;
+}
+}
+defaultStateList(CountryId){
+
+  this.countrySeervice.states(CountryId).subscribe(data=>{
+    this.stateList = data;
+  })
+}
+defaultCountryList(){
+  this.apiService.countries().subscribe(data=>{
+    this.countryList = data;
+  })
 }
   ngOnInit() {
     

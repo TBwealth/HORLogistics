@@ -8,10 +8,7 @@ const routes: Routes = [
     path: '',
     component: TrackorderPage
   },
-  {
-    path: 'pickup',
-    loadChildren: () => import('./pickup/pickup.module').then( m => m.PickupPageModule)
-  },
+  
  
 ];
 

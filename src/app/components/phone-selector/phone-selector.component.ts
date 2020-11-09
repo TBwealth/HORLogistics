@@ -49,8 +49,13 @@ export class PhoneSelectorComponent implements OnInit {
     // console.log(this.ICountrys);
     this.alpha2Code = "NG";
   }
-  async validatePhone() {
-    const pNumber = this.phoneNo
+  countrySelected(event){
+    console.log(event)
+  }
+  async validatePhone(pNumber: string) {
+    // const pNumber = this.phoneNo
+    console.log(pNumber)
+    // console.log(event)
     var reg = new RegExp('^[+.0-9]+$');
     let pnumber = "";
 

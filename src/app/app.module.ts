@@ -32,7 +32,7 @@ import { FileOpener } from '@ionic-native/file-opener/ngx';
 import {FileChooser} from '@ionic-native/file-chooser/ngx';
 import {FilePath} from '@ionic-native/file-path/ngx';
 import {FileTransfer} from '@ionic-native/file-transfer/ngx';
-
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
@@ -43,10 +43,11 @@ import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy,CheckoutassistanceServiceProxy } from './_services/service-proxies';
+import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy,CheckoutassistanceServiceProxy, RiderServiceProxy } from './_services/service-proxies';
 import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
 import { StoreService } from './_services/store.service';
+import { InternationalBooking } from './_models/service-models';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,6 +89,7 @@ import { StoreService } from './_services/store.service';
     LocationsServiceProxy,
     StoreService,
     LocalBookingServiceProxy,
+    InternationalbookingServiceProxy,
     FileOpener,
     FileChooser,
     FilePath,
@@ -95,6 +97,8 @@ import { StoreService } from './_services/store.service';
     InternationalbookingServiceProxy,
     LocationsServiceProxy,
     CheckoutassistanceServiceProxy,
+    RiderServiceProxy,
+    CallNumber,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]

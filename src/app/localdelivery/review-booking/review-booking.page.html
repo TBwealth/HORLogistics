@@ -3,36 +3,37 @@
     <app-list-item shape="circle"> 1 Ash Park, Pembroke Dock, SA72</app-list-item>
     <app-list-item shape="square"> 54 Hollybank Rd, Southampton</app-list-item>
     <app-maproutecomponent></app-maproutecomponent>
+    <div *ngFor="let booking of bookings">
     <div  class='section-header'>
       LOCAL PICKUP
     </div>
-    <app-list-key-value>
+    <!-- <app-list-key-value>
       <span title>Order Number</span>
       <span value>Oyinkansola</span>
-    </app-list-key-value>
-    <app-list-key-value>
+    </app-list-key-value> -->
+    <!-- <app-list-key-value>
       <span title>Estimated Pickup Time</span>
       <span value>5Lbs</span>
-    </app-list-key-value>
+    </app-list-key-value> -->
     <app-list-key-value>
       <span title>Package bigger than Indomie carton</span>
-      <span value>30,000</span>
+      <span value>{{booking.numberOfPackages}}</span>
     </app-list-key-value>
-    <app-list-key-value>
+    <!-- <app-list-key-value>
       <span title>Pick up Date & Time</span>
-      <span value>14 Feb'19 at 9:42am</span>
-    </app-list-key-value>
+      <span value>{{booking.pic}}</span>
+    </app-list-key-value> -->
     <app-list-key-value>
       <span title>Sender’s Name</span>
-      <span value>14 Feb'19 at 9:42am</span>
+      <span value>{{booking.senderName}}</span>
     </app-list-key-value>
     <app-list-key-value>
       <span title>Receiver’s Name</span>
-      <span value>14 Feb'19 at 9:42am</span>
+      <span value>{{booking.recipientName}}</span>
     </app-list-key-value>
     <app-list-key-value>
       <span title>Receiver’s Number</span>
-      <span value>14 Feb'19 at 9:42am</span>
+      <span value>{{booking.recipientPhoneNumber}}</span>
     </app-list-key-value>
     <div class="bg-secondary">
       <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
@@ -48,5 +49,6 @@
         </ion-button>
       </div>
     </div>
+  </div>
   </div>
 </app-page-structure>

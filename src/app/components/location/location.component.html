@@ -1,0 +1,7 @@
+<ion-select (ionChange)="stateChanged()" placeholder="Select state" name="state" class="select" [(ngModel)]="state">
+  <ion-select-option [value]="state.id" *ngFor="let state of states">{{state.name}}</ion-select-option>
+</ion-select>
+<div style="padding: 5px;"></div>
+<ion-select (ionChange)="locationChanged()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="location">
+  <ion-select-option [value]="availableLocation.id" *ngFor="let availableLocation of locations">{{availableLocation.name}}</ion-select-option>
+</ion-select>

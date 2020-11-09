@@ -61,12 +61,14 @@
     </ion-col>
 
   </ion-row>
-  <ion-row>
+  <ion-row *ngIf="userRole == 'Customer' || userRole == 'Partner'">
     <ion-col size="3">
       <ion-label>Country</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label style="float: right;">{{customersData.residentialCountryId}}</ion-label>
+      <ion-label style="float: right;">
+        {{getCountryName(customersData.residentialCountryId)}}
+     </ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.residentialCountryId,'Country')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
@@ -79,7 +81,9 @@
     </ion-col>
     <ion-col size="8" style="float: right;">
       <ion-label style="float: right;" *ngIf="userRole != 'Rider'">{{customersData.residentialStateId}}</ion-label>
-      <ion-label style="float: right;" *ngIf="userRole == 'Rider'" >{{dispatcher.residentialState}}</ion-label>
+      <ion-label style="float: right;" *ngIf="userRole == 'Rider'" >
+        {{getstateName(dispatcher.residentialStateId)}}
+        </ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(userRole == 'Rider'?dispatcher.residentialStateId:customersData.residentialStateId,'State')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
