@@ -15,7 +15,8 @@ interface APIListResult<T>{
 export enum LOCAL_BOOKING_STATUS{
   Pending = 1,
   Approved = 7,
-  Received = 2
+  Received = 2,
+  Delivered = 5
 }
 
 export enum INTERNATIONAL_BOOKING_STATUS{

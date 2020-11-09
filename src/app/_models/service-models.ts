@@ -8559,6 +8559,57 @@ export interface ILocalBookingCategoryResource {
     estimatedPackageWeight: boolean | undefined;
 }
 
+export class ObjectResourceOfLocalBooking implements IObjectResourceOfLocalBooking {
+    data: LocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfLocalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? LocalBooking.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfLocalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfLocalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfLocalBooking {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfLocalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfLocalBooking {
+    data: LocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
 export class ListResourceOfLocalBookingStatusResource implements IListResourceOfLocalBookingStatusResource {
     total: number | undefined;
     data: LocalBookingStatusResource[] | undefined;

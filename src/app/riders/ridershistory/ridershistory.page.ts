@@ -64,8 +64,7 @@ if(res.code == "000"){
     color: "success"
   });
   toast.present();
-  this.ListResourceOfOrder = res.data.items;
-
+  this.ListResourceOfOrder = res.data.localBookings;
 }else{
   if(res.code == "004"){
     const toast = await this.toastCtrl.create({

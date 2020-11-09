@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { CheckoutAssistance, InternationalBooking, ISelectedOrder, LocalBooking, SelectedOrder } from '../_models/service-models';
-import { InternationalbookingServiceProxy, LocalBookingServiceProxy } from '../_services/service-proxies';
+import { BookingStatus, CheckoutAssistance, InternationalBooking, ISelectedOrder, LocalBooking, LocalBookingStatusResource, SelectedOrder } from '../_models/service-models';
+import { InternationalbookingServiceProxy, IntlBookingStatus, LocalBookingServiceProxy } from '../_services/service-proxies';
 import { Booking, INTERNATIONAL_BOOKING_STATUS, LOCAL_BOOKING_STATUS, StoreService } from '../_services/store.service';
 
 enum SEGMENTS {
@@ -11,7 +11,7 @@ enum SEGMENTS {
   REJECTED
 }
 
-const COMPLETED_LOCAL_BOOKING_STATUS = [LOCAL_BOOKING_STATUS.Received]
+const COMPLETED_LOCAL_BOOKING_STATUS = [LOCAL_BOOKING_STATUS.Received, LOCAL_BOOKING_STATUS.Delivered]
 const COMPLETED_INTERNATIONAL_BOOKING_STATUS = [INTERNATIONAL_BOOKING_STATUS.Received]
 @Component({
   selector: 'app-orders',
@@ -51,9 +51,22 @@ export class OrdersPage implements OnInit {
       spinner: "bubbles",
     });
     loading.present()
-    const promise = await Promise.all([this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), this.store.getCheckoutAssistances().toPromise()])
+    let localBookingStatus: LocalBookingStatusResource[];
+    let internationalBookingStatus: IntlBookingStatus[]
+    const promise = await Promise.all([this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), this.store.getCheckoutAssistances().toPromise(),
+      this.localBookingService.localbookingstatus().toPromise(),
+      this.internationalBookingService.intlbookingstatus().toPromise()])
+    localBookingStatus = promise[3].data
+    internationalBookingStatus = promise[4].data
     this.localBookings = promise[0]
+    this.localBookings.forEach(member => {
+      const status: any = localBookingStatus.find(status => member.bookingStatusId == status.id)
+      member.bookingStatus = new BookingStatus(status) 
+    })
     this.internationalBookings = promise[1]
+    this.internationalBookings.forEach(member => {
+      member.bookingStatus = internationalBookingStatus.find(status => member.bookingStatusId == status.id)
+    })
     this.checkouts = promise[2]
     loading.dismiss()
     const LBookings: Booking[] = this.localBookings.map(booking => new Booking().fromLocalBooking(booking))
