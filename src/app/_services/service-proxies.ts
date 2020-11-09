@@ -592,7 +592,6 @@ export class ApiServiceProxy {
     }
 
 
-
     /**
      * @return OK
      */
@@ -702,6 +701,7 @@ export class ApiServiceProxy {
         }
         return _observableOf<boolean>(<any>null);
     }
+
 
     /**
      * @return OK
@@ -4294,6 +4294,61 @@ export class LocalBookingServiceProxy {
             }));
         }
         return _observableOf<ListResourceOfLocalBookingCategoryResource>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    trackorder(booking_number: string): Observable<ObjectResourceOfLocalBooking> {
+        let url_ = this.baseUrl + "/api/LocalBooking/Trackorder?";
+        if (booking_number === undefined || booking_number === null)
+            throw new Error("The parameter 'booking_number' must be defined and cannot be null.");
+        else
+            url_ += "booking_number=" + encodeURIComponent("" + booking_number) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTrackorder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTrackorder(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfLocalBooking>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfLocalBooking>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processTrackorder(response: HttpResponseBase): Observable<ObjectResourceOfLocalBooking> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfLocalBooking.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfLocalBooking>(<any>null);
     }
 
     /**
@@ -15792,6 +15847,57 @@ export interface ILocalBookingCategoryResource {
     name: string | undefined;
     toggleBookingActivation: boolean | undefined;
     estimatedPackageWeight: boolean | undefined;
+}
+
+export class ObjectResourceOfLocalBooking implements IObjectResourceOfLocalBooking {
+    data: LocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfLocalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? LocalBooking.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfLocalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfLocalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfLocalBooking {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfLocalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfLocalBooking {
+    data: LocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
 }
 
 export class ListResourceOfLocalBookingStatusResource implements IListResourceOfLocalBookingStatusResource {

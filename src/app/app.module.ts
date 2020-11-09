@@ -43,7 +43,7 @@ import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
 import { PageStructureComponent } from './components/page-structure/page-structure.component';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy,CheckoutassistanceServiceProxy, RiderServiceProxy } from './_services/service-proxies';
+import { OrderServiceProxy,AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy,CheckoutassistanceServiceProxy, RiderServiceProxy } from './_services/service-proxies';
 import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
 import { StoreService } from './_services/store.service';
@@ -99,6 +99,7 @@ import { InternationalBooking } from './_models/service-models';
     CheckoutassistanceServiceProxy,
     RiderServiceProxy,
     CallNumber,
+    OrderServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
