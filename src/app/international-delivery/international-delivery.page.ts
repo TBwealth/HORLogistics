@@ -9,7 +9,7 @@ import {ICountry} from '../_models/country.type';
 import { CountryserviceService } from '../_services/countryservice.service';
 import { InternationalbookingServiceProxy } from '../_services/service-proxies';
 import { HoldInstruction, InternationalBooking, ShipmentDeliveryTypeResource, ShipmentModeResource } from '../_models/service-models';
-import { StoreService } from '../_services/store.service';
+import { InternationalRoute, StoreService } from '../_services/store.service';
 import { ThrowStmt } from '@angular/compiler';
 
 
@@ -24,6 +24,8 @@ enum BOOKING_KINDS {
   styleUrls: ['./international-delivery.page.scss'],
 })
 export class InternationalDeliveryPage implements OnInit {
+  countries: InternationalRoute[] = [];
+  country: InternationalRoute = {};
   homePickup = false
   BOOKING_KINDS = BOOKING_KINDS;
   booking: InternationalBooking = new InternationalBooking()
@@ -62,12 +64,16 @@ export class InternationalDeliveryPage implements OnInit {
 
     phoneNo = ''
   ngOnInit() {
+    this.store.getInternationalRoutes().subscribe(data => {
+      this.countries = data
+    })
     this.internationalBookingService.intlbookingdeliverytypes().subscribe(data => {
       this.shipmentDeliveryTypes = data.data
     })
     this.internationalBookingService.intlbookingshipmentmode().subscribe(data => {
       this.shipmentModes = data.data
     })
+    this.booking.holdInstruction = new HoldInstruction()
     // this.activatedroute.url.subscribe(url => {
     //   // if(url[0].path.includes('export')){
     //   //   this.exportPage = true
@@ -109,5 +115,11 @@ export class InternationalDeliveryPage implements OnInit {
       this.booking.shipmentDeliveryTypeId = 1
       this.store.saveInternationalBooking(this.booking)
       this.router.navigate(['international-delivery/summary'])
+    }
+
+    countrySelected(){
+      this.country = this.countries.find(country => {
+        return country.country == this.booking.country
+      })
     }
 }

@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking, LocalBookingResource, ObjectResourceOfGetLocalBookingsForMobileResource } from '../_models/service-models';
+import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking, LocalBookingResource, ObjectResourceOfGetLocalBookingsForMobileResource } from '../_models/service-models';
 
 interface APIListResult<T>{
   data: {
-    items: T[]
+    items: T[],
+    internationalBookings: T[],
+    localBookings: T[]
   },
   code: string,
   message: string
@@ -100,7 +102,7 @@ export class StoreService {
   getAllLocalOrders(status: number=null){
     const subject = new Subject<LocalBooking[]>()
     this.http.get<APIListResult<ILocalBooking>>('http://104.40.215.33:8008/api/LocalBooking/getlocalbooking?Page=').subscribe(response => {
-      const bookings = response.data.items.map(iBooking => new LocalBooking(iBooking))
+      const bookings = response.data.localBookings.map(iBooking => new LocalBooking(iBooking))
       subject.next(bookings)
       subject.complete()
     })
@@ -110,7 +112,7 @@ export class StoreService {
     const subject = new Subject<InternationalBooking[]>()
     this.http.get<APIListResult<IInternationalBooking>>(`http://104.40.215.33:8008/api/internationalbooking/getintlbookings?Page=&Booking_Status=`).subscribe(response => {
       if(response.code = '000'){
-        const bookings = response.data.items.map(iBooking => new InternationalBooking(iBooking))
+        const bookings = response.data.internationalBookings.map(iBooking => new InternationalBooking(iBooking))
         subject.next(bookings)
         subject.complete()
       } else {
@@ -124,6 +126,19 @@ export class StoreService {
     this.http.get<APIRouteResult<InternationalRoute>>('http://104.40.215.33:8008/api/internationalbooking/internationlbookingRoute').subscribe(response => {
       if(response.code = '000'){
         subject.next(response.data)
+        subject.complete()
+      } else {
+        subject.error(response.message)
+      }
+    })
+    return subject
+  }
+  getCheckoutAssistances(booking_id: number=null){
+    const subject = new Subject<CheckoutAssistance[]>()
+    this.http.get<APIListResult<ICheckoutAssistance>>('http://104.40.215.33:8008/api/checkoutassistance/Getcheckassistance?Page=').subscribe(response => {
+      if(response.code = '000'){
+        const checkouts = response.data.items.map(iCheckout => new CheckoutAssistance(iCheckout))
+        subject.next(checkouts)
         subject.complete()
       } else {
         subject.error(response.message)

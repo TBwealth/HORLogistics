@@ -18,14 +18,14 @@
       <span title>Value of Package</span>
       <span value>{{booking.packageValue}}</span>
     </app-list-key-value>
-    <app-list-key-value>
+    <app-list-key-value *ngIf="booking.eta">
       <span title>Date</span>
       <span value>{{booking.eta}}</span>
     </app-list-key-value>
     <app-list-key-value>
       <span title>Service Type</span>
       <span value>
-        <ng-template [ngIf]="booking.shipmentDeliveryType">{{booking.shipmentDeliveryType.name}}</ng-template>
+        <ng-template>{{shipmentType.name}}</ng-template>
       </span>
     </app-list-key-value>
     <ng-template [ngIf]="!booking.id">

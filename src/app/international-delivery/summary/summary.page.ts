@@ -3,7 +3,7 @@ import { MaprouteService } from 'src/app/_services/maproute.service';
 import { ApiServiceProxy, InternationalbookingServiceProxy } from 'src/app/_services/service-proxies';
 import { StoreService, InternationalRoute } from 'src/app/_services/store.service';
 import * as moment from 'moment'
-import { InternationalBooking } from 'src/app/_models/service-models';
+import { InternationalBooking, ShipmentDeliveryTypeResource } from 'src/app/_models/service-models';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 
@@ -15,6 +15,7 @@ import { LoadingController, ToastController } from '@ionic/angular';
 export class SummaryPage implements OnInit {
   booking: InternationalBooking;
   country: InternationalRoute = {}
+  shipmentType = new ShipmentDeliveryTypeResource()
   totalPayment = 0
   constructor(
     private routeService: MaprouteService,
@@ -36,6 +37,9 @@ export class SummaryPage implements OnInit {
       })
       this.totalPayment = this.country.adminFee + this.booking.estimatedPackageWeight * this.country.importRatePerUnitWeight * this.country.exchangeRate
     })
+    this.internationalBookingService.intlbookingdeliverytypes().subscribe(data => {
+      this.shipmentType = data.data.find(deliveryType => deliveryType.id == this.booking.shipmentDeliveryTypeId)
+    })
   }
 
   async submit(){5000
@@ -50,13 +54,13 @@ export class SummaryPage implements OnInit {
     this.internationalBookingService.createIntlBooking(this.booking).subscribe(async(data) => {
       loading.dismiss()
       if(data.code == '000'){
-        this.loadingController.dismiss()
-        const toast = await this.toastController.create({
-          message: 'Booking created successfully',
-          duration: 2000
-        });
-        toast.present();
-        this.router.navigate(['/orders'])
+        if(this.booking.hasHoldInstruction){
+          this.internationalBookingService.createHoldInstruction(this.booking.holdInstruction).subscribe(async(data) => {
+            this.finishCreation()
+        })
+      } else {
+        this.finishCreation()
+      }
       } else {
         const toast = await this.toastController.create({
           message: data.message,
@@ -65,6 +69,16 @@ export class SummaryPage implements OnInit {
         toast.present();
       }
     })
+  }
+
+  async finishCreation(){
+    this.loadingController.dismiss()
+    const toast = await this.toastController.create({
+      message: 'Booking created successfully',
+      duration: 2000
+    });
+    toast.present();
+    this.router.navigate(['/orders'])
   }
 
 }

@@ -5,8 +5,7 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="!exportPage">Import Shipment Mode</ion-title>
-    <ion-title *ngIf="exportPage">Export Shipment Mode</ion-title>
+    <ion-title>International Shipping</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [ngSwitch]="activetab">
@@ -43,14 +42,14 @@
     <form name="DescriptionForm" #DescriptionForm="ngForm">
       <p style="word-wrap: break-word;">We do not open packages except in extreme circumstances where package is suspicious, or flagged by customs. We however need to know the content as required by law</p>
       <ion-col size=3>
-        <ion-select placeholder="country" class="form-control" #selectCount  [(ngModel)]="booking.country"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button" required>
+        <ion-select placeholder="country" class="form-control" #selectCount  [(ngModel)]="booking.country"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button" required (ngModelChange)="countrySelected()">
           <ion-select-option value="USA" *ngIf="!exportPage"> USA </ion-select-option>
           <ion-select-option  value="UK" *ngIf="!exportPage"> UK </ion-select-option>
           <ion-select-option  value="CA"> CANADA </ion-select-option>
         </ion-select>
       </ion-col>
       <div style="padding: 5px;"></div>
-      <ion-input type="text" placeholder="Estimated Package Weight (Lbs)" (ionChange)="validateDescriptionForm()" (keyup)="validateDescriptionForm()" name="estimated_weight" #estimated_weight="ngModel" [(ngModel)]="booking.estimatedPackageWeight" required></ion-input>
+      <ion-input type="text" [placeholder]="'Estimated Package Weight (' + country.weightSymbol  +')'" (ionChange)="validateDescriptionForm()" (keyup)="validateDescriptionForm()" name="estimated_weight" #estimated_weight="ngModel" [(ngModel)]="booking.estimatedPackageWeight" required></ion-input>
       <div style="padding: 5px;"></div>
       <ion-input *ngIf="booking.kindOfBooking==BOOKING_KINDS.DROP_OFF"  placeholder="Value of Package in Naira" name="package_value" (keyup)="validateDescriptionForm()" (ionChange)="validateDescriptionForm()" #package_value="ngModel" [(ngModel)]="booking.packageValue" required></ion-input>
       <div style="padding: 5px;"></div>
@@ -149,14 +148,14 @@
       <app-checkbox [(value)]="booking.hasHoldInstruction"></app-checkbox>
       <ng-template [ngIf]="booking.hasHoldInstruction">
         <div style="padding: 5px;"></div>
-        <ion-datetime (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="hold_instruction.shippingDate" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
+        <ion-datetime (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="booking.holdInstruction.shippingDate" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
         <div *ngIf="hold_date.invalid && (hold_date.dirty || hold_date.touched)" class="error">
           <div *ngIf="hold_date.errors.required">
             Delivery Date is required
           </div>
         </div>
         <div style="padding: 5px;"></div>
-          <ion-textarea type="text" (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" name="hold_comment" #hold_comment="ngModel" placeholder="Comment" [(ngModel)]="hold_instruction.comment" required></ion-textarea>
+          <ion-textarea type="text" (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" name="hold_comment" #hold_comment="ngModel" placeholder="Comment" [(ngModel)]="booking.holdInstruction.comment" required></ion-textarea>
           <div *ngIf="hold_comment.invalid && (hold_comment.dirty || hold_comment.touched)" class="error">
             <div *ngIf="hold_comment.errors.required">
               Comment is required

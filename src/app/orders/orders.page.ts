@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { InternationalBooking, ISelectedOrder, LocalBooking, Order, SelectedOrder } from '../_models/service-models';
+import { CheckoutAssistance, InternationalBooking, ISelectedOrder, LocalBooking, Order, SelectedOrder } from '../_models/service-models';
 import { InternationalbookingServiceProxy, LocalBookingServiceProxy, OrderServiceProxy, OrdersServiceProxy } from '../_services/service-proxies';
 import { Booking, INTERNATIONAL_BOOKING_STATUS, LOCAL_BOOKING_STATUS, StoreService } from '../_services/store.service';
 
@@ -32,6 +32,7 @@ export class OrdersPage implements OnInit {
   localBookings: LocalBooking[] = []
   internationalBookings: InternationalBooking[] = []
   bookings: Booking[]
+  checkouts: CheckoutAssistance[] = []
   filteredLocalBookings: LocalBooking[] = []
   filteredInternationalBookings: InternationalBooking[]
 
@@ -50,9 +51,10 @@ export class OrdersPage implements OnInit {
       spinner: "bubbles",
     });
     loading.present()
-    const promise = await Promise.all([this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise()])
+    const promise = await Promise.all([this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), this.store.getCheckoutAssistances().toPromise()])
     this.localBookings = promise[0]
     this.internationalBookings = promise[1]
+    this.checkouts = promise[2]
     loading.dismiss()
     const LBookings: Booking[] = this.localBookings.map(booking => new Booking().fromLocalBooking(booking))
     const IBookings: Booking[] = this.internationalBookings.map(booking => new Booking().fromInternationalBooking(booking))
