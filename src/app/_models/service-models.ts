@@ -983,6 +983,8 @@ export class DispatcherDocument implements IDispatcherDocument {
     riderLincesUrl: string | undefined;
     riderInsurance: string | undefined;
     dispatcher: Dispatcher | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 
     constructor(data?: IDispatcherDocument) {
         if (data) {
@@ -1001,6 +1003,8 @@ export class DispatcherDocument implements IDispatcherDocument {
             this.riderLincesUrl = _data["riderLincesUrl"];
             this.riderInsurance = _data["riderInsurance"];
             this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
         }
     }
 
@@ -1019,6 +1023,8 @@ export class DispatcherDocument implements IDispatcherDocument {
         data["riderLincesUrl"] = this.riderLincesUrl;
         data["riderInsurance"] = this.riderInsurance;
         data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
         return data; 
     }
 
@@ -1037,6 +1043,8 @@ export interface IDispatcherDocument {
     riderLincesUrl: string | undefined;
     riderInsurance: string | undefined;
     dispatcher: Dispatcher | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class ResidentialState implements IResidentialState {
@@ -5870,6 +5878,187 @@ export interface ICheckOutAssistanceProductModel {
     comment: string | undefined;
 }
 
+export class FilterCheckout implements IFilterCheckout {
+    full_name: string | undefined;
+    date_range: string | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+
+    constructor(data?: IFilterCheckout) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.full_name = _data["full_name"];
+            this.date_range = _data["date_range"];
+            this.booking_status = _data["booking_status"];
+            this.page = _data["page"];
+        }
+    }
+
+    static fromJS(data: any): FilterCheckout {
+        data = typeof data === 'object' ? data : {};
+        let result = new FilterCheckout();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["full_name"] = this.full_name;
+        data["date_range"] = this.date_range;
+        data["booking_status"] = this.booking_status;
+        data["page"] = this.page;
+        return data; 
+    }
+
+    clone(): FilterCheckout {
+        const json = this.toJSON();
+        let result = new FilterCheckout();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFilterCheckout {
+    full_name: string | undefined;
+    date_range: string | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+}
+
+export class ObjectResourceOfPagedListOfCheckoutAssistance implements IObjectResourceOfPagedListOfCheckoutAssistance {
+    data: PagedListOfCheckoutAssistance | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfPagedListOfCheckoutAssistance) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? PagedListOfCheckoutAssistance.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfPagedListOfCheckoutAssistance {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfPagedListOfCheckoutAssistance();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfPagedListOfCheckoutAssistance {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfPagedListOfCheckoutAssistance();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfPagedListOfCheckoutAssistance {
+    data: PagedListOfCheckoutAssistance | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class PagedListOfCheckoutAssistance implements IPagedListOfCheckoutAssistance {
+    items: CheckoutAssistance[] | undefined;
+    readonly currentPage: number | undefined;
+    readonly totalPages: number | undefined;
+    readonly pageSize: number | undefined;
+    readonly totalCount: number | undefined;
+    readonly hasPrevious: boolean | undefined;
+    readonly hasNext: boolean | undefined;
+
+    constructor(data?: IPagedListOfCheckoutAssistance) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(CheckoutAssistance.fromJS(item));
+            }
+            (<any>this).currentPage = _data["currentPage"];
+            (<any>this).totalPages = _data["totalPages"];
+            (<any>this).pageSize = _data["pageSize"];
+            (<any>this).totalCount = _data["totalCount"];
+            (<any>this).hasPrevious = _data["hasPrevious"];
+            (<any>this).hasNext = _data["hasNext"];
+        }
+    }
+
+    static fromJS(data: any): PagedListOfCheckoutAssistance {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedListOfCheckoutAssistance();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["pageSize"] = this.pageSize;
+        data["totalCount"] = this.totalCount;
+        data["hasPrevious"] = this.hasPrevious;
+        data["hasNext"] = this.hasNext;
+        return data; 
+    }
+
+    clone(): PagedListOfCheckoutAssistance {
+        const json = this.toJSON();
+        let result = new PagedListOfCheckoutAssistance();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedListOfCheckoutAssistance {
+    items: CheckoutAssistance[] | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    totalCount: number | undefined;
+    hasPrevious: boolean | undefined;
+    hasNext: boolean | undefined;
+}
+
 export class CreateLocalBooking implements ICreateLocalBooking {
     deliveryAddress: string;
     deliveryBustop: string;
@@ -6008,12 +6197,12 @@ export interface IIntlFilter {
     full_name: string | undefined;
 }
 
-export class ObjectResourceOfIPagedListOfInternationalBooking implements IObjectResourceOfIPagedListOfInternationalBooking {
-    data: InternationalBooking[] | undefined;
+export class ObjectResourceOfPagedListOfInternationalBooking implements IObjectResourceOfPagedListOfInternationalBooking {
+    data: PagedListOfInternationalBooking | undefined;
     code: string | undefined;
     message: string | undefined;
 
-    constructor(data?: IObjectResourceOfIPagedListOfInternationalBooking) {
+    constructor(data?: IObjectResourceOfPagedListOfInternationalBooking) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6024,47 +6213,114 @@ export class ObjectResourceOfIPagedListOfInternationalBooking implements IObject
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(InternationalBooking.fromJS(item));
-            }
+            this.data = _data["data"] ? PagedListOfInternationalBooking.fromJS(_data["data"]) : <any>undefined;
             this.code = _data["code"];
             this.message = _data["message"];
         }
     }
 
-    static fromJS(data: any): ObjectResourceOfIPagedListOfInternationalBooking {
+    static fromJS(data: any): ObjectResourceOfPagedListOfInternationalBooking {
         data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfIPagedListOfInternationalBooking();
+        let result = new ObjectResourceOfPagedListOfInternationalBooking();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
         data["code"] = this.code;
         data["message"] = this.message;
         return data; 
     }
 
-    clone(): ObjectResourceOfIPagedListOfInternationalBooking {
+    clone(): ObjectResourceOfPagedListOfInternationalBooking {
         const json = this.toJSON();
-        let result = new ObjectResourceOfIPagedListOfInternationalBooking();
+        let result = new ObjectResourceOfPagedListOfInternationalBooking();
         result.init(json);
         return result;
     }
 }
 
-export interface IObjectResourceOfIPagedListOfInternationalBooking {
-    data: InternationalBooking[] | undefined;
+export interface IObjectResourceOfPagedListOfInternationalBooking {
+    data: PagedListOfInternationalBooking | undefined;
     code: string | undefined;
     message: string | undefined;
+}
+
+export class PagedListOfInternationalBooking implements IPagedListOfInternationalBooking {
+    items: InternationalBooking[] | undefined;
+    readonly currentPage: number | undefined;
+    readonly totalPages: number | undefined;
+    readonly pageSize: number | undefined;
+    readonly totalCount: number | undefined;
+    readonly hasPrevious: boolean | undefined;
+    readonly hasNext: boolean | undefined;
+
+    constructor(data?: IPagedListOfInternationalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(InternationalBooking.fromJS(item));
+            }
+            (<any>this).currentPage = _data["currentPage"];
+            (<any>this).totalPages = _data["totalPages"];
+            (<any>this).pageSize = _data["pageSize"];
+            (<any>this).totalCount = _data["totalCount"];
+            (<any>this).hasPrevious = _data["hasPrevious"];
+            (<any>this).hasNext = _data["hasNext"];
+        }
+    }
+
+    static fromJS(data: any): PagedListOfInternationalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedListOfInternationalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["pageSize"] = this.pageSize;
+        data["totalCount"] = this.totalCount;
+        data["hasPrevious"] = this.hasPrevious;
+        data["hasNext"] = this.hasNext;
+        return data; 
+    }
+
+    clone(): PagedListOfInternationalBooking {
+        const json = this.toJSON();
+        let result = new PagedListOfInternationalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedListOfInternationalBooking {
+    items: InternationalBooking[] | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    totalCount: number | undefined;
+    hasPrevious: boolean | undefined;
+    hasNext: boolean | undefined;
 }
 
 export class ListResourceOfIntlBookingStatusResource implements IListResourceOfIntlBookingStatusResource {
@@ -6726,6 +6982,192 @@ export interface IIntlCreateResource {
     bookingNumber: string | undefined;
     successMessage: string | undefined;
     customer: Customer | undefined;
+}
+
+export class ListResourceOfInternationalRoute implements IListResourceOfInternationalRoute {
+    total: number | undefined;
+    data: InternationalRoute[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IListResourceOfInternationalRoute) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.total = _data["total"];
+            if (Array.isArray(_data["data"])) {
+                this.data = [] as any;
+                for (let item of _data["data"])
+                    this.data.push(InternationalRoute.fromJS(item));
+            }
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ListResourceOfInternationalRoute {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResourceOfInternationalRoute();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["total"] = this.total;
+        if (Array.isArray(this.data)) {
+            data["data"] = [];
+            for (let item of this.data)
+                data["data"].push(item.toJSON());
+        }
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ListResourceOfInternationalRoute {
+        const json = this.toJSON();
+        let result = new ListResourceOfInternationalRoute();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResourceOfInternationalRoute {
+    total: number | undefined;
+    data: InternationalRoute[] | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class InternationalRoute implements IInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+
+    constructor(data?: IInternationalRoute) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adminFee = _data["adminFee"];
+            this.exportRatePerUnitWeight = _data["exportRatePerUnitWeight"];
+            this.convertExportRateToNaira = _data["convertExportRateToNaira"];
+            this.importRatePerUnitWeight = _data["importRatePerUnitWeight"];
+            this.convertImportRateToNaira = _data["convertImportRateToNaira"];
+            this.mininumQtyExport = _data["mininumQtyExport"];
+            this.mininumQtyImport = _data["mininumQtyImport"];
+            this.country = _data["country"];
+            this.currencySymbol = _data["currencySymbol"];
+            this.currencyName = _data["currencyName"];
+            this.exchangeRate = _data["exchangeRate"];
+            this.deliveryTimeline = _data["deliveryTimeline"];
+            this.canImport = _data["canImport"];
+            this.canExport = _data["canExport"];
+            this.weightSymbol = _data["weightSymbol"];
+            this.weightName = _data["weightName"];
+            this.isActive = _data["isActive"];
+            this.markAsNew = _data["markAsNew"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): InternationalRoute {
+        data = typeof data === 'object' ? data : {};
+        let result = new InternationalRoute();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adminFee"] = this.adminFee;
+        data["exportRatePerUnitWeight"] = this.exportRatePerUnitWeight;
+        data["convertExportRateToNaira"] = this.convertExportRateToNaira;
+        data["importRatePerUnitWeight"] = this.importRatePerUnitWeight;
+        data["convertImportRateToNaira"] = this.convertImportRateToNaira;
+        data["mininumQtyExport"] = this.mininumQtyExport;
+        data["mininumQtyImport"] = this.mininumQtyImport;
+        data["country"] = this.country;
+        data["currencySymbol"] = this.currencySymbol;
+        data["currencyName"] = this.currencyName;
+        data["exchangeRate"] = this.exchangeRate;
+        data["deliveryTimeline"] = this.deliveryTimeline;
+        data["canImport"] = this.canImport;
+        data["canExport"] = this.canExport;
+        data["weightSymbol"] = this.weightSymbol;
+        data["weightName"] = this.weightName;
+        data["isActive"] = this.isActive;
+        data["markAsNew"] = this.markAsNew;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): InternationalRoute {
+        const json = this.toJSON();
+        let result = new InternationalRoute();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class ObjectResourceOfHoldInstructionResource implements IObjectResourceOfHoldInstructionResource {
@@ -7517,12 +7959,12 @@ export interface IProcessIntlBookingResource {
     id: number | undefined;
 }
 
-export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjectResourceOfGetLocalBookingsForMobileResource {
-    data: GetLocalBookingsForMobileResource | undefined;
+export class ObjectResourceOfInternationaRate implements IObjectResourceOfInternationaRate {
+    data: InternationaRate | undefined;
     code: string | undefined;
     message: string | undefined;
 
-    constructor(data?: IObjectResourceOfGetLocalBookingsForMobileResource) {
+    constructor(data?: IObjectResourceOfInternationaRate) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7533,15 +7975,15 @@ export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjec
 
     init(_data?: any) {
         if (_data) {
-            this.data = _data["data"] ? GetLocalBookingsForMobileResource.fromJS(_data["data"]) : <any>undefined;
+            this.data = _data["data"] ? InternationaRate.fromJS(_data["data"]) : <any>undefined;
             this.code = _data["code"];
             this.message = _data["message"];
         }
     }
 
-    static fromJS(data: any): ObjectResourceOfGetLocalBookingsForMobileResource {
+    static fromJS(data: any): ObjectResourceOfInternationaRate {
         data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfGetLocalBookingsForMobileResource();
+        let result = new ObjectResourceOfInternationaRate();
         result.init(data);
         return result;
     }
@@ -7554,25 +7996,25 @@ export class ObjectResourceOfGetLocalBookingsForMobileResource implements IObjec
         return data; 
     }
 
-    clone(): ObjectResourceOfGetLocalBookingsForMobileResource {
+    clone(): ObjectResourceOfInternationaRate {
         const json = this.toJSON();
-        let result = new ObjectResourceOfGetLocalBookingsForMobileResource();
+        let result = new ObjectResourceOfInternationaRate();
         result.init(json);
         return result;
     }
 }
 
-export interface IObjectResourceOfGetLocalBookingsForMobileResource {
-    data: GetLocalBookingsForMobileResource | undefined;
+export interface IObjectResourceOfInternationaRate {
+    data: InternationaRate | undefined;
     code: string | undefined;
     message: string | undefined;
 }
 
-export class GetLocalBookingsForMobileResource implements IGetLocalBookingsForMobileResource {
-    localBookings: LocalBooking[] | undefined;
-    dispatcher: Dispatcher | undefined;
+export class InternationaRate implements IInternationaRate {
+    internationalRoute: InternationalRoute[] | undefined;
+    lspInternationalRoute: LSPInternationalRoute[] | undefined;
 
-    constructor(data?: IGetLocalBookingsForMobileResource) {
+    constructor(data?: IInternationaRate) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -7583,44 +8025,420 @@ export class GetLocalBookingsForMobileResource implements IGetLocalBookingsForMo
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["localBookings"])) {
-                this.localBookings = [] as any;
-                for (let item of _data["localBookings"])
-                    this.localBookings.push(LocalBooking.fromJS(item));
+            if (Array.isArray(_data["internationalRoute"])) {
+                this.internationalRoute = [] as any;
+                for (let item of _data["internationalRoute"])
+                    this.internationalRoute.push(InternationalRoute.fromJS(item));
             }
-            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            if (Array.isArray(_data["lspInternationalRoute"])) {
+                this.lspInternationalRoute = [] as any;
+                for (let item of _data["lspInternationalRoute"])
+                    this.lspInternationalRoute.push(LSPInternationalRoute.fromJS(item));
+            }
         }
     }
 
-    static fromJS(data: any): GetLocalBookingsForMobileResource {
+    static fromJS(data: any): InternationaRate {
         data = typeof data === 'object' ? data : {};
-        let result = new GetLocalBookingsForMobileResource();
+        let result = new InternationaRate();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.localBookings)) {
-            data["localBookings"] = [];
-            for (let item of this.localBookings)
-                data["localBookings"].push(item.toJSON());
+        if (Array.isArray(this.internationalRoute)) {
+            data["internationalRoute"] = [];
+            for (let item of this.internationalRoute)
+                data["internationalRoute"].push(item.toJSON());
         }
-        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        if (Array.isArray(this.lspInternationalRoute)) {
+            data["lspInternationalRoute"] = [];
+            for (let item of this.lspInternationalRoute)
+                data["lspInternationalRoute"].push(item.toJSON());
+        }
         return data; 
     }
 
-    clone(): GetLocalBookingsForMobileResource {
+    clone(): InternationaRate {
         const json = this.toJSON();
-        let result = new GetLocalBookingsForMobileResource();
+        let result = new InternationaRate();
         result.init(json);
         return result;
     }
 }
 
-export interface IGetLocalBookingsForMobileResource {
-    localBookings: LocalBooking[] | undefined;
-    dispatcher: Dispatcher | undefined;
+export interface IInternationaRate {
+    internationalRoute: InternationalRoute[] | undefined;
+    lspInternationalRoute: LSPInternationalRoute[] | undefined;
+}
+
+export class LSPInternationalRoute implements ILSPInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    isFlatRate: boolean | undefined;
+    lowerMarginWeight: number | undefined;
+    lowerMarginExportRatePerUnitWeight: number | undefined;
+    lowerMarginImportRatePerUnitWeight: number | undefined;
+
+    constructor(data?: ILSPInternationalRoute) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.adminFee = _data["adminFee"];
+            this.exportRatePerUnitWeight = _data["exportRatePerUnitWeight"];
+            this.convertExportRateToNaira = _data["convertExportRateToNaira"];
+            this.importRatePerUnitWeight = _data["importRatePerUnitWeight"];
+            this.convertImportRateToNaira = _data["convertImportRateToNaira"];
+            this.mininumQtyExport = _data["mininumQtyExport"];
+            this.mininumQtyImport = _data["mininumQtyImport"];
+            this.country = _data["country"];
+            this.currencySymbol = _data["currencySymbol"];
+            this.currencyName = _data["currencyName"];
+            this.exchangeRate = _data["exchangeRate"];
+            this.deliveryTimeline = _data["deliveryTimeline"];
+            this.canImport = _data["canImport"];
+            this.canExport = _data["canExport"];
+            this.weightSymbol = _data["weightSymbol"];
+            this.weightName = _data["weightName"];
+            this.isActive = _data["isActive"];
+            this.markAsNew = _data["markAsNew"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.isFlatRate = _data["isFlatRate"];
+            this.lowerMarginWeight = _data["lowerMarginWeight"];
+            this.lowerMarginExportRatePerUnitWeight = _data["lowerMarginExportRatePerUnitWeight"];
+            this.lowerMarginImportRatePerUnitWeight = _data["lowerMarginImportRatePerUnitWeight"];
+        }
+    }
+
+    static fromJS(data: any): LSPInternationalRoute {
+        data = typeof data === 'object' ? data : {};
+        let result = new LSPInternationalRoute();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["adminFee"] = this.adminFee;
+        data["exportRatePerUnitWeight"] = this.exportRatePerUnitWeight;
+        data["convertExportRateToNaira"] = this.convertExportRateToNaira;
+        data["importRatePerUnitWeight"] = this.importRatePerUnitWeight;
+        data["convertImportRateToNaira"] = this.convertImportRateToNaira;
+        data["mininumQtyExport"] = this.mininumQtyExport;
+        data["mininumQtyImport"] = this.mininumQtyImport;
+        data["country"] = this.country;
+        data["currencySymbol"] = this.currencySymbol;
+        data["currencyName"] = this.currencyName;
+        data["exchangeRate"] = this.exchangeRate;
+        data["deliveryTimeline"] = this.deliveryTimeline;
+        data["canImport"] = this.canImport;
+        data["canExport"] = this.canExport;
+        data["weightSymbol"] = this.weightSymbol;
+        data["weightName"] = this.weightName;
+        data["isActive"] = this.isActive;
+        data["markAsNew"] = this.markAsNew;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["isFlatRate"] = this.isFlatRate;
+        data["lowerMarginWeight"] = this.lowerMarginWeight;
+        data["lowerMarginExportRatePerUnitWeight"] = this.lowerMarginExportRatePerUnitWeight;
+        data["lowerMarginImportRatePerUnitWeight"] = this.lowerMarginImportRatePerUnitWeight;
+        return data; 
+    }
+
+    clone(): LSPInternationalRoute {
+        const json = this.toJSON();
+        let result = new LSPInternationalRoute();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ILSPInternationalRoute {
+    id: number | undefined;
+    adminFee: number;
+    exportRatePerUnitWeight: number;
+    convertExportRateToNaira: boolean;
+    importRatePerUnitWeight: number;
+    convertImportRateToNaira: boolean;
+    mininumQtyExport: number;
+    mininumQtyImport: number;
+    country: string;
+    currencySymbol: string;
+    currencyName: string;
+    exchangeRate: number;
+    deliveryTimeline: string;
+    canImport: boolean;
+    canExport: boolean;
+    weightSymbol: string;
+    weightName: string;
+    isActive: boolean | undefined;
+    markAsNew: boolean | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    isFlatRate: boolean | undefined;
+    lowerMarginWeight: number | undefined;
+    lowerMarginExportRatePerUnitWeight: number | undefined;
+    lowerMarginImportRatePerUnitWeight: number | undefined;
+}
+
+export class FilterBooking implements IFilterBooking {
+    booking_category: number[] | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+    dispatcher_id: number | undefined;
+    category_group: number | undefined;
+    made_by: string | undefined;
+    full_name: string | undefined;
+    date_range: string | undefined;
+    delivery_date: string | undefined;
+    booking_number: string | undefined;
+    display_mode: string | undefined;
+    selected_orders: number[] | undefined;
+
+    constructor(data?: IFilterBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["booking_category"])) {
+                this.booking_category = [] as any;
+                for (let item of _data["booking_category"])
+                    this.booking_category.push(item);
+            }
+            this.booking_status = _data["booking_status"];
+            this.page = _data["page"];
+            this.dispatcher_id = _data["dispatcher_id"];
+            this.category_group = _data["category_group"];
+            this.made_by = _data["made_by"];
+            this.full_name = _data["full_name"];
+            this.date_range = _data["date_range"];
+            this.delivery_date = _data["delivery_date"];
+            this.booking_number = _data["booking_number"];
+            this.display_mode = _data["display_mode"];
+            if (Array.isArray(_data["selected_orders"])) {
+                this.selected_orders = [] as any;
+                for (let item of _data["selected_orders"])
+                    this.selected_orders.push(item);
+            }
+        }
+    }
+
+    static fromJS(data: any): FilterBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new FilterBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.booking_category)) {
+            data["booking_category"] = [];
+            for (let item of this.booking_category)
+                data["booking_category"].push(item);
+        }
+        data["booking_status"] = this.booking_status;
+        data["page"] = this.page;
+        data["dispatcher_id"] = this.dispatcher_id;
+        data["category_group"] = this.category_group;
+        data["made_by"] = this.made_by;
+        data["full_name"] = this.full_name;
+        data["date_range"] = this.date_range;
+        data["delivery_date"] = this.delivery_date;
+        data["booking_number"] = this.booking_number;
+        data["display_mode"] = this.display_mode;
+        if (Array.isArray(this.selected_orders)) {
+            data["selected_orders"] = [];
+            for (let item of this.selected_orders)
+                data["selected_orders"].push(item);
+        }
+        return data; 
+    }
+
+    clone(): FilterBooking {
+        const json = this.toJSON();
+        let result = new FilterBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFilterBooking {
+    booking_category: number[] | undefined;
+    booking_status: number | undefined;
+    page: number | undefined;
+    dispatcher_id: number | undefined;
+    category_group: number | undefined;
+    made_by: string | undefined;
+    full_name: string | undefined;
+    date_range: string | undefined;
+    delivery_date: string | undefined;
+    booking_number: string | undefined;
+    display_mode: string | undefined;
+    selected_orders: number[] | undefined;
+}
+
+export class ObjectResourceOfPagedListOfLocalBooking implements IObjectResourceOfPagedListOfLocalBooking {
+    data: PagedListOfLocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfPagedListOfLocalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? PagedListOfLocalBooking.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfPagedListOfLocalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfPagedListOfLocalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfPagedListOfLocalBooking {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfPagedListOfLocalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfPagedListOfLocalBooking {
+    data: PagedListOfLocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class PagedListOfLocalBooking implements IPagedListOfLocalBooking {
+    items: LocalBooking[] | undefined;
+    readonly currentPage: number | undefined;
+    readonly totalPages: number | undefined;
+    readonly pageSize: number | undefined;
+    readonly totalCount: number | undefined;
+    readonly hasPrevious: boolean | undefined;
+    readonly hasNext: boolean | undefined;
+
+    constructor(data?: IPagedListOfLocalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items.push(LocalBooking.fromJS(item));
+            }
+            (<any>this).currentPage = _data["currentPage"];
+            (<any>this).totalPages = _data["totalPages"];
+            (<any>this).pageSize = _data["pageSize"];
+            (<any>this).totalCount = _data["totalCount"];
+            (<any>this).hasPrevious = _data["hasPrevious"];
+            (<any>this).hasNext = _data["hasNext"];
+        }
+    }
+
+    static fromJS(data: any): PagedListOfLocalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new PagedListOfLocalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        data["currentPage"] = this.currentPage;
+        data["totalPages"] = this.totalPages;
+        data["pageSize"] = this.pageSize;
+        data["totalCount"] = this.totalCount;
+        data["hasPrevious"] = this.hasPrevious;
+        data["hasNext"] = this.hasNext;
+        return data; 
+    }
+
+    clone(): PagedListOfLocalBooking {
+        const json = this.toJSON();
+        let result = new PagedListOfLocalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedListOfLocalBooking {
+    items: LocalBooking[] | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
+    totalCount: number | undefined;
+    hasPrevious: boolean | undefined;
+    hasNext: boolean | undefined;
 }
 
 export class ListResourceOfLocalBookingCategoryResource implements IListResourceOfLocalBookingCategoryResource {
@@ -9468,10 +10286,10 @@ export class UpdateUserViewModel implements IUpdateUserViewModel {
     carModel: string | undefined;
     carYear: string | undefined;
     licenseNumber: string | undefined;
-    machinePictureUrl: any | undefined;
-    machineRegistrationUrl: any | undefined;
-    riderLincesUrl: any | undefined;
-    insuranceUrl: any | undefined;
+    machinePictureUrl: HttpPostedFileBase | undefined;
+    machineRegistrationUrl: HttpPostedFileBase | undefined;
+    riderLincesUrl: HttpPostedFileBase | undefined;
+    insuranceUrl: HttpPostedFileBase | undefined;
 
     constructor(data?: IUpdateUserViewModel) {
         if (data) {
@@ -9838,13 +10656,12 @@ export interface IUpdateStatus {
     dispatcherId: number;
 }
 
-export class ListResourceOfOrder implements IListResourceOfOrder {
-    total: number | undefined;
-    data: Order[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
+export class UpdateOrderByDispatcher implements IUpdateOrderByDispatcher {
+    statusId: number;
+    dispatcherId: number;
+    orderId: number;
 
-    constructor(data?: IListResourceOfOrder) {
+    constructor(data?: IUpdateOrderByDispatcher) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -9855,83 +10672,46 @@ export class ListResourceOfOrder implements IListResourceOfOrder {
 
     init(_data?: any) {
         if (_data) {
-            this.total = _data["total"];
-            if (Array.isArray(_data["data"])) {
-                this.data = [] as any;
-                for (let item of _data["data"])
-                    this.data.push(Order.fromJS(item));
-            }
-            this.code = _data["code"];
-            this.message = _data["message"];
+            this.statusId = _data["statusId"];
+            this.dispatcherId = _data["dispatcherId"];
+            this.orderId = _data["orderId"];
         }
     }
 
-    static fromJS(data: any): ListResourceOfOrder {
+    static fromJS(data: any): UpdateOrderByDispatcher {
         data = typeof data === 'object' ? data : {};
-        let result = new ListResourceOfOrder();
+        let result = new UpdateOrderByDispatcher();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["total"] = this.total;
-        if (Array.isArray(this.data)) {
-            data["data"] = [];
-            for (let item of this.data)
-                data["data"].push(item.toJSON());
-        }
-        data["code"] = this.code;
-        data["message"] = this.message;
+        data["statusId"] = this.statusId;
+        data["dispatcherId"] = this.dispatcherId;
+        data["orderId"] = this.orderId;
         return data; 
     }
 
-    clone(): ListResourceOfOrder {
+    clone(): UpdateOrderByDispatcher {
         const json = this.toJSON();
-        let result = new ListResourceOfOrder();
+        let result = new UpdateOrderByDispatcher();
         result.init(json);
         return result;
     }
 }
 
-export interface IListResourceOfOrder {
-    total: number | undefined;
-    data: Order[] | undefined;
-    code: string | undefined;
-    message: string | undefined;
+export interface IUpdateOrderByDispatcher {
+    statusId: number;
+    dispatcherId: number;
+    orderId: number;
 }
 
-export class Order implements IOrder {
-    id: number | undefined;
-    deliveryDate: string | undefined;
-    deliveryType: string | undefined;
-    bookingNumber: string | undefined;
-    senderName: string | undefined;
-    pickupLocation: string | undefined;
-    deliveryLocation: string | undefined;
-    pickUpAddress: string | undefined;
-    pickupLandmark: string | undefined;
-    phoneNumber: string | undefined;
-    recipientName: string | undefined;
-    deliveryAddress: string | undefined;
-    deliveryLandmark: string | undefined;
-    recipientPhoneNumber: string | undefined;
-    packageDescription: string | undefined;
-    sizeDescription: string | undefined;
-    isInsured: boolean | undefined;
-    isDelivered: boolean | undefined;
-    packageValue: number | undefined;
-    deliveryCost: number | undefined;
-    numberOfPackages: number | undefined;
-    insuranceCost: number | undefined;
-    totalCost: number | undefined;
-    bookingStatusId: number | undefined;
-    estimatedPackageWeight: number | undefined;
-    createdAt: string | undefined;
-    updatedAt: string | undefined;
-    paymentType: string | undefined;
+export class Filter implements IFilter {
+    pageNumber: number | undefined;
+    dispatcherId: number;
 
-    constructor(data?: IOrder) {
+    constructor(data?: IFilter) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -9942,114 +10722,87 @@ export class Order implements IOrder {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
-            this.deliveryDate = _data["deliveryDate"];
-            this.deliveryType = _data["deliveryType"];
-            this.bookingNumber = _data["bookingNumber"];
-            this.senderName = _data["senderName"];
-            this.pickupLocation = _data["pickupLocation"];
-            this.deliveryLocation = _data["deliveryLocation"];
-            this.pickUpAddress = _data["pickUpAddress"];
-            this.pickupLandmark = _data["pickupLandmark"];
-            this.phoneNumber = _data["phoneNumber"];
-            this.recipientName = _data["recipientName"];
-            this.deliveryAddress = _data["deliveryAddress"];
-            this.deliveryLandmark = _data["deliveryLandmark"];
-            this.recipientPhoneNumber = _data["recipientPhoneNumber"];
-            this.packageDescription = _data["packageDescription"];
-            this.sizeDescription = _data["sizeDescription"];
-            this.isInsured = _data["isInsured"];
-            this.isDelivered = _data["isDelivered"];
-            this.packageValue = _data["packageValue"];
-            this.deliveryCost = _data["deliveryCost"];
-            this.numberOfPackages = _data["numberOfPackages"];
-            this.insuranceCost = _data["insuranceCost"];
-            this.totalCost = _data["totalCost"];
-            this.bookingStatusId = _data["bookingStatusId"];
-            this.estimatedPackageWeight = _data["estimatedPackageWeight"];
-            this.createdAt = _data["createdAt"];
-            this.updatedAt = _data["updatedAt"];
-            this.paymentType = _data["paymentType"];
+            this.pageNumber = _data["pageNumber"];
+            this.dispatcherId = _data["dispatcherId"];
         }
     }
 
-    static fromJS(data: any): Order {
+    static fromJS(data: any): Filter {
         data = typeof data === 'object' ? data : {};
-        let result = new Order();
+        let result = new Filter();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["deliveryDate"] = this.deliveryDate;
-        data["deliveryType"] = this.deliveryType;
-        data["bookingNumber"] = this.bookingNumber;
-        data["senderName"] = this.senderName;
-        data["pickupLocation"] = this.pickupLocation;
-        data["deliveryLocation"] = this.deliveryLocation;
-        data["pickUpAddress"] = this.pickUpAddress;
-        data["pickupLandmark"] = this.pickupLandmark;
-        data["phoneNumber"] = this.phoneNumber;
-        data["recipientName"] = this.recipientName;
-        data["deliveryAddress"] = this.deliveryAddress;
-        data["deliveryLandmark"] = this.deliveryLandmark;
-        data["recipientPhoneNumber"] = this.recipientPhoneNumber;
-        data["packageDescription"] = this.packageDescription;
-        data["sizeDescription"] = this.sizeDescription;
-        data["isInsured"] = this.isInsured;
-        data["isDelivered"] = this.isDelivered;
-        data["packageValue"] = this.packageValue;
-        data["deliveryCost"] = this.deliveryCost;
-        data["numberOfPackages"] = this.numberOfPackages;
-        data["insuranceCost"] = this.insuranceCost;
-        data["totalCost"] = this.totalCost;
-        data["bookingStatusId"] = this.bookingStatusId;
-        data["estimatedPackageWeight"] = this.estimatedPackageWeight;
-        data["createdAt"] = this.createdAt;
-        data["updatedAt"] = this.updatedAt;
-        data["paymentType"] = this.paymentType;
+        data["pageNumber"] = this.pageNumber;
+        data["dispatcherId"] = this.dispatcherId;
         return data; 
     }
 
-    clone(): Order {
+    clone(): Filter {
         const json = this.toJSON();
-        let result = new Order();
+        let result = new Filter();
         result.init(json);
         return result;
     }
 }
 
-export interface IOrder {
-    id: number | undefined;
-    deliveryDate: string | undefined;
-    deliveryType: string | undefined;
-    bookingNumber: string | undefined;
-    senderName: string | undefined;
-    pickupLocation: string | undefined;
-    deliveryLocation: string | undefined;
-    pickUpAddress: string | undefined;
-    pickupLandmark: string | undefined;
-    phoneNumber: string | undefined;
-    recipientName: string | undefined;
-    deliveryAddress: string | undefined;
-    deliveryLandmark: string | undefined;
-    recipientPhoneNumber: string | undefined;
-    packageDescription: string | undefined;
-    sizeDescription: string | undefined;
-    isInsured: boolean | undefined;
-    isDelivered: boolean | undefined;
-    packageValue: number | undefined;
-    deliveryCost: number | undefined;
-    numberOfPackages: number | undefined;
-    insuranceCost: number | undefined;
-    totalCost: number | undefined;
-    bookingStatusId: number | undefined;
-    estimatedPackageWeight: number | undefined;
-    createdAt: string | undefined;
-    updatedAt: string | undefined;
-    paymentType: string | undefined;
+export interface IFilter {
+    pageNumber: number | undefined;
+    dispatcherId: number;
+}
+
+export class FiterOrderByComplted implements IFiterOrderByComplted {
+    dispatcherId: number;
+    date_range: string | undefined;
+    pageNumber: number | undefined;
+
+    constructor(data?: IFiterOrderByComplted) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dispatcherId = _data["dispatcherId"];
+            this.date_range = _data["date_range"];
+            this.pageNumber = _data["pageNumber"];
+        }
+    }
+
+    static fromJS(data: any): FiterOrderByComplted {
+        data = typeof data === 'object' ? data : {};
+        let result = new FiterOrderByComplted();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dispatcherId"] = this.dispatcherId;
+        data["date_range"] = this.date_range;
+        data["pageNumber"] = this.pageNumber;
+        return data; 
+    }
+
+    clone(): FiterOrderByComplted {
+        const json = this.toJSON();
+        let result = new FiterOrderByComplted();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFiterOrderByComplted {
+    dispatcherId: number;
+    date_range: string | undefined;
+    pageNumber: number | undefined;
 }
 
 export class MarkOrderAsDeliveredDTO implements IMarkOrderAsDeliveredDTO {
