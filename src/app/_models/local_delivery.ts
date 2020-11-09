@@ -25,7 +25,8 @@ export interface package_detailsModel {
     cash_collection?: boolean,
     cash_collection_amount?: number,
     account_number?: string,
-    package_value?: number
+    package_value?: number,
+    payment_type?: number
 }
 
 export interface LocaldeliveryButton {

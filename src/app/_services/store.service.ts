@@ -1,6 +1,79 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { InternationalBooking, LocalBooking, LocalBookingResource } from '../_models/service-models';
+import { Subject } from 'rxjs';
+import { IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking, LocalBookingResource, ObjectResourceOfGetLocalBookingsForMobileResource } from '../_models/service-models';
 
+interface APIListResult<T>{
+  data: {
+    items: T[]
+  },
+  code: string,
+  message: string
+}
+export enum LOCAL_BOOKING_STATUS{
+  Pending = 1,
+  Approved = 7,
+  Received = 2
+}
+
+export enum INTERNATIONAL_BOOKING_STATUS{
+  Pending = 7,
+  Approved = 8,
+  Received = 1
+}
+export interface InternationalRoute{
+  id?: number,
+  adminFee?: number,
+  exportRatePerUnitWeight?: number,
+  convertExportRateToNaira?: boolean,
+  importRatePerUnitWeight?: number,
+  convertImportRateToNaira?: boolean,
+  mininumQtyExport?: number,
+  mininumQtyImport?: number,
+  country?: string,
+  currencySymbol?: string,
+  currencyName?: string,
+  exchangeRate?: number,
+  deliveryTimeline?: string,
+  canImport?: boolean,
+  canExport?: boolean,
+  weightSymbol?: string,
+  weightName?: string,
+  isActive?: boolean,
+  markAsNew?: boolean,
+  createdAt?: Date,
+  updatedAt?: Date
+}
+interface APIRouteResult<T>{
+  data: T[],
+  code: string,
+  message: string
+}
+
+enum BOOKING_TYPES {
+  international = 1,
+  local = 2
+}
+
+export class Booking{
+  local: LocalBooking;
+  international: InternationalBooking;
+  type: BOOKING_TYPES
+  isInternational: boolean
+
+  fromInternationalBooking(booking: InternationalBooking){
+    this.international = booking
+    this.type = BOOKING_TYPES.international
+    this.isInternational = true
+    return this
+  }
+  fromLocalBooking(booking: LocalBooking){
+    this.local = booking
+    this.type = BOOKING_TYPES.local
+    this.isInternational = false
+    return this
+  }
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -9,7 +82,9 @@ export class StoreService {
   bookings: LocalBooking[] = []
   internationalBooking: InternationalBooking;
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
   saveInternationalBooking(booking: InternationalBooking){
     this.internationalBooking = booking
   }
@@ -22,4 +97,39 @@ export class StoreService {
   getBookings(){
     return this.bookings
   }
+  getAllLocalOrders(status: number=null){
+    const subject = new Subject<LocalBooking[]>()
+    this.http.get<APIListResult<ILocalBooking>>('http://104.40.215.33:8008/api/LocalBooking/getlocalbooking?Page=').subscribe(response => {
+      const bookings = response.data.items.map(iBooking => new LocalBooking(iBooking))
+      subject.next(bookings)
+      subject.complete()
+    })
+    return subject
+  }
+  getAllInternationalBookings(booking_id: number=null){
+    const subject = new Subject<InternationalBooking[]>()
+    this.http.get<APIListResult<IInternationalBooking>>(`http://104.40.215.33:8008/api/internationalbooking/getintlbookings?Page=&Booking_Status=`).subscribe(response => {
+      if(response.code = '000'){
+        const bookings = response.data.items.map(iBooking => new InternationalBooking(iBooking))
+        subject.next(bookings)
+        subject.complete()
+      } else {
+        subject.error(response.message)
+      }
+    })
+    return subject
+  }
+  getInternationalRoutes(){
+    const subject = new Subject<InternationalRoute[]>()
+    this.http.get<APIRouteResult<InternationalRoute>>('http://104.40.215.33:8008/api/internationalbooking/internationlbookingRoute').subscribe(response => {
+      if(response.code = '000'){
+        subject.next(response.data)
+        subject.complete()
+      } else {
+        subject.error(response.message)
+      }
+    })
+    return subject
+  }
+
 }

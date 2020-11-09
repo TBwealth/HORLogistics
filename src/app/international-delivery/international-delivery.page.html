@@ -11,7 +11,7 @@
 </ion-header>
 <ion-content [ngSwitch]="activetab">
   <ion-grid>
-    <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;" *ngIf="!exportPage">
+    <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;">
       <ion-img src="assets/images/booking.png" class="myicons" slot="start" style="background-color: #E2E4EB;"></ion-img>
       <ion-label class="mylabel">Shipment mode</ion-label>
       <ion-select (ionChange)="validateBookingForm()" (keyup)="validateBookingForm()" name="booking_category" class="select" [(ngModel)]="booking.shipmentModeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()">
@@ -72,7 +72,7 @@
       <div style="padding: 5px;"></div>
       <p>Home Pickup ?</p>
       <app-checkbox [(value)]="homePickup"></app-checkbox>
-      <ng-template [ngIf]="!exportPage || homePickup"> 
+      <ng-template [ngIf]="exportPage || homePickup"> 
       <ion-input type="text" (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" #pickup_name="ngModel" name="pickup_name" placeholder="Name" [(ngModel)]="booking.pickupContactName" required></ion-input>
           <div *ngIf="pickup_name.invalid && (pickup_name.dirty || pickup_name.touched)" class="error">
             <div *ngIf="pickup_name.errors.required">
@@ -105,6 +105,10 @@
 
   <div *ngSwitchCase="delivery_details">
     <form name="deliveryForm" #deliveryForm="ngForm">
+      <ion-select name="delivery_type" class="select" [(ngModel)]="booking.shipmentDeliveryTypeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()" placeholder="Shipment delivery type">
+        <ion-select-option [value]="mode.id" *ngFor="let mode of shipmentDeliveryTypes">{{mode.name}}</ion-select-option>
+      </ion-select>
+      <div style="padding: 5px;"></div>
       <p>Do you want home delivery ?</p>
         <app-checkbox [(value)]="booking.homeDelivery"></app-checkbox>
       <div style="padding: 5px;"></div>

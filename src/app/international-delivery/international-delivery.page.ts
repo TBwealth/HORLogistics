@@ -8,7 +8,7 @@ import libphonenumber from 'google-libphonenumber';
 import {ICountry} from '../_models/country.type';
 import { CountryserviceService } from '../_services/countryservice.service';
 import { InternationalbookingServiceProxy } from '../_services/service-proxies';
-import { HoldInstruction, InternationalBooking, ShipmentModeResource } from '../_models/service-models';
+import { HoldInstruction, InternationalBooking, ShipmentDeliveryTypeResource, ShipmentModeResource } from '../_models/service-models';
 import { StoreService } from '../_services/store.service';
 import { ThrowStmt } from '@angular/compiler';
 
@@ -49,6 +49,7 @@ export class InternationalDeliveryPage implements OnInit {
   deliveryselectedFlag: any="";
   deliveryselectedCallingCode:  any="";
   shipmentModes: ShipmentModeResource[] = [];
+  shipmentDeliveryTypes: ShipmentDeliveryTypeResource[] = []
   constructor(
     public Cservice: CountryserviceService,
     private toastCtrl: ToastController,
@@ -61,6 +62,9 @@ export class InternationalDeliveryPage implements OnInit {
 
     phoneNo = ''
   ngOnInit() {
+    this.internationalBookingService.intlbookingdeliverytypes().subscribe(data => {
+      this.shipmentDeliveryTypes = data.data
+    })
     this.internationalBookingService.intlbookingshipmentmode().subscribe(data => {
       this.shipmentModes = data.data
     })
@@ -74,7 +78,8 @@ export class InternationalDeliveryPage implements OnInit {
     // })
   }
   shipmentModeChanged(shipmentMode: number){
-    this.exportPage = shipmentMode == 2
+    // alert(this.booking.shipmentModeId)
+    this.exportPage = this.booking.shipmentModeId == 2
   }
 
   goback(){
@@ -101,6 +106,7 @@ export class InternationalDeliveryPage implements OnInit {
       } else {
         this.booking.shipmentModeId = 1
       }
+      this.booking.shipmentDeliveryTypeId = 1
       this.store.saveInternationalBooking(this.booking)
       this.router.navigate(['international-delivery/summary'])
     }
