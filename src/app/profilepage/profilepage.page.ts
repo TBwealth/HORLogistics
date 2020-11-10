@@ -5,7 +5,7 @@ import {  UserViewModel,LoginResource, UpdateUserViewModel,UserPhotoViewModel, D
 import { AuthenticationService } from '../_services/authentication.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
-import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy} from '../_services/service-proxies';
+import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy, LocationsServiceProxy} from '../_services/service-proxies';
 @Component({
   selector: 'app-profilepage',
   templateUrl: './profilepage.page.html',
@@ -25,6 +25,7 @@ export class ProfilepagePage implements OnInit {
   loading: any;
   countryList = [];
 stateList = [];
+busSutopList = [];
   constructor(
     private apiService: ApiServiceProxy,
     public alertController: AlertController,
@@ -38,6 +39,7 @@ stateList = [];
     private file: File,
     private uploadService: AccountServiceProxy,
     private countrySeervice: CountriesServiceProxy,
+    private locationService: LocationsServiceProxy,
   ) { 
     //this.getlatestusers()
     }
@@ -67,16 +69,27 @@ if(this.userRole != 'Rider'){
     this.customersData.homeAddress = this.usersdata.customer.homeAddress;
     this.userProfilePic = this.usersdata.customer.companyLogo;
 }
+this.customersData.email = this.usersdata.user.email;
+    
+this.customersData.phoneNumber = this.usersdata.phone;
+
+this.dispatcher = this.usersdata.dispatcher;
+
+this.userType = this.usersdata.user.userType;
+
     var countryId = this.userRole != 'Rider' ? this.customersData.residentialCountryId : 1 ;
+    if(this.userRole != 'Rider'){
+      var stateId = this.customersData.residentialStateId;
+    }else{
+      var stateId = this.dispatcher.residentialStateId
+    }
+    
     this.defaultStateList(countryId);
+
+    this.getBusStopByStateId(stateId);
+
     this.defaultCountryList();
-    this.customersData.email = this.usersdata.user.email;
-    
-    this.customersData.phoneNumber = this.usersdata.phone;
-    
-    this.dispatcher = this.usersdata.dispatcher;
-    
-    this.userType = this.usersdata.user.userType;
+  
     
 
   }
@@ -234,6 +247,25 @@ async readFile(file: any) {
     });
   };
   reader.readAsArrayBuffer(file);
+}
+getBusStopByStateId(stateId){ 
+
+  if(stateId){
+    this.locationService.getLocationinstate(stateId).subscribe(data=>{
+      this.busSutopList = data.data;
+      })
+  }else{
+    this.busSutopList = [];
+  }
+
+}
+getBusStopName(busStopId){
+  if( this.busSutopList.length > 0){
+    var bustStopName = this.busSutopList.find(x=>x.id == busStopId).name;
+return bustStopName;
+  }else{
+    return null
+  }
 }
 getstateName(stateId){
 if(this.stateList.length > 0){

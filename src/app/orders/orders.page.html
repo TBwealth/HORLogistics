@@ -11,10 +11,10 @@
       <ion-label style="color: #E1440B;">REJECTED</ion-label>
     </ion-segment-button> -->
   </ion-segment>
-  <div *ngFor="let booking of filteredLocalBookings" (click)="selectLocalBooking(booking)">
+  <div *ngFor="let booking of filteredLocalBookings" >
     <ion-label>
       <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
-        {{booking.deliveryDate}}
+        {{booking.deliveryDate | date : 'MMM d - h:mm a'}}
       </div>
     </ion-label>
     <ion-card>    
@@ -69,16 +69,64 @@
             </div>
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row >
           <ion-col>
             <h6>Order Status <span [style.color]="statusColor.pending"><ng-template [ngIf]="booking.bookingStatus">{{booking.bookingStatus.name}}</ng-template>
             </span></h6>
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="![4,5].includes(booking.bookingStatusId)">
+          <ion-col >
+           
+            <a 
+    *ngIf="booking.paymentTypeId == 3 || booking.paymentTypeId == 4"
+    angular4-paystack
+    [email]="AuthenService.globalUserEmail"
+    [amount]="(booking.totalCost) * 100"
+    [ref]="reference"
+    [class]="'btn btn-primary'"
+    (paymentInit)="paymentInit()"
+    (close)="paymentCancel()"
+    (callback)="paymentDone($event)"
+    [channels]="booking.paymentTypeId == 3 ? ['bank'] : ['card']"
+  
+    href="javascript:void(0)"
+    style="color: #EF6102;font-size: 12px;"
+  >
+    Make Payment
+          </a>
+          
+          <a 
+          *ngIf="booking.paymentTypeId == 1 || booking.paymentTypeId == 2"
+              (click)="openBankInfo()"
+              href="javascript:void(0)"
+              style="color: #EF6102;font-size: 12px;"
+            >
+              Bank Info
+                    </a>
+                    <a 
+          *ngIf="booking.paymentTypeId == 5"
+              href="javascript:void(0)"
+              style="color: #EF6102;font-size: 12px;"
+            >
+             Wallet Payment
+                    </a>
+
+          </ion-col>
+          <ion-col >
+         
+            <a href="javascript:void(0)" style="color: #EF6102;font-size: 12px;text-align: center;"  (click)="gototripdetails(booking.bookingNumber)">Track</a>
+          </ion-col>
+          <ion-col size="2">
+            <a href="javascript:void(0)" (click)="selectLocalBooking(booking)" style="color: #EF6102;font-size: 14px;float: right;">
+              <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </a>            
+          </ion-col>
+        </ion-row>
       </ion-card-content>
     </ion-card>
   </div>
-  <div *ngFor="let booking of filteredInternationalBookings" (click)="selectInternationalBooking(booking)">
+  <div *ngFor="let booking of filteredInternationalBookings" >
     <ion-label>
       <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
         {{booking.trackingNumber}}
@@ -137,9 +185,14 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>
+          <ion-col size="11">
             <h6>Order Status <span [style.color]="statusColor.pending"><ng-template [ngIf]="booking.bookingStatus">{{booking.bookingStatus.name}}</ng-template>
             </span></h6>
+          </ion-col>
+          <ion-col size="1">
+            <a href="javascript:void(0)" (click)="selectInternationalBooking(booking)" style="color: #EF6102;font-size: 14px;float: right;">
+              <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+            </a>            
           </ion-col>
         </ion-row>
       </ion-card-content>

@@ -33,6 +33,7 @@ import {FileChooser} from '@ionic-native/file-chooser/ngx';
 import {FilePath} from '@ionic-native/file-path/ngx';
 import {FileTransfer} from '@ionic-native/file-transfer/ngx';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { Angular4PaystackModule } from 'angular4-paystack';
 
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
@@ -57,7 +58,9 @@ import { InternationalBooking } from './_models/service-models';
   entryComponents: [],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,IonicStorageModule.forRoot()
+    AngularFireAuthModule,
+    IonicStorageModule.forRoot(),
+   Angular4PaystackModule.forRoot(environment.paystackToken)
   ],
   providers: [
     IonicStorageModule,
@@ -102,7 +105,9 @@ import { InternationalBooking } from './_models/service-models';
     CallNumber,
     OrderServiceProxy,
     LocalbookingServiceProxy,
+
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    
   ],
   bootstrap: [AppComponent]
 })

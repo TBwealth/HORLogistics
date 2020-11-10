@@ -207,8 +207,8 @@ this.countrySeervice.states(CountryId).subscribe(data=>{
     spinner: "bubbles",
   });
   await this.loading.present();
-this.locationService.category(StateId).subscribe(data=>{
-this.listData = data;
+this.locationService.getLocationinstate(StateId).subscribe(data=>{
+this.listData = data.data;
 this.loading.dismiss();
 })
   }

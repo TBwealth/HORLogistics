@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { BookingStatus, CheckoutAssistance, InternationalBooking, ISelectedOrder, LocalBooking, LocalBookingStatusResource, SelectedOrder } from '../_models/service-models';
 import { InternationalbookingServiceProxy, IntlBookingStatus, LocalBookingServiceProxy } from '../_services/service-proxies';
 import { Booking, INTERNATIONAL_BOOKING_STATUS, LOCAL_BOOKING_STATUS, StoreService } from '../_services/store.service';
+import { PaystackOptions } from 'angular4-paystack';
+import { AuthenticationService } from '../_services/authentication.service';
 
 enum SEGMENTS {
   PENDING,
@@ -35,16 +37,55 @@ export class OrdersPage implements OnInit {
   checkouts: CheckoutAssistance[] = []
   filteredLocalBookings: LocalBooking[] = []
   filteredInternationalBookings: InternationalBooking[]
-
+  options: PaystackOptions = {
+    amount: 50000,
+    email: 'user@mail.com',
+    ref: `${Math.ceil(Math.random() * 10e10)}`
+  }
+  reference = '';
   constructor(
     private localBookingService: LocalBookingServiceProxy,
     private internationalBookingService: InternationalbookingServiceProxy,
     private store: StoreService,
     private spinnerLoader: LoadingController,
-    private router: Router
+    private router: Router,
+    private toastCtrl: ToastController,
+    private AuthenService: AuthenticationService,
+    private alertController : AlertController
   ) { }
+  paymentInit(){
 
+  }
+  paymentCancel(){}
+  paymentDone(event){}
+  
+async openBankInfo(){
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'HOR Bank - FCMB',
+    subHeader: 'Account Name: House of Ravissant Ltd',
+    message: 'Account Number: 5756034045',
+    buttons: ['OK']
+  });
+
+  await alert.present();
+}
+  async gototripdetails(bookingNumber){
+    if(bookingNumber){
+      this.router.navigate(['tripdetails'],{queryParams:{orderNumber: bookingNumber}})
+
+    }else{
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: 'Invalid Booking Number',
+        color: "danger"
+      });
+      toast.present();
+    }
+
+  }
   async ngOnInit() {
+    this.reference = `ref-${Math.ceil(Math.random() * 10e13)}`;
     const loading = await this.spinnerLoader.create({
       message: "please wait...",
       translucent: true,

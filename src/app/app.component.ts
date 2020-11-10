@@ -90,6 +90,8 @@ this.router.navigate(['preferedaction']);
       this.network.checkNetwork();   
       this.getUser(); 
     });
+
+    console.log(this.AuthenService.globalUser)
   }
   gotoprofile(){
     this.router.navigate(['profilepage']);

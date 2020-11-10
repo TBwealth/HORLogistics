@@ -14,6 +14,13 @@ export class AuthenticationService {
   public  globalUser = new BehaviorSubject<any>('');
   public  globalUserRole = new BehaviorSubject<any>('');
   public  globalUserType = new BehaviorSubject<any>('');
+  public  globalUserName = new BehaviorSubject<any>('');
+  public  globalDispatchName = new BehaviorSubject<any>('');
+  public  globalPartnerName = new BehaviorSubject<any>('');
+  public  globalCustomerProfileurl = new BehaviorSubject<any>('');
+  public  globalDispatchProfileurl = new BehaviorSubject<any>('');
+  public  globalUserEmail = new BehaviorSubject<any>('');
+
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
      private toastCtrl: ToastController,
@@ -42,6 +49,16 @@ export class AuthenticationService {
                         this.users.push(saveduser);  
                         this.globalUserRole = this.users[0].role[0].name;    
                         this.globalUserType = this.users[0].user.userType;
+                        this.globalUserEmail = this.users[0].user.email;
+                        if(this.users[0].customer){
+                            this.globalPartnerName = this.users[0].customer.businessName;
+                            this.globalUserName = this.users[0].customer.fullName;
+                            this.globalCustomerProfileurl = this.users[0].customer.companyLogo;
+                        }
+                        if(this.users[0].dispatcher){
+                            this.globalDispatchName = this.users[0].dispatcher.name;
+                            this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                        }
                         this.globalUser.next(this.users[0])
                     }
                    
