@@ -12,18 +12,18 @@ export class TrackerapiService {
   token :string = environment.trackerToken;
 
   constructor(public http: HttpClient) { }
-
   trackOrder(plateNumber){
     let trackData={
-      type:'summary',
+      type:'recent',
       token: this.token,
-      list: plateNumber,
-      from: new Date(),
-      to: new Date(),
-      stopmins: 5
+      list: plateNumber
     }
-    let endPoint: string = '/api/Account/Register';
-    return this.http.post(this.Urlbase + endPoint,trackData)
+    const body = new HttpParams()
+    .set('type', 'recent')
+    .set('token', this.token)
+    .set('list', plateNumber);
+    let endPoint: string = '';
+    return this.http.post(this.Urlbase + endPoint,body, { headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
     .pipe(catchError(this.handleError<any>('userRegistration')));
   }
   
