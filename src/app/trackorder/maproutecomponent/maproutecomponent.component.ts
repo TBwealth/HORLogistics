@@ -13,7 +13,13 @@ declare var google;
 export class MaproutecomponentComponent implements OnInit {
 addressStart: any;
 addressEnd: any;
-
+  @Input() set location(val: Coordinates){
+    if(val){
+      // this.makeMarker(val, "", "")
+      this.makeMarker( val,  null, "Start" );
+      console.log('Location reached', val)
+    }
+  }
   map: any;
   marker: any;
   drawingManager:any;
@@ -44,7 +50,9 @@ addressEnd: any;
           this.map = new google.maps.Map(document.getElementById("map"),mapOptions);
           directionsRenderer.setMap(this.map);
           const geocoder = new google.maps.Geocoder();
-          this.calculateAndDisplayRoute(directionsService, directionsRenderer, this.map);
+          this.maproute.subject.subscribe(data => {
+            this.calculateAndDisplayRoute(directionsService, directionsRenderer, this.map);
+          })
          // this.geocodeAddress(geocoder, this.map);
         })
   
@@ -89,6 +97,7 @@ addressEnd: any;
       }
   
       makeMarker( position, icon, title ) {
+        console.log(position, this.map)
         new google.maps.Marker({
          position: position,
          map: this.map,

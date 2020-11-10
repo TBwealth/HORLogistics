@@ -4,15 +4,26 @@ import { AlertController, LoadingController, NavController, Platform, ToastContr
 import { from } from 'rxjs';
 import { BookingStatus, LocalBooking, LocalBookingStatusResource } from 'src/app/_models/service-models';
 import { LocalBookingServiceProxy, LocalbookingServiceProxy } from 'src/app/_services/service-proxies';
+import { TrackerapiService } from 'src/app/_services/trackerapi.service';
 import {MaprouteService} from '../../_services/maproute.service';
 
+interface VehicleLocation {
+  altitude?: number,
+  angle?:  number,
+  dt_server?: Date
+  dt_tracker?: Date,
+  lat?: number,
+  lng?: number,
+  loc_valid?: boolean
+}
 @Component({
   selector: 'app-tripdetails',
   templateUrl: './tripdetails.page.html',
   styleUrls: ['./tripdetails.page.scss'],
 })
 export class TripdetailsPage implements OnInit {
-
+  trackingDetails: VehicleLocation = {};
+  coords: Coordinates;
   loading: any;
   orderDetails: LocalBooking = new LocalBooking();
   bookingStatus: LocalBookingStatusResource[]=[];
@@ -25,6 +36,7 @@ export class TripdetailsPage implements OnInit {
     private toastCtrl: ToastController,
     private router: Router,
     private localBookingService: LocalBookingServiceProxy,
+    private trackerAPi: TrackerapiService
   ) { 
 
    
@@ -65,6 +77,23 @@ export class TripdetailsPage implements OnInit {
       this.localBookingService.trackorder(data.orderNumber).subscribe(async data=>{
         if(data.code == "000"){
           this.orderDetails = data.data;
+          const plateNo =this.orderDetails.dispatcher.plateNumber
+          this.trackerAPi.trackOrder(plateNo).subscribe(response => {
+            const trackingDetails: VehicleLocation = response.data[plateNo]
+            trackingDetails.lat = Number(trackingDetails.lat)
+            trackingDetails.lng = Number(trackingDetails.lng)
+            this.trackingDetails = trackingDetails
+            this.coords = {
+              accuracy: 1,
+              speed: 1,
+              altitude: 1,
+              altitudeAccuracy: 1,
+              heading: 1,
+              longitude: this.trackingDetails.lng,
+              latitude: this.trackingDetails.lat
+            }
+          })
+
           this.localBookingService.localbookingstatus().subscribe(data=>{
             this.bookingStatus = data.data;
             const bookingStatusObj: any = this.bookingStatus.find(status => status.id == this.orderDetails.bookingStatusId)

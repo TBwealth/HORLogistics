@@ -52,6 +52,65 @@ export class InternationalDeliveryPage implements OnInit {
   deliveryselectedCallingCode:  any="";
   shipmentModes: ShipmentModeResource[] = [];
   shipmentDeliveryTypes: ShipmentDeliveryTypeResource[] = []
+
+  pickUpFormValid(){
+    if(this.exportPage && !this.homePickup) return true
+    if(this.booking.pickupContactName.length > 5 && this.booking.pickupContactPhone && this.booking.pickupAddress.length > 10) return true
+    return false
+  }
+
+  deliveryFormValid(){
+    if(this.booking.shipmentDeliveryTypeId){
+      if(this.booking.homeDelivery){
+        if(this.booking.recipientName.length > 5 && this.booking.recipientPhone && this.booking.homeDeliveryLocationId && this.booking.deliveryAddress.length > 5){
+          return true
+        }
+      } else {
+        return true
+      }
+      return false
+    }
+  }
+  get disablePickUpDetails(){
+    if(!this.disablePackageDescription && this.booking.country && this.booking.estimatedPackageWeight && this.booking.packageDescription.length > 10){
+      return false
+    }
+    return true
+  }
+  get disableDeliveryDetails(){
+    if(this.booking.kindOfBooking == BOOKING_KINDS.DROP_OFF){
+      if(!this.disablePackageDescription && this.booking.country && this.booking.estimatedPackageWeight && this.booking.packageDescription.length > 10){
+        return false
+      }
+    }else{
+      if(this.pickUpFormValid) return false
+    }
+    return true
+  }
+  get disableHoldInstructions(){
+    return !this.deliveryFormValid()
+  }
+  get disablePackageDescription(){
+    if(this.booking.kindOfBooking && this.booking.shipmentModeId){
+      if(this.booking.kindOfBooking == BOOKING_KINDS.DROP_OFF){
+        if(this.booking.eta) return false
+        return true
+      } else {
+        return false
+      }
+    }
+    return true
+  }
+
+  get disableApplyButton(){
+    if(this.booking.hasHoldInstruction){
+      if(this.hold_instruction.shippingDate && this.hold_instruction.comment.length > 5){
+        return true
+      }
+    } else{
+      return false
+    }
+  }
   constructor(
     public Cservice: CountryserviceService,
     private toastCtrl: ToastController,

@@ -31,7 +31,7 @@
  
    <ion-row>
     <ion-col>
-      <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(package_description)" #package_description>
+      <ion-button [disabled]="disablePackageDescription" expand="block" class="localdelivery" fill="clear" (click)="myfunction(package_description)" #package_description>
         <ion-img src="assets/images/package.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Package Description</p>
       </ion-button>
@@ -59,7 +59,7 @@
 
   <ion-row *ngIf="booking.kindOfBooking == BOOKING_KINDS.PICKUP">
     <ion-col>
-      <ion-button [disabled]="false" expand="block" class="localdelivery" fill="clear" (click)="myfunction('pickup_details')" #pickup_details>
+      <ion-button [disabled]="disablePickUpDetails" expand="block" class="localdelivery" fill="clear" (click)="myfunction('pickup_details')" #pickup_details>
         <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Pickup Details</p>
       </ion-button>
@@ -69,9 +69,11 @@
   <div *ngSwitchCase="'pickup_details'">
     <form name="pickupForm" #pickupForm="ngForm">
       <div style="padding: 5px;"></div>
-      <p>Home Pickup ?</p>
-      <app-checkbox [(value)]="homePickup"></app-checkbox>
-      <ng-template [ngIf]="exportPage || homePickup"> 
+      <ng-template [ngIf]="exportPage">
+        <p>Home Pickup ?</p>
+        <app-checkbox [(value)]="homePickup"></app-checkbox>
+      </ng-template>
+      <ng-template [ngIf]="(exportPage && homePickup) || !exportPage"> 
       <ion-input type="text" (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" #pickup_name="ngModel" name="pickup_name" placeholder="Name" [(ngModel)]="booking.pickupContactName" required></ion-input>
           <div *ngIf="pickup_name.invalid && (pickup_name.dirty || pickup_name.touched)" class="error">
             <div *ngIf="pickup_name.errors.required">
@@ -95,7 +97,7 @@
 
   <ion-row>
     <ion-col>
-      <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
+      <ion-button [disabled]="disableDeliveryDetails" expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
         <ion-img src="assets/images/plane.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Delivery Details</p>
       </ion-button>
@@ -136,7 +138,7 @@
 
   <ion-row *ngIf="!exportPage">
     <ion-col>
-      <ion-button [disabled]="false" expand="block" class="localdelivery" fill="clear" (click)="myfunction('hold_instruction')">
+      <ion-button [disabled]="disableHoldInstructions" expand="block" class="localdelivery" fill="clear" (click)="myfunction('hold_instruction')">
         <ion-img src="assets/images/hold.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Hold Instruction </p>
       </ion-button>
@@ -169,7 +171,7 @@
       <ion-button class="cta1" expand="block" fill="outline">
         <ion-label>Cancel</ion-label>
       </ion-button>
-      <ion-button class="cta" expand="block" fill="default" (click)="submit()">
+      <ion-button [disabled]="disableApplyButton" class="cta" expand="block" fill="default" (click)="submit()">
         <ion-label>Apply</ion-label>
       </ion-button>
     </div>
