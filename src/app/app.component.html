@@ -12,14 +12,14 @@
             </span>
             
             <ion-avatar slot="start">
-              <img *ngIf="userRole == 'Customer' || userRole == 'Partner'" (click)="gotoprofile()" src="{{usersdata?.customer?.companyLogo}}" onError="this.src='assets/images/female.png'">
-              <img *ngIf="userRole == 'Rider'" class="" (click)="gotoprofile()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{usersdata?.dispatcher?.profilePicUrl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
+              <img *ngIf="AuthenService.globalUserRole == 'Customer' || AuthenService.globalUserRole == 'Partner'" (click)="gotoprofile()" src="{{AuthenService.globalCustomerProfileurl}}" onError="this.src='assets/images/female.png'">
+              <img *ngIf="AuthenService.globalUserRole == 'Rider'" class="" (click)="gotoprofile()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{AuthenService.globalDispatchProfileurl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
  
             </ion-avatar>
-            <h4 *ngIf="AuthenService.globalUserRole == 'Customer'">{{usersdata?.customer?.fullName}}</h4>
-            <h4 *ngIf="AuthenService.globalUserRole == 'Rider'">{{usersdata?.dispatcher?.name}}</h4>
-            <h4 *ngIf="AuthenService.globalUserRole == 'Partner'">{{usersdata?.customer?.businessName}}</h4>
-            <h6 style="color: #ffffff;opacity: 56%;">{{usersdata?.user?.email}}</h6>
+            <h4 *ngIf="AuthenService.globalUserRole == 'Customer'">{{AuthenService.globalUserName}}</h4>
+            <h4 *ngIf="AuthenService.globalUserRole == 'Rider'">{{AuthenService.globalDispatchName}}</h4>
+            <h4 *ngIf="AuthenService.globalUserRole == 'Partner'">{{AuthenService.globalPartnerName}}</h4>
+            <h6 style="color: #ffffff;opacity: 56%;">{{AuthenService.globalUserEmail}}</h6>
           </div>
 
 
