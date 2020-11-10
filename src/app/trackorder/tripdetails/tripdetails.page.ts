@@ -22,7 +22,6 @@ export class TripdetailsPage implements OnInit {
     private maproute: MaprouteService,
     private loadspinner: LoadingController,
     private activatedroute : ActivatedRoute,
-    private localbookingService: LocalbookingServiceProxy,
     private toastCtrl: ToastController,
     private router: Router,
     private localBookingService: LocalBookingServiceProxy,
@@ -31,7 +30,7 @@ export class TripdetailsPage implements OnInit {
    
     }
     ionViewWillEnter(){
-      
+      this. getbookingStatus();
     }
     getbookingStatus(){
       this.localBookingService.localbookingstatus().subscribe(data=>{
@@ -63,7 +62,7 @@ export class TripdetailsPage implements OnInit {
         spinner: "bubbles",
       });
       await this.loading.present();
-      this.localbookingService.orderdeatil(data.orderNumber).subscribe(async data=>{
+      this.localBookingService.trackorder(data.orderNumber).subscribe(async data=>{
         if(data.code == "000"){
           this.orderDetails = data.data;
           this.localBookingService.localbookingstatus().subscribe(data=>{

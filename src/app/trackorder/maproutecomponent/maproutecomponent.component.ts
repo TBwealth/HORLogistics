@@ -1,6 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { Geolocation,Geoposition } from '@ionic-native/geolocation/ngx';
-import { AlertController, NavController, Platform } from '@ionic/angular';
+import { AlertController, NavController, Platform, ToastController } from '@ionic/angular';
 import {MaprouteService} from '../../_services/maproute.service';
 
 declare var google;
@@ -24,7 +24,8 @@ addressEnd: any;
       public platform:Platform, 
       public alertCtrl: AlertController,
       public geolocation: Geolocation,
-      private maproute: MaprouteService) { 
+      private maproute: MaprouteService,
+      private toastCtrl: ToastController  ) { 
 
         this.platform.ready().then(()=>{
           const directionsService = new google.maps.DirectionsService();
@@ -62,7 +63,7 @@ addressEnd: any;
             travelMode: google.maps.TravelMode.DRIVING,
             
           },
-          (response, status) => {
+         async (response, status) => {
             if (status === "OK") {
               directionsRenderer.setDirections(response);
               var leg = response.routes[ 0 ].legs[ 0 ];
@@ -76,7 +77,12 @@ addressEnd: any;
             }, 'End' );
   
             } else {
-              window.alert("Directions request failed due to " + status);
+              const toast = await this.toastCtrl.create({
+                duration: 3000,
+                message: "Directions request failed due to " + status,
+                color: "danger"
+              });
+              toast.present();
             }
           }
         );

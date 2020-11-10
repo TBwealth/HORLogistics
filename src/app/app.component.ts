@@ -78,16 +78,17 @@ export class AppComponent {
   ) {
     this.initializeApp();
   }
+
 logout(){
 this.AuthenService.clearusers();
 this.router.navigate(['preferedaction']);
 }
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
       this.network.checkNetwork();   
-      this.getUser();   
+      this.getUser(); 
     });
   }
   gotoprofile(){
@@ -96,7 +97,9 @@ this.router.navigate(['preferedaction']);
   }
   getUser(){
     this.AuthenService.getuser().then(async (usersdata:any[])=>{
+
       if(usersdata.length > 0){
+
         this.usersdata = usersdata[0];
         this.userRole = this.usersdata.role[0].name;
         this.userType = this.usersdata.user.userType;
