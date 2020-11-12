@@ -1,0 +1,20 @@
+<svg id="Group_2985" data-name="Group 2985" xmlns="http://www.w3.org/2000/svg" width="31.5" height="19" viewBox="0 0 31.5 19">
+  <g id="Rectangle_767" data-name="Rectangle 767" transform="translate(12 5)" fill="none" stroke="#ef6102" stroke-width="2">
+    <rect width="10" height="10" rx="2" stroke="none"/>
+    <rect x="1" y="1" width="8" height="8" rx="1" fill="none"/>
+  </g>
+  <g id="Group_1088" data-name="Group 1088">
+    <g id="Rectangle_766" data-name="Rectangle 766" fill="none" stroke="#ef6102" stroke-width="2">
+      <rect width="22" height="19" rx="2" stroke="none"/>
+      <rect x="1" y="1" width="20" height="17" rx="1" fill="none"/>
+    </g>
+    <g id="Ellipse_128" data-name="Ellipse 128" transform="translate(16 9)" fill="#ef6102" stroke="#ef6102" stroke-width="2">
+      <circle cx="1" cy="1" r="1" stroke="none"/>
+      <circle cx="1" cy="1" fill="none"/>
+    </g>
+    <g id="Group_1087" data-name="Group 1087" transform="translate(24.5 6.5)">
+      <line id="Line_302" data-name="Line 302" y2="6" transform="translate(3)" fill="none" stroke="#ef6102" stroke-linecap="round" stroke-width="2"/>
+      <line id="Line_303" data-name="Line 303" x2="6" transform="translate(0 3)" fill="none" stroke="#ef6102" stroke-linecap="round" stroke-width="2"/>
+    </g>
+  </g>
+</svg>
