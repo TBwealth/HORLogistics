@@ -1,36 +1,85 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>dashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
-  <ion-card style="width: 150px;">
-    <ion-card-content>
-      <div style="display: flex; justify-content: space-between;">
-        <div>
-          <span style="font-size: 10px;">Customer</span>
-          <h2 style="font-weight: bolder; margin-top: 8px;">2048</h2>
-        </div>
-        <div style="display: flex; align-items: center;">
-          <img src="assets/images/customers.svg">
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card>
-  <ion-card style="width: 150px;">
-    <ion-card-content>
-      <div style="display: flex; justify-content: space-between;">
-        <div>
-          <span style="font-size: 10px;">Partnera</span>
-          <h2 style="font-weight: bolder; margin-top: 8px;">507</h2>
-        </div>
-        <div style="display: flex; align-items: center;">
-          <img src="assets/images/partners.svg">
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card>
+<div style="padding: 10px;background-color: #EF6102;">
+  <div style="padding: 10px;"></div>
+  <ion-row>
+    <ion-row>
+      <ion-col size="10">
+        <ion-row style="border-bottom: 1px solid #fdfdfd">
+          <ion-col>
+            <h4 style="color: #fff;">Good morning, Paul!</h4>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p style="color: #fdfdfd;opacity: 1; font-weight: 100;">
+              ADMIN | Paul@smartace.ng
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="2">
+        <div style="padding: 16px;"></div>
+        <ion-avatar style="height: 48px;width: 48px; border-radius: 50%;border: 2px solid #FFFFFF;">
+          <img src="assets/images/female.png" onError="this.src='assets/images/female.png'">
+        </ion-avatar>
+      </ion-col>
+    </ion-row>
+  </ion-row>
+</div>
+<div style="padding: 10px;"></div>
+  <ion-slides #slides pager="true" [options]="slideOpts">
+    <ion-slide>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span style="font-size: 10px;">Customer</span>
+              <h2 style="font-weight: bolder; margin-top: 8px;">2048</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <img src="assets/images/customers.svg">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-slide>
+    <ion-slide>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span style="font-size: 10px;">Customer</span>
+              <h2 style="font-weight: bolder; margin-top: 8px;">1000</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <img src="assets/images/customers.svg">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-slide>
+    <ion-slide>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span style="font-size: 10px;">Partnera</span>
+              <h2 style="font-weight: bolder; margin-top: 8px;">507</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <img src="assets/images/partners.svg">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    </ion-slides>
+ 
+ 
 
   <h3 style="font-size: 15px; margin: 16px;">Registered Customers Count</h3>
 
