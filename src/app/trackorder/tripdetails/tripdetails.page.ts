@@ -78,7 +78,7 @@ export class TripdetailsPage implements OnInit {
         if(data.code == "000"){
           this.orderDetails = data.data;
           const plateNo =this.orderDetails.dispatcher.plateNumber
-          this.trackerAPi.trackOrder(plateNo).subscribe(response => {
+          this.trackerAPi.trackOrder(plateNo).then(response => {
             const trackingDetails: VehicleLocation = response.data[plateNo]
             trackingDetails.lat = Number(trackingDetails.lat)
             trackingDetails.lng = Number(trackingDetails.lng)

@@ -20,6 +20,7 @@ export class AuthenticationService {
   public  globalCustomerProfileurl = new BehaviorSubject<any>('');
   public  globalDispatchProfileurl = new BehaviorSubject<any>('');
   public  globalUserEmail = new BehaviorSubject<any>('');
+  public  globalUserId = new BehaviorSubject<any>('');
 
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
@@ -59,6 +60,7 @@ export class AuthenticationService {
                             this.globalDispatchName = this.users[0].dispatcher.name;
                             this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
                         }
+                        this.globalUserId = this.users[0].userId;
                         this.globalUser.next(this.users[0])
                     }
                    
@@ -91,6 +93,7 @@ export class AuthenticationService {
                 this.users.push(userObj);
                 this.globalUserRole = this.users[0].role[0].name;    
                 this.globalUserType = this.users[0].user.userType;
+                this.globalUserId = this.users[0].userId;
                 this.globalUser.next(this.users[0])
                 this.storage.set('user', this.users).then(data=>{
             if(data.length > 0){  
@@ -113,6 +116,7 @@ export class AuthenticationService {
                                 this.users.push(userObj);
                                 this.globalUserRole = this.users[0].role[0].name;    
                                 this.globalUserType = this.users[0].user.userType;
+                                this.globalUserId = this.users[0].userId;
                                 this.globalUser.next(this.users[0])
                                 this.storage.set('user', this.users); 
                         }else{

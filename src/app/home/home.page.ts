@@ -130,7 +130,7 @@ ref.map.fitBounds(bounds);
           this.userRole = this.usersdata.role[0].name;
           console.log(this.userRole)
           if(!this.usersdata.isProfileComplete){
-          //  this.router.navigate(['profilepage']);
+            this.router.navigate(['profilepage']);
           }else{
             if(this.userRole != 'Rider'){
               if(!this.usersdata.customer.closestBustopId){
