@@ -181,11 +181,6 @@ this.router.navigate(['updateprofilepage'],{queryParams:{data:data,field: field}
 
   }
 
-  
-async processProfilePicture(captureData) {
-console.log(captureData)
-}
-
 changePicFromFile() {
   const cameraOptions: CameraOptions = {
     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
@@ -215,7 +210,6 @@ async readFile(file: any) {
       type: file.type
     });
     const formData = new FormData();
-    formData.append('userId', this.usersdata.userId);
     formData.append('file', imgBlob, file.name);
     this.uploadService.uploadprofilepic(formData).subscribe(async dataRes => {
      

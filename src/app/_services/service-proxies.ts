@@ -298,11 +298,10 @@ export class AccountServiceProxy {
     uploadprofilepic(payload): Observable<StatusResource> {
         let url_ = this.baseUrl + "/api/Account/uploadprofilepic";
         url_ = url_.replace(/[?&]$/, "");
-
         const content_ = JSON.stringify(payload);
-
+console.log(payload);
         let options_ : any = {
-            body: content_,
+            body: payload,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({

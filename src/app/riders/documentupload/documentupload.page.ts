@@ -111,6 +111,7 @@ let options: FileUploadOptions = {
   }
 }
 if(this.arrayType.indexOf(fileType) > -1){
+console.log('entered')
   this.loading = await this.loadspinner.create({
     message: "please wait...",
     translucent: true,
@@ -120,6 +121,7 @@ if(this.arrayType.indexOf(fileType) > -1){
   
 this.fileTransfer.upload(nativepath,this.Urlbase+'/api/Manage/UpdateUser',options,false).then(async(data:any)=>{
 if(data.code == "000"){
+  console.log('success', data)
   const toast = await this.toastCtrl.create({
     duration: 3000,
     message: data.message,
@@ -128,6 +130,7 @@ if(data.code == "000"){
   toast.present();
   this.loading.dismiss();
 }else{
+  console.log('failed', data)
   this.loading.dismiss();
   const toast = await this.toastCtrl.create({
     duration: 3000,
