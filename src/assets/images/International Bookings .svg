@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38" height="37" viewBox="0 0 38 37">
+  <g id="Group_9843" data-name="Group 9843" transform="translate(-651 527)">
+    <g id="Group_9842" data-name="Group 9842">
+      <g id="Group_2978" data-name="Group 2978" transform="translate(651.223 -526.705)">
+        <g id="Group_2954" data-name="Group 2954" transform="translate(0 0)">
+          <ellipse id="Ellipse_36" data-name="Ellipse 36" cx="19" cy="18.5" rx="19" ry="18.5" transform="translate(-0.223 -0.295)" fill="rgba(239,97,2,0.2)"/>
+        </g>
+      </g>
+      <path id="Icon_material-library-books" data-name="Icon material-library-books" d="M4.856,6.712H3V19.706a1.862,1.862,0,0,0,1.856,1.856H17.85V19.706H4.856ZM19.706,3H8.569A1.862,1.862,0,0,0,6.712,4.856V15.994A1.862,1.862,0,0,0,8.569,17.85H19.706a1.862,1.862,0,0,0,1.856-1.856V4.856A1.862,1.862,0,0,0,19.706,3Zm-.928,8.353H9.5V9.5h9.281Zm-3.712,3.712H9.5V13.209h5.569Zm3.712-7.425H9.5V5.784h9.281Z" transform="translate(658 -521)"/>
+    </g>
+  </g>
+</svg>

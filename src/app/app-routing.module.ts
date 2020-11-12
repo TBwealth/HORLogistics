@@ -9,7 +9,7 @@ const routes: Routes = [
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
 //  {path: '', redirectTo: 'trackorder/pickup', pathMatch: 'full'},
-{path: '', redirectTo: 'home', pathMatch: 'full'},
+{path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/review-booking', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
@@ -144,7 +144,8 @@ const routes: Routes = [
   {
     path: 'pickup',
     loadChildren: () => import('./trackorder/pickup/pickup.module').then( m => m.PickupPageModule)
-  },  {
+  },
+  {
     path: 'assignedorderdetails',
     loadChildren: () => import('./riders/assignedorderdetails/assignedorderdetails.module').then( m => m.AssignedorderdetailsPageModule)
   },
