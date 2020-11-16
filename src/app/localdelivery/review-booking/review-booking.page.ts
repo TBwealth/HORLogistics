@@ -14,6 +14,7 @@ import { StoreService } from 'src/app/_services/store.service';
 export class ReviewBookingPage implements OnInit {
   bookings: LocalBooking[];
   booking: LocalBooking;
+  selectedBookingIndex = 0;
   totalPayment = 0;
   constructor(
     private maproute: MaprouteService,
@@ -69,6 +70,22 @@ export class ReviewBookingPage implements OnInit {
     // Promise.all(promises).then(data => {
     //   // this.toastController.create()
     // })
+  }
+
+  showNextBooking(){
+    this.selectedBookingIndex += 1
+    if(this.selectedBookingIndex >= this.bookings.length){
+      this.selectedBookingIndex = 0
+    }
+    this.booking = this.bookings[this.selectedBookingIndex]
+  }
+
+  showPrevBooking(){
+    this.selectedBookingIndex -= 1
+    if(this.selectedBookingIndex < 0){
+      this.selectedBookingIndex = this.bookings.length - 1
+    }
+    this.booking = this.bookings[this.selectedBookingIndex]
   }
 
 }

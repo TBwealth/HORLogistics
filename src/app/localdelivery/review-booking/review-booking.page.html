@@ -5,9 +5,13 @@
     <app-maproutecomponent></app-maproutecomponent>
     <!-- <div *ngFor="let booking of bookings"> -->
     <div  class='section-header'>
-      LOCAL PICKUP
-      <!-- <div *ngIf="bookings.length > 1" (click)="showNextBooking()"></div>
-      <div *ngIf="bookings.length > 1" (click)="showPrevBooking()"></div> -->
+      LOCAL PICKUP <span *ngIf="bookings.length > 1"> {{selectedBookingIndex}} / {{bookings.length}}</span>
+      <div *ngIf="bookings.length > 1" (click)="showNextBooking()">
+        <ion-icon name="arrow-forward-outline"></ion-icon>
+      </div>
+      <div *ngIf="bookings.length > 1" (click)="showPrevBooking()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </div>
     </div>
     <!-- <app-list-key-value>
       <span title>Order Number</span>
