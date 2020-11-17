@@ -1,0 +1,94 @@
+// input[type="text"]::placeholder {
+//     text-align: center;
+// }
+
+// .text-input {
+//     text-align: center;
+//   }
+
+.localdelivery {
+    border: none;
+    color: #78849E;
+    font-size: 13px;
+    background-color: #E2E4EB;
+    text-transform: capitalize;
+
+}
+
+// .checkboz {
+//     background-color: #EF6102;
+//     --color-checked: #ffffff;
+//     --border-radius:5px;
+//     -webkit-appearance: checkbox; /* Chrome, Safari, Opera */
+//   -moz-appearance: checkbox;    /* Firefox */
+//   -ms-appearance: checkbox;     /* not currently supported */
+
+// }
+
+ion-col {
+    display: inline;
+    
+}
+
+.myicons {
+    width: 18px;
+    height: 15px;
+
+}
+
+.localheader {
+    width: 80%;
+}
+
+
+.pickup-details {
+    display: block;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.checker {
+    --background-checked:#EF6102;
+    --checkmark-color:#fff;
+    --border-color-checked:#EF6102;
+    --border-radius:3px;
+    --text-decoration: none;
+    }
+
+ion-checkbox{
+    border-bottom: none !important;
+}
+
+ion-label {
+    border: none;
+    text-decoration: none;
+}
+
+.cta1 {
+    --background:#FFFFFF;
+    --color: #454F63;
+    --border-color:#454F63;
+    --border-width: 0.5px;
+    font-size: 14px;
+    width: 70%;
+    display: block;
+    --border-radius: 4px;
+    opacity: 100%; 
+    text-transform: uppercase;
+}
+
+.cta {
+    --background:#EF6102;
+    --color: #fff;
+    font-size: 14px;
+    width: 70%;
+    display: block;
+    --border-radius: 4px;
+    opacity: 100%; 
+    text-transform: uppercase;
+}
+
+.sc-ion-input-ios-h{
+    --padding-start: 10px;
+}
+

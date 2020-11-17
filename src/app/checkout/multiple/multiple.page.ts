@@ -16,6 +16,7 @@ import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO,CheckoutAssistanc
   styleUrls: ['./multiple.page.scss'],
 })
 export class MultiplePage implements OnInit {
+  isMultiple = false;
   checkedIdx = true;
   activetab:string = "";
   homedelivery:string = ""
@@ -50,6 +51,9 @@ export class MultiplePage implements OnInit {
 
   ngOnInit() {
     this.checkOutAsst.products = [];
+    this.activatedroute.queryParamMap.subscribe(data => {
+      this.isMultiple = data.get('multiple') == 'false';
+    })
   }
 
   authuserdetails = new ObjectResourceOfUserViewModel().clone();
@@ -95,8 +99,7 @@ validateProductDescriptionForm(){
       //console.log(this.myorder)
       this.addNewPanel = false;
   }
-  }
-
+  } 
 myoption(event) {
   this.homedelivery = event.detail.value;
 }

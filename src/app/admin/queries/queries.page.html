@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goback()">
+        <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Issue Query</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content style="background-color: slategray;">
+  <form  #myForm="ngForm" name="myForm">
+    <ion-grid style="padding: 10px;">
+      
+        <div style="padding: 5px;"></div>
+        <ion-input (keyup)="validateQueryForm()" type="text" name="title" placeholder="Title" required></ion-input>
+    
+        
+        <div style="padding: 5px;"></div>
+        <ion-input (keyup)="validateQueryForm()" type="text"  name="rider_name" placeholder="Rider’s name"  required></ion-input>
+
+        <div style="padding: 5px;"></div>
+        <ion-input (keyup)="validateQueryForm()" type="text" name="rider_email" placeholder="Rider’s Email Address" required></ion-input>
+
+        <div style="padding: 5px;"></div>
+        <ion-select name="query_reason" placeholder="Query Level">
+          <ion-select-option value="critical">Critical</ion-select-option>
+          <ion-select-option value="mild">Mild</ion-select-option>
+          <ion-select-option value="normal">Low</ion-select-option>
+        </ion-select>
+        
+        <div style="padding: 5px;"></div>
+        <ion-textarea (keyup)="validateQueryForm()" type="text" name="query_reason" placeholder="Reason for Query" required></ion-textarea>                  
+      </ion-grid>
+        <div style="display:flex; padding: 10px;">
+        <ion-button class="cta1" expand="block" fill="outline">
+          <ion-label>Cancel</ion-label>
+        </ion-button>
+        <ion-button class="cta" expand="block" (click)="submitQuery()" fill="default">
+          <ion-label>Submit</ion-label>
+        </ion-button>
+        </div>
+    </form>
+  <ion-row>
+  </ion-row>
+</ion-content>

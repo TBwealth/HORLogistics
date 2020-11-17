@@ -1,0 +1,34 @@
+.item{
+    color: #454F63;
+    --color: #959DAD;
+    --border-color:#EF6102;
+    --color-checked:#EF6102;
+}
+
+.tab {
+    --color: #959DAD;
+    --color-hover:#EF6102;
+    --color-focused:#EF6102;
+    --color-selected: #454F63;
+
+}
+
+// ion-icon.admin-icon {
+//     color:#EF6102 !important;
+//     float: inline-end;
+
+
+// }
+
+.item-center {
+    display: flex;
+    justify-content: center;
+    padding-top: 55px;
+}
+
+.order-item{
+    background:cadetblue; 
+    font-size: 9px; 
+    border-radius: 5px; 
+    padding: 2px 3px;
+}
