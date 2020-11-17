@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
-import { Dispatcher, LocalBooking, LocalBookingResource,UpdateOrderByDispatcher } from 'src/app/_models/service-models';
+import { Dispatcher, LocalBooking, LocalBookingResource,MarkOrderAsDeliveredDTO,UpdateOrderByDispatcher } from 'src/app/_models/service-models';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { MaprouteService } from 'src/app/_services/maproute.service';
-import { LocalBookingServiceProxy, RiderServiceProxy } from 'src/app/_services/service-proxies';
+import { LocalBookingServiceProxy, OrderServiceProxy, RiderServiceProxy } from 'src/app/_services/service-proxies';
 
 import { JSXBase } from '../../../../node_modules/@ionic/core/dist/types/stencil-public-runtime';
 import { AnimationBuilder, Mode, TextFieldTypes } from '../../../../node_modules/@ionic/core/dist/types/interface';
@@ -53,11 +53,13 @@ usersdata:any;
 ListResourceOfOrder = [];
 bookingStatus=[];
 orderStatusResource = new UpdateOrderByDispatcher().clone();
+MarkOrderAsDeliveredDTO = new MarkOrderAsDeliveredDTO().clone();
   constructor(private navCtrl: NavController,
     private alertController: AlertController,
     private loadspinner: LoadingController,
     private AuthenService: AuthenticationService,
     private riderService: RiderServiceProxy,
+    private OorderService: OrderServiceProxy,
     private toastCtrl: ToastController,
     private router: Router,
     private localBookingService: LocalBookingServiceProxy,
@@ -99,7 +101,6 @@ this.riderService.getassignedorder(this.pageSize,this.dispatcherId).subscribe(as
     });
     toast.present();
     this.ListResourceOfOrder = res.data.localBookings;
-    console.log(this.ListResourceOfOrder);
   }else{
     if(res.code == "004"){
       const toast = await this.toastCtrl.create({
@@ -171,6 +172,16 @@ if(cIndex.statusName == 'Delivered'){
     },
   ];
   }
+  if(cIndex.statusName == 'Carry Over'){
+    var alertInput:AlertInput[] = [
+    {
+      name: 'newOrderStatus',
+      type: 'radio',
+      label: 'On transit',
+      value: 3,  
+    },
+  ];
+  }
   const alert = await this.alertController.create({
     cssClass: 'myalertradiocustom-class',
     header: 'New Order Status',
@@ -194,6 +205,14 @@ if(cIndex.statusName == 'Delivered'){
 
             this.riderService.updateOrder(this.orderStatusResource).subscribe(async data=>{
               if(data.code == "000"){
+                this.getAssignedOrder() 
+                if(newOrderStatus == 5){
+                  this.MarkOrderAsDeliveredDTO.dispatcherId = this.dispatcherId;
+                  this.MarkOrderAsDeliveredDTO.orderId = orderId;
+                  this.OorderService.markasdelivered(this.MarkOrderAsDeliveredDTO).subscribe(data=>{
+                    console.log('marked as delivered')
+                  })
+                }
                 const toast = await this.toastCtrl.create({
                   duration: 3000,
                   message: data.message,

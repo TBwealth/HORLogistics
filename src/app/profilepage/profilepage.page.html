@@ -1,6 +1,10 @@
 
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullFactor="0.5" pullMin="100" pullMax="200">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
 <div class="profileSection">
   <ion-header class="zindex ion-no-border" >
     <ion-toolbar>
@@ -10,6 +14,11 @@
         </ion-button>
       </ion-buttons>
       <ion-title class="headertitle" style="color: #FFFFFF;">Profile </ion-title>
+      <ion-buttons slot="end">
+        <ion-button (click)="logout()">
+          <ion-icon name="power-outline" class="iconstyle1" style="color: #FFFFFF;"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-toolbar>
   </ion-header>
 </div>
@@ -18,8 +27,8 @@
   <ion-row>
   <ion-col size="3"></ion-col>  
   <ion-col size="6">
-    <img *ngIf="userRole == 'Customer' || userRole == 'Partner'" class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{userProfilePic}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
-    <img *ngIf="userRole == 'Rider'" class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{dispatcher.profilePicUrl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
+    <img *ngIf="userRole == 'Customer' || userRole == 'Partner'" class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{Urlbase}}{{userProfilePic}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
+    <img *ngIf="userRole == 'Rider'" class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{Urlbase}}{{dispatcher.profilePicUrl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
  
   </ion-col>  
   <ion-col size="3"></ion-col>  
@@ -66,7 +75,7 @@
       <ion-label>Country</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label style="float: right;">
+      <ion-label style="float: right;" *ngIf="customersData.residentialCountryId">
         {{getCountryName(customersData.residentialCountryId)}}
      </ion-label>
     </ion-col>
@@ -80,9 +89,15 @@
       <ion-label *ngIf="userRole != 'Rider' ">State</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label style="float: right;" *ngIf="userRole != 'Rider'">{{customersData.residentialStateId}}</ion-label>
+      <ion-label style="float: right;" *ngIf="userRole != 'Rider'">
+       <span *ngIf="customersData.residentialStateId">
+        {{getstateName(customersData.residentialStateId)}}
+       </span> 
+      </ion-label>
       <ion-label style="float: right;" *ngIf="userRole == 'Rider'" >
-        {{getstateName(dispatcher.residentialStateId)}}
+        <span *ngIf="customersData.residentialStateId">
+          {{getstateName(dispatcher.residentialStateId)}}
+        </span>        
         </ion-label>
     </ion-col>
     <ion-col size="1">
@@ -101,12 +116,16 @@
       <ion-icon (click)="updateUser(customersData.homeAddress,'Address')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>
     </ion-col>
   </ion-row>
-  <ion-row *ngIf="userRole == 'Customer' || userRole == 'Partner'">
+  <ion-row *ngIf="(userRole == 'Customer' || userRole == 'Partner') && busSutopList.length > 0 ">
     <ion-col size="3" >
       <ion-label>Closest Bus-stop</ion-label>
     </ion-col>
     <ion-col size="8" style="float: right;">
-      <ion-label style="float: right;">{{customersData.closestBustop}}</ion-label>
+      <ion-label style="float: right;">
+      <span *ngIf="customersData.closestBustop">
+        {{getBusStopName(customersData.closestBustop)}}
+      </span>
+      </ion-label>
     </ion-col>
     <ion-col size="1">
       <ion-icon (click)="updateUser(customersData.closestBustop,'Bus-stop')" name="pencil-outline" class="iconstyle1" style="color: #EF6102;font-size: 18px;"></ion-icon>

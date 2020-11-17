@@ -1,6 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { Geolocation,Geoposition } from '@ionic-native/geolocation/ngx';
-import { AlertController, NavController, Platform } from '@ionic/angular';
+import { AlertController, NavController, Platform, ToastController } from '@ionic/angular';
 import {MaprouteService} from '../../_services/maproute.service';
 
 declare var google;
@@ -13,7 +13,13 @@ declare var google;
 export class MaproutecomponentComponent implements OnInit {
 addressStart: any;
 addressEnd: any;
-
+  @Input() set location(val: Coordinates){
+    if(val){
+      // this.makeMarker(val, "", "")
+      this.makeMarker( val,  null, "Start" );
+      console.log('Location reached', val)
+    }
+  }
   map: any;
   marker: any;
   drawingManager:any;
@@ -24,7 +30,8 @@ addressEnd: any;
       public platform:Platform, 
       public alertCtrl: AlertController,
       public geolocation: Geolocation,
-      private maproute: MaprouteService) { 
+      private maproute: MaprouteService,
+      private toastCtrl: ToastController  ) { 
 
         this.platform.ready().then(()=>{
           const directionsService = new google.maps.DirectionsService();
@@ -43,7 +50,9 @@ addressEnd: any;
           this.map = new google.maps.Map(document.getElementById("map"),mapOptions);
           directionsRenderer.setMap(this.map);
           const geocoder = new google.maps.Geocoder();
-          this.calculateAndDisplayRoute(directionsService, directionsRenderer, this.map);
+          this.maproute.subject.subscribe(data => {
+            this.calculateAndDisplayRoute(directionsService, directionsRenderer, this.map);
+          })
          // this.geocodeAddress(geocoder, this.map);
         })
   
@@ -62,7 +71,7 @@ addressEnd: any;
             travelMode: google.maps.TravelMode.DRIVING,
             
           },
-          (response, status) => {
+         async (response, status) => {
             if (status === "OK") {
               directionsRenderer.setDirections(response);
               var leg = response.routes[ 0 ].legs[ 0 ];
@@ -76,13 +85,19 @@ addressEnd: any;
             }, 'End' );
   
             } else {
-              window.alert("Directions request failed due to " + status);
+              const toast = await this.toastCtrl.create({
+                duration: 3000,
+                message: "Directions request failed due to " + status,
+                color: "danger"
+              });
+              toast.present();
             }
           }
         );
       }
   
       makeMarker( position, icon, title ) {
+        console.log(position, this.map)
         new google.maps.Marker({
          position: position,
          map: this.map,

@@ -6,6 +6,7 @@ import { AuthenticationService } from '../_services/authentication.service';
 import {  VerifiedPhoneUpdate,StatusResource, LoginResource, Dispatcher,UpdateStatus } from "../_models/service-models";
 import {PrimarylocationComponent} from './primarylocation/primarylocation.component';
 import { RiderServiceProxy } from '../_services/service-proxies';
+import {customConfig} from "../custumConfig";
 declare var google;
 @Component({
   selector: 'app-home',
@@ -15,6 +16,7 @@ declare var google;
 export class HomePage implements OnInit {
   @ViewChild('searchbar', {read: ElementRef,static:true}) public searchbar: ElementRef;
   @ViewChild('searbarContainer', {read: ElementRef,static:true}) public searbarContainer: ElementRef;
+  Urlbase = customConfig.baseUrl;
   map: any;
 marker: any;
 drawingManager:any;
@@ -130,7 +132,13 @@ ref.map.fitBounds(bounds);
           this.userRole = this.usersdata.role[0].name;
           console.log(this.userRole)
           if(!this.usersdata.isProfileComplete){
-          //  this.router.navigate(['profilepage']);
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: 'Please complete your profile to gain full access to the Application',
+              color: "danger"
+            });
+            toast.present();
+            this.router.navigate(['profilepage']);
           }else{
             if(this.userRole != 'Rider'){
               if(!this.usersdata.customer.closestBustopId){

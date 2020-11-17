@@ -1,9 +1,188 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>dashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
+<div style="padding: 10px;background-color: #EF6102;">
+  <div style="padding: 10px;"></div>
+  <ion-row>
+    <ion-row>
+      <ion-col size="10">
+        <ion-row style="border-bottom: 1px solid #fdfdfd">
+          <ion-col>
+            <h4 style="color: #fff;">Good morning, Paul!</h4>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <p style="color: #fdfdfd;opacity: 1; font-weight: 100;">
+              ADMIN | Paul@smartace.ng
+            </p>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+      <ion-col size="2">
+        <div style="padding: 16px;"></div>
+        <ion-avatar style="height: 48px;width: 48px; border-radius: 50%;border: 2px solid #FFFFFF;">
+          <img src="assets/images/female.png" onError="this.src='assets/images/female.png'">
+        </ion-avatar>
+      </ion-col>
+    </ion-row>
+  </ion-row>
+</div>
+<div style="padding: 10px;"></div>
+  <ion-slides #slides pager="true" [options]="slideOpts">
+    <ion-slide>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span style="font-size: 10px;">Customer</span>
+              <h2 style="font-weight: bolder; margin-top: 8px;">2048</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <img src="assets/images/customers.svg">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
 
+    </ion-slide>
+    <ion-slide>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span style="font-size: 10px;">Customer</span>
+              <h2 style="font-weight: bolder; margin-top: 8px;">1000</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <img src="assets/images/customers.svg">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+    </ion-slide>
+    <ion-slide>
+      <ion-card style="width: 100%;">
+        <ion-card-content>
+          <div style="display: flex; justify-content: space-between;">
+            <div>
+              <span style="font-size: 10px;">Partnera</span>
+              <h2 style="font-weight: bolder; margin-top: 8px;">507</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <img src="assets/images/partners.svg">
+            </div>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+    </ion-slides>
+ 
+ 
+
+  <h3 style="font-size: 15px; margin: 16px;">Registered Customers Count</h3>
+
+  <canvas baseChart style="padding: 16px;"
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [legend]="barChartLegend"
+    [chartType]="barChartType">
+  </canvas>
+  <ion-label style="margin-left: 16px; color: #313131; font-weight: bold;">
+    What do you want to do today?
+  </ion-label>
+  <!-- <div></div> -->
+  <ion-row style="padding-left: 11px; padding-right: 11px;">
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/view-riders.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">View Riders</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/create-new-rider.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Create New Rider</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/views-orders.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Views Orders</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/assign-orders.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Assign Orders</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/issue-query.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Issue Query</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/view-all-queries.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">View All Queries</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/create-wallet.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Create Wallet</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/top-up-wallet.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Create Wallet</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/check-out-assistant.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Check-out Assistant</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/view-help-desk.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">Track Shipment</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col style="padding: 0px;">
+      <ion-card style="margin-left: 5px; margin-right: 5px;">
+        <ion-card-content style="display: flex; align-items: center; flex-direction: column;">
+          <img src="assets/images/check-out-assistant.svg">
+          <div style="margin-top: 10px; font-size: 9px; text-align: center; color: #313131">View Help desk</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
 </ion-content>

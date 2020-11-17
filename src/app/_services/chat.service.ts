@@ -60,6 +60,22 @@ export class ChatService {
   
   }
 
+  public getMessages(id): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.afs.collection('messages').doc(id).collection('chats').get().subscribe((messages: any) => {
+        console.log(messages);
+        let data = messages.docs.map(element => {
+          let item = element.data();
+          item.id = element.id;
+          return item;
+        });
+        resolve(data);
+      }, error => {
+        reject(error);
+      });
+    });
+  }
+
   getChatMessages() {
 
     if(this.sessionId){

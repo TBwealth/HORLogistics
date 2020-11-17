@@ -9,8 +9,9 @@ import { Badge } from '@ionic-native/badge/ngx';
 import { NetworkProvider } from "./_services/network";
 import { AuthenticationService } from './_services/authentication.service';
 import { Router } from '@angular/router';
-import {  LoginResource} from "./_models/service-models";
 
+import { Storage } from '@ionic/storage';
+import {customConfig} from "./custumConfig";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -66,6 +67,7 @@ export class AppComponent {
   usersdata: any;
   userRole = "";
   userType = "";
+  Urlbase = customConfig.baseUrl;
   constructor(
     private fbaseService: FirebaseX,
     private platform: Platform,
@@ -74,21 +76,26 @@ export class AppComponent {
     private network: NetworkProvider,
     private menu: MenuController,
     private AuthenService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public storage: Storage
   ) {
     this.initializeApp();
   }
+
 logout(){
 this.AuthenService.clearusers();
 this.router.navigate(['preferedaction']);
 }
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
       this.network.checkNetwork();   
-      this.getUser();   
+      this.getUser(); 
+      this.getToken();
     });
+
+    console.log(this.AuthenService.globalUser)
   }
   gotoprofile(){
     this.router.navigate(['profilepage']);
@@ -96,7 +103,9 @@ this.router.navigate(['preferedaction']);
   }
   getUser(){
     this.AuthenService.getuser().then(async (usersdata:any[])=>{
+
       if(usersdata.length > 0){
+
         this.usersdata = usersdata[0];
         this.userRole = this.usersdata.role[0].name;
         this.userType = this.usersdata.user.userType;
@@ -116,10 +125,12 @@ this.menu.close();
     let token;
     if(this.platform.is('android')){
       token = await this.fbaseService.getToken()
+      this.storage.set('token', token)
     }
     if(this.platform.is('ios')){
       token = await this.fbaseService.getToken();
       await this.fbaseService.grantPermission();
+      this.storage.set('token', token)
     }
   }
 }

@@ -1,19 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController, ToastController,ActionSheetController, LoadingController } from '@ionic/angular';
-import {  UserViewModel,LoginResource, UpdateUserViewModel,UserPhotoViewModel, Dispatcher } from "../_models/service-models";
+import {  UserPhotoViewModel, UpdateUserViewModel, Dispatcher } from "../_models/service-models";
 import { AuthenticationService } from '../_services/authentication.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
-import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy} from '../_services/service-proxies';
+import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy, LocationsServiceProxy} from '../_services/service-proxies';
+import {CustomserviceService } from '../_services/customservice.service';
+import { Base64 } from '@ionic-native/base64/ngx';
+import {customConfig} from "../custumConfig";
 @Component({
   selector: 'app-profilepage',
   templateUrl: './profilepage.page.html',
   styleUrls: ['./profilepage.page.scss'],
 })
 export class ProfilepagePage implements OnInit {
+  Urlbase = customConfig.baseUrl;
   customersData = new UpdateUserViewModel().clone();
-  filemodel = new UserPhotoViewModel().clone();
   dispatcher = new Dispatcher().clone();
   usersdata:any;
   userRole = "";
@@ -25,6 +28,8 @@ export class ProfilepagePage implements OnInit {
   loading: any;
   countryList = [];
 stateList = [];
+busSutopList = [];
+userphotoviewmodel = new UserPhotoViewModel().clone();
   constructor(
     private apiService: ApiServiceProxy,
     public alertController: AlertController,
@@ -38,13 +43,26 @@ stateList = [];
     private file: File,
     private uploadService: AccountServiceProxy,
     private countrySeervice: CountriesServiceProxy,
+    private locationService: LocationsServiceProxy,
+    private customserviceservice: CustomserviceService,
+    private base64: Base64
   ) { 
     //this.getlatestusers()
     }
     ionViewWillEnter(){
       this.getlatestusers()  
     }
+    doRefresh(event) {
+      this.getlatestusers();
+       console.log('Begin async operation');     
+       setTimeout(() => {
+         console.log('Async operation has ended');
+         event.target.complete();
+       }, 2000);    
+   }
+
  async getlatestusers(){
+  this.AuthenService.addUser(this.AuthenService.users[0])
     this.loading = await this.loadspinner.create({
       message: "please wait...",
       translucent: true,
@@ -67,16 +85,27 @@ if(this.userRole != 'Rider'){
     this.customersData.homeAddress = this.usersdata.customer.homeAddress;
     this.userProfilePic = this.usersdata.customer.companyLogo;
 }
+this.customersData.email = this.usersdata.user.email;
+    
+this.customersData.phoneNumber = this.usersdata.phone;
+
+this.dispatcher = this.usersdata.dispatcher;
+
+this.userType = this.usersdata.user.userType;
+
     var countryId = this.userRole != 'Rider' ? this.customersData.residentialCountryId : 1 ;
+    if(this.userRole != 'Rider'){
+      var stateId = this.customersData.residentialStateId;
+    }else{
+      var stateId = this.dispatcher.residentialStateId
+    }
+    
     this.defaultStateList(countryId);
+
+    this.getBusStopByStateId(stateId);
+
     this.defaultCountryList();
-    this.customersData.email = this.usersdata.user.email;
-    
-    this.customersData.phoneNumber = this.usersdata.phone;
-    
-    this.dispatcher = this.usersdata.dispatcher;
-    
-    this.userType = this.usersdata.user.userType;
+  
     
 
   }
@@ -84,6 +113,10 @@ if(this.userRole != 'Rider'){
 }, 2000);
  
   }
+  logout(){
+    this.AuthenService.clearusers();
+    this.router.navigate(['preferedaction']);
+    }
   updateSponsor(){
     this.router.navigate(['sponsorsinformation']);
   }
@@ -158,20 +191,23 @@ this.router.navigate(['updateprofilepage'],{queryParams:{data:data,field: field}
       mediaType: this.camera.MediaType.PICTURE,
     };
     this.camera.getPicture(cameraOptions).then((imageData) => {
-      this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
-        entry.file(file => {
-          console.log(file);
-          this.readFile(file);
+      this.base64.encodeFile(imageData).then((base64File: string) => {
+        this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
+          entry.file(file => {
+            let fileType   = file.name.substring(file.name.lastIndexOf(".") + 1);
+            console.log(base64File)
+            this.userphotoviewmodel.file = base64File.split(",")[1];
+            this.userphotoviewmodel.fileExtension ="."+ fileType;
+            this.userphotoviewmodel.fileSize = file.size;
+            this.userphotoviewmodel.userId = this.AuthenService.globalUserId.value;
+            this.userphotoviewmodel.fileName = "userone"
+            this.readFile(this.userphotoviewmodel);  
+          });
         });
-      });     
+      });          
     })
 
   }
-
-  
-async processProfilePicture(captureData) {
-console.log(captureData)
-}
 
 changePicFromFile() {
   const cameraOptions: CameraOptions = {
@@ -181,59 +217,104 @@ changePicFromFile() {
     encodingType: this.camera.EncodingType.PNG,
   }; 
   this.camera.getPicture(cameraOptions).then((imageData) => {
-    this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
-      entry.file(file => {
-        console.log(file);
-        this.readFile(file);
+    this.base64.encodeFile(imageData).then((base64File: string) => {
+      this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
+        entry.file(async file => {
+          let loading = await this.loadspinner.create({
+            message: "please wait...",
+            translucent: true,
+            spinner: "bubbles",
+          });
+          await loading.present();
+          let fileType   = file.name.substring(file.name.lastIndexOf(".") + 1);
+          console.log(base64File.split(",")[1])
+          this.userphotoviewmodel.file = base64File.split(",")[1];
+          this.userphotoviewmodel.fileExtension ="."+ fileType;
+          this.userphotoviewmodel.fileSize = file.size;
+          this.userphotoviewmodel.userId = this.AuthenService.globalUserId.value;
+          this.userphotoviewmodel.fileName = "userone"
+          loading.dismiss();
+          this.readFile(this.userphotoviewmodel);   
+        });
       });
+    }, (err) => {
+      console.log(err);
     });
-  })
+  }, async(err) => {
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: 'Oops! something went wrong',
+      color: "danger"
+    });
+    toast.present();
+})
 }
-async readFile(file: any) {
-  this.loading = await this.loadspinner.create({
+async readFile(payloadData) {
+  let loading = await this.loadspinner.create({
     message: "please wait...",
     translucent: true,
     spinner: "bubbles",
   });
-  await this.loading.present();
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    const imgBlob = new Blob([reader.result], {
-      type: file.type
-    });
-    const formData = new FormData();
-    formData.append('userId', this.usersdata.userId);
-    formData.append('file', imgBlob, file.name);
-    this.uploadService.uploadprofilepic(formData).subscribe(async dataRes => {
-     
-      this.loading.present()
-      if(dataRes.code == '000'){
-        this.AuthenService.addUser(this.usersdata);
-        this.loading.dismiss()
-        this.getlatestusers();
-        const toast = await this.toastCtrl.create({
-          duration: 3000,
-          message: dataRes.message,
-          color: "success"
-        });
-        toast.present();
-      }else{
-        this.loading.dismiss()
-        const toast = await this.toastCtrl.create({
-          duration: 3000,
-          message: dataRes.message,
-          color: "danger"
-        });
-        toast.present();
-        if(dataRes.message == "Unauthorized"){
-  this.router.navigate(['login']);
-        }
-      }
-    
+  await loading.present();
+  this.uploadService.uploadprofilepic(payloadData).subscribe(async dataRes => {   
+    console.log(dataRes)  
+    if(dataRes.code == '000'){
+      setTimeout(() => {
+        this.AuthenService.addUser(this.usersdata);      
+      this.getlatestusers();
+      }, 3000);
       
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: dataRes.message,
+        color: "success"
+      });
+      toast.present();
+    }else{
+   
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: dataRes.message,
+        color: "danger"
+      });
+      toast.present();
+      if(dataRes.message == "Unauthorized"){
+        this.AuthenService.clearusers();
+       this.router.navigate(['login']);
+      
+      }
+    }
+  
+   loading.dismiss()
+  },async error =>{
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: 'Oops! something went wrong',
+      color: "danger"
     });
-  };
-  reader.readAsArrayBuffer(file);
+    toast.present();
+    loading.dismiss()
+  });
+
+}
+getBusStopByStateId(stateId){ 
+
+  if(stateId){
+    this.locationService.getLocationinstate(stateId).subscribe(data=>{
+      this.busSutopList = data.data;
+      })
+  }else{
+    this.busSutopList = [];
+  }
+
+}
+getBusStopName(busStopId){
+  if( this.busSutopList.length > 0){
+    var bustStopName = this.busSutopList.find(x=>x.id == busStopId).name;
+return bustStopName;
+  }else{
+    return null
+  }
 }
 getstateName(stateId){
 if(this.stateList.length > 0){

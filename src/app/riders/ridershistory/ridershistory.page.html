@@ -1,4 +1,4 @@
-<ion-header class="zindex">
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="goback()">
@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content>
+  <div style="padding: 25px;" *ngIf="ListResourceOfOrder.length < 1">
+  <ion-label>No record found</ion-label>
+  </div>
   <div *ngFor="let assignedOrder of ListResourceOfOrder;">
   <ion-label>
     <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">

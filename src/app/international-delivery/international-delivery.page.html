@@ -1,17 +1,16 @@
-<ion-header>
+<ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="goback()">
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="!exportPage">Import Shipment Mode</ion-title>
-    <ion-title *ngIf="exportPage">Export Shipment Mode</ion-title>
+    <ion-title>International Shipping</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [ngSwitch]="activetab">
   <ion-grid>
-    <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;" *ngIf="!exportPage">
+    <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;">
       <ion-img src="assets/images/booking.png" class="myicons" slot="start" style="background-color: #E2E4EB;"></ion-img>
       <ion-label class="mylabel">Shipment mode</ion-label>
       <ion-select (ionChange)="validateBookingForm()" (keyup)="validateBookingForm()" name="booking_category" class="select" [(ngModel)]="booking.shipmentModeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()">
@@ -32,7 +31,7 @@
  
    <ion-row>
     <ion-col>
-      <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(package_description)" #package_description>
+      <ion-button [disabled]="disablePackageDescription" expand="block" class="localdelivery" fill="clear" (click)="myfunction(package_description)" #package_description>
         <ion-img src="assets/images/package.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Package Description</p>
       </ion-button>
@@ -43,14 +42,14 @@
     <form name="DescriptionForm" #DescriptionForm="ngForm">
       <p style="word-wrap: break-word;">We do not open packages except in extreme circumstances where package is suspicious, or flagged by customs. We however need to know the content as required by law</p>
       <ion-col size=3>
-        <ion-select placeholder="country" class="form-control" #selectCount  [(ngModel)]="booking.country"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button" required>
+        <ion-select placeholder="country" class="form-control" #selectCount  [(ngModel)]="booking.country"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button" required (ngModelChange)="countrySelected()">
           <ion-select-option value="USA" *ngIf="!exportPage"> USA </ion-select-option>
           <ion-select-option  value="UK" *ngIf="!exportPage"> UK </ion-select-option>
           <ion-select-option  value="CA"> CANADA </ion-select-option>
         </ion-select>
       </ion-col>
       <div style="padding: 5px;"></div>
-      <ion-input type="text" placeholder="Estimated Package Weight (Lbs)" (ionChange)="validateDescriptionForm()" (keyup)="validateDescriptionForm()" name="estimated_weight" #estimated_weight="ngModel" [(ngModel)]="booking.estimatedPackageWeight" required></ion-input>
+      <ion-input type="text" [placeholder]="'Estimated Package Weight (' + country.weightSymbol  +')'" (ionChange)="validateDescriptionForm()" (keyup)="validateDescriptionForm()" name="estimated_weight" #estimated_weight="ngModel" [(ngModel)]="booking.estimatedPackageWeight" required></ion-input>
       <div style="padding: 5px;"></div>
       <ion-input *ngIf="booking.kindOfBooking==BOOKING_KINDS.DROP_OFF"  placeholder="Value of Package in Naira" name="package_value" (keyup)="validateDescriptionForm()" (ionChange)="validateDescriptionForm()" #package_value="ngModel" [(ngModel)]="booking.packageValue" required></ion-input>
       <div style="padding: 5px;"></div>
@@ -60,7 +59,7 @@
 
   <ion-row *ngIf="booking.kindOfBooking == BOOKING_KINDS.PICKUP">
     <ion-col>
-      <ion-button [disabled]="false" expand="block" class="localdelivery" fill="clear" (click)="myfunction('pickup_details')" #pickup_details>
+      <ion-button [disabled]="disablePickUpDetails" expand="block" class="localdelivery" fill="clear" (click)="myfunction('pickup_details')" #pickup_details>
         <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Pickup Details</p>
       </ion-button>
@@ -70,9 +69,11 @@
   <div *ngSwitchCase="'pickup_details'">
     <form name="pickupForm" #pickupForm="ngForm">
       <div style="padding: 5px;"></div>
-      <p>Home Pickup ?</p>
-      <app-checkbox [(value)]="homePickup"></app-checkbox>
-      <ng-template [ngIf]="!exportPage || homePickup"> 
+      <ng-template [ngIf]="exportPage">
+        <p>Home Pickup ?</p>
+        <app-checkbox [(value)]="homePickup"></app-checkbox>
+      </ng-template>
+      <ng-template [ngIf]="(exportPage && homePickup) || !exportPage"> 
       <ion-input type="text" (keyup)="validatePickupForm()" (ionChange)="validatePickupForm()" #pickup_name="ngModel" name="pickup_name" placeholder="Name" [(ngModel)]="booking.pickupContactName" required></ion-input>
           <div *ngIf="pickup_name.invalid && (pickup_name.dirty || pickup_name.touched)" class="error">
             <div *ngIf="pickup_name.errors.required">
@@ -96,7 +97,7 @@
 
   <ion-row>
     <ion-col>
-      <ion-button expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
+      <ion-button [disabled]="disableDeliveryDetails" expand="block" class="localdelivery" fill="clear" (click)="myfunction(delivery_details)" #delivery_details>
         <ion-img src="assets/images/plane.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Delivery Details</p>
       </ion-button>
@@ -105,6 +106,10 @@
 
   <div *ngSwitchCase="delivery_details">
     <form name="deliveryForm" #deliveryForm="ngForm">
+      <ion-select name="delivery_type" class="select" [(ngModel)]="booking.shipmentDeliveryTypeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()" placeholder="Shipment delivery type">
+        <ion-select-option [value]="mode.id" *ngFor="let mode of shipmentDeliveryTypes">{{mode.name}}</ion-select-option>
+      </ion-select>
+      <div style="padding: 5px;"></div>
       <p>Do you want home delivery ?</p>
         <app-checkbox [(value)]="booking.homeDelivery"></app-checkbox>
       <div style="padding: 5px;"></div>
@@ -133,7 +138,7 @@
 
   <ion-row *ngIf="!exportPage">
     <ion-col>
-      <ion-button [disabled]="false" expand="block" class="localdelivery" fill="clear" (click)="myfunction('hold_instruction')">
+      <ion-button [disabled]="disableHoldInstructions" expand="block" class="localdelivery" fill="clear" (click)="myfunction('hold_instruction')">
         <ion-img src="assets/images/hold.png" class="myicons" slot="start"></ion-img>
         <p class="localheader">Hold Instruction </p>
       </ion-button>
@@ -145,14 +150,14 @@
       <app-checkbox [(value)]="booking.hasHoldInstruction"></app-checkbox>
       <ng-template [ngIf]="booking.hasHoldInstruction">
         <div style="padding: 5px;"></div>
-        <ion-datetime (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="hold_instruction.shippingDate" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
+        <ion-datetime (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="booking.holdInstruction.shippingDate" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
         <div *ngIf="hold_date.invalid && (hold_date.dirty || hold_date.touched)" class="error">
           <div *ngIf="hold_date.errors.required">
             Delivery Date is required
           </div>
         </div>
         <div style="padding: 5px;"></div>
-          <ion-textarea type="text" (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" name="hold_comment" #hold_comment="ngModel" placeholder="Comment" [(ngModel)]="hold_instruction.comment" required></ion-textarea>
+          <ion-textarea type="text" (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" name="hold_comment" #hold_comment="ngModel" placeholder="Comment" [(ngModel)]="booking.holdInstruction.comment" required></ion-textarea>
           <div *ngIf="hold_comment.invalid && (hold_comment.dirty || hold_comment.touched)" class="error">
             <div *ngIf="hold_comment.errors.required">
               Comment is required
@@ -166,7 +171,7 @@
       <ion-button class="cta1" expand="block" fill="outline">
         <ion-label>Cancel</ion-label>
       </ion-button>
-      <ion-button class="cta" expand="block" fill="default" (click)="submit()">
+      <ion-button [disabled]="disableApplyButton" class="cta" expand="block" fill="default" (click)="submit()">
         <ion-label>Apply</ion-label>
       </ion-button>
     </div>

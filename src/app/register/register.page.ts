@@ -85,7 +85,7 @@ if(data.code == '007'){
     color: "success"
   });
   toast.present();
-  this.loading.dismiss();
+ 
   this.router.navigate(['providephone'])
 }else{
   const toast = await this.toastCtrl.create({
@@ -94,8 +94,17 @@ if(data.code == '007'){
     color: "danger"
   });
   toast.present();
-  this.loading.dismiss();
+
 }
+this.loading.dismiss();
+      }, async error=>{
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: 'Oops! something went wrong',
+          color: "danger"
+        });
+        toast.present();
+        this.loading.dismiss();
       });
         
       }
@@ -109,9 +118,14 @@ if(data.code == '007'){
         .then((response: FacebookLoginResponse) => {
           this.fbonLoginSuccess(response);
           console.log(response.authResponse.accessToken);
-        }).catch((error) => {
+        }).catch(async (error) => {
           console.log(error);
-          alert('error:' + error);
+          const toast = await this.toastCtrl.create({
+            duration: 3000,
+            message: "Oops! something went wrong",
+            color: "danger"
+          });
+          toast.present();
         });
     }
   
@@ -168,7 +182,7 @@ if(data.code == '007'){
           this.user = success.user;
           this.regUser.fullName = this.user.displayName;
           this.regUser.email = this.user.email;
-          console.log(this.user);
+         // console.log(this.user);
           this.loading.dismiss();
         });
   

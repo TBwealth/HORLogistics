@@ -5,12 +5,23 @@ import { Storage } from '@ionic/storage';
 import {ManageServiceProxy,} from '../_services/service-proxies';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
+import { Observable, of, BehaviorSubject } from 'rxjs';
 @Injectable()
 export class AuthenticationService {
     main_id = 0;
     user: User={}
     users = [];
+  public  globalUser = new BehaviorSubject<any>('');
+  public  globalUserRole = new BehaviorSubject<any>('');
+  public  globalUserType = new BehaviorSubject<any>('');
+  public  globalUserName = new BehaviorSubject<any>('');
+  public  globalDispatchName = new BehaviorSubject<any>('');
+  public  globalPartnerName = new BehaviorSubject<any>('');
+  public  globalCustomerProfileurl = new BehaviorSubject<any>('');
+  public  globalDispatchProfileurl = new BehaviorSubject<any>('');
+  public  globalUserEmail = new BehaviorSubject<any>('');
+  public  globalUserId = new BehaviorSubject<any>('');
+  public  globalAdminStatus = new BehaviorSubject<any>('');
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
      private toastCtrl: ToastController,
@@ -36,7 +47,22 @@ export class AuthenticationService {
                             dispatcher: user.dispatcher,
                             role: user.role
                         };
-                        this.users.push(saveduser);      
+                        this.users.push(saveduser);  
+                        this.globalUserRole = this.users[0].role[0].name;    
+                        this.globalUserType = this.users[0].user.userType;
+                        this.globalUserEmail = this.users[0].user.email;
+                        this.globalAdminStatus = this.users[0].user.isAdmin;
+                        if(this.users[0].customer){
+                            this.globalPartnerName = this.users[0].customer.businessName;
+                            this.globalUserName = this.users[0].customer.fullName;
+                            this.globalCustomerProfileurl = this.users[0].customer.companyLogo;
+                        }
+                        if(this.users[0].dispatcher){
+                            this.globalDispatchName = this.users[0].dispatcher.name;
+                            this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                        }
+                        this.globalUserId = this.users[0].userId;
+                        this.globalUser.next(this.users[0])
                     }
                    
                 }
@@ -52,27 +78,7 @@ export class AuthenticationService {
          }
 
         addUser(user){      
-            // let customerObj ={
-            //     aspNetUser:  {email: undefined, userName: undefined},
-            //     businessAnniversary: new Date(user.customer.businessAnniversary),
-            //     businessName: user.customer.businessName,
-            //     closestBustopId: user.customer.closestBustopId,
-            //     closestLandmark: user.customer.closestLandmark,
-            //     companyLogo: user.customer.companyLogo,
-            //     createdAt: '',
-            //     fullName: user.customer.fullName,
-            //     homeAddress: user.customer.homeAddress,
-            //     location: user.customer.location,
-            //     registerAsPartner: user.customer.registerAsPartner,
-            //     residentialCountry: user.customer.residentialCountry,
-            //     residentialCountryId: user.customer.residentialCountryId,
-            //     residentialState: user.customer.residentialState,
-            //     residentialStateId: user.customer.residentialStateId,
-            //     synergyProgramCustomer: user.customer.synergyProgramCustomer,
-            //     updatedAt: '',
-            //     userId: user.customer.userId,
-            //     wallet: user.customer.wallet
-            //    }
+           
                let userObj = {
                 token: user.token,
                 phone: user.phone,
@@ -86,32 +92,26 @@ export class AuthenticationService {
                }   
                 this.users = [];
                 this.users.push(userObj);
+                this.globalUserRole = this.users[0].role[0].name;    
+                this.globalUserType = this.users[0].user.userType;
+                this.globalUserId = this.users[0].userId;
+                this.globalUser.next(this.users[0])
+                this.globalAdminStatus = this.users[0].user.isAdmin;
+                if(this.users[0].customer){
+                    this.globalPartnerName = this.users[0].customer.businessName;
+                    this.globalUserName = this.users[0].customer.fullName;
+                    this.globalCustomerProfileurl = this.users[0].customer.companyLogo;
+                }
+                if(this.users[0].dispatcher){
+                    this.globalDispatchName = this.users[0].dispatcher.name;
+                    this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                }
                 this.storage.set('user', this.users).then(data=>{
             if(data.length > 0){  
                     this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
                         if(data.code == "000"){
                             var res = data.data;
-                            // let customerObj ={
-                            //     aspNetUser:  res.customer.aspNetUser,
-                            //     businessAnniversary: new Date(res.customer.businessAnniversary),
-                            //     businessName: res.customer.businessName,
-                            //     closestBustopId: res.customer.closestBustopId,
-                            //     closestLandmark: res.customer.closestLandmark,
-                            //     companyLogo: res.customer.companyLogo,
-                            //     createdAt: '',
-                            //     fullName: res.customer.fullName,
-                            //     homeAddress: res.customer.homeAddress,
-                            //     location: res.customer.location,
-                            //     registerAsPartner: res.customer.registerAsPartner,
-                            //     residentialCountry: res.customer.residentialCountry,
-                            //     residentialCountryId: res.customer.residentialCountryId,
-                            //     residentialState: res.customer.residentialState,
-                            //     residentialStateId: res.customer.residentialStateId,
-                            //     synergyProgramCustomer: res.customer.synergyProgramCustomer,
-                            //     updatedAt: '',
-                            //     userId: res.customer.userId,
-                            //     wallet: res.customer.wallet
-                            //    }
+                           
                                let userObj = {
                                 token: user.token,
                                 phone: res.user.phoneNumber,
@@ -125,6 +125,20 @@ export class AuthenticationService {
                                }   
                                 this.users = [];
                                 this.users.push(userObj);
+                                this.globalUserRole = this.users[0].role[0].name;    
+                                this.globalUserType = this.users[0].user.userType;
+                                this.globalUserId = this.users[0].userId;
+                                this.globalUser.next(this.users[0])
+                                this.globalAdminStatus = this.users[0].user.isAdmin;
+                                if(this.users[0].customer){
+                                    this.globalPartnerName = this.users[0].customer.businessName;
+                                    this.globalUserName = this.users[0].customer.fullName;
+                                    this.globalCustomerProfileurl = this.users[0].customer.companyLogo;
+                                }
+                                if(this.users[0].dispatcher){
+                                    this.globalDispatchName = this.users[0].dispatcher.name;
+                                    this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                                }
                                 this.storage.set('user', this.users); 
                         }else{
                             const toast = await this.toastCtrl.create({

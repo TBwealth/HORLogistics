@@ -6,13 +6,14 @@
 
 <ion-content>
   <div style="padding:15px;">
-    <ion-input *ngIf="routeField == 'Full Name'"    
+    <ion-input *ngIf="routeField == 'Full Name' "    
     placeholder="{{routeField}}" type="text"  [(ngModel)]="fieldValue"></ion-input>
 
-    <ion-select *ngIf="routeField == 'Country' || routeField == 'State' || routeField == 'Bus-stop'" 
+    <ion-select *ngIf="routeField == 'Country' || routeField == 'State' || routeField == 'Bus-stop' " 
     placeholder="{{routeField}}" [(ngModel)]="fieldValue">
       <ion-select-option *ngFor="let item of listData" value="{{item.id}}">{{item.name}}</ion-select-option>
     </ion-select>
+    
 
     <ion-textarea rows="6" *ngIf="routeField == 'Landmark' || routeField == 'Address'"
     placeholder="{{routeField}}" type="text"  [(ngModel)]="fieldValue">

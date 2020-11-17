@@ -1,8 +1,8 @@
 <app-page-structure title="International Pickup">
   <div class="main-container">
-    <app-list-item shape="circle"> 1 Ash Park, Pembroke Dock, SA72</app-list-item>
-    <app-list-item shape="square"> 54 Hollybank Rd, Southampton</app-list-item>
-    <app-maproutecomponent></app-maproutecomponent>
+    <app-list-item shape="circle"> {{booking.pickupAddress}}</app-list-item>
+    <app-list-item shape="square"> {{booking.deliveryAddress}}</app-list-item>
+    <!-- <app-maproutecomponent></app-maproutecomponent> -->
     <div  class='section-header'>
       INTERNATIONAL PICKUP
     </div>
@@ -18,48 +18,52 @@
       <span title>Value of Package</span>
       <span value>{{booking.packageValue}}</span>
     </app-list-key-value>
-    <app-list-key-value>
+    <app-list-key-value *ngIf="booking.eta">
       <span title>Date</span>
       <span value>{{booking.eta}}</span>
     </app-list-key-value>
     <app-list-key-value>
       <span title>Service Type</span>
-      <span value>{{booking.shipmentDeliveryType}}</span>
+      <span value>
+        {{shipmentType.name}}
+      </span>
     </app-list-key-value>
-    <div class='section-header'>
-      SHIPPING COST SUMMARY
-    </div>
-    <app-list-key-value>
-      <span title>Admin Fee</span>
-      <span value>5000</span>
-    </app-list-key-value>
-    <app-list-key-value>
-      <span title>Charge per unit weight (Lbs)</span>
-      <span value>0</span>
-    </app-list-key-value>
-    <app-list-key-value>
-      <span title>Estimated Package Weight</span>
-      <span value>{{booking.estimatedPackageWeight}}</span>
-    </app-list-key-value>
-    <app-list-key-value>
-      <span title>Charge for Package (Import) (USA)</span>
-      <span value>0</span>
-    </app-list-key-value>
-    <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
-      <span title>Your payment</span>
-      <span value>0</span>
-    </app-list-key-value>
-    <p>
-      Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight.
-      <br/><br/>Please also make provision for an extra unit weight for packaging
-    </p>
-    <div style="display:flex; justify-content: center;">
-      <ion-button class="cta1" expand="block" fill="outline">
-        <ion-label>Cancel</ion-label>
-      </ion-button>
-      <ion-button color="primary" (click)="submit()">
-        <ion-label>Pay</ion-label>
-      </ion-button>
-    </div>
+    <ng-template [ngIf]="!booking.id">
+      <div class='section-header'>
+        SHIPPING COST SUMMARY
+      </div>
+      <app-list-key-value>
+        <span title>Admin Fee</span>
+        <span value>N{{country.adminFee}}</span>
+      </app-list-key-value>
+      <app-list-key-value>
+        <span title>Charge per unit weight ({{country.weightName}})</span>
+        <span value>N{{country.importRatePerUnitWeight * country.exchangeRate}}</span>
+      </app-list-key-value>
+      <app-list-key-value>
+        <span title>Estimated Package Weight</span>
+        <span value>{{booking.estimatedPackageWeight}}</span>
+      </app-list-key-value>
+      <!-- <app-list-key-value>
+        <span title>Charge for Package (Import) (USA)</span>
+        <span value></span>
+      </app-list-key-value> -->
+      <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
+        <span title>Your payment</span>
+        <span value>N{{totalPayment}}</span>
+      </app-list-key-value>
+      <p>
+        Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight.
+        <br/><br/>Please also make provision for an extra unit weight for packaging
+      </p>
+      <div style="display:flex; justify-content: center;">
+        <ion-button class="cta1" expand="block" fill="outline">
+          <ion-label>Cancel</ion-label>
+        </ion-button>
+        <ion-button color="primary" (click)="submit()">
+          <ion-label>Pay</ion-label>
+        </ion-button>
+      </div>
+    </ng-template>
   </div>
 </app-page-structure>

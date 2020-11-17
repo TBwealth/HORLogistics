@@ -36,7 +36,6 @@ export class LocationComponent implements OnInit {
   }
 
   locationChanged(){
-    alert(this.location)
     this.valueChange.emit(this.location)
   }
 

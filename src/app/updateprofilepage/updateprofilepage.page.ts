@@ -150,6 +150,7 @@ loading:any;
       this.AuthenService.addUser(this.usersdata);
       setTimeout(() => {
         this.loading.dismiss()        
+       
         this.navCtrl.navigateBack('/profilepage')
       }, 3000);
      
@@ -169,6 +170,7 @@ loading:any;
       });
       toast.present();
       if(data.message == "Unauthorized"){
+        this.AuthenService.clearusers();
 this.router.navigate(['login']);
       }
     }
@@ -207,8 +209,8 @@ this.countrySeervice.states(CountryId).subscribe(data=>{
     spinner: "bubbles",
   });
   await this.loading.present();
-this.locationService.category(StateId).subscribe(data=>{
-this.listData = data;
+this.locationService.getLocationinstate(StateId).subscribe(data=>{
+this.listData = data.data;
 this.loading.dismiss();
 })
   }

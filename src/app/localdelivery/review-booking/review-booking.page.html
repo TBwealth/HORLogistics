@@ -1,11 +1,13 @@
 <app-page-structure title="Summary">
   <div class="main-container">
-    <app-list-item shape="circle"> 1 Ash Park, Pembroke Dock, SA72</app-list-item>
-    <app-list-item shape="square"> 54 Hollybank Rd, Southampton</app-list-item>
+    <app-list-item shape="circle"> {{booking.pickUpAddress}}</app-list-item>
+    <app-list-item shape="square"> {{booking.deliveryAddress}}</app-list-item>
     <app-maproutecomponent></app-maproutecomponent>
-    <div *ngFor="let booking of bookings">
+    <!-- <div *ngFor="let booking of bookings"> -->
     <div  class='section-header'>
       LOCAL PICKUP
+      <!-- <div *ngIf="bookings.length > 1" (click)="showNextBooking()"></div>
+      <div *ngIf="bookings.length > 1" (click)="showPrevBooking()"></div> -->
     </div>
     <!-- <app-list-key-value>
       <span title>Order Number</span>
@@ -17,7 +19,7 @@
     </app-list-key-value> -->
     <app-list-key-value>
       <span title>Package bigger than Indomie carton</span>
-      <span value>{{booking.numberOfPackages}}</span>
+      <span value>{{booking.numberOfPackages > 1 ? 'Yes' : 'No'}}</span>
     </app-list-key-value>
     <!-- <app-list-key-value>
       <span title>Pick up Date & Time</span>
@@ -35,10 +37,10 @@
       <span title>Receiver’s Number</span>
       <span value>{{booking.recipientPhoneNumber}}</span>
     </app-list-key-value>
-    <div class="bg-secondary">
+    <div class="bg-secondary" *ngIf="!booking.id">
       <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
         <span title>Your payment</span>
-        <span value>14 Feb'19 at 9:42am</span>
+        <span value>{{totalPayment}}</span>
       </app-list-key-value>
       <div style="display:flex; justify-content: center;">
         <ion-button class="cta1" expand="block" fill="outline">
@@ -50,5 +52,5 @@
       </div>
     </div>
   </div>
-  </div>
+  <!-- </div> -->
 </app-page-structure>

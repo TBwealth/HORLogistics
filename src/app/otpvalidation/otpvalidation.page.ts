@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AccountServiceProxy } from '../_services/service-proxies';
 import { AuthenticationService } from '../_services/authentication.service';
 import {  VerifiedPhoneUpdate,StatusResource, LoginResource, } from "../_models/service-models";
+import * as firebase from 'firebase/app';
 @Component({
   selector: 'app-otpvalidation',
   templateUrl: './otpvalidation.page.html',
@@ -39,40 +40,50 @@ export class OtpvalidationPage implements OnInit {
           translucent: true,
           spinner: "bubbles",cssClass: 'my-loading-class'});
           loading.present();
-
+          this.AuthenService.getuser().then(async(usersdata:LoginResource[])=>{
+          if(usersdata.length > 0){
+            this.VerifiedPhoneUpdate.userId = usersdata[0].userId;
+            this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
+            this.VerifiedPhoneUpdate.isVerified = true;
+            this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe(async(data:StatusResource)=>{
+          if(data.code == "000"){            
           const toast = await this.toastCtrl.create({
             duration: 3000,
             message: 'Phone Number Verified Successfully',
             color: "success"
           });
           toast.present();
-          this.AuthenService.getuser().then((usersdata:LoginResource[])=>{
-          if(usersdata.length > 0){
-            this.VerifiedPhoneUpdate.userId = usersdata[0].userId;
-            this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
-            this.VerifiedPhoneUpdate.isVerified = true;
-            this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe((data:StatusResource)=>{
-          if(data.code == "007"){
-            this.AuthenService.addUser(usersdata[0]);
-            this.router.navigate(['home'])
+            this.router.navigate(['profilepage'])
             loading.dismiss();
           }else{
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: data.message,
+              color: "danger"
+            });
+            toast.present();
             loading.dismiss();
           }
             });
           }else{
-
+            loading.dismiss();
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: 'Oops! something went wrong',
+              color: "danger"
+            });
+            toast.present();
           }
+          }, async error =>{
+            console.log(error)
+            loading.dismiss();
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: 'Oops! something went wrong',
+              color: "danger"
+            });
+            toast.present();
           })
-                } else{
-                  const toast = await this.toastCtrl.create({
-                    duration: 3000,
-                    message: 'Wrong/Expired OTP code',
-                    color: "danger"
-                  });
-                  toast.present();
-
-                  loading.dismiss();
                 }
                 })
 
@@ -83,66 +94,90 @@ async verifyOTP(){
   spinner: "bubbles",cssClass: 'my-loading-class'});
   loading.present();
   let receivedotp = this.code1 + this.code2 + this.code3 + this.code4 + this.code5 + this.code6;
-  //console.log(receivedotp);
-  // const otp = this.verificationID.toString().substr(0, 6);
                 if(receivedotp){
-                  // if(receivedotp == otp){
-                  
-                  // }else{
+                  this.firebaseAuthentication.signInWithVerificationId(this.verificationID,receivedotp).then(async resdata=>{
                    
-                  // }
-                  this.firebaseAuthentication.signInWithVerificationId(this.verificationID,receivedotp)
-                  // .then(data=>{
-                  //   console.log(data)
-                  // });
-
+                    console.log('otp val resp',resdata)
+                    if(resdata == "OK"){
+                      this.AuthenService.getuser().then((usersdata:LoginResource[])=>{
+                        if(usersdata.length > 0){
+                          this.VerifiedPhoneUpdate.userId = usersdata[0].userId;
+                          this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
+                          this.VerifiedPhoneUpdate.isVerified = true;
+                          this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe(async(data:StatusResource)=>{
+                            if(data.code == "000"){
+                              this.AuthenService.addUser(usersdata[0]);
+                              
+                              const toast = await this.toastCtrl.create({
+                                duration: 3000,
+                                message: 'Phone Number Verified Successfully',
+                                color: "success"
+                              });
+                              toast.present();
+                              this.router.navigate(['profilepage'])
+                              loading.dismiss();
+                            }else{
+                              const toast = await this.toastCtrl.create({
+                                duration: 3000,
+                                message: 'Unable to validate number',
+                                color: "danger"
+                              });
+                              toast.present();
+                              loading.dismiss();
+                            }
+                              }, async error =>{
+                                console.log(error)
+                                loading.dismiss();
+                                const toast = await this.toastCtrl.create({
+                                  duration: 3000,
+                                  message: 'Oops! something went wrong',
+                                  color: "danger"
+                                });
+                                toast.present();
+                              });
+                         
+      
+                        }
+                      })
+                    }else{
+                      loading.dismiss();
+                      const toast = await this.toastCtrl.create({
+                        duration: 3000,
+                        message: 'Invalid/Wrong OTP',
+                        color: "danger"
+                      });
+                      toast.present();
+                    }
+                  }, async error =>{
+                    console.log(error)
+                    loading.dismiss();
+                    const toast = await this.toastCtrl.create({
+                      duration: 3000,
+                      message: error,
+                      color: "danger"
+                    });
+                    toast.present();
+                  });
+                
                 }
-                this.AuthenService.getuser().then((usersdata:LoginResource[])=>{
-                  if(usersdata.length > 0){
-                    this.VerifiedPhoneUpdate.userId = usersdata[0].userId;
-                    this.VerifiedPhoneUpdate.phone = this.currentPhoneNumber;
-                    this.VerifiedPhoneUpdate.isVerified = true;
-                    this.registerService.verifyPhone(this.VerifiedPhoneUpdate).subscribe(async(data:StatusResource)=>{
-                      if(data.code == "000"){
-                        this.AuthenService.addUser(usersdata[0]);
-                        const toast = await this.toastCtrl.create({
-                          duration: 3000,
-                          message: 'Phone Number Verified Successfully',
-                          color: "success"
-                        });
-                        toast.present();
-                        this.router.navigate(['profilepage'])
-                        loading.dismiss();
-                      }else{
-                        const toast = await this.toastCtrl.create({
-                          duration: 3000,
-                          message: 'Wrong/Expired OTP code',
-                          color: "danger"
-                        });
-                        toast.present();
-                        loading.dismiss();
-                      }
-                        });
-                   
-
-                  }
-                })
+           
 }
 
   sendOTP(phoneNumber){
     this.firebaseAuthentication.verifyPhoneNumber(phoneNumber, 30000).then(async(verificationID) => {
       this.verificationID = verificationID;
-      console.log(this.verificationID)    
+      console.log('otp',this.verificationID)    
     })
   }
   goback(){
     this.navCtrl.back();
   }
 
- async codeValidation(codeElement,value){
+ async codeValidation(nextElement,codeElement,value){
     var reg = new RegExp('^[+.0-9]+$');
     if(value !== "" && value && reg.test(value)){
-
+      //if(codeElement != "code6")
+      nextElement.setFocus();
     }else{
    if(codeElement == "code1") this.code1 = "";
    if(codeElement == "code2") this.code2 = "";
@@ -164,7 +199,7 @@ async verifyOTP(){
       if(data.phoneNumber){
         this.currentPhoneNumber = data.phoneNumber;
         console.log(data.phoneNumber)
-        this.sendOTP(data.phoneNumber);
+      this.sendOTP(data.phoneNumber);
         
       }else{
         this.router.navigate(['providephone']);

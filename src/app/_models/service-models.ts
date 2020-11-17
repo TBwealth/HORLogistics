@@ -8,9 +8,127 @@
 // ReSharper disable InconsistentNaming
 
 
+export class RiderDocument implements IRiderDocument {
+    file: string;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+    dispatcherId: number;
+
+    constructor(data?: IRiderDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.file = _data["file"];
+            this.fileExtension = _data["fileExtension"];
+            this.fileName = _data["fileName"];
+            this.fileSize = _data["fileSize"];
+            this.dispatcherId = _data["dispatcherId"];
+        }
+    }
+
+    static fromJS(data: any): RiderDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new RiderDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["file"] = this.file;
+        data["fileExtension"] = this.fileExtension;
+        data["fileName"] = this.fileName;
+        data["fileSize"] = this.fileSize;
+        data["dispatcherId"] = this.dispatcherId;
+        return data; 
+    }
+
+    clone(): RiderDocument {
+        const json = this.toJSON();
+        let result = new RiderDocument();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRiderDocument {
+    file: string;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+    dispatcherId: number;
+}
+
+export class UserPhotoViewModel implements IUserPhotoViewModel {
+    file: string;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+    userId: string | undefined;
+
+    constructor(data?: IUserPhotoViewModel) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.file = _data["file"];
+            this.fileExtension = _data["fileExtension"];
+            this.fileName = _data["fileName"];
+            this.fileSize = _data["fileSize"];
+            this.userId = _data["userId"];
+        }
+    }
+
+    static fromJS(data: any): UserPhotoViewModel {
+        data = typeof data === 'object' ? data : {};
+        let result = new UserPhotoViewModel();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["file"] = this.file;
+        data["fileExtension"] = this.fileExtension;
+        data["fileName"] = this.fileName;
+        data["fileSize"] = this.fileSize;
+        data["userId"] = this.userId;
+        return data; 
+    }
+
+    clone(): UserPhotoViewModel {
+        const json = this.toJSON();
+        let result = new UserPhotoViewModel();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUserPhotoViewModel {
+    file: string;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+    userId: string | undefined;
+}
 
 export class LoginViewModel implements ILoginViewModel {
     email: string;
+    deviceId: string;
     password: string;
     rememberMe: boolean | undefined;
 
@@ -26,6 +144,7 @@ export class LoginViewModel implements ILoginViewModel {
     init(_data?: any) {
         if (_data) {
             this.email = _data["email"];
+            this.deviceId = _data["deviceId"];
             this.password = _data["password"];
             this.rememberMe = _data["rememberMe"];
         }
@@ -41,6 +160,7 @@ export class LoginViewModel implements ILoginViewModel {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["email"] = this.email;
+        data["deviceId"] = this.deviceId;
         data["password"] = this.password;
         data["rememberMe"] = this.rememberMe;
         return data; 
@@ -56,6 +176,7 @@ export class LoginViewModel implements ILoginViewModel {
 
 export interface ILoginViewModel {
     email: string;
+    deviceId: string;
     password: string;
     rememberMe: boolean | undefined;
 }
@@ -120,6 +241,7 @@ export class LoginResource implements ILoginResource {
     user: AspNetUser | undefined;
     role: AspNetRole[] | undefined;
     dispatcher: Dispatcher | undefined;
+    dispatcherDocument: DispatcherDocument | undefined;
     customer: Customer | undefined;
 
     constructor(data?: ILoginResource) {
@@ -145,6 +267,7 @@ export class LoginResource implements ILoginResource {
                     this.role.push(AspNetRole.fromJS(item));
             }
             this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.dispatcherDocument = _data["dispatcherDocument"] ? DispatcherDocument.fromJS(_data["dispatcherDocument"]) : <any>undefined;
             this.customer = _data["customer"] ? Customer.fromJS(_data["customer"]) : <any>undefined;
         }
     }
@@ -170,6 +293,7 @@ export class LoginResource implements ILoginResource {
                 data["role"].push(item.toJSON());
         }
         data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["dispatcherDocument"] = this.dispatcherDocument ? this.dispatcherDocument.toJSON() : <any>undefined;
         data["customer"] = this.customer ? this.customer.toJSON() : <any>undefined;
         return data; 
     }
@@ -191,6 +315,7 @@ export interface ILoginResource {
     user: AspNetUser | undefined;
     role: AspNetRole[] | undefined;
     dispatcher: Dispatcher | undefined;
+    dispatcherDocument: DispatcherDocument | undefined;
     customer: Customer | undefined;
 }
 
@@ -477,6 +602,77 @@ export interface IDispatcher {
     deviceId: string | undefined;
     residentialStateId: number | undefined;
     residentialState: ResidentialState | undefined;
+}
+
+export class DispatcherDocument implements IDispatcherDocument {
+    dispatcherId: number | undefined;
+    machinePictureUrl: string | undefined;
+    machineRegistrationUrl: string | undefined;
+    riderLincesUrl: string | undefined;
+    riderInsurance: string | undefined;
+    dispatcher: Dispatcher | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+
+    constructor(data?: IDispatcherDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.dispatcherId = _data["dispatcherId"];
+            this.machinePictureUrl = _data["machinePictureUrl"];
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"];
+            this.riderLincesUrl = _data["riderLincesUrl"];
+            this.riderInsurance = _data["riderInsurance"];
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DispatcherDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new DispatcherDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["dispatcherId"] = this.dispatcherId;
+        data["machinePictureUrl"] = this.machinePictureUrl;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl;
+        data["riderLincesUrl"] = this.riderLincesUrl;
+        data["riderInsurance"] = this.riderInsurance;
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        return data; 
+    }
+
+    clone(): DispatcherDocument {
+        const json = this.toJSON();
+        let result = new DispatcherDocument();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDispatcherDocument {
+    dispatcherId: number | undefined;
+    machinePictureUrl: string | undefined;
+    machineRegistrationUrl: string | undefined;
+    riderLincesUrl: string | undefined;
+    riderInsurance: string | undefined;
+    dispatcher: Dispatcher | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
 }
 
 export class Customer implements ICustomer {
@@ -974,77 +1170,6 @@ export interface ILocalBooking {
     createdFromEndpoint: boolean | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
-}
-
-export class DispatcherDocument implements IDispatcherDocument {
-    dispatcherId: number | undefined;
-    machinePictureUrl: string | undefined;
-    machineRegistrationUrl: string | undefined;
-    riderLincesUrl: string | undefined;
-    riderInsurance: string | undefined;
-    dispatcher: Dispatcher | undefined;
-    createdAt: Date | undefined;
-    updatedAt: Date | undefined;
-
-    constructor(data?: IDispatcherDocument) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.dispatcherId = _data["dispatcherId"];
-            this.machinePictureUrl = _data["machinePictureUrl"];
-            this.machineRegistrationUrl = _data["machineRegistrationUrl"];
-            this.riderLincesUrl = _data["riderLincesUrl"];
-            this.riderInsurance = _data["riderInsurance"];
-            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
-            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
-            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): DispatcherDocument {
-        data = typeof data === 'object' ? data : {};
-        let result = new DispatcherDocument();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["dispatcherId"] = this.dispatcherId;
-        data["machinePictureUrl"] = this.machinePictureUrl;
-        data["machineRegistrationUrl"] = this.machineRegistrationUrl;
-        data["riderLincesUrl"] = this.riderLincesUrl;
-        data["riderInsurance"] = this.riderInsurance;
-        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
-        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
-        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
-        return data; 
-    }
-
-    clone(): DispatcherDocument {
-        const json = this.toJSON();
-        let result = new DispatcherDocument();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IDispatcherDocument {
-    dispatcherId: number | undefined;
-    machinePictureUrl: string | undefined;
-    machineRegistrationUrl: string | undefined;
-    riderLincesUrl: string | undefined;
-    riderInsurance: string | undefined;
-    dispatcher: Dispatcher | undefined;
-    createdAt: Date | undefined;
-    updatedAt: Date | undefined;
 }
 
 export class ResidentialState implements IResidentialState {
@@ -4214,6 +4339,7 @@ export class RegisterUserResource implements IRegisterUserResource {
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
     dispatcher: Dispatcher | undefined;
+    dispatcherDocument: DispatcherDocument | undefined;
     role: AspNetRole[] | undefined;
     customer: Customer | undefined;
 
@@ -4235,6 +4361,7 @@ export class RegisterUserResource implements IRegisterUserResource {
             this.isProfileComplete = _data["isProfileComplete"];
             this.user = _data["user"] ? AspNetUser.fromJS(_data["user"]) : <any>undefined;
             this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.dispatcherDocument = _data["dispatcherDocument"] ? DispatcherDocument.fromJS(_data["dispatcherDocument"]) : <any>undefined;
             if (Array.isArray(_data["role"])) {
                 this.role = [] as any;
                 for (let item of _data["role"])
@@ -4260,6 +4387,7 @@ export class RegisterUserResource implements IRegisterUserResource {
         data["isProfileComplete"] = this.isProfileComplete;
         data["user"] = this.user ? this.user.toJSON() : <any>undefined;
         data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["dispatcherDocument"] = this.dispatcherDocument ? this.dispatcherDocument.toJSON() : <any>undefined;
         if (Array.isArray(this.role)) {
             data["role"] = [];
             for (let item of this.role)
@@ -4285,6 +4413,7 @@ export interface IRegisterUserResource {
     isProfileComplete: boolean | undefined;
     user: AspNetUser | undefined;
     dispatcher: Dispatcher | undefined;
+    dispatcherDocument: DispatcherDocument | undefined;
     role: AspNetRole[] | undefined;
     customer: Customer | undefined;
 }
@@ -4656,182 +4785,6 @@ export class StatusResource implements IStatusResource {
 export interface IStatusResource {
     code: string | undefined;
     message: string | undefined;
-}
-
-export class UserPhotoViewModel implements IUserPhotoViewModel {
-    file: HttpPostedFileBase;
-    userId: string;
-
-    constructor(data?: IUserPhotoViewModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-        if (!data) {
-            this.file = new HttpPostedFileBase();
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.file = _data["file"] ? HttpPostedFileBase.fromJS(_data["file"]) : new HttpPostedFileBase();
-            this.userId = _data["userId"];
-        }
-    }
-
-    static fromJS(data: any): UserPhotoViewModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new UserPhotoViewModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["file"] = this.file ? this.file.toJSON() : <any>undefined;
-        data["userId"] = this.userId;
-        return data; 
-    }
-
-    clone(): UserPhotoViewModel {
-        const json = this.toJSON();
-        let result = new UserPhotoViewModel();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IUserPhotoViewModel {
-    file: HttpPostedFileBase;
-    userId: string;
-}
-
-export class HttpPostedFileBase implements IHttpPostedFileBase {
-    readonly contentLength: number | undefined;
-    readonly contentType: string | undefined;
-    readonly fileName: string | undefined;
-    readonly inputStream: Stream | undefined;
-
-    constructor(data?: IHttpPostedFileBase) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).contentLength = _data["contentLength"];
-            (<any>this).contentType = _data["contentType"];
-            (<any>this).fileName = _data["fileName"];
-            (<any>this).inputStream = _data["inputStream"] ? Stream.fromJS(_data["inputStream"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): HttpPostedFileBase {
-        data = typeof data === 'object' ? data : {};
-        let result = new HttpPostedFileBase();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["contentLength"] = this.contentLength;
-        data["contentType"] = this.contentType;
-        data["fileName"] = this.fileName;
-        data["inputStream"] = this.inputStream ? this.inputStream.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): HttpPostedFileBase {
-        const json = this.toJSON();
-        let result = new HttpPostedFileBase();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IHttpPostedFileBase {
-    contentLength: number | undefined;
-    contentType: string | undefined;
-    fileName: string | undefined;
-    inputStream: Stream | undefined;
-}
-
-export class Stream implements IStream {
-    readonly canRead: boolean | undefined;
-    readonly canSeek: boolean | undefined;
-    readonly canTimeout: boolean | undefined;
-    readonly canWrite: boolean | undefined;
-    readonly length: number | undefined;
-    position: number | undefined;
-    readTimeout: number | undefined;
-    writeTimeout: number | undefined;
-
-    constructor(data?: IStream) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            (<any>this).canRead = _data["canRead"];
-            (<any>this).canSeek = _data["canSeek"];
-            (<any>this).canTimeout = _data["canTimeout"];
-            (<any>this).canWrite = _data["canWrite"];
-            (<any>this).length = _data["length"];
-            this.position = _data["position"];
-            this.readTimeout = _data["readTimeout"];
-            this.writeTimeout = _data["writeTimeout"];
-        }
-    }
-
-    static fromJS(data: any): Stream {
-        data = typeof data === 'object' ? data : {};
-        let result = new Stream();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["canRead"] = this.canRead;
-        data["canSeek"] = this.canSeek;
-        data["canTimeout"] = this.canTimeout;
-        data["canWrite"] = this.canWrite;
-        data["length"] = this.length;
-        data["position"] = this.position;
-        data["readTimeout"] = this.readTimeout;
-        data["writeTimeout"] = this.writeTimeout;
-        return data; 
-    }
-
-    clone(): Stream {
-        const json = this.toJSON();
-        let result = new Stream();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IStream {
-    canRead: boolean | undefined;
-    canSeek: boolean | undefined;
-    canTimeout: boolean | undefined;
-    canWrite: boolean | undefined;
-    length: number | undefined;
-    position: number | undefined;
-    readTimeout: number | undefined;
-    writeTimeout: number | undefined;
 }
 
 export class VerifiedPhoneUpdate implements IVerifiedPhoneUpdate {
@@ -8559,6 +8512,57 @@ export interface ILocalBookingCategoryResource {
     estimatedPackageWeight: boolean | undefined;
 }
 
+export class ObjectResourceOfLocalBooking implements IObjectResourceOfLocalBooking {
+    data: LocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfLocalBooking) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? LocalBooking.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfLocalBooking {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfLocalBooking();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfLocalBooking {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfLocalBooking();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfLocalBooking {
+    data: LocalBooking | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
 export class ListResourceOfLocalBookingStatusResource implements IListResourceOfLocalBookingStatusResource {
     total: number | undefined;
     data: LocalBookingStatusResource[] | undefined;
@@ -10397,6 +10401,132 @@ export interface IUpdateUserViewModel {
     insuranceUrl: any | undefined;
 }
 
+export class HttpPostedFileBase implements IHttpPostedFileBase {
+    readonly contentLength: number | undefined;
+    readonly contentType: string | undefined;
+    readonly fileName: string | undefined;
+    readonly inputStream: Stream | undefined;
+
+    constructor(data?: IHttpPostedFileBase) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).contentLength = _data["contentLength"];
+            (<any>this).contentType = _data["contentType"];
+            (<any>this).fileName = _data["fileName"];
+            (<any>this).inputStream = _data["inputStream"] ? Stream.fromJS(_data["inputStream"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): HttpPostedFileBase {
+        data = typeof data === 'object' ? data : {};
+        let result = new HttpPostedFileBase();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["contentLength"] = this.contentLength;
+        data["contentType"] = this.contentType;
+        data["fileName"] = this.fileName;
+        data["inputStream"] = this.inputStream ? this.inputStream.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): HttpPostedFileBase {
+        const json = this.toJSON();
+        let result = new HttpPostedFileBase();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IHttpPostedFileBase {
+    contentLength: number | undefined;
+    contentType: string | undefined;
+    fileName: string | undefined;
+    inputStream: Stream | undefined;
+}
+
+export class Stream implements IStream {
+    readonly canRead: boolean | undefined;
+    readonly canSeek: boolean | undefined;
+    readonly canTimeout: boolean | undefined;
+    readonly canWrite: boolean | undefined;
+    readonly length: number | undefined;
+    position: number | undefined;
+    readTimeout: number | undefined;
+    writeTimeout: number | undefined;
+
+    constructor(data?: IStream) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            (<any>this).canRead = _data["canRead"];
+            (<any>this).canSeek = _data["canSeek"];
+            (<any>this).canTimeout = _data["canTimeout"];
+            (<any>this).canWrite = _data["canWrite"];
+            (<any>this).length = _data["length"];
+            this.position = _data["position"];
+            this.readTimeout = _data["readTimeout"];
+            this.writeTimeout = _data["writeTimeout"];
+        }
+    }
+
+    static fromJS(data: any): Stream {
+        data = typeof data === 'object' ? data : {};
+        let result = new Stream();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["canRead"] = this.canRead;
+        data["canSeek"] = this.canSeek;
+        data["canTimeout"] = this.canTimeout;
+        data["canWrite"] = this.canWrite;
+        data["length"] = this.length;
+        data["position"] = this.position;
+        data["readTimeout"] = this.readTimeout;
+        data["writeTimeout"] = this.writeTimeout;
+        return data; 
+    }
+
+    clone(): Stream {
+        const json = this.toJSON();
+        let result = new Stream();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IStream {
+    canRead: boolean | undefined;
+    canSeek: boolean | undefined;
+    canTimeout: boolean | undefined;
+    canWrite: boolean | undefined;
+    length: number | undefined;
+    position: number | undefined;
+    readTimeout: number | undefined;
+    writeTimeout: number | undefined;
+}
+
 export class ForgotPasswordViewModel implements IForgotPasswordViewModel {
     email: string;
 
@@ -10481,6 +10611,61 @@ export class SelectedOrder implements ISelectedOrder {
 
 export interface ISelectedOrder {
     input: string | undefined;
+}
+
+export class PaymentValidationDTO implements IPaymentValidationDTO {
+    orderId: number | undefined;
+    paymentReference: string | undefined;
+    userId: string | undefined;
+    orderType: PaymentValidationDTOOrderType | undefined;
+
+    constructor(data?: IPaymentValidationDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.orderId = _data["orderId"];
+            this.paymentReference = _data["paymentReference"];
+            this.userId = _data["userId"];
+            this.orderType = _data["orderType"];
+        }
+    }
+
+    static fromJS(data: any): PaymentValidationDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new PaymentValidationDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["orderId"] = this.orderId;
+        data["paymentReference"] = this.paymentReference;
+        data["userId"] = this.userId;
+        data["orderType"] = this.orderType;
+        return data; 
+    }
+
+    clone(): PaymentValidationDTO {
+        const json = this.toJSON();
+        let result = new PaymentValidationDTO();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPaymentValidationDTO {
+    orderId: number | undefined;
+    paymentReference: string | undefined;
+    userId: string | undefined;
+    orderType: PaymentValidationDTOOrderType | undefined;
 }
 
 export class ObjectResourceOfResidentialState implements IObjectResourceOfResidentialState {
@@ -10707,73 +10892,110 @@ export interface IUpdateOrderByDispatcher {
     orderId: number;
 }
 
-export class RiderDocument implements IRiderDocument {
-    machinePictureUrl: HttpPostedFileBase;
-    machineRegistrationUrl: HttpPostedFileBase;
-    riderLincesUrl: HttpPostedFileBase;
-    insuranceUrl: HttpPostedFileBase;
-    userId: string;
-    dispatcherId: number | undefined;
+export class UpdateRiderByAdmin implements IUpdateRiderByAdmin {
+    dispatcherId: number;
+    statusId: number;
 
-    constructor(data?: IRiderDocument) {
+    constructor(data?: IUpdateRiderByAdmin) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
         }
-        if (!data) {
-            this.machinePictureUrl = new HttpPostedFileBase();
-            this.machineRegistrationUrl = new HttpPostedFileBase();
-            this.riderLincesUrl = new HttpPostedFileBase();
-            this.insuranceUrl = new HttpPostedFileBase();
-        }
     }
 
     init(_data?: any) {
         if (_data) {
-            this.machinePictureUrl = _data["machinePictureUrl"] ? HttpPostedFileBase.fromJS(_data["machinePictureUrl"]) : new HttpPostedFileBase();
-            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? HttpPostedFileBase.fromJS(_data["machineRegistrationUrl"]) : new HttpPostedFileBase();
-            this.riderLincesUrl = _data["riderLincesUrl"] ? HttpPostedFileBase.fromJS(_data["riderLincesUrl"]) : new HttpPostedFileBase();
-            this.insuranceUrl = _data["insuranceUrl"] ? HttpPostedFileBase.fromJS(_data["insuranceUrl"]) : new HttpPostedFileBase();
-            this.userId = _data["userId"];
             this.dispatcherId = _data["dispatcherId"];
+            this.statusId = _data["statusId"];
         }
     }
 
-    static fromJS(data: any): RiderDocument {
+    static fromJS(data: any): UpdateRiderByAdmin {
         data = typeof data === 'object' ? data : {};
-        let result = new RiderDocument();
+        let result = new UpdateRiderByAdmin();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl.toJSON() : <any>undefined;
-        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl.toJSON() : <any>undefined;
-        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl.toJSON() : <any>undefined;
-        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl.toJSON() : <any>undefined;
-        data["userId"] = this.userId;
         data["dispatcherId"] = this.dispatcherId;
+        data["statusId"] = this.statusId;
         return data; 
     }
 
-    clone(): RiderDocument {
+    clone(): UpdateRiderByAdmin {
         const json = this.toJSON();
-        let result = new RiderDocument();
+        let result = new UpdateRiderByAdmin();
         result.init(json);
         return result;
     }
 }
 
-export interface IRiderDocument {
-    machinePictureUrl: HttpPostedFileBase;
-    machineRegistrationUrl: HttpPostedFileBase;
-    riderLincesUrl: HttpPostedFileBase;
-    insuranceUrl: HttpPostedFileBase;
-    userId: string;
-    dispatcherId: number | undefined;
+export interface IUpdateRiderByAdmin {
+    dispatcherId: number;
+    statusId: number;
+}
+
+export class IssueQuery implements IIssueQuery {
+    reasons: string;
+    message: string;
+    riderId: number;
+    issuerId: number;
+    proity: IssueQueryProity;
+
+    constructor(data?: IIssueQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.reasons = _data["reasons"];
+            this.message = _data["message"];
+            this.riderId = _data["riderId"];
+            this.issuerId = _data["issuerId"];
+            this.proity = _data["proity"];
+        }
+    }
+
+    static fromJS(data: any): IssueQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new IssueQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["reasons"] = this.reasons;
+        data["message"] = this.message;
+        data["riderId"] = this.riderId;
+        data["issuerId"] = this.issuerId;
+        data["proity"] = this.proity;
+        return data; 
+    }
+
+    clone(): IssueQuery {
+        const json = this.toJSON();
+        let result = new IssueQuery();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IIssueQuery {
+    reasons: string;
+    message: string;
+    riderId: number;
+    issuerId: number;
+    proity: IssueQueryProity;
 }
 
 export class Filter implements IFilter {
@@ -10925,22 +11147,39 @@ export enum LoginResourceUserType {
     _0 = 0,
     _1 = 1,
     _2 = 2,
+    _3 = 3,
 }
 
 export enum RegisterUserVieModelUserType {
     _0 = 0,
     _1 = 1,
     _2 = 2,
+    _3 = 3,
 }
 
 export enum RegisterUserResourceUserType {
     _0 = 0,
     _1 = 1,
     _2 = 2,
+    _3 = 3,
 }
 
 export enum UserType {
     _0 = 0,
     _1 = 1,
     _2 = 2,
+    _3 = 3,
 }
+
+export enum PaymentValidationDTOOrderType {
+    _0 = 0,
+    _1 = 1,
+    _2 = 2,
+}
+
+export enum IssueQueryProity {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
+}
+

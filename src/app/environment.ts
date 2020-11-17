@@ -8,6 +8,7 @@ export const environment = {
     stage: stringConstant.DEVELOPMENT,
     trackerbaseUrl: 'https://srv1.gpstracker.com.ng/api/',
     trackerToken: '6E7CDE7A4111E62059CA63A11EA1F47C',
+    paystackToken: 'pk_live_df2d2ce0455a082c7d7410c73f9f8638a6ce7fb4',
     firebase: {
         apiKey: "AIzaSyBJyA8vPhvcYOqTb8BpGAYHNDAEHxSqaGg",
         authDomain: "hor-logistics.firebaseapp.com",
