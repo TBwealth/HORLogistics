@@ -5,9 +5,13 @@ import {FilePath} from '@ionic-native/file-path/ngx';
 import {FileTransfer,FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer/ngx';
 import {File} from '@ionic-native/file/ngx';
 import { Router } from '@angular/router';
-import { Dispatcher, IUpdateUserViewModel, UpdateStatus } from 'src/app/_models/service-models';
+import { Dispatcher, IUpdateUserViewModel, UpdateStatus, RiderDocument } from 'src/app/_models/service-models';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import {customConfig} from "../../custumConfig";
+import { CustomserviceService } from 'src/app/_services/customservice.service';
+import { Base64 } from '@ionic-native/base64/ngx';
+import { RiderServiceProxy } from 'src/app/_services/service-proxies';
+
 @Component({
   selector: 'app-documentupload',
   templateUrl: './documentupload.page.html',
@@ -49,13 +53,18 @@ export class DocumentuploadPage implements OnInit {
     userId: ""
       };
       Urlbase: string = customConfig.baseUrl;
+      userphotoviewmodel = new RiderDocument().clone();
   constructor( public alertCtrl: AlertController, public navCtrl: NavController,
     private transfer:FileTransfer,private file: File, private filepath: FilePath, 
       private filechooser: FileChooser,
       private loadspinner: LoadingController,
       private router: Router,
       private toastCtrl: ToastController,
-      private AuthenService: AuthenticationService,) { }
+      private AuthenService: AuthenticationService,
+      private customserviceservice: CustomserviceService,
+      private base64: Base64,
+      private riderservice: RiderServiceProxy
+      ) { }
       ionViewWillEnter(){
         this.getlatestusers()  
       }
@@ -80,81 +89,40 @@ export class DocumentuploadPage implements OnInit {
   goback(){
     this.navCtrl.back();
   }
- async uploadFile(filekey){
-   
-  this.customersData.fullName = this.dispatcher.name;
-  this.customersData.residentialCountryId  = 1;    
-  this.customersData.residentialStateId  = this.dispatcher.residentialStateId;
-  this.customersData.userId = this.usersdata.userId;
-  this.customersData.email = this.usersdata.user.email;       
-  this.customersData.phoneNumber = this.usersdata.phone; 
-
-  this.customersData.insuranceUrl  = null;
-  this.customersData.machinePictureUrl  = null;
-  this.customersData.machineRegistrationUrl  = null;
-  this.customersData.riderLincesUrl  = null;   
-
+  getFileSize(fileUri) {
+    console.log('filesize')
+    return new Promise((resolve, reject)=> {    
+      this.file.resolveLocalFilesystemUrl(fileUri).then((fileEntry:any) =>{
+            fileEntry.file((fileObj)=> {
+                resolve(fileObj);
+            },
+            function(err){
+                reject(err);
+            });
+        }, 
+        function(err){
+            reject(err);
+        });
+    });
+}
+ async uploadFile(filekey){   
     this.filechooser.open().then((uri)=>{
-this.filepath.resolveNativePath(uri).then(async(nativepath)=>{
-  console.log(nativepath);
+this.filepath.resolveNativePath(uri).then(async(nativepath)=>{  
   let fileName   = nativepath.substring(nativepath.lastIndexOf("/") + 1);
   let fileType   = fileName.substring(fileName.lastIndexOf(".") + 1);
-this.fileTransfer = this.transfer.create();
-let options: FileUploadOptions = {
-  fileKey: filekey,
-  fileName: fileName,
-  chunkedMode: false,
-  headers:{},
-  mimeType: fileType,
-  params: {
-    customersData: this.customersData
-  }
-}
-if(this.arrayType.indexOf(fileType) > -1){
-console.log('entered')
-  this.loading = await this.loadspinner.create({
-    message: "please wait...",
-    translucent: true,
-    spinner: "bubbles",
-  });
-  await this.loading.present();
-  
-this.fileTransfer.upload(nativepath,this.Urlbase+'/api/Manage/UpdateUser',options,false).then(async(data:any)=>{
-if(data.code == "000"){
-  console.log('success', data)
-  const toast = await this.toastCtrl.create({
-    duration: 3000,
-    message: data.message,
-    color: "success"
-  });
-  toast.present();
-  this.loading.dismiss();
-}else{
-  console.log('failed', data)
-  this.loading.dismiss();
-  const toast = await this.toastCtrl.create({
-    duration: 3000,
-    message: data.message,
-    color: "danger"
-  });
-  toast.present();
-  if(data.message == "Unauthorized"){
-    this.router.navigate(['login']);
-          }
-}
-},(error)=>{
-  console.log(JSON.stringify(error))
-})
-}else{
-  this.loading.dismiss();
-  const toast = await this.toastCtrl.create({
-    duration: 3000,
-    message: "File Type not allowed",
-    color: "danger"
-  });
-  toast.present();
-}
-
+  console.log(nativepath)
+  this.getFileSize(uri).then((fileObj:any)=>{
+    console.log('uri',uri)
+    this.converttobase64(nativepath,filekey,fileType,fileObj);
+  }, async (err)=>{
+    const toast = await this.toastCtrl.create({
+       duration: 3000,
+       message:'Oops! something went wrong',
+       color: "danger"
+     });
+     toast.present();
+   })
+ 
 },(error)=>{
   console.log(JSON.stringify(error))
 })
@@ -162,8 +130,78 @@ if(data.code == "000"){
       console.log(JSON.stringify(error))
     })
   }
-  update(){
+converttobase64(uri,filekey, fileType, fileObj){
+  console.log('fileMeta',fileObj)
+  this.base64.encodeFile(uri).then(async (base64File: string) => {
+    console.log(base64File.split(",")[1])
+    this.userphotoviewmodel.file = base64File.split(",")[1];
+    this.userphotoviewmodel.fileExtension = "."+  fileType;
+    this.userphotoviewmodel.fileSize = fileObj.size;
+    this.userphotoviewmodel.dispatcherId = this.AuthenService.globalUserId.value;
+    this.userphotoviewmodel.fileName = filekey
 
+    if(this.arrayType.indexOf(fileType) > -1){
+      console.log('fileModel',this.userphotoviewmodel)
+     this.senduploadriderdoc(this.userphotoviewmodel);        
+    
+      }else{
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: "File Type not allowed",
+          color: "danger"
+        });
+        toast.present();
+      }
+
+  },async (err) => {
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message:'Oops! something went wrong',
+      color: "danger"
+    });
+    toast.present();
+  });
+}
+async senduploadriderdoc(docData){
+  console.log('entered')
+  this.loading = await this.loadspinner.create({
+    message: "please wait...",
+    translucent: true,
+    spinner: "bubbles",
+  });
+  await this.loading.present();
+  this.riderservice.riderDocuments(docData).subscribe(async(data:any)=>{
+  if(data.code == "000"){
+    console.log('success', data)
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: data.message,
+      color: "success"
+    });
+    toast.present();
+    this.loading.dismiss();
+  }else{
+    console.log('failed', data)
+    this.loading.dismiss();
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: data.message,
+      color: "danger"
+    });
+    toast.present();
+    if(data.message == "Unauthorized"){
+      this.AuthenService.clearusers()
+      this.router.navigate(['login']);
+            }
+  }
+  },(error)=>{
+    this.loading.dismiss()
+    console.log(JSON.stringify(error))
+  })
+}
+  update(){
+    this.AuthenService.addUser(this.usersdata); 
+    this.navCtrl.back();
   }
   ngOnInit() {
   }

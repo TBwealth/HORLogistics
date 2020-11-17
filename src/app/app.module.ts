@@ -36,7 +36,7 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 import { Angular4PaystackModule } from 'angular4-paystack';
 import { HTTP } from '@ionic-native/http/ngx';
 import { ChartsModule } from 'ng2-charts';
-
+import { Base64 } from '@ionic-native/base64/ngx';
 //SERVICES
 import { CountryserviceService } from './_services/countryservice.service';
 import { NetworkProvider } from './_services/network';
@@ -108,6 +108,7 @@ import { StoreService } from './_services/store.service';
     OrderServiceProxy,
     LocalbookingServiceProxy,
     HTTP,
+    Base64,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     
   ],

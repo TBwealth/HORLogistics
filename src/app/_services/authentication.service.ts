@@ -21,7 +21,7 @@ export class AuthenticationService {
   public  globalDispatchProfileurl = new BehaviorSubject<any>('');
   public  globalUserEmail = new BehaviorSubject<any>('');
   public  globalUserId = new BehaviorSubject<any>('');
-
+  public  globalAdminStatus = new BehaviorSubject<any>('');
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
      private toastCtrl: ToastController,
@@ -51,6 +51,7 @@ export class AuthenticationService {
                         this.globalUserRole = this.users[0].role[0].name;    
                         this.globalUserType = this.users[0].user.userType;
                         this.globalUserEmail = this.users[0].user.email;
+                        this.globalAdminStatus = this.users[0].user.isAdmin;
                         if(this.users[0].customer){
                             this.globalPartnerName = this.users[0].customer.businessName;
                             this.globalUserName = this.users[0].customer.fullName;
@@ -95,6 +96,16 @@ export class AuthenticationService {
                 this.globalUserType = this.users[0].user.userType;
                 this.globalUserId = this.users[0].userId;
                 this.globalUser.next(this.users[0])
+                this.globalAdminStatus = this.users[0].user.isAdmin;
+                if(this.users[0].customer){
+                    this.globalPartnerName = this.users[0].customer.businessName;
+                    this.globalUserName = this.users[0].customer.fullName;
+                    this.globalCustomerProfileurl = this.users[0].customer.companyLogo;
+                }
+                if(this.users[0].dispatcher){
+                    this.globalDispatchName = this.users[0].dispatcher.name;
+                    this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                }
                 this.storage.set('user', this.users).then(data=>{
             if(data.length > 0){  
                     this.manage.getAuthenticatedUserdatail().subscribe(async data=>{            
@@ -118,6 +129,16 @@ export class AuthenticationService {
                                 this.globalUserType = this.users[0].user.userType;
                                 this.globalUserId = this.users[0].userId;
                                 this.globalUser.next(this.users[0])
+                                this.globalAdminStatus = this.users[0].user.isAdmin;
+                                if(this.users[0].customer){
+                                    this.globalPartnerName = this.users[0].customer.businessName;
+                                    this.globalUserName = this.users[0].customer.fullName;
+                                    this.globalCustomerProfileurl = this.users[0].customer.companyLogo;
+                                }
+                                if(this.users[0].dispatcher){
+                                    this.globalDispatchName = this.users[0].dispatcher.name;
+                                    this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                                }
                                 this.storage.set('user', this.users); 
                         }else{
                             const toast = await this.toastCtrl.create({

@@ -22,6 +22,7 @@
     "@angular/router": "~10.0.0",
     "@capacitor/core": "2.4.1",
     "@ionic-native/badge": "^5.28.0",
+    "@ionic-native/base64": "^5.29.0",
     "@ionic-native/call-number": "^5.29.0",
     "@ionic-native/camera": "^5.29.0",
     "@ionic-native/core": "^5.0.0",
@@ -73,7 +74,8 @@
     "@types/node": "^12.11.1",
     "call-number": "^1.0.1",
     "codelyzer": "^6.0.0",
-    "cordova-android": "^8.0.0",
+    "com-badrit-base64": "^0.2.0",
+    "cordova-android": "^9.0.0",
     "cordova-plugin-advanced-http": "^3.1.0",
     "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-badge": "^0.8.8",
@@ -174,7 +176,8 @@
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-camera": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      }
+      },
+      "com-badrit-base64": {}
     },
     "platforms": [
       "android"

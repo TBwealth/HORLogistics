@@ -12,6 +12,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
 import { AccountServiceProxy, RegisterServiceProxy } from '../_services/service-proxies';
 import { AuthenticationService } from '../_services/authentication.service';
+import { Storage } from '@ionic/storage';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -44,7 +45,8 @@ customerType: any;
     private registerService: AccountServiceProxy,
     private soclLogin: RegisterServiceProxy,
     private AuthenService: AuthenticationService,
-    private loadspinner: LoadingController) { }
+    private loadspinner: LoadingController,
+    public storage: Storage) { }
 
 async loginUser(){
   this.loading = await this.loadspinner.create({
@@ -53,6 +55,8 @@ async loginUser(){
     spinner: "bubbles",
   });
   await this.loading.present();
+ this.storage.get('token').then(data=>{
+  if(data)this.login.deviceId = data;
   this.registerService.login(this.login).subscribe(async (data:ObjectResourceOfLoginResource)=>{
     if(data.code == '007'){
       this.LoginResource = data.data;
@@ -62,12 +66,11 @@ async loginUser(){
         message: data.message,
         color: "success"
       });
-      toast.present();
+      toast.present();  
       setTimeout(() => {
         this.loading.dismiss();
       this.router.navigate(['home'])
       }, 3000);
-      
     }else{
       const toast = await this.toastCtrl.create({
         duration: 3000,
@@ -77,7 +80,18 @@ async loginUser(){
       toast.present();
       this.loading.dismiss();
     }
+   
+          },async error =>{
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: 'Oops! something went wrong',
+              color: "danger"
+            });
+            toast.present();
+            this.loading.dismiss();
           });
+ });
+ 
 
   }
   async forgotPassword(){}
