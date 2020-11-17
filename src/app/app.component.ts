@@ -126,11 +126,15 @@ this.menu.close();
     if(this.platform.is('android')){
       token = await this.fbaseService.getToken()
       this.storage.set('token', token)
+    }else {
+      if(this.platform.is('ios')){
+        token = await this.fbaseService.getToken();
+        await this.fbaseService.grantPermission();
+        this.storage.set('token', token)
+      }else{
+        token = "web-jgjgjki-6675675-654544";
+      }
     }
-    if(this.platform.is('ios')){
-      token = await this.fbaseService.getToken();
-      await this.fbaseService.grantPermission();
-      this.storage.set('token', token)
-    }
+    
   }
 }
