@@ -32,10 +32,10 @@ export class OrdersPage implements OnInit {
 
   ngOnInit() {
     this.localBookingService.getlocalbooking(null, null, null, null, null, null, null, null, null, null, null, null).subscribe(data => {
-      this.localBookings = data.data.items
+      this.localBookings = data.data.localBookings
     })
     this.internationalBookingService.getintlbookings(null,null,null,null).subscribe(data => {
-      this.internationalBookings = data.data.items
+      this.internationalBookings = data.data.internationalBookings
     })
   }
   segmentChanged(segment){

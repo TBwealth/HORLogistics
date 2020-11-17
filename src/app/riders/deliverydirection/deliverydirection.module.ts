@@ -8,6 +8,8 @@ import { DeliverydirectionPageRoutingModule } from './deliverydirection-routing.
 
 import { DeliverydirectionPage } from './deliverydirection.page';
 
+import { RiderroutePage } from '../riderroute/riderroute.page';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,6 @@ import { DeliverydirectionPage } from './deliverydirection.page';
     IonicModule,
     DeliverydirectionPageRoutingModule
   ],
-  declarations: [DeliverydirectionPage]
+  declarations: [DeliverydirectionPage,RiderroutePage]
 })
 export class DeliverydirectionPageModule {}

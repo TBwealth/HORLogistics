@@ -71,7 +71,9 @@
       </ion-row>
       <ion-row>
         <ion-col >
-          <h6>Order Status <span [style.color]="statusColor.pending">{{getOrderStatusName(assignedOrder.bookingStatusId)}}</span></h6>
+          <h6>Order Status <span [style.color]="statusColor.pending">
+            {{getOrderStatusName(assignedOrder.bookingStatusId)}}
+          </span></h6>
         </ion-col>
     
       </ion-row>
@@ -82,10 +84,10 @@
         </ion-col>
         <ion-col size="5">
           <div style="padding: 7px;"></div>
-          <a href="javascript:void(0)" style="float: right;color: #EF6102;font-size: 12px;" fill="clear" (click)="updateOrderStatus('In-Transit Delivery')">Update Status</a>
+          <a href="javascript:void(0)" style="float: right;color: #EF6102;font-size: 12px;" fill="clear" (click)="updateOrderStatus(assignedOrder.bookingStatusId,id)">Update Status</a>
         </ion-col>
         <ion-col size="2">
-          <ion-button style="font-size: 12px;" fill="clear">
+          <ion-button (click)="gotoorderdetails(assignedOrder)" style="font-size: 12px;" fill="clear">
             <ion-icon name="ellipsis-vertical-outline"></ion-icon>
           </ion-button>
           

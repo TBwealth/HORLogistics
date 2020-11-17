@@ -67,11 +67,14 @@
   </div>
 
   <div class="selectoptioncontainer" *ngIf="userRole == 'Rider' ">
-    <p style="text-align: center;">You are Offline!</p>
-    <div class="circleContainer">
-      <div class="riderStatusClass">
-        <div class="innerriderStatusClass">
-          GO
+    <p style="text-align: center;">You are <span *ngIf="riderStatus == 2">Offline!</span>
+      <span *ngIf="riderStatus == 1">Online!</span>
+    </p>
+    <div class="circleContainer" (click)="toggledriverStatus()">
+      <div [ngClass]="{'riderStatusClass': riderStatus == '2', 'riderStatusClass2': riderStatus == '1'}" >
+        <div [ngClass]="{'innerriderStatusClass': riderStatus == '2', 'innerriderStatusClass2': riderStatus == '1'}">
+           <span *ngIf="riderStatus == 1">STOP</span>
+          <span *ngIf="riderStatus == 2">GO</span>
         </div>
       
       </div>

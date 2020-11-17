@@ -16,7 +16,8 @@ orderdetails: any = "";
     private activatedrouter: ActivatedRoute) {
 this.activatedrouter.queryParams.subscribe(data=>{
   if(data.orderDetails){
-this.orderdetails = data.orderDetails;
+this.orderdetails = JSON.parse(data.orderDetails);
+console.log(this.orderdetails);
   }
 })
      }

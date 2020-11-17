@@ -6197,12 +6197,12 @@ export interface IIntlFilter {
     full_name: string | undefined;
 }
 
-export class ObjectResourceOfPagedListOfInternationalBooking implements IObjectResourceOfPagedListOfInternationalBooking {
-    data: PagedListOfInternationalBooking | undefined;
+export class ObjectResourceOfInternationalBookingOrder implements IObjectResourceOfInternationalBookingOrder {
+    data: InternationalBookingOrder | undefined;
     code: string | undefined;
     message: string | undefined;
 
-    constructor(data?: IObjectResourceOfPagedListOfInternationalBooking) {
+    constructor(data?: IObjectResourceOfInternationalBookingOrder) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6213,15 +6213,15 @@ export class ObjectResourceOfPagedListOfInternationalBooking implements IObjectR
 
     init(_data?: any) {
         if (_data) {
-            this.data = _data["data"] ? PagedListOfInternationalBooking.fromJS(_data["data"]) : <any>undefined;
+            this.data = _data["data"] ? InternationalBookingOrder.fromJS(_data["data"]) : <any>undefined;
             this.code = _data["code"];
             this.message = _data["message"];
         }
     }
 
-    static fromJS(data: any): ObjectResourceOfPagedListOfInternationalBooking {
+    static fromJS(data: any): ObjectResourceOfInternationalBookingOrder {
         data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfPagedListOfInternationalBooking();
+        let result = new ObjectResourceOfInternationalBookingOrder();
         result.init(data);
         return result;
     }
@@ -6234,30 +6234,30 @@ export class ObjectResourceOfPagedListOfInternationalBooking implements IObjectR
         return data; 
     }
 
-    clone(): ObjectResourceOfPagedListOfInternationalBooking {
+    clone(): ObjectResourceOfInternationalBookingOrder {
         const json = this.toJSON();
-        let result = new ObjectResourceOfPagedListOfInternationalBooking();
+        let result = new ObjectResourceOfInternationalBookingOrder();
         result.init(json);
         return result;
     }
 }
 
-export interface IObjectResourceOfPagedListOfInternationalBooking {
-    data: PagedListOfInternationalBooking | undefined;
+export interface IObjectResourceOfInternationalBookingOrder {
+    data: InternationalBookingOrder | undefined;
     code: string | undefined;
     message: string | undefined;
 }
 
-export class PagedListOfInternationalBooking implements IPagedListOfInternationalBooking {
-    items: InternationalBooking[] | undefined;
-    readonly currentPage: number | undefined;
-    readonly totalPages: number | undefined;
-    readonly pageSize: number | undefined;
-    readonly totalCount: number | undefined;
+export class InternationalBookingOrder implements IInternationalBookingOrder {
+    internationalBookings: InternationalBooking[] | undefined;
+    totalCount: number | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
     readonly hasPrevious: boolean | undefined;
     readonly hasNext: boolean | undefined;
 
-    constructor(data?: IPagedListOfInternationalBooking) {
+    constructor(data?: IInternationalBookingOrder) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -6268,57 +6268,57 @@ export class PagedListOfInternationalBooking implements IPagedListOfInternationa
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(InternationalBooking.fromJS(item));
+            if (Array.isArray(_data["internationalBookings"])) {
+                this.internationalBookings = [] as any;
+                for (let item of _data["internationalBookings"])
+                    this.internationalBookings.push(InternationalBooking.fromJS(item));
             }
-            (<any>this).currentPage = _data["currentPage"];
-            (<any>this).totalPages = _data["totalPages"];
-            (<any>this).pageSize = _data["pageSize"];
-            (<any>this).totalCount = _data["totalCount"];
+            this.totalCount = _data["totalCount"];
+            this.currentPage = _data["currentPage"];
+            this.totalPages = _data["totalPages"];
+            this.pageSize = _data["pageSize"];
             (<any>this).hasPrevious = _data["hasPrevious"];
             (<any>this).hasNext = _data["hasNext"];
         }
     }
 
-    static fromJS(data: any): PagedListOfInternationalBooking {
+    static fromJS(data: any): InternationalBookingOrder {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedListOfInternationalBooking();
+        let result = new InternationalBookingOrder();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
+        if (Array.isArray(this.internationalBookings)) {
+            data["internationalBookings"] = [];
+            for (let item of this.internationalBookings)
+                data["internationalBookings"].push(item.toJSON());
         }
+        data["totalCount"] = this.totalCount;
         data["currentPage"] = this.currentPage;
         data["totalPages"] = this.totalPages;
         data["pageSize"] = this.pageSize;
-        data["totalCount"] = this.totalCount;
         data["hasPrevious"] = this.hasPrevious;
         data["hasNext"] = this.hasNext;
         return data; 
     }
 
-    clone(): PagedListOfInternationalBooking {
+    clone(): InternationalBookingOrder {
         const json = this.toJSON();
-        let result = new PagedListOfInternationalBooking();
+        let result = new InternationalBookingOrder();
         result.init(json);
         return result;
     }
 }
 
-export interface IPagedListOfInternationalBooking {
-    items: InternationalBooking[] | undefined;
+export interface IInternationalBookingOrder {
+    internationalBookings: InternationalBooking[] | undefined;
+    totalCount: number | undefined;
     currentPage: number | undefined;
     totalPages: number | undefined;
     pageSize: number | undefined;
-    totalCount: number | undefined;
     hasPrevious: boolean | undefined;
     hasNext: boolean | undefined;
 }
@@ -8315,12 +8315,12 @@ export interface IFilterBooking {
     selected_orders: number[] | undefined;
 }
 
-export class ObjectResourceOfPagedListOfLocalBooking implements IObjectResourceOfPagedListOfLocalBooking {
-    data: PagedListOfLocalBooking | undefined;
+export class ObjectResourceOfOrders implements IObjectResourceOfOrders {
+    data: Orders | undefined;
     code: string | undefined;
     message: string | undefined;
 
-    constructor(data?: IObjectResourceOfPagedListOfLocalBooking) {
+    constructor(data?: IObjectResourceOfOrders) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8331,15 +8331,15 @@ export class ObjectResourceOfPagedListOfLocalBooking implements IObjectResourceO
 
     init(_data?: any) {
         if (_data) {
-            this.data = _data["data"] ? PagedListOfLocalBooking.fromJS(_data["data"]) : <any>undefined;
+            this.data = _data["data"] ? Orders.fromJS(_data["data"]) : <any>undefined;
             this.code = _data["code"];
             this.message = _data["message"];
         }
     }
 
-    static fromJS(data: any): ObjectResourceOfPagedListOfLocalBooking {
+    static fromJS(data: any): ObjectResourceOfOrders {
         data = typeof data === 'object' ? data : {};
-        let result = new ObjectResourceOfPagedListOfLocalBooking();
+        let result = new ObjectResourceOfOrders();
         result.init(data);
         return result;
     }
@@ -8352,30 +8352,30 @@ export class ObjectResourceOfPagedListOfLocalBooking implements IObjectResourceO
         return data; 
     }
 
-    clone(): ObjectResourceOfPagedListOfLocalBooking {
+    clone(): ObjectResourceOfOrders {
         const json = this.toJSON();
-        let result = new ObjectResourceOfPagedListOfLocalBooking();
+        let result = new ObjectResourceOfOrders();
         result.init(json);
         return result;
     }
 }
 
-export interface IObjectResourceOfPagedListOfLocalBooking {
-    data: PagedListOfLocalBooking | undefined;
+export interface IObjectResourceOfOrders {
+    data: Orders | undefined;
     code: string | undefined;
     message: string | undefined;
 }
 
-export class PagedListOfLocalBooking implements IPagedListOfLocalBooking {
-    items: LocalBooking[] | undefined;
-    readonly currentPage: number | undefined;
-    readonly totalPages: number | undefined;
-    readonly pageSize: number | undefined;
-    readonly totalCount: number | undefined;
+export class Orders implements IOrders {
+    localBookings: LocalBooking[] | undefined;
+    totalCount: number | undefined;
+    currentPage: number | undefined;
+    totalPages: number | undefined;
+    pageSize: number | undefined;
     readonly hasPrevious: boolean | undefined;
     readonly hasNext: boolean | undefined;
 
-    constructor(data?: IPagedListOfLocalBooking) {
+    constructor(data?: IOrders) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -8386,57 +8386,57 @@ export class PagedListOfLocalBooking implements IPagedListOfLocalBooking {
 
     init(_data?: any) {
         if (_data) {
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items.push(LocalBooking.fromJS(item));
+            if (Array.isArray(_data["localBookings"])) {
+                this.localBookings = [] as any;
+                for (let item of _data["localBookings"])
+                    this.localBookings.push(LocalBooking.fromJS(item));
             }
-            (<any>this).currentPage = _data["currentPage"];
-            (<any>this).totalPages = _data["totalPages"];
-            (<any>this).pageSize = _data["pageSize"];
-            (<any>this).totalCount = _data["totalCount"];
+            this.totalCount = _data["totalCount"];
+            this.currentPage = _data["currentPage"];
+            this.totalPages = _data["totalPages"];
+            this.pageSize = _data["pageSize"];
             (<any>this).hasPrevious = _data["hasPrevious"];
             (<any>this).hasNext = _data["hasNext"];
         }
     }
 
-    static fromJS(data: any): PagedListOfLocalBooking {
+    static fromJS(data: any): Orders {
         data = typeof data === 'object' ? data : {};
-        let result = new PagedListOfLocalBooking();
+        let result = new Orders();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
+        if (Array.isArray(this.localBookings)) {
+            data["localBookings"] = [];
+            for (let item of this.localBookings)
+                data["localBookings"].push(item.toJSON());
         }
+        data["totalCount"] = this.totalCount;
         data["currentPage"] = this.currentPage;
         data["totalPages"] = this.totalPages;
         data["pageSize"] = this.pageSize;
-        data["totalCount"] = this.totalCount;
         data["hasPrevious"] = this.hasPrevious;
         data["hasNext"] = this.hasNext;
         return data; 
     }
 
-    clone(): PagedListOfLocalBooking {
+    clone(): Orders {
         const json = this.toJSON();
-        let result = new PagedListOfLocalBooking();
+        let result = new Orders();
         result.init(json);
         return result;
     }
 }
 
-export interface IPagedListOfLocalBooking {
-    items: LocalBooking[] | undefined;
+export interface IOrders {
+    localBookings: LocalBooking[] | undefined;
+    totalCount: number | undefined;
     currentPage: number | undefined;
     totalPages: number | undefined;
     pageSize: number | undefined;
-    totalCount: number | undefined;
     hasPrevious: boolean | undefined;
     hasNext: boolean | undefined;
 }
@@ -10705,6 +10705,75 @@ export interface IUpdateOrderByDispatcher {
     statusId: number;
     dispatcherId: number;
     orderId: number;
+}
+
+export class RiderDocument implements IRiderDocument {
+    machinePictureUrl: HttpPostedFileBase;
+    machineRegistrationUrl: HttpPostedFileBase;
+    riderLincesUrl: HttpPostedFileBase;
+    insuranceUrl: HttpPostedFileBase;
+    userId: string;
+    dispatcherId: number | undefined;
+
+    constructor(data?: IRiderDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+        if (!data) {
+            this.machinePictureUrl = new HttpPostedFileBase();
+            this.machineRegistrationUrl = new HttpPostedFileBase();
+            this.riderLincesUrl = new HttpPostedFileBase();
+            this.insuranceUrl = new HttpPostedFileBase();
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.machinePictureUrl = _data["machinePictureUrl"] ? HttpPostedFileBase.fromJS(_data["machinePictureUrl"]) : new HttpPostedFileBase();
+            this.machineRegistrationUrl = _data["machineRegistrationUrl"] ? HttpPostedFileBase.fromJS(_data["machineRegistrationUrl"]) : new HttpPostedFileBase();
+            this.riderLincesUrl = _data["riderLincesUrl"] ? HttpPostedFileBase.fromJS(_data["riderLincesUrl"]) : new HttpPostedFileBase();
+            this.insuranceUrl = _data["insuranceUrl"] ? HttpPostedFileBase.fromJS(_data["insuranceUrl"]) : new HttpPostedFileBase();
+            this.userId = _data["userId"];
+            this.dispatcherId = _data["dispatcherId"];
+        }
+    }
+
+    static fromJS(data: any): RiderDocument {
+        data = typeof data === 'object' ? data : {};
+        let result = new RiderDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["machinePictureUrl"] = this.machinePictureUrl ? this.machinePictureUrl.toJSON() : <any>undefined;
+        data["machineRegistrationUrl"] = this.machineRegistrationUrl ? this.machineRegistrationUrl.toJSON() : <any>undefined;
+        data["riderLincesUrl"] = this.riderLincesUrl ? this.riderLincesUrl.toJSON() : <any>undefined;
+        data["insuranceUrl"] = this.insuranceUrl ? this.insuranceUrl.toJSON() : <any>undefined;
+        data["userId"] = this.userId;
+        data["dispatcherId"] = this.dispatcherId;
+        return data; 
+    }
+
+    clone(): RiderDocument {
+        const json = this.toJSON();
+        let result = new RiderDocument();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRiderDocument {
+    machinePictureUrl: HttpPostedFileBase;
+    machineRegistrationUrl: HttpPostedFileBase;
+    riderLincesUrl: HttpPostedFileBase;
+    insuranceUrl: HttpPostedFileBase;
+    userId: string;
+    dispatcherId: number | undefined;
 }
 
 export class Filter implements IFilter {

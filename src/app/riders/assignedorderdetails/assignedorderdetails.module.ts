@@ -8,6 +8,8 @@ import { AssignedorderdetailsPageRoutingModule } from './assignedorderdetails-ro
 
 import { AssignedorderdetailsPage } from './assignedorderdetails.page';
 
+import { RiderroutePage } from '../riderroute/riderroute.page';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,6 @@ import { AssignedorderdetailsPage } from './assignedorderdetails.page';
     IonicModule,
     AssignedorderdetailsPageRoutingModule
   ],
-  declarations: [AssignedorderdetailsPage]
+  declarations: [AssignedorderdetailsPage,RiderroutePage]
 })
 export class AssignedorderdetailsPageModule {}
