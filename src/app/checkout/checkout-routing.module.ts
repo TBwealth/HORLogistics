@@ -20,7 +20,11 @@ const routes: Routes = [
   {
     path: 'rating',
     component: RatingsComponent
+  },  {
+    path: 'checkoutlist',
+    loadChildren: () => import('./checkoutlist/checkoutlist.module').then( m => m.CheckoutlistPageModule)
   }
+
 ];
 
 @NgModule({

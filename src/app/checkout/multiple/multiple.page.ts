@@ -1,13 +1,12 @@
 import { NeworderComponent } from './../neworder/neworder.component';
 import { Component, OnInit } from '@angular/core';
-import { product_descriptionModel} from './../../_models/checkout';
-import { FormsModule, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
+import {FormGroup } from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
-import { NavController,ToastController,AlertController} from '@ionic/angular';
+import { NavController,ToastController} from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CheckoutassistanceServiceProxy, ManageServiceProxy } from 'src/app/_services/service-proxies';
-import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO,CheckoutAssistance, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
+import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
 
 
 @Component({
