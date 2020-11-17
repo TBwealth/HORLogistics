@@ -122,19 +122,20 @@ this.router.navigate(['preferedaction']);
 this.menu.close();
   }
   async getToken(){
-    let token;
+    let token = "web-jgjgjki-6675675-654544";
+    this.storage.set('token', token)
     if(this.platform.is('android')){
+      this.storage.remove('token');
       token = await this.fbaseService.getToken()
       this.storage.set('token', token)
-    }else {
+    }
       if(this.platform.is('ios')){
+        this.storage.remove('token');
         token = await this.fbaseService.getToken();
         await this.fbaseService.grantPermission();
         this.storage.set('token', token)
-      }else{
-        token = "web-jgjgjki-6675675-654544";
       }
-    }
+    
     
   }
 }
