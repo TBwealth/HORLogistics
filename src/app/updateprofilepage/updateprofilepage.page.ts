@@ -150,6 +150,7 @@ loading:any;
       this.AuthenService.addUser(this.usersdata);
       setTimeout(() => {
         this.loading.dismiss()        
+       
         this.navCtrl.navigateBack('/profilepage')
       }, 3000);
      
@@ -169,6 +170,7 @@ loading:any;
       });
       toast.present();
       if(data.message == "Unauthorized"){
+        this.AuthenService.clearusers();
 this.router.navigate(['login']);
       }
     }

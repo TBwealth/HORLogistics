@@ -9,8 +9,9 @@ import { Badge } from '@ionic-native/badge/ngx';
 import { NetworkProvider } from "./_services/network";
 import { AuthenticationService } from './_services/authentication.service';
 import { Router } from '@angular/router';
-import {  LoginResource} from "./_models/service-models";
 
+import { Storage } from '@ionic/storage';
+import {customConfig} from "./custumConfig";
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -66,6 +67,7 @@ export class AppComponent {
   usersdata: any;
   userRole = "";
   userType = "";
+  Urlbase = customConfig.baseUrl;
   constructor(
     private fbaseService: FirebaseX,
     private platform: Platform,
@@ -74,7 +76,8 @@ export class AppComponent {
     private network: NetworkProvider,
     private menu: MenuController,
     private AuthenService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public storage: Storage
   ) {
     this.initializeApp();
   }
@@ -89,6 +92,7 @@ this.router.navigate(['preferedaction']);
       this.splashScreen.hide();
       this.network.checkNetwork();   
       this.getUser(); 
+      this.getToken();
     });
 
     console.log(this.AuthenService.globalUser)
@@ -121,10 +125,12 @@ this.menu.close();
     let token;
     if(this.platform.is('android')){
       token = await this.fbaseService.getToken()
+      this.storage.set('token', token)
     }
     if(this.platform.is('ios')){
       token = await this.fbaseService.getToken();
       await this.fbaseService.grantPermission();
+      this.storage.set('token', token)
     }
   }
 }
