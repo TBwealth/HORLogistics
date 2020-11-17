@@ -1,5 +1,3 @@
-import { AssignedOrdersPage } from './assigned-orders/assigned-orders.page';
-import { PendingOrdersPage } from './pending-orders/pending-orders.page';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -9,24 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: AdminOrdersPage,
-    children: [
-      {
-        path: '',
-        component: PendingOrdersPage,
-      },
-
-      {
-        path: 'assigned-orders',
-        loadChildren: () => import('./assigned-orders/assigned-orders.module').then( m => m.AssignedOrdersPageModule)
-      },
-      {
-        path: 'pending-orders',
-        loadChildren: () => import('./pending-orders/pending-orders.module').then( m => m.PendingOrdersPageModule)
-      },
-      
-    
-    ]
-  }
+  },
+  {
+    path: 'allorders',
+    loadChildren: () => import('./allorders/allorders.module').then( m => m.AllordersPageModule)
+  },
 
 ];
 

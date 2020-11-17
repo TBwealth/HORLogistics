@@ -6,14 +6,16 @@ import {Router,ActivatedRoute} from '@angular/router';
 import { NavController,ToastController,AlertController} from '@ionic/angular';
 import { CheckoutassistanceServiceProxy } from 'src/app/_services/service-proxies';
 import { CheckOutAssistanceProductModel,CheckOutAssistanceDTO,CheckoutAssistance, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
-
+import { NeworderComponent } from './../neworder/neworder.component';
+import { PopoverController } from '@ionic/angular';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-single',
   templateUrl: './single.page.html',
   styleUrls: ['./single.page.scss'],
 })
 export class SinglePage implements OnInit {
-
+  isSingle = true;
   checkedIdx = true;
   activetab:string = "";
   homedelivery:string = ""
@@ -34,40 +36,66 @@ export class SinglePage implements OnInit {
   all_product_desc: CheckOutAssistanceProductModel[];
   
   checkOutAsst = new CheckOutAssistanceDTO().clone();
-
+  addNewPanel: boolean = true;
   
   constructor(private toastCtrl: ToastController,
     private router: Router,
+    public popoverController: PopoverController,
     private navCtrl: NavController,
     private activatedroute: ActivatedRoute,
     private checkout: CheckoutassistanceServiceProxy,
     private activeUser: ManageServiceProxy) { }
 
   ngOnInit() {
- 
+    this.activatedroute.queryParamMap.subscribe(data => {
+      this.isSingle = data.get('single') == 'true';
+      this.checkOutAsst.products = [];
+    })
   }
 
+  async addNewProduct(){
+    const subject = new Subject<boolean>()
+    const modal = await this.popoverController.create({
+      component: NeworderComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        subject
+      }
+    });
+    subject.subscribe(val => {
+      modal.dismiss()
+      if(val){
+        this.clearForm()
+      } else {
+        this.gotoSummary()
+      }
+    })
+    return await modal.present();
+  }
+
+  clearForm(){
+    this.onSubmit();
+    this.productDescriptionPanel = false
+    this.deliveryDetailsPanel  = false
+    this.activetab = "";
+  }
+
+  
+gotoSummary(){
+  this.onSubmit()
+  
+}
   get myUser(){
    return this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
 this.authuserdetails = data;
 console.log(this.authuserdetails)
-// if(this.authuserdetails.code == "000"){
-  
-
-// }else{
-
-//   if(this.authuserdetails.message == "unAuthorized"){
-
-//   }
-// }
    });
   }
 
   onReset(){
     this.myForm.reset();
   }
-
-  onSubmit(){
+  addProduct(){
     let productDetails = new CheckOutAssistanceProductModel()
     //Product details
     productDetails.name = this.product_desc.name;
@@ -79,7 +107,7 @@ console.log(this.authuserdetails)
     productDetails.itemNumber = this.product_desc.itemNumber
     productDetails.comment = this.product_desc.comment;
     productDetails.style = this.product_desc.style;
-
+  
     //Delivery Details
     let RequestDetails = new CheckOutAssistanceModel();
     this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
@@ -102,13 +130,23 @@ console.log(this.authuserdetails)
       RequestDetails.shipToState = this.request_desc.shipToState;
       RequestDetails.pickupCenter = this.request_desc.pickupCenter;
       RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
-      this.checkOutAsst.products = [];
       this.checkOutAsst.request;
       this.checkOutAsst.products.push(productDetails);
       this.checkOutAsst.request = RequestDetails;
       console.log(this.checkOutAsst);
-      this.checkout.create(this.checkOutAsst).subscribe(data => {})
+      
+      
+      this.product_desc = new CheckOutAssistanceProductModel().clone();
+      this.request_desc = new CheckOutAssistanceModel().clone();
+      
     })
+  
+    
+  }
+  onSubmit(){
+    this.addProduct()
+      this.checkout.create(this.checkOutAsst).subscribe(data => {})
+    }
 
     //console.log(this.checkOutAsst);
   
@@ -116,7 +154,6 @@ console.log(this.authuserdetails)
   //     console.log(myForm.value);
   //     this.checkout.create(myForm.value).subscribe(data => {})
     
-  }
 
 //   addPost(form: NgForm){
 //     // this.newPost = {
@@ -172,6 +209,7 @@ if(this.request_desc.customerAddress &&
    this.request_desc.shipToState){
        
     this.myorder = this.product_desc;
+    this.addNewPanel = false;
     //console.log(this.myorder)
 }
 }

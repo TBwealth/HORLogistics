@@ -5,7 +5,8 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Multiple Products Order</ion-title>
+    <ion-title *ngIf="isMultiple">Single Product Order</ion-title>
+    <ion-title *ngIf="!isMultiple">Multiple Product Order</ion-title>
   </ion-toolbar>
 </ion-header>
   
@@ -43,14 +44,15 @@
               </div>
 
               <div style="padding: 5px;"></div>
-              <!-- <ion-input (keyup)="validateProductDescriptionForm()" type="text" #delivery_type="ngModel" name="delivery_type" placeholder="Delivery Type" [(ngModel)]="product_desc.delivery" required></ion-input>
-              <div *ngIf="delivery_type.invalid && (delivery_type.dirty || delivery_type.touched)" class="error">
-              <div *ngIf="delivery_type.errors.required">Delivery type is required</div>
-              </div> -->
-              <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_type="ngModel" name="delivery_type" placeholder="Delivery Type" [(ngModel)]="product_desc.delivery" required>
-                <ion-select-option value="standard">Standard</ion-select-option>
-                <ion-select-option value="express">Express</ion-select-option>
-              </ion-select>
+              <div style="border:1px solid #dddada; border-radius: 5px;">
+                <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_type="ngModel" name="delivery_type" placeholder="Delivery Type" [(ngModel)]="product_desc.delivery" required>
+                  <ion-select-option value="standard">Standard</ion-select-option>
+                  <ion-select-option value="express">Express</ion-select-option>
+                </ion-select>
+              </div> 
+                <div *ngIf="delivery_type.invalid && (delivery_type.dirty || delivery_type.touched)" class="error">
+                <div *ngIf="delivery_type.errors.required">Delivery type is required</div>
+                </div>
 
               <div style="padding: 5px;"></div>
               <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_colour="ngModel" name="product_colour" placeholder="Colour" [(ngModel)]="product_desc.color" required></ion-input>
@@ -65,14 +67,14 @@
               </div>
 
               <div style="padding: 5px;"></div>
-              <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_number="ngModel" name="product_style" placeholder="Product Style" [(ngModel)]="product_desc.style" required></ion-input>
+              <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_style="ngModel" name="product_style" placeholder="Product Style" [(ngModel)]="product_desc.style" required></ion-input>
                
 
               <div style="padding: 5px;"></div>
               <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_number="ngModel" name="product_number" placeholder="Product Number" [(ngModel)]="product_desc.itemNumber" required></ion-input>
                
               <div style="padding: 5px;"></div>
-              <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #product_comment="ngModel" name="product_comment" placeholder="Comment" [(ngModel)]="product_desc.comment" required></ion-input>          
+              <ion-textarea type="text" (keyup)="validateDeliveryDetailsForm()" #product_comment="ngModel" name="product_comment" placeholder="Comment" [(ngModel)]="product_desc.comment" required></ion-textarea>          
           </ion-grid>
         </div>
 
@@ -131,16 +133,19 @@
               </div>
               <div *ngIf="checkedIdx==false">
                 <div style="padding: 5px;"></div>
+                <div style="border:1px solid #dddada; border-radius: 5px;">
                   <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_pickup="ngModel" name="delivery_pickup" placeholder="Pickup Location" [(ngModel)]="request_desc.pickupCenter" required>
                     <ion-select-option value="Lagos Pickup">Lagos Pickup</ion-select-option>
                     <ion-select-option value="UK Pickup">UK pickup</ion-select-option>
                     <ion-select-option value="USA Pickup">USA Pickup</ion-select-option>
                   </ion-select>
+                </div>
+                  
               </div> 
             </ion-grid>
             
         </div>
-      <ion-row>
+      <ion-row *ngIf="!isMultiple">
         <ion-col>
           <ion-button [(disabled)]= "addNewPanel"  (click)="addNewProduct()" expand="block" class="localdelivery" fill="clear">
             <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
