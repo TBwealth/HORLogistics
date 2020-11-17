@@ -44,7 +44,7 @@ import { AuthService } from './_services/auth.service';
 import { AuthGuardService } from './_services/auth-guard.service';
 import { AuthenticationService } from './_services/authentication.service';
 import { JwtInterceptor } from './_services/jwt.interceptor';
-import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy,CheckoutassistanceServiceProxy, OrderServiceProxy, RiderServiceProxy, RouteRateServiceProxy, LocalbookingServiceProxy } from './_services/service-proxies';
+import { AccountServiceProxy,RegisterServiceProxy,CountriesServiceProxy, ApiServiceProxy, ManageServiceProxy, LocalBookingServiceProxy, LocationsServiceProxy, InternationalbookingServiceProxy,CheckoutassistanceServiceProxy, OrderServiceProxy, RiderServiceProxy, RouteRateServiceProxy, LocalbookingServiceProxy, BulkorderServiceProxy } from './_services/service-proxies';
 import { ChatService } from './_services/chat.service';
 import {MaprouteService} from './_services/maproute.service';
 import { StoreService } from './_services/store.service';
@@ -107,6 +107,7 @@ import { StoreService } from './_services/store.service';
     CallNumber,
     OrderServiceProxy,
     LocalbookingServiceProxy,
+    BulkorderServiceProxy,
     HTTP,
     Base64,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

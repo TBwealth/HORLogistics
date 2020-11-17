@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Storage } from '@ionic/storage';
 import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking } from '../_models/service-models';
 
 interface APIListResult<T>{
@@ -86,7 +87,8 @@ export class StoreService {
   internationalBooking: InternationalBooking;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    public storage: Storage,
   ) { }
   saveInternationalBooking(booking: InternationalBooking){
     this.internationalBooking = booking
@@ -96,9 +98,19 @@ export class StoreService {
   }
   saveBookings(bookings){
     this.bookings = bookings
+    
+    return this.storage.set('bookings', JSON.stringify(bookings))
   }
-  getBookings(){
-    return this.bookings
+  async getBookings(){
+    
+    const bookings = JSON.parse(await this.storage.get('bookings'))
+    const bookingList = []
+    bookings.forEach(booking => {
+      const tempBooking = new LocalBooking(booking)
+      tempBooking.deliveryDate = new Date(tempBooking.deliveryDate)
+      bookingList.push(tempBooking)
+    })
+    return bookingList
   }
   getAllLocalOrders(status: number=null){
     const subject = new Subject<LocalBooking[]>()

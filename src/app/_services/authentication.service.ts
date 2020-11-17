@@ -6,6 +6,13 @@ import {ManageServiceProxy,} from '../_services/service-proxies';
 import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Observable, of, BehaviorSubject } from 'rxjs';
+
+export enum CUSTOMER_TYPES{
+    CUSTOMER = 0,
+    PARTNER = 1,
+    RIDER = 2
+}
+
 @Injectable()
 export class AuthenticationService {
     main_id = 0;

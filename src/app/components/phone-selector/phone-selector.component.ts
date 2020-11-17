@@ -70,7 +70,7 @@ export class PhoneSelectorComponent implements OnInit {
         number = phoneUtil.parse(phoneNumber, region),
         isValidNumber = phoneUtil.isValidNumber(number);
       pnumber = phoneUtil.format(number, PNF.E164);
-      this.valueChange.emit(pNumber)
+      this.valueChange.emit('+234' + pNumber)
     }
 
   }

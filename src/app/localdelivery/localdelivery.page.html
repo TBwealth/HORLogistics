@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Local delivery</ion-title>
+    <ion-title>Local delivery {{mySelectedBookingCategory.name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -97,12 +97,12 @@
     </ion-row>
     <div *ngSwitchCase='delivery'>
       <ion-grid>
-        <ion-select (ionChange)="validateDeliveryForm()" placeholder="Delivery Type" name="booking_category" class="select" [(ngModel)]="local_delivery.categioryId" #booking_category="ngModel" required>
-          <ion-select-option [value]="1" >Standard delivery</ion-select-option>
-          <ion-select-option [value]="2" >Express delivery</ion-select-option>
+        <ion-select *ngIf="selectedBookingCategory.estimatedPackageWeight"  (ionChange)="validateDeliveryForm()" placeholder="Delivery Type" name="booking_category" class="select" [(ngModel)]="local_delivery.categioryId" #booking_category="ngModel" required>
+          <ion-select-option [value]="2" >Standard delivery</ion-select-option>
+          <ion-select-option [value]="1" >Express delivery</ion-select-option>
         </ion-select>
         <form name="delivery_detailsForm" #delivery_detailsForm="ngForm">
-          <ion-datetime (ionChange)="validateDeliveryForm()" #delivery_date="ngModel" name="delivery_date" id="delivery_date" [(ngModel)]="local_delivery.delivery_date" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
+          <ion-datetime [min]="minDeliveryDate" (ionChange)="validateDeliveryForm()" #delivery_date="ngModel" name="delivery_date" id="delivery_date" [(ngModel)]="local_delivery.delivery_date" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
           <div *ngIf="delivery_date.invalid && (delivery_date.dirty || delivery_date.touched)" class="error">
             <div *ngIf="delivery_date.errors.required">
               Delivery Date is required
@@ -177,7 +177,7 @@
           <ion-textarea [(ngModel)]="package_details.package_description" placeholder="Package description"></ion-textarea>
           <!-- <app-text-input [(value)]="package_details.package_description" [validators]="[]" type='text' [extraErrors]="[]" label='' name="package_description" placeholder='Package description'></app-text-input> -->
           <div style="padding: 5px;"></div>
-          <app-text-input *ngIf="pickup_details.booking_category != 1" [(value)]="package_details.package_weight" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
+          <app-text-input *ngIf="selectedBookingCategory.estimatedPackageWeight" [(value)]="package_details.package_value" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
           <p>Is package greater than indomie carton size ?</p>
           <ion-grid>
             <app-checkbox [(value)]="showSize"></app-checkbox>
