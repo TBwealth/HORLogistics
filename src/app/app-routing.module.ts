@@ -3,11 +3,11 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 
 const routes: Routes = [
-   {path: '', redirectTo: 'home', pathMatch: 'full'},
+  // {path: '', redirectTo: 'home', pathMatch: 'full'},
 //  {path: '', redirectTo: 'checkout', pathMatch: 'full'},
 // {path: '', redirectTo: 'international-delivery/summary', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
-//  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
+ {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery', pathMatch: 'full'},
 //  {path: '', redirectTo: 'trackorder/pickup', pathMatch: 'full'},
 // {path: '', redirectTo: 'dashboard', pathMatch: 'full'},

@@ -105,10 +105,8 @@ export class LocaldeliveryPage implements OnInit {
     })
     this.getcountry();
     this.getCountryFlag("NG",'')
-    this.activatedroute.url.subscribe(url => {
-      if(url[0].path.includes('single')){
-        this.singleDelivery = true
-      }
+    this.activatedroute.queryParamMap.subscribe(params => {
+      this.singleDelivery = params.get('single') == 'true'
     })
     // this.showAddNewBookingModal()
   }
