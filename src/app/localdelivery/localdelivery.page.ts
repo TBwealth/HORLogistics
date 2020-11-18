@@ -85,6 +85,17 @@ export class LocaldeliveryPage implements OnInit {
   selectedBookingCategory = new LocalBookingCategoryResource()
   mySelectedBookingCategory = new LocalBookingCategoryResource()
 
+  get disableApplyButton(){
+    if(!this.package_details.payment_type) return true
+    if(this.package_details.cash_collection){
+      if(!this.package_details.cash_collection_amount || !this.package_details.cash_collection_amount) return true
+    }
+    if(this.package_details.package_insurance){
+      if(!this.package_details.package_value) return true
+    }
+    return false
+  }
+
   get minDeliveryDate(){
     let timestamp = 0
     const today = Number(new Date())

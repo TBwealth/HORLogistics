@@ -189,7 +189,10 @@
                 <ion-label style="font-size: 12px;">Insure</ion-label>
               </ion-item>
             </ion-row>
-            <app-text-input *ngIf="package_details.package_insurance" [(value)]="package_details.package_value" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_value" placeholder='Package value'></app-text-input>
+            <ng-template [ngIf]="package_details.package_insurance">
+              <app-text-input [(value)]="package_details.package_value" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_value" placeholder='Package value'></app-text-input>
+              <div style="padding-top: 10px">{{package_details.package_value | currency: 'NGN'}}</div>
+            </ng-template>
             <ion-row>
               <p>*Do you require cash collection from recipient ?</p>
               <ion-item lines="none">  
@@ -212,7 +215,7 @@
           <ion-button class="cta1" expand="block" fill="outline" (click)="navCtrl.back()">
             <ion-label>Cancel</ion-label>
           </ion-button>
-          <ion-button class="cta" expand="block" fill="default" (click)="submitBooking()">
+          <ion-button class="cta" expand="block" [disabled]="disableApplyButton" fill="default" (click)="submitBooking()">
             <ion-label>Apply</ion-label>
           </ion-button>
         </div>
