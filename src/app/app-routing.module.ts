@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuardService as AuthGuard } from './_services/auth-guard.service';
 
 const routes: Routes = [
-//  {path: '', redirectTo: 'checkout', pathMatch: 'full'},
+// {path: '', redirectTo: 'checkoutlist', pathMatch: 'full'},
 // {path: '', redirectTo: 'international-delivery/summary', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/payment', pathMatch: 'full'},
 //  {path: '', redirectTo: 'localdelivery/bookingoptions', pathMatch: 'full'},
@@ -157,9 +157,28 @@ const routes: Routes = [
     path: 'deliverydirection',
     loadChildren: () => import('./riders/deliverydirection/deliverydirection.module').then( m => m.DeliverydirectionPageModule)
   },
+  {
+    path: 'admin-orders',
+    loadChildren: () => import('./admin/admin-orders/admin-orders.module').then( m => m.AdminOrdersPageModule)
+  },
 
+  {
+    path: 'allorders',
+    loadChildren: () => import('./admin/admin-orders/allorders/allorders.module').then( m => m.AllordersPageModule)
+  },
+  {
+    path: 'queries',
+    loadChildren: () => import('./admin/queries/queries.module').then( m => m.QueriesPageModule)
+  },
 
-
+  {
+    path: 'allriders',
+    loadChildren: () => import('./admin/allriders/allriders.module').then( m => m.AllridersPageModule)
+  },
+  {
+    path: 'checkoutlist',
+    loadChildren: () => import('./checkout/checkoutlist/checkoutlist.module').then( m => m.CheckoutlistPageModule)
+  }
 
 
 

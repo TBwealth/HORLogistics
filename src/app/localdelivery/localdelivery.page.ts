@@ -26,12 +26,13 @@ export class LocaldeliveryPage implements OnInit {
   pickup_detailsForm: FormGroup; 
   delivery_detailsForm:FormGroup;
   
-  local_delivery : local_deliveryModel ={};
+  local_delivery : local_deliveryModel ={
+    categioryId: 2
+  };
   pickup_details : pickup_detailsModel = {};
   package_details : package_detailsModel ={
     package_size: 1,
     package_weight: 1
-
   };
   bookingCategories: LocalBookingCategoryResource[]
 
@@ -75,6 +76,43 @@ export class LocaldeliveryPage implements OnInit {
   deliveryphoneError: boolean = true;
   deliveryselectedFlag: any="";
   deliveryselectedCallingCode:  any="";
+  // get selectedBookingCategory(){
+  //   if(!this.pickup_details.booking_category) return new LocalBookingCategory()
+  //   return this.bookingCategories.find(member => {
+  //     return member.id = this.pickup_details.booking_category
+  //   })
+  // }
+  selectedBookingCategory = new LocalBookingCategoryResource()
+  mySelectedBookingCategory = new LocalBookingCategoryResource()
+
+  get disableApplyButton(){
+    if(!this.package_details.payment_type) return true
+    if(this.package_details.cash_collection){
+      if(!this.package_details.cash_collection_amount || !this.package_details.cash_collection_amount) return true
+    }
+    if(this.package_details.package_insurance){
+      if(!this.package_details.package_value) return true
+    }
+    return false
+  }
+
+  get minDeliveryDate(){
+    let timestamp = 0
+    const today = Number(new Date())
+    const millisInDay = 24 * 60 * 60 * 1000
+    if(!this.selectedBookingCategory.estimatedPackageWeight){
+      timestamp =  today + millisInDay
+    } else {
+      if(this.local_delivery.categioryId == 2){
+        timestamp = today  +  3 * millisInDay
+      } else {
+        timestamp = today  +  2 * millisInDay 
+      }
+    }
+    const date:any = new Date(timestamp)
+    // this.local_delivery.delivery_date = date
+    return date.toISOString().split('T')[0]
+  }
 
   constructor(
     public Cservice: CountryserviceService,
@@ -105,10 +143,8 @@ export class LocaldeliveryPage implements OnInit {
     })
     this.getcountry();
     this.getCountryFlag("NG",'')
-    this.activatedroute.url.subscribe(url => {
-      if(url[0].path.includes('single')){
-        this.singleDelivery = true
-      }
+    this.activatedroute.queryParamMap.subscribe(params => {
+      this.singleDelivery = params.get('single') == 'true'
     })
     // this.showAddNewBookingModal()
   }
@@ -285,7 +321,9 @@ if(isValidNumber){
     booking.pickupLandmark = this.local_delivery.delivery_landmark
     booking.deliveryLocationId = this.local_delivery.delivery_busstop
     booking.deliveryTypeId = this.local_delivery.categioryId
-    this.local_delivery = {}
+    this.local_delivery = {
+      categioryId: 2
+    }
 
     booking.isInsured = this.package_details.package_insurance
     booking.packageValue = this.package_details.package_value
@@ -296,22 +334,29 @@ if(isValidNumber){
     booking.cashCollectionAmount = this.package_details.cash_collection_amount
     booking.cashCollectionAccountNumber = this.package_details.account_number
     booking.paymentTypeId = this.package_details.payment_type
-    this.package_details = {}
-
+    this.package_details = {
+      package_size: 1,
+      package_weight: 1
+    }
     this.bookings.push(booking)
     // this.storage.setItem('booking', JSON.stringify(booking))
   }
 
   gotoSummary(){
     this.saveBooking()
-    this.store.saveBookings(this.bookings)
-    this.router.navigate(['localdelivery/review-booking'])
+    this.store.saveBookings(this.bookings).then(data => {
+      console.log('submitted')
+      this.router.navigate(['localdelivery/review-booking'])
+    })
   }
 
   getLocations(){
     this.locationService.category(this.pickup_details.booking_category).subscribe(data => {
       console.log(data)
       this.locations = data
+    })
+    this.selectedBookingCategory = this.bookingCategories.find(member => {
+      return member.id == this.pickup_details.booking_category
     })
   }
 
