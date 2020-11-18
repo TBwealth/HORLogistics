@@ -84,7 +84,7 @@ export class InternationalDeliveryPage implements OnInit {
         return false
       }
     }else{
-      if(this.pickUpFormValid) return false
+      if(this.pickUpFormValid && !this.disablePickUpDetails) return false
     }
     return true
   }
