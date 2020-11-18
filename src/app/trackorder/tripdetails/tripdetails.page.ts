@@ -78,21 +78,24 @@ export class TripdetailsPage implements OnInit {
         if(data.code == "000"){
           this.orderDetails = data.data;
           const plateNo =this.orderDetails.dispatcher.plateNumber
-          this.trackerAPi.trackOrder(plateNo).then(response => {
-            const trackingDetails: VehicleLocation = response.data[plateNo]
-            trackingDetails.lat = Number(trackingDetails.lat)
-            trackingDetails.lng = Number(trackingDetails.lng)
-            this.trackingDetails = trackingDetails
-            this.coords = {
-              accuracy: 1,
-              speed: 1,
-              altitude: 1,
-              altitudeAccuracy: 1,
-              heading: 1,
-              longitude: this.trackingDetails.lng,
-              latitude: this.trackingDetails.lat
-            }
-          })
+          const trackStatus = [4]
+          if(this.orderDetails.bookingStatusId == 3){
+            this.trackerAPi.trackOrder(plateNo).then(response => {
+              const trackingDetails: VehicleLocation = response.data[plateNo]
+              trackingDetails.lat = Number(trackingDetails.lat)
+              trackingDetails.lng = Number(trackingDetails.lng)
+              this.trackingDetails = trackingDetails
+              this.coords = {
+                accuracy: 1,
+                speed: 1,
+                altitude: 1,
+                altitudeAccuracy: 1,
+                heading: 1,
+                longitude: this.trackingDetails.lng,
+                latitude: this.trackingDetails.lat
+              }
+            })
+          }     
 
           this.localBookingService.localbookingstatus().subscribe(data=>{
             this.bookingStatus = data.data;

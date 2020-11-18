@@ -25,7 +25,8 @@ export class DocumentuploadPage implements OnInit {
   arrayType = ["pdf", "doc", "docx", "png", "jpg", "gif","jpeg"];
   loading: any;
   usersdata:any;
-  dispatcher = new Dispatcher().clone();
+  dispatcher :any='';
+  dispatcherCertificate: any = '';
   userRole = "";
   customersData :IUpdateUserViewModel ={
     businessAnniversary: new Date(),
@@ -79,7 +80,9 @@ export class DocumentuploadPage implements OnInit {
       if (this.AuthenService.users.length > 0) {   
         this.usersdata = this.AuthenService.users[0];
         this.userRole = this.usersdata.role[0].name;
-        this.dispatcher = this.usersdata.dispatcher;              
+        this.dispatcher = this.usersdata.dispatcher; 
+        this.dispatcherCertificate = this.dispatcher.dispatcherCertificate;
+       //console.log(this.dispatcherCertificate)             
       }
       this.loading.dismiss()
     }, 2000);

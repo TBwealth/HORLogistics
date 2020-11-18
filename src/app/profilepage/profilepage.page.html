@@ -27,9 +27,12 @@
   <ion-row>
   <ion-col size="3"></ion-col>  
   <ion-col size="6">
-    <img *ngIf="userRole == 'Customer' || userRole == 'Partner'" class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{Urlbase}}{{userProfilePic}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
-    <img *ngIf="userRole == 'Rider'" class="" (click)="choosePic()" style="width:100%;height: auto;max-height: 140px;border-radius: 50%;" src="{{Urlbase}}{{dispatcher.profilePicUrl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
- 
+    <div class="circular--portrait">
+      <img *ngIf="userRole == 'Customer' || userRole == 'Partner'" class="" (click)="choosePic()"  src="{{Urlbase}}{{userProfilePic}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
+      <img *ngIf="userRole == 'Rider'" class="" (click)="choosePic()"  src="{{Urlbase}}{{dispatcher.profilePicUrl}}" onError="this.src='assets/images/female.png'" alt="" title="" itemprop="image">
+   
+    </div>
+   
   </ion-col>  
   <ion-col size="3"></ion-col>  
   </ion-row>
@@ -95,7 +98,7 @@
        </span> 
       </ion-label>
       <ion-label style="float: right;" *ngIf="userRole == 'Rider'" >
-        <span *ngIf="customersData.residentialStateId">
+        <span *ngIf="dispatcher.residentialStateId">
           {{getstateName(dispatcher.residentialStateId)}}
         </span>        
         </ion-label>
@@ -167,7 +170,7 @@
   </ion-row>
 
 <div style="padding: 10px;"></div>
-  <ion-row *ngIf="userRole == 'Customer' ">
+  <!-- <ion-row *ngIf="userRole == 'Customer' ">
     <ion-col size="4">
       <div style="padding: 7px;"></div>
       <ion-label>Google</ion-label>
@@ -184,7 +187,7 @@
     <ion-col size="8" style="float: right;">
       <ion-toggle style="float: right;"> </ion-toggle>
     </ion-col>
-  </ion-row>
+  </ion-row> -->
 </div>
 
 

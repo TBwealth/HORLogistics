@@ -84,7 +84,7 @@ async openBankInfo(){
     }
 
   }
-  async ngOnInit() {
+  async getintials(){
     this.reference = `ref-${Math.ceil(Math.random() * 10e13)}`;
     const loading = await this.spinnerLoader.create({
       message: "please wait...",
@@ -114,6 +114,17 @@ async openBankInfo(){
     const IBookings: Booking[] = this.internationalBookings.map(booking => new Booking().fromInternationalBooking(booking))
     this.bookings = [...IBookings, ...LBookings]
     this.filterInProgress()
+  }
+  doRefresh(event) {
+    this.getintials();
+     console.log('Begin async operation');     
+     setTimeout(() => {
+       console.log('Async operation has ended');
+       event.target.complete();
+     }, 2000);    
+ }
+   ngOnInit() {
+   this.getintials()
   }
   filterInProgress(){
     this.filteredLocalBookings = this.localBookings.filter(booking => !COMPLETED_LOCAL_BOOKING_STATUS.includes(booking.bookingStatusId))

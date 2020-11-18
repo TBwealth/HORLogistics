@@ -148,6 +148,7 @@ export class AuthenticationService {
                               });
                               toast.present();
                             if(data.message == "User is not authorized"){
+                                this.clearusers();
                                 this.router.navigate(['login']);
                             }
                         }

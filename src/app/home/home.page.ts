@@ -219,7 +219,13 @@ this.menu.open();
     }) 
    
   }
-toggledriverStatus(){
+async toggledriverStatus(){
+  this.loading = await this.loadspinner.create({
+    message: "please wait...",
+    translucent: true,
+    spinner: "bubbles",
+  });
+  await this.loading.present();
 var newStatus = this.riderStatus == 1?2:1;
 this.UpdateStatus.dispatcherId = this.dispatcher.id;
 this.UpdateStatus.statusId = newStatus;
@@ -233,6 +239,7 @@ if(data.code == "000"){
     color: "success"
   });
   toast.present();
+  this.loading.dismiss()
 }else{
   const toast = await this.toastCtrl.create({
     duration: 3000,
@@ -240,7 +247,9 @@ if(data.code == "000"){
     color: "danger"
   });
   toast.present();
+  this.loading.dismiss()
   if(data.code == "004"){
+    this.AuthenService.clearusers();
 this.router.navigate(['preferedaction']);
   }
 }
