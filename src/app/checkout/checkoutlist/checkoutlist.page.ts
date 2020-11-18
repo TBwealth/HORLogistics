@@ -90,7 +90,9 @@ filtersearch(val){
       if(currentOrder.bookingNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1){
         this.negativesearch = false;
         return true;
-      } 
+      } else{
+        this.negativesearch = true;
+      }
     }
   })
 }

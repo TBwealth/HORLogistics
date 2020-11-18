@@ -63,7 +63,8 @@ MarkOrderAsDeliveredDTO = new MarkOrderAsDeliveredDTO().clone();
     private toastCtrl: ToastController,
     private router: Router,
     private localBookingService: LocalBookingServiceProxy,
-    private maprouteService: MaprouteService
+    private maprouteService: MaprouteService,
+    private spinnerLoader: LoadingController
     ) { 
 
     }
@@ -198,6 +199,12 @@ if(cIndex.statusName == 'Delivered'){
         text: 'Update',
         cssClass: 'alertCtrlbtnpry',
         handler: async (newOrderStatus) => {
+          const loading = await this.spinnerLoader.create({
+            message: "please wait...",
+            translucent: true,
+            spinner: "bubbles",
+          });
+          loading.present()
           if(newOrderStatus){
             this.orderStatusResource.statusId = newOrderStatus;
             this.orderStatusResource.orderId = orderId;
@@ -219,6 +226,7 @@ if(cIndex.statusName == 'Delivered'){
                   color: "success"
                 });
                 toast.present();
+                loading.dismiss()
               }else{
                 const toast = await this.toastCtrl.create({
                   duration: 3000,
@@ -226,6 +234,7 @@ if(cIndex.statusName == 'Delivered'){
                   color: "danger"
                 });
                 toast.present();
+                loading.dismiss()
               }
             })
           }else{
@@ -235,6 +244,7 @@ if(cIndex.statusName == 'Delivered'){
               color: "danger"
             });
             toast.present();
+            loading.dismiss()
             return false;
           }
         }
