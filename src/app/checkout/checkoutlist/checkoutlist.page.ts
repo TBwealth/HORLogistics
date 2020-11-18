@@ -1,3 +1,5 @@
+import { CheckoutAssistance } from './../../_models/service-models';
+import { CheckoutassistanceServiceProxy, ManageServiceProxy } from 'src/app/_services/service-proxies';
 import { Component, OnInit } from '@angular/core';
 import { NavController} from '@ionic/angular';
 
@@ -8,15 +10,23 @@ import { NavController} from '@ionic/angular';
 })
 export class CheckoutlistPage implements OnInit {
 
-  orderId = "Trnx20484";
-  orderDate = "17/11/2020"
-  constructor(private navCtrl: NavController) { }
+  checkoutOrders: CheckoutAssistance[] = [];
+
+  constructor(private navCtrl: NavController,
+    private checkout: CheckoutassistanceServiceProxy) { }
 
   ngOnInit() {
+    this.getOrders();
   }
 
   goback(){
     this.navCtrl.back();
   }
+
+getOrders(){
+  this.checkout.getcheckassistance('','',0,1).subscribe(data => {
+    this.checkoutOrders = data.data.items;
+  })
+}
 
 }

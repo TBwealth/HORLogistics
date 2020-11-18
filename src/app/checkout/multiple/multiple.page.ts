@@ -1,12 +1,14 @@
+import { AuthService } from './../../_services/auth.service';
 import { NeworderComponent } from './../neworder/neworder.component';
 import { Component, OnInit } from '@angular/core';
 import {FormGroup } from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
-import { NavController,ToastController} from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CheckoutassistanceServiceProxy, ManageServiceProxy } from 'src/app/_services/service-proxies';
 import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
 
 
 @Component({
@@ -20,6 +22,7 @@ export class MultiplePage implements OnInit {
   activetab:string = "";
   homedelivery:string = ""
   totalOrders = [];
+  loading: any;
     
   productDescriptionPanel: boolean = false;
   deliveryDetailsPanel: boolean = true;
@@ -46,7 +49,9 @@ export class MultiplePage implements OnInit {
     public popoverController: PopoverController,
     private activatedroute: ActivatedRoute,
     private checkout: CheckoutassistanceServiceProxy,
-    private activeUser: ManageServiceProxy) { }
+    private activeUser: ManageServiceProxy,
+    public AuthService: AuthenticationService,
+    private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.checkOutAsst.products = [];
@@ -68,11 +73,21 @@ export class MultiplePage implements OnInit {
   }
 
   yesfn(event){
-    if(event.detail.checked) this.checkedIdx = true;
+    if(event.detail.checked){
+      this.checkedIdx = true;      
+        this.request_desc.checkoutProcessing = 'home';
+        this.request_desc.pickupCenter = null;    
+    }
   }
 
   nofn(event){
-    if(event.detail.checked) this.checkedIdx = false;
+    if(event.detail.checked) {
+      this.checkedIdx = false;
+      this.request_desc.checkoutProcessing = 'pickup';
+      this.request_desc.customerAddress = null;
+      this.request_desc.shipToState = null; 
+      this.request_desc.deliveryLocationId = 0;
+    }
    }
 
 myfunction($val){
@@ -137,14 +152,89 @@ async addNewProduct(){
 }
 
 clearForm(){
-  this.onSubmit();
-  this.productDescriptionPanel = false
-  this.deliveryDetailsPanel  = false
-  this.activetab = "";
+  this.submitOrders();
+  this.productDescriptionPanel = false;
+  this.deliveryDetailsPanel  = true;
+  //this.addNewPanel = false;
+//  this.activetab = "product_description";
 }
 
-onSubmit(){
-  let productDetails = new CheckOutAssistanceProductModel()
+// onSubmit(){
+//   let productDetails = new CheckOutAssistanceProductModel()
+//   //Product details
+//   productDetails.name = this.product_desc.name;
+//   productDetails.quantity = this.product_desc.quantity;
+//   productDetails.size = this.product_desc.size;
+//   productDetails.color = this.product_desc.color;
+//   productDetails.url = this.product_desc.url;
+//   productDetails.delivery = this.product_desc.delivery
+//   productDetails.itemNumber = this.product_desc.itemNumber
+//   productDetails.comment = this.product_desc.comment;
+//   productDetails.style = this.product_desc.style;
+
+//   //Delivery Details
+//   let RequestDetails = new CheckOutAssistanceModel();
+//   this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
+//     this.authuserdetails = data;
+    
+//     if(this.checkedIdx = true)
+//     {
+//       this.request_desc.checkoutProcessing = 'home';
+//       this.request_desc.pickupCenter = null;
+//     } else {
+//       this.request_desc.checkoutProcessing = 'pickup';
+//       this.request_desc.customerAddress = null;
+//       this.request_desc.shipToState = null; 
+//       this.request_desc.deliveryLocationId = 0;
+//     }
+  
+//     RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;
+//     RequestDetails.customerAddress = this.authuserdetails.data.customer.homeAddress;
+//     RequestDetails.customerName = this.authuserdetails.data.customer.fullName;
+//     RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
+//     RequestDetails.shipToState = this.request_desc.shipToState;
+//     RequestDetails.pickupCenter = this.request_desc.pickupCenter;
+//     RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
+//     this.checkOutAsst.request;
+//     this.checkOutAsst.products.push(productDetails);
+//     this.checkOutAsst.request = RequestDetails;
+//     console.log(this.checkOutAsst);
+//     this.product_desc = new CheckOutAssistanceProductModel().clone();
+//     this.request_desc = new CheckOutAssistanceModel().clone();
+    
+//   })
+
+  
+// }
+
+  submitOrders() {
+  
+    let productDetails = new CheckOutAssistanceProductModel()    
+    //Product details
+    productDetails.name = this.product_desc.name;
+    productDetails.quantity = this.product_desc.quantity;
+    productDetails.size = this.product_desc.size;
+    productDetails.color = this.product_desc.color;
+    productDetails.url = this.product_desc.url;
+    productDetails.delivery = this.product_desc.delivery
+    productDetails.itemNumber = this.product_desc.itemNumber
+    productDetails.comment = this.product_desc.comment;
+    productDetails.style = this.product_desc.style;
+    this.checkOutAsst.products.push(productDetails);
+   
+    this.product_desc = new CheckOutAssistanceProductModel().clone(); 
+    
+  }
+
+async finalsubmit(){
+  const loading = await this.loadingCtrl.create({
+    cssClass: 'my-custom-class',
+    message: 'Please wait...',
+    duration: 2000
+  });
+  await loading.present();
+  let RequestDetails = new CheckOutAssistanceModel();
+  let productDetails = new CheckOutAssistanceProductModel()    
   //Product details
   productDetails.name = this.product_desc.name;
   productDetails.quantity = this.product_desc.quantity;
@@ -155,57 +245,61 @@ onSubmit(){
   productDetails.itemNumber = this.product_desc.itemNumber
   productDetails.comment = this.product_desc.comment;
   productDetails.style = this.product_desc.style;
-
-  //Delivery Details
-  let RequestDetails = new CheckOutAssistanceModel();
-  this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
-    this.authuserdetails = data;
-    
-    if(this.checkedIdx = true)
-    {
-      this.request_desc.checkoutProcessing = 'home';
-      this.request_desc.pickupCenter = null;
-    } else {
-      this.request_desc.checkoutProcessing = 'pickup';
-      this.request_desc.customerAddress = null;
-      this.request_desc.shipToState = null; 
-      this.request_desc.deliveryLocationId = 0;
-    }
-    RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;
-    RequestDetails.customerAddress = this.authuserdetails.data.customer.homeAddress;
-    RequestDetails.customerName = this.authuserdetails.data.customer.fullName;
-    RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
+  this.checkOutAsst.products.push(productDetails);
+ 
+  this.AuthService.globalUser.subscribe((authuserdetails:any)=>{
     RequestDetails.shipToState = this.request_desc.shipToState;
     RequestDetails.pickupCenter = this.request_desc.pickupCenter;
-    RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
-    this.checkOutAsst.request;
-    this.checkOutAsst.products.push(productDetails);
+    RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;    
+    
+    RequestDetails.customerAddress = authuserdetails.customer.homeAddress;
+    RequestDetails.customerName = authuserdetails.customer.fullName;
+    RequestDetails.customerPhone = authuserdetails.user.phoneNumber;
+    RequestDetails.deliveryLocationId = authuserdetails.customer.closestBustopId;   
     this.checkOutAsst.request = RequestDetails;
-    console.log(this.checkOutAsst);
-    this.product_desc = new CheckOutAssistanceProductModel().clone();
-    this.request_desc = new CheckOutAssistanceModel().clone();
-    
   })
-
-  
+  this.checkout.create(this.checkOutAsst).subscribe(async data => {      
+    if(data.code == "000"){
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: data.message,
+        color: "success"
+      });
+      toast.present();  
+      this.product_desc = new CheckOutAssistanceProductModel().clone();
+      this.request_desc = new CheckOutAssistanceModel().clone();
+      this.checkOutAsst = new CheckOutAssistanceDTO().clone();
+      this.checkOutAsst.products = [];
+      loading.dismiss();
+      this.router.navigate(['/checkoutlist'])
+    } else{
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: data.message,
+        color: "danger"
+      });
+      toast.present();
+      loading.dismiss();
+    }
+   
+  },async error=>{
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: "Oops! something went wrong",
+      color: "danger"
+    });
+    toast.present();
+    loading.dismiss();
+  })
 }
-
-submitOrders()
-  {
-    this.onSubmit();
-    this.checkout.create(this.checkOutAsst).subscribe(data => {})
-    
-  }
-
-
-saveOrder() {
-  this.gotoSummary();
+// saveOrder() {
+//   this.gotoSummary();
   
-}
+// }
 
 
 gotoSummary(){
-  this.onSubmit()
+  //this.onSubmit()
     //this.store.saveBookings(this.checkOutAsst)
     //this.router.navigate(['localdelivery/review-booking'])
 

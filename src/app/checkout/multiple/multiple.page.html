@@ -75,7 +75,16 @@
                
               <div style="padding: 5px;"></div>
               <ion-textarea type="text" (keyup)="validateDeliveryDetailsForm()" #product_comment="ngModel" name="product_comment" placeholder="Comment" [(ngModel)]="product_desc.comment" required></ion-textarea>          
-          </ion-grid>
+       <div style="padding: 5px;"></div>
+              <span *ngIf="!isMultiple">
+          <ion-button [disabled]= "deliveryDetailsPanel" class="pryColor"  (click)="addNewProduct()" expand="block"  fill="clear">
+            <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
+            <p class="localheader" style="color: #ffff;">Add Another Product</p>
+          </ion-button>
+        </span>
+           
+
+            </ion-grid>
         </div>
 
         <ion-col>
@@ -145,22 +154,12 @@
             </ion-grid>
             
         </div>
-      <ion-row *ngIf="!isMultiple">
-        <ion-col>
-          <ion-button [(disabled)]= "addNewPanel"  (click)="addNewProduct()" expand="block" class="localdelivery" fill="clear">
-            <ion-img src="assets/images/multiple_order.png" class="myicons" slot="start"></ion-img>
-            <p class="localheader">Add Another Product</p>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-
-
 
       <div style="display:flex; padding: 10px;">
         <ion-button class="cta1" expand="block" fill="outline">
           <ion-label>Cancel</ion-label>
         </ion-button>
-        <ion-button class="cta" expand="block" (click)="submitOrders()" [disabled]="!myForm.valid" fill="default">
+        <ion-button class="cta" expand="block" (click)="finalsubmit()" [disabled]="!myForm.valid" fill="default">
           <ion-label>Apply</ion-label>
         </ion-button>
         </div>
