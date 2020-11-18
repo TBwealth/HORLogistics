@@ -10,7 +10,9 @@ import { LoadingController, NavController} from '@ionic/angular';
 })
 export class CheckoutsummaryPage implements OnInit {
 checkoutassist: any = "";
-loading: any=''
+loading: any='';
+productSize=0;
+currentPage = 1;
   constructor(private navCtrl: NavController,
     private activatedroute: ActivatedRoute,
     private router: Router,
