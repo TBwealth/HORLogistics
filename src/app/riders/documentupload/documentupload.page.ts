@@ -175,6 +175,7 @@ async senduploadriderdoc(docData){
   await this.loading.present();
   this.riderservice.riderDocuments(docData).subscribe(async(data:any)=>{
   if(data.code == "000"){
+    this.AuthenService.addUser(this.usersdata); 
     console.log('success', data)
     const toast = await this.toastCtrl.create({
       duration: 3000,
@@ -182,7 +183,11 @@ async senduploadriderdoc(docData){
       color: "success"
     });
     toast.present();
-    this.loading.dismiss();
+    setTimeout(() => {
+      this.loading.dismiss();
+      this.getlatestusers();
+    }, 2000);
+    
   }else{
     console.log('failed', data)
     this.loading.dismiss();
