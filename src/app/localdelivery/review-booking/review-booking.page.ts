@@ -27,7 +27,6 @@ class LocalBookingCost{
   }
   getExtraWeightCost(){
     const cost = (this.booking.estimatedPackageWeight - 2) * this.bookingRate.chargeOnExtra
-    console.log(this.booking.estimatedPackageWeight, this.bookingRate.chargeOnExtra, cost)
     return cost > 0 ? cost : 0
   }
   getDeliveryCost(){
@@ -77,7 +76,6 @@ export class ReviewBookingPage implements OnInit {
   async ngOnInit() {
     this.customerType = this.authService.globalUserType.value
     this.bookings = await this.store.getBookings()
-    console.log(this.bookings)
     // this.booking = this.bookings[0]
     // this.maproute.addressEnd = this.booking.deliveryAddress;
     // this.maproute.addressStart = this.booking.pickUpAddress;

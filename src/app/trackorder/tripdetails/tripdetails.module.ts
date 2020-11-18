@@ -9,6 +9,7 @@ import { TripdetailsPageRoutingModule } from './tripdetails-routing.module';
 import { TripdetailsPage } from './tripdetails.page';
 
 import {MaproutecomponentComponent} from '../maproutecomponent/maproutecomponent.component';
+import { ListKeyValueComponent } from 'src/app/components/list-key-value/list-key-value.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import {MaproutecomponentComponent} from '../maproutecomponent/maproutecomponent
     IonicModule,
     TripdetailsPageRoutingModule
   ],
-  declarations: [TripdetailsPage,MaproutecomponentComponent]
+  declarations: [TripdetailsPage,MaproutecomponentComponent, ListKeyValueComponent]
 })
 export class TripdetailsPageModule {}

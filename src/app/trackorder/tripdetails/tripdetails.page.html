@@ -47,4 +47,25 @@
 <h3 style="color: #444F63;font-weight: bolder;"><span *ngIf="orderDetails.totalCost">	&#x20A6;</span>{{orderDetails.totalCost}}</h3>
 <h6 style="color: #7F7F7F;">Payment made sucessfully by Card</h6>
 </div>
+<div class="order-summary">
+  <div  class='section-header' style="display: flex; justify-content: space-between">
+    ORDER SUMMARY
+    </div>
+    <app-list-key-value>
+      <span title>Sender’s Name</span>
+      <span value>{{orderDetails.senderName}}</span>
+    </app-list-key-value>
+    <app-list-key-value>
+      <span title>Receiver’s Name</span>
+      <span value>{{orderDetails.recipientName}}</span>
+    </app-list-key-value>
+    <app-list-key-value>
+      <span title>Sender’s Number</span>
+      <span value>{{orderDetails.phoneNumber}}</span>
+    </app-list-key-value>
+    <app-list-key-value>
+      <span title>Receiver’s Number</span>
+      <span value>{{orderDetails.recipientPhoneNumber}}</span>
+    </app-list-key-value>
+</div>
 </ion-content>
