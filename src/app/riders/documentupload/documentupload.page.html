@@ -8,34 +8,56 @@
   <div style="padding: 10px;">
     <ion-row>
       <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
-        <ion-button (click)="uploadFile('machinePictureUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
-        <p style="font-size: 16px;color:#444F63;">Bike/Vehicle Picture</p>
+       
+        <p style="font-size: 16px;color:#444F63;">Bike/Vehicle Picture
+          <ion-icon *ngIf="dispatcherCertificate.machinePictureUrl" name="checkmark-circle-outline" style="color: #049B1B;"></ion-icon>
+          <a href="javascript:void(0)" (click)="uploadFile('machinePictureUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 12px; float:right;font-weight: bolder;" > 
+           <span *ngIf="!dispatcherCertificate.machinePictureUrl">UPLOAD</span> 
+           <span *ngIf="dispatcherCertificate.machinePictureUrl">UPDATE</span> 
+          </a>
+        </p>
         <p>Upload a full picture of your ride</p>      
 
       </ion-col>
     </ion-row>
 
     <ion-row>
-      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
-        <ion-button (click)="uploadFile('riderLincesUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
-        <p style="font-size: 16px;color:#444F63;">Driver's License</p>
+      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">          
+        <p style="font-size: 16px;color:#444F63;">Driver's License
+          <ion-icon *ngIf="dispatcherCertificate.riderLincesUrl" name="checkmark-circle-outline" style="color: #049B1B;"></ion-icon>
+          <a href="javascript:void(0)" (click)="uploadFile('riderLincesUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 12px; float:right;font-weight: bolder;" >
+            <span *ngIf="!dispatcherCertificate.riderLincesUrl">UPLOAD</span> 
+            <span *ngIf="dispatcherCertificate.riderLincesUrl">UPDATE</span> 
+            </a>
+        </p>
         <p>Upload a copy of your driver's license</p>      
-
       </ion-col>
     </ion-row>
 
     <ion-row>
-      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
-        <ion-button (click)="uploadFile('machineRegistrationUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
-        <p style="font-size: 16px;color:#444F63;">Registration Document</p>
+      <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">  
+        
+        <p style="font-size: 16px;color:#444F63;">Registration Document
+          <ion-icon *ngIf="dispatcherCertificate.machineRegistrationUrl" name="checkmark-circle-outline" style="color: #049B1B;"></ion-icon>
+          <a href="javascript:void(0)" (click)="uploadFile('machineRegistrationUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 12px; float:right;font-weight: bolder;" >
+            <span *ngIf="!dispatcherCertificate.machineRegistrationUrl">UPLOAD</span> 
+            <span *ngIf="dispatcherCertificate.machineRegistrationUrl">UPDATE</span> 
+            </a>
+        </p>
         <p>Upload Bike/Vehicle registration document </p>      
 
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size="12" style="border-bottom: 1px solid #e7e5e5;">   
-        <ion-button (click)="uploadFile('insuranceUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 16px; float:right;font-weight: bolder;" > UPLOAD</ion-button>
-        <p style="font-size: 16px;color:#444F63;">Insurance Certificate</p>
+       
+        <p style="font-size: 16px;color:#444F63;">Insurance Certificate
+          <ion-icon *ngIf="dispatcherCertificate.riderInsurance" name="checkmark-circle-outline" style="color: #049B1B;"></ion-icon>
+          <a href="javascript:void(0)" (click)="uploadFile('insuranceUrl')" fill="clear" size="small"  style="color: #EF6102;font-size: 12px; float:right;font-weight: bolder;" > 
+            <span *ngIf="!dispatcherCertificate.riderInsurance">UPLOAD</span> 
+            <span *ngIf="dispatcherCertificate.riderInsurance">UPDATE</span>   
+          </a>
+        </p>
         <p>Upload Insurance Certificate</p>      
 
       </ion-col>

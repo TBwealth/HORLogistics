@@ -14,7 +14,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-button expand="block" class="localdelivery" [routerLink]="['/localdelivery/single']" fill="clear" #singleorder>
+        <ion-button expand="block" class="localdelivery" [routerLink]="['/localdelivery']" [queryParams]="{single: true}" fill="clear" #singleorder>
           <ion-img src="assets/images/pickup.png" class="myicons" slot="start"></ion-img>
           <p class="localheader">Single Order</p>
         </ion-button>
@@ -22,7 +22,7 @@
     </ion-row>
   <ion-row>
       <ion-col>
-      <ion-button expand="block" class="localdelivery" [routerLink]="['/localdelivery']" fill="clear" #multiplebooking>
+      <ion-button expand="block" class="localdelivery" [routerLink]="['/localdelivery']" [queryParams]="{single: false}" fill="clear" #multiplebooking>
         <ion-img src="assets/images/delivery.png" class="myicons"></ion-img>
         <p class="localheader">Multiple Booking</p>
       </ion-button>

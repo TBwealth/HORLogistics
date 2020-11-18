@@ -7,6 +7,10 @@
       INTERNATIONAL PICKUP
     </div>
     <app-list-key-value>
+      <span title>Country</span>
+      <span value>{{booking.country}}</span>
+    </app-list-key-value>
+    <app-list-key-value>
       <span title>Receiver’s Name</span>
       <span value>{{booking.recipientName}}</span>
     </app-list-key-value>
@@ -34,11 +38,11 @@
       </div>
       <app-list-key-value>
         <span title>Admin Fee</span>
-        <span value>N{{country.adminFee}}</span>
+        <span value>{{country.adminFee | currency: 'NGN'}}</span>
       </app-list-key-value>
       <app-list-key-value>
         <span title>Charge per unit weight ({{country.weightName}})</span>
-        <span value>N{{country.importRatePerUnitWeight * country.exchangeRate}}</span>
+        <span value>{{country.importRatePerUnitWeight * country.exchangeRate | currency: 'NGN'}}</span>
       </app-list-key-value>
       <app-list-key-value>
         <span title>Estimated Package Weight</span>
@@ -50,7 +54,7 @@
       </app-list-key-value> -->
       <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
         <span title>Your payment</span>
-        <span value>N{{totalPayment}}</span>
+        <span value>{{totalPayment | currency: 'NGN'}}</span>
       </app-list-key-value>
       <p>
         Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight.
@@ -61,7 +65,7 @@
           <ion-label>Cancel</ion-label>
         </ion-button>
         <ion-button color="primary" (click)="submit()">
-          <ion-label>Pay</ion-label>
+          <ion-label>Submit</ion-label>
         </ion-button>
       </div>
     </ng-template>

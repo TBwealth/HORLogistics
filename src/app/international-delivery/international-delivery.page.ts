@@ -24,6 +24,7 @@ enum BOOKING_KINDS {
   styleUrls: ['./international-delivery.page.scss'],
 })
 export class InternationalDeliveryPage implements OnInit {
+  minPickUpDate = new Date(Number(new Date()) + 24 * 60 * 60 * 1000).toISOString().split('T')[0]
   countries: InternationalRoute[] = [];
   country: InternationalRoute = {};
   homePickup = false

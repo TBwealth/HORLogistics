@@ -105,20 +105,29 @@ this.router.navigate(['terms'])
     this.router.navigate(['preferedaction'])
   }
 
-  socialLogin(userDetails: socialUser){
+ async socialLogin(userDetails: socialUser){
+    this.loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
+    });
+    await this.loading.present();
     this.socLogin.email = userDetails.email;
     this.socLogin.fullName = userDetails.displayName;
     this.soclLogin.socialSignup(this.socLogin).subscribe(async (data:ObjectResourceOfRegisterUserResource)=>{
-      if(data.code == '000'){
+      if(data.code == '007'){
         this.RegisterUserResource = data.data;
         this.AuthenService.addUser(this.RegisterUserResource);
         const toast = await this.toastCtrl.create({
           duration: 3000,
-          message: data.message,
+          message: "Success",
           color: "success"
         });
         toast.present();
+        setTimeout(() => {
+          this.loading.dismiss();
         this.router.navigate(['home'])
+        }, 3000);
       }else{
         const toast = await this.toastCtrl.create({
           duration: 3000,
@@ -126,7 +135,16 @@ this.router.navigate(['terms'])
           color: "danger"
         });
         toast.present();
+        this.loading.dismiss();
       }
+            },async error =>{
+              const toast = await this.toastCtrl.create({
+                duration: 3000,
+                message: 'Oops! something went wrong',
+                color: "danger"
+              });
+              toast.present();
+              this.loading.dismiss();
             });
   }
 
@@ -148,6 +166,14 @@ this.router.navigate(['terms'])
         console.log(response.user);
         this.user = response.user;
       this.socialLogin(this.user);
+      },async error=>{
+        console.log('credential error', error)
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: 'error in facebook login',
+          color: "danger"
+        });
+        toast.present();
       });
 
   }
@@ -197,7 +223,7 @@ this.router.navigate(['terms'])
         this.user = success.user;
         this.socialLogin(this.user);
         console.log(this.user);
-        this.loading.dismiss();
+   
       });
 
   }

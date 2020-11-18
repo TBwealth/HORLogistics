@@ -27,7 +27,7 @@
     </ion-select>
   </ion-item>
 
-  <ion-datetime *ngIf="booking.kindOfBooking == BOOKING_KINDS.DROP_OFF" (ionChange)="validateDeliveryForm()" #delivery_date="ngModel" name="delivery_date" [(ngModel)]="booking.eta" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
+  <ion-datetime *ngIf="booking.kindOfBooking == BOOKING_KINDS.DROP_OFF" (ionChange)="validateDeliveryForm()" [min]="minPickUpDate" #delivery_date="ngModel" name="delivery_date" [(ngModel)]="booking.eta" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
  
    <ion-row>
     <ion-col>
@@ -52,6 +52,9 @@
       <ion-input type="text" [placeholder]="'Estimated Package Weight (' + country.weightSymbol  +')'" (ionChange)="validateDescriptionForm()" (keyup)="validateDescriptionForm()" name="estimated_weight" #estimated_weight="ngModel" [(ngModel)]="booking.estimatedPackageWeight" required></ion-input>
       <div style="padding: 5px;"></div>
       <ion-input *ngIf="booking.kindOfBooking==BOOKING_KINDS.DROP_OFF"  placeholder="Value of Package in Naira" name="package_value" (keyup)="validateDescriptionForm()" (ionChange)="validateDescriptionForm()" #package_value="ngModel" [(ngModel)]="booking.packageValue" required></ion-input>
+      <div *ngIf="booking.kindOfBooking==BOOKING_KINDS.DROP_OFF" style="padding-top: 10px;">
+        {{booking.packageValue | currency: 'NGN'}}
+      </div>
       <div style="padding: 5px;"></div>
       <ion-textarea type="text" placeholder="Description" name="description" (ionChange)="validateDescriptionForm()" #description="ngModel" [(ngModel)]="booking.packageDescription"></ion-textarea>
     </form>
@@ -150,7 +153,7 @@
       <app-checkbox [(value)]="booking.hasHoldInstruction"></app-checkbox>
       <ng-template [ngIf]="booking.hasHoldInstruction">
         <div style="padding: 5px;"></div>
-        <ion-datetime (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="booking.holdInstruction.shippingDate" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
+        <ion-datetime [min]="minPickUpDate" (ionChange)="validateHoldForm()" (keyup)="validateHoldForm()" #hold_date="ngModel" name="hold_date" id="delivery_date" [(ngModel)]="booking.holdInstruction.shippingDate" displayFormat="DD/MM/YYYY" placeholder="Shipping Date" required></ion-datetime>
         <div *ngIf="hold_date.invalid && (hold_date.dirty || hold_date.touched)" class="error">
           <div *ngIf="hold_date.errors.required">
             Delivery Date is required

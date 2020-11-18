@@ -1,5 +1,8 @@
 
 <app-page-structure title="Orders">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullFactor="0.5" pullMin="100" pullMax="200">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
     <ion-segment [(ngModel)]="selectedSegment" #ionsgmnt (ionChange)="segmentChanged(ionsgmnt.value)" >
     <ion-segment-button [value]="SEGMENTS.PENDING">
       <ion-label style="color: #EF6102;">PENDING</ion-label>
@@ -77,25 +80,24 @@
         </ion-row>
         <ion-row *ngIf="![4,5].includes(booking.bookingStatusId)">
           <ion-col >
-           
+           <span *ngIf="booking.bookingStatusId == 7">
             <a 
-    *ngIf="booking.paymentTypeId == 3 || booking.paymentTypeId == 4"
-    angular4-paystack
-    [email]="AuthenService.globalUserEmail"
-    [amount]="(booking.totalCost) * 100"
-    [ref]="reference"
-    [class]="'btn btn-primary'"
-    (paymentInit)="paymentInit()"
-    (close)="paymentCancel()"
-    (callback)="paymentDone($event)"
-    [channels]="booking.paymentTypeId == 3 ? ['bank'] : ['card']"
-  
-    href="javascript:void(0)"
-    style="color: #EF6102;font-size: 12px;"
-  >
-    Make Payment
-          </a>
+            *ngIf="booking.paymentTypeId == 3 || booking.paymentTypeId == 4"
+            angular4-paystack
+            [email]="AuthenService.globalUserEmail"
+            [amount]="(booking.totalCost) * 100"
+            [ref]="reference"
+            [class]="'btn btn-primary'"
+            (paymentInit)="paymentInit()"
+            (close)="paymentCancel()"
+            (callback)="paymentDone($event)"
+            [channels]="booking.paymentTypeId == 3 ? ['bank'] : ['card']"
           
+            href="javascript:void(0)"
+            style="color: #EF6102;font-size: 12px;"
+          >
+            Make Payment
+                  </a>
           <a 
           *ngIf="booking.paymentTypeId == 1 || booking.paymentTypeId == 2"
               (click)="openBankInfo()"
@@ -111,11 +113,17 @@
             >
              Wallet Payment
                     </a>
-
+                  </span>
+                  <span *ngIf="![11,7,1,12,8].includes(booking.bookingStatusId)" style="color: #049B1B;font-size: 12px;">
+                  Paid
+                  </span>
+                  <span *ngIf="[11,7,1,12,8].includes(booking.bookingStatusId) " style="color: #b9b7b5;font-size: 12px;">
+                   Payment
+                    </span>
           </ion-col>
           <ion-col >
-         
-            <a href="javascript:void(0)" style="color: #EF6102;font-size: 12px;text-align: center;"  (click)="gototripdetails(booking.bookingNumber)">Track</a>
+            <span *ngIf="![3,4].includes(booking.bookingStatusId)" style="color: #b9b7b5;font-size: 12px;">Track</span>
+            <a *ngIf="[3,4].includes(booking.bookingStatusId)" href="javascript:void(0)" style="color: #EF6102;font-size: 12px;text-align: center;"  (click)="gototripdetails(booking.bookingNumber)">Track</a>
           </ion-col>
           <ion-col size="2">
             <a href="javascript:void(0)" (click)="selectLocalBooking(booking)" style="color: #EF6102;font-size: 14px;float: right;">
