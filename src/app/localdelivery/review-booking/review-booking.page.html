@@ -4,8 +4,8 @@
     <app-list-item shape="square"> {{booking.deliveryAddress}}</app-list-item>
     <app-maproutecomponent></app-maproutecomponent>
     <!-- <div *ngFor="let booking of bookings"> -->
-    <div  class='section-header' style="display: flex; justify-content: space-between;" style="padding-left: 0px; padding-right: 0px;">
-      <span *ngIf="bookings.length == 1">LOCAL PICKUP</span>
+    <div  class='section-header' style="display: flex; justify-content: space-between">
+      <span *ngIf="bookings.length == 1" style="padding-left: 0px;">LOCAL PICKUP</span>
       <span *ngIf="bookings.length > 1" style="padding-left: 0px;">ORDER {{selectedBookingIndex + 1}} OF {{bookings.length}}</span>
       <div *ngIf="bookings.length > 1" (click)="showNextBooking()" style="padding-right: 0px; color: #EF6102">
         NEXT ORDER <ion-icon name="arrow-forward-outline"></ion-icon>
@@ -61,15 +61,19 @@
         <span title>Your payment</span>
         <span value>{{bookingCost.getTotalCost() | currency: 'NGN'}}</span>
       </app-list-key-value>
-      <div style="display:flex; justify-content: center;">
+    </div>
+    <ion-row>
+      <ion-col size="6">
         <ion-button class="cta1" expand="block" fill="outline">
           <ion-label>Cancel</ion-label>
         </ion-button>
-        <ion-button color="primary" (click)="SubmitBookings()">
+      </ion-col>
+      <ion-col size="6">
+        <ion-button color="primary" expand="block" (click)="SubmitBookings()">
           <ion-label>Submit</ion-label>
         </ion-button>
-      </div>
-    </div>
+      </ion-col>
+    </ion-row>
   </div>
   <!-- </div> -->
 </app-page-structure>
