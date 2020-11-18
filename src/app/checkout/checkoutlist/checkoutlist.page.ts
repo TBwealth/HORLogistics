@@ -12,7 +12,9 @@ import { Router } from '@angular/router';
 export class CheckoutlistPage implements OnInit {
   @ViewChild(IonInfiniteScroll,{static:false,read:ElementRef}) infiniteScroll: IonInfiniteScroll;
   checkoutOrders: CheckoutAssistance[] = [];
-  loading: any=''
+  loading: any='';
+  negativesearch: boolean = false;
+  totaldata = [];
   constructor(private navCtrl: NavController,
     private checkout: CheckoutassistanceServiceProxy,
     private router: Router,
@@ -52,6 +54,7 @@ async getOrders(){
       });
       toast.present();
       this.checkoutOrders = data.data.items;
+      this.totaldata =  data.data.items;
     }else{
       const toast = await this.toastCtrl.create({
         duration: 3000,
@@ -74,8 +77,22 @@ async getOrders(){
     this.loading.dismiss()
   })
 }
-filtersearch($event){
-  
+filtersearch(val){
+  this.checkoutOrders = this.totaldata;
+  const searchTerm = val;
+  if (!searchTerm || searchTerm == "" || searchTerm == null) {    
+    this.negativesearch = false;
+    return false;
+  }
+
+  this.checkoutOrders = this.checkoutOrders.filter(currentOrder =>{
+    if(currentOrder && searchTerm){
+      if(currentOrder.bookingNumber.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1){
+        this.negativesearch = false;
+        return true;
+      } 
+    }
+  })
 }
 loadData(event){
 setTimeout(() => {
