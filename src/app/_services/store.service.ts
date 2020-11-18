@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking } from '../_models/service-models';
+import { AuthService } from './auth.service';
 
 interface APIListResult<T>{
   data: {
@@ -89,6 +90,7 @@ export class StoreService {
   constructor(
     private http: HttpClient,
     public storage: Storage,
+    private authService: AuthService
   ) { }
   saveInternationalBooking(booking: InternationalBooking){
     this.internationalBooking = booking
@@ -124,7 +126,9 @@ export class StoreService {
         subject.next(bookings)
         subject.complete()
       } else {
-        if(response.code == '004'){}
+        if(response.code == '004'){
+          this.authService.logout()
+        }
         else{
           subject.error(response.message)
         }
@@ -141,7 +145,7 @@ export class StoreService {
         subject.complete()
       } else {
         if(response.code == '004'){
-          
+          this.authService.logout()
         }
         else{
           subject.error(response.message)
@@ -157,7 +161,9 @@ export class StoreService {
         subject.next(response.data)
         subject.complete()
       } else {
-        if(response.code == '004'){}
+        if(response.code == '004'){
+          this.authService.logout()
+        }
         else{
           subject.error(response.message)
         }
@@ -173,7 +179,12 @@ export class StoreService {
         subject.next(checkouts)
         subject.complete()
       } else {
-        subject.error(response.message)
+        if(response.code == '004'){
+          this.authService.logout()
+        }
+        else{
+          subject.error(response.message)
+        }
       }
     })
     return subject
