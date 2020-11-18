@@ -14,7 +14,7 @@
       <ion-label style="color: #E1440B;">REJECTED</ion-label>
     </ion-segment-button> -->
   </ion-segment>
-  <ion-label *ngIf="filteredLocalBookings.length">
+  <ion-label *ngIf="filteredLocalBookings.length == 0">
     <small>no order record found</small>
   </ion-label>
   <div *ngFor="let booking of filteredLocalBookings" >

@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking } from '../_models/service-models';
 import { AuthService } from './auth.service';
+import { ToastController } from '@ionic/angular';
 
 interface APIListResult<T>{
   data: {
@@ -90,8 +91,19 @@ export class StoreService {
   constructor(
     private http: HttpClient,
     public storage: Storage,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastCtrl: ToastController
   ) { }
+  logout(){
+    this.toastCtrl.create({
+      message: 'User authentication failed',
+      color: 'danger',
+      duration: 3000
+    }).then(toast => {
+      toast.present()
+      this.authService.logout()
+    })
+  }
   saveInternationalBooking(booking: InternationalBooking){
     this.internationalBooking = booking
   }
@@ -127,7 +139,7 @@ export class StoreService {
         subject.complete()
       } else {
         if(response.code == '004'){
-          this.authService.logout()
+          this.logout()
         }
         else{
           subject.error(response.message)
@@ -145,7 +157,7 @@ export class StoreService {
         subject.complete()
       } else {
         if(response.code == '004'){
-          this.authService.logout()
+          this.logout()
         }
         else{
           subject.error(response.message)
@@ -162,7 +174,7 @@ export class StoreService {
         subject.complete()
       } else {
         if(response.code == '004'){
-          this.authService.logout()
+          this.logout()
         }
         else{
           subject.error(response.message)
@@ -180,7 +192,7 @@ export class StoreService {
         subject.complete()
       } else {
         if(response.code == '004'){
-          this.authService.logout()
+          this.logout()
         }
         else{
           subject.error(response.message)
