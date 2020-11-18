@@ -177,7 +177,7 @@
           <ion-textarea [(ngModel)]="package_details.package_description" placeholder="Package description"></ion-textarea>
           <!-- <app-text-input [(value)]="package_details.package_description" [validators]="[]" type='text' [extraErrors]="[]" label='' name="package_description" placeholder='Package description'></app-text-input> -->
           <div style="padding: 5px;"></div>
-          <app-text-input *ngIf="selectedBookingCategory.estimatedPackageWeight" [(value)]="package_details.package_value" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
+          <app-text-input *ngIf="selectedBookingCategory.estimatedPackageWeight" [(value)]="package_details.package_weight" [validators]="[]" type='number' [extraErrors]="[]" label='' name="package_weight" placeholder='Estimated package weight'></app-text-input>
           <p>Is package greater than indomie carton size ?</p>
           <ion-grid>
             <app-checkbox [(value)]="showSize"></app-checkbox>

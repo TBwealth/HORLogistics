@@ -98,7 +98,10 @@ export class StoreService {
   }
   saveBookings(bookings){
     this.bookings = bookings
-    
+    this.bookings.forEach(member => {
+      member.deliveryDate = member.deliveryDate ? new Date(member.deliveryDate) : undefined
+      member.createdAt = member.createdAt ? new Date(member.createdAt) : undefined
+    })
     return this.storage.set('bookings', JSON.stringify(bookings))
   }
   async getBookings(){
@@ -107,7 +110,8 @@ export class StoreService {
     const bookingList = []
     bookings.forEach(booking => {
       const tempBooking = new LocalBooking(booking)
-      tempBooking.deliveryDate = new Date(tempBooking.deliveryDate)
+      tempBooking.deliveryDate = tempBooking.deliveryDate ? new Date(tempBooking.deliveryDate) : undefined
+      tempBooking.createdAt = tempBooking.createdAt ? new Date(tempBooking.createdAt) : undefined
       bookingList.push(tempBooking)
     })
     return bookingList

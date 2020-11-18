@@ -27,6 +27,7 @@ class LocalBookingCost{
   }
   getExtraWeightCost(){
     const cost = (this.booking.estimatedPackageWeight - 2) * this.bookingRate.chargeOnExtra
+    console.log(this.booking.estimatedPackageWeight, this.bookingRate.chargeOnExtra, cost)
     return cost > 0 ? cost : 0
   }
   getDeliveryCost(){

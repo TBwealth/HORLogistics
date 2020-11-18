@@ -139,7 +139,6 @@ export class LocaldeliveryPage implements OnInit {
     })
     this.bookingService.localbookingcategory().subscribe(data => {
       this.bookingCategories = data.data
-      console.log(this.bookingCategories)
     })
     this.getcountry();
     this.getCountryFlag("NG",'')
@@ -173,7 +172,6 @@ this.packageDeliveryPanel = true;
 }
 
 validateDeliveryForm(){
-  console.log(this.local_delivery);
   if(this.local_delivery.delivery_address &&
     !this.deliveryphoneError && 
     this.local_delivery.delivery_busstop &&
@@ -208,7 +206,6 @@ this.packageDeliveryPanel = true;
      }
      getcountry() {
    this.ICountrys = this.Cservice.setItems(); 
-   // console.log(this.ICountrys);
    this.alpha2Code = "NG";
    this.deliveryAlpha2Code   = "NG";
       }
@@ -345,14 +342,12 @@ if(isValidNumber){
   gotoSummary(){
     this.saveBooking()
     this.store.saveBookings(this.bookings).then(data => {
-      console.log('submitted')
       this.router.navigate(['localdelivery/review-booking'])
     })
   }
 
   getLocations(){
     this.locationService.category(this.pickup_details.booking_category).subscribe(data => {
-      console.log(data)
       this.locations = data
     })
     this.selectedBookingCategory = this.bookingCategories.find(member => {
