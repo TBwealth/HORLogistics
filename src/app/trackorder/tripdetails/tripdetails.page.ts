@@ -61,7 +61,7 @@ export class TripdetailsPage implements OnInit {
       }
       }
   goback(){
-    this.navCtrl.back();
+    this.router.navigate(['home']);
   }
 
 
@@ -76,29 +76,27 @@ export class TripdetailsPage implements OnInit {
       await this.loading.present();
       this.localBookingService.trackorder(data.orderNumber).subscribe(async data=>{
         if(data.code == "000"){
-          this.orderDetails = data.data;
-          if(this.orderDetails.dispatcher){
+          this.orderDetails = data.data;         
+          const trackStatus = [4]
+          if(this.orderDetails.bookingStatusId == 3){
             const plateNo =this.orderDetails.dispatcher.plateNumber
-            const trackStatus = [4]
-            if(this.orderDetails.bookingStatusId == 3){
-              this.trackerAPi.trackOrder(plateNo).then(response => {
-                const trackingDetails: VehicleLocation = response.data[plateNo]
-                trackingDetails.lat = Number(trackingDetails.lat)
-                trackingDetails.lng = Number(trackingDetails.lng)
-                this.trackingDetails = trackingDetails
-                this.coords = {
-                  accuracy: 1,
-                  speed: 1,
-                  altitude: 1,
-                  altitudeAccuracy: 1,
-                  heading: 1,
-                  longitude: this.trackingDetails.lng,
-                  latitude: this.trackingDetails.lat
-                }
-              })
-            }
-          }
-          
+            this.trackerAPi.trackOrder(plateNo).then(response => {
+              const trackingDetails: VehicleLocation = response.data[plateNo]
+              trackingDetails.lat = Number(trackingDetails.lat)
+              trackingDetails.lng = Number(trackingDetails.lng)
+              this.trackingDetails = trackingDetails
+              this.coords = {
+                accuracy: 1,
+                speed: 1,
+                altitude: 1,
+                altitudeAccuracy: 1,
+                heading: 1,
+                longitude: this.trackingDetails.lng,
+                latitude: this.trackingDetails.lat
+              }
+            })
+          }     
+
           this.localBookingService.localbookingstatus().subscribe(data=>{
             this.bookingStatus = data.data;
             const bookingStatusObj: any = this.bookingStatus.find(status => status.id == this.orderDetails.bookingStatusId)
@@ -115,6 +113,7 @@ export class TripdetailsPage implements OnInit {
           });
           toast.present();
         }else{
+          this.loading.dismiss();
           const toast = await this.toastCtrl.create({
             duration: 3000,
             message: data.message,
@@ -124,9 +123,19 @@ export class TripdetailsPage implements OnInit {
           if(data.code == "004"){
             this.router.navigate(['login']);
           }
+          this.router.navigate(['trackorder']);
         }
         
     
+      },async error =>{
+        this.loading.dismiss();
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: 'Oops! something went wrong',
+          color: "danger"
+        });
+        toast.present();
+        this.router.navigate(['trackorder']);
       })
     }
     });
