@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Storage } from '@ionic/storage';
 import { CheckoutAssistance, ICheckoutAssistance, IInternationalBooking, ILocalBooking, InternationalBooking, LocalBooking } from '../_models/service-models';
+import { AuthService } from './auth.service';
+import { ToastController } from '@ionic/angular';
 
 interface APIListResult<T>{
   data: {
@@ -89,7 +91,19 @@ export class StoreService {
   constructor(
     private http: HttpClient,
     public storage: Storage,
+    private authService: AuthService,
+    private toastCtrl: ToastController
   ) { }
+  logout(){
+    this.toastCtrl.create({
+      message: 'User authentication failed',
+      color: 'danger',
+      duration: 3000
+    }).then(toast => {
+      toast.present()
+      this.authService.logout()
+    })
+  }
   saveInternationalBooking(booking: InternationalBooking){
     this.internationalBooking = booking
   }
@@ -119,21 +133,35 @@ export class StoreService {
   getAllLocalOrders(status: number=null){
     const subject = new Subject<LocalBooking[]>()
     this.http.get<APIListResult<ILocalBooking>>('http://104.40.215.33:8008/api/LocalBooking/getlocalbooking?Page=').subscribe(response => {
-      const bookings = response.data.localBookings.map(iBooking => new LocalBooking(iBooking))
-      subject.next(bookings)
-      subject.complete()
+      if(response.code == '000'){
+        const bookings = response.data.localBookings.map(iBooking => new LocalBooking(iBooking))
+        subject.next(bookings)
+        subject.complete()
+      } else {
+        if(response.code == '004'){
+          this.logout()
+        }
+        else{
+          subject.error(response.message)
+        }
+      }
     })
     return subject
   }
   getAllInternationalBookings(booking_id: number=null){
     const subject = new Subject<InternationalBooking[]>()
     this.http.get<APIListResult<IInternationalBooking>>(`http://104.40.215.33:8008/api/internationalbooking/getintlbookings?Page=&Booking_Status=`).subscribe(response => {
-      if(response.code = '000'){
+      if(response.code == '000'){
         const bookings = response.data.internationalBookings.map(iBooking => new InternationalBooking(iBooking))
         subject.next(bookings)
         subject.complete()
       } else {
-        subject.error(response.message)
+        if(response.code == '004'){
+          this.logout()
+        }
+        else{
+          subject.error(response.message)
+        }
       }
     })
     return subject
@@ -141,11 +169,16 @@ export class StoreService {
   getInternationalRoutes(){
     const subject = new Subject<InternationalRoute[]>()
     this.http.get<APIRouteResult<InternationalRoute>>('http://104.40.215.33:8008/api/internationalbooking/internationlbookingRoute').subscribe(response => {
-      if(response.code = '000'){
+      if(response.code == '000'){
         subject.next(response.data)
         subject.complete()
       } else {
-        subject.error(response.message)
+        if(response.code == '004'){
+          this.logout()
+        }
+        else{
+          subject.error(response.message)
+        }
       }
     })
     return subject
@@ -153,12 +186,17 @@ export class StoreService {
   getCheckoutAssistances(booking_id: number=null){
     const subject = new Subject<CheckoutAssistance[]>()
     this.http.get<APIListResult<ICheckoutAssistance>>('http://104.40.215.33:8008/api/checkoutassistance/Getcheckassistance?Page=').subscribe(response => {
-      if(response.code = '000'){
+      if(response.code == '000'){
         const checkouts = response.data.items.map(iCheckout => new CheckoutAssistance(iCheckout))
         subject.next(checkouts)
         subject.complete()
       } else {
-        subject.error(response.message)
+        if(response.code == '004'){
+          this.logout()
+        }
+        else{
+          subject.error(response.message)
+        }
       }
     })
     return subject

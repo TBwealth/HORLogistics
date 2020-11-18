@@ -94,29 +94,36 @@ async openBankInfo(){
     loading.present()
     let localBookingStatus: LocalBookingStatusResource[];
     let internationalBookingStatus: IntlBookingStatus[]
-    const promise = await Promise.all([
-      this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), 
-      this.store.getCheckoutAssistances().toPromise(),
-      this.localBookingService.localbookingstatus().toPromise(),
-      this.internationalBookingService.intlbookingstatus().toPromise()])
-     
-    localBookingStatus = promise[3].data
-    internationalBookingStatus = promise[4].data
-    this.localBookings = promise[0]
-    this.localBookings.forEach(member => {
-      const status: any = localBookingStatus.find(status => member.bookingStatusId == status.id)
-      member.bookingStatus = new BookingStatus(status) 
-    })
-    this.internationalBookings = promise[1]
-    this.internationalBookings.forEach(member => {
-      member.bookingStatus = internationalBookingStatus.find(status => member.bookingStatusId == status.id)
-    })
-    this.checkouts = promise[2]
-    loading.dismiss()
-    const LBookings: Booking[] = this.localBookings.map(booking => new Booking().fromLocalBooking(booking))
-    const IBookings: Booking[] = this.internationalBookings.map(booking => new Booking().fromInternationalBooking(booking))
-    this.bookings = [...IBookings, ...LBookings]
-    this.filterInProgress()
+    try{
+      const promise = await Promise.all([this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), this.store.getCheckoutAssistances().toPromise(),
+        this.localBookingService.localbookingstatus().toPromise(),
+        this.internationalBookingService.intlbookingstatus().toPromise()])
+      localBookingStatus = promise[3].data
+      internationalBookingStatus = promise[4].data
+      this.localBookings = promise[0]
+      this.localBookings.forEach(member => {
+        const status: any = localBookingStatus.find(status => member.bookingStatusId == status.id)
+        member.bookingStatus = new BookingStatus(status) 
+      })
+      this.internationalBookings = promise[1]
+      this.internationalBookings.forEach(member => {
+        member.bookingStatus = internationalBookingStatus.find(status => member.bookingStatusId == status.id)
+      })
+      this.checkouts = promise[2]
+      loading.dismiss()
+      const LBookings: Booking[] = this.localBookings.map(booking => new Booking().fromLocalBooking(booking))
+      const IBookings: Booking[] = this.internationalBookings.map(booking => new Booking().fromInternationalBooking(booking))
+      this.bookings = [...IBookings, ...LBookings]
+      this.filterInProgress()
+    } catch(err){
+      const toast = await this.toastCtrl.create({
+        message: 'Opps, an error has occured',
+        color: 'danger',
+        duration: 3000
+      })
+      toast.present()
+      loading.dismiss()
+    }
   }
   doRefresh(event) {
     this.getintials();

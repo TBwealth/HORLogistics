@@ -46,38 +46,40 @@
       <span title>Package bigger than Indomie carton</span>
       <span value>{{booking.numberOfPackages > 1 ? 'Yes' : 'No'}}</span>
     </app-list-key-value>
-    <div class="bg-secondary" *ngIf="!booking.id" style="padding: 0px;">
-      <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
-        <span title>Pickup cost</span>
-        <span value>{{bookingCost.getDeliveryCost() | currency: 'NGN' }}</span>
-      </app-list-key-value>
-      <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
-        <span title>Insurance Cost</span>
-        <span value>{{bookingCost.getInsuranceCost() | currency: 'NGN'}}</span>
-      </app-list-key-value>
-      <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
-        <span title>Payment on extra weight</span>
-        <span value>
-          {{bookingCost.getExtraWeightCost() | currency: 'NGN'}}
-        </span>
-      </app-list-key-value>
-      <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
-        <span title>Your payment</span>
-        <span value>{{bookingCost.getTotalCost() | currency: 'NGN'}}</span>
-      </app-list-key-value>
-    </div>
-    <ion-row>
-      <ion-col size="6">
-        <ion-button class="cta1" expand="block" fill="outline">
-          <ion-label>Cancel</ion-label>
-        </ion-button>
-      </ion-col>
-      <ion-col size="6">
-        <ion-button color="primary" expand="block" (click)="SubmitBookings()">
-          <ion-label>Submit</ion-label>
-        </ion-button>
-      </ion-col>
-    </ion-row>
+    <ng-template [ngIf]="!booking.id">
+      <div class="bg-secondary" style="padding: 0px;">
+        <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
+          <span title>Pickup cost</span>
+          <span value>{{bookingCost.getDeliveryCost() | currency: 'NGN' }}</span>
+        </app-list-key-value>
+        <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
+          <span title>Insurance Cost</span>
+          <span value>{{bookingCost.getInsuranceCost() | currency: 'NGN'}}</span>
+        </app-list-key-value>
+        <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
+          <span title>Payment on extra weight</span>
+          <span value>
+            {{bookingCost.getExtraWeightCost() | currency: 'NGN'}}
+          </span>
+        </app-list-key-value>
+        <app-list-key-value class="payment" style="margin-top: 5px; margin-bottom: 5px;">
+          <span title>Your payment</span>
+          <span value>{{bookingCost.getTotalCost() | currency: 'NGN'}}</span>
+        </app-list-key-value>
+      </div>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button class="cta1" expand="block" fill="outline">
+            <ion-label>Cancel</ion-label>
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button color="primary" expand="block" (click)="SubmitBookings()">
+            <ion-label>Submit</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ng-template>
   </div>
   <!-- </div> -->
 </app-page-structure>
