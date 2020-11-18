@@ -14,6 +14,9 @@
       <ion-label style="color: #E1440B;">REJECTED</ion-label>
     </ion-segment-button> -->
   </ion-segment>
+  <ion-label *ngIf="filteredLocalBookings.length">
+    <small>no order record found</small>
+  </ion-label>
   <div *ngFor="let booking of filteredLocalBookings" >
     <ion-label>
       <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
@@ -80,7 +83,7 @@
         </ion-row>
         <ion-row *ngIf="![4,5].includes(booking.bookingStatusId)">
           <ion-col >
-           <span *ngIf="booking.bookingStatusId == 7">
+           <span *ngIf="![5,2,9].includes(booking.bookingStatusId)">
             <a 
             *ngIf="booking.paymentTypeId == 3 || booking.paymentTypeId == 4"
             angular4-paystack
