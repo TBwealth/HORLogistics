@@ -94,9 +94,12 @@ async openBankInfo(){
     loading.present()
     let localBookingStatus: LocalBookingStatusResource[];
     let internationalBookingStatus: IntlBookingStatus[]
-    const promise = await Promise.all([this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), this.store.getCheckoutAssistances().toPromise(),
+    const promise = await Promise.all([
+      this.store.getAllLocalOrders().toPromise(), this.store.getAllInternationalBookings().toPromise(), 
+      this.store.getCheckoutAssistances().toPromise(),
       this.localBookingService.localbookingstatus().toPromise(),
       this.internationalBookingService.intlbookingstatus().toPromise()])
+     
     localBookingStatus = promise[3].data
     internationalBookingStatus = promise[4].data
     this.localBookings = promise[0]
