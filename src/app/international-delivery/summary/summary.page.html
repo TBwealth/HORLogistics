@@ -48,6 +48,10 @@
         <span title>Estimated Package Weight</span>
         <span value>{{booking.estimatedPackageWeight}}</span>
       </app-list-key-value>
+      <app-list-key-value *ngIf="booking.recipientPhone">
+        <span title>Recipient Phone No</span>
+        <span value>{{booking.recipientPhone}}</span>
+      </app-list-key-value>
       <!-- <app-list-key-value>
         <span title>Charge for Package (Import) (USA)</span>
         <span value></span>
@@ -67,7 +71,7 @@
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button size="6" color="primary" (click)="submit()">
+          <ion-button size="6" color="primary" expand="block" (click)="submit()">
             <ion-label>Submit</ion-label>
           </ion-button>
         </ion-col>
