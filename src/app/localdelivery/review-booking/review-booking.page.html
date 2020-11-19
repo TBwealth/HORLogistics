@@ -80,6 +80,15 @@
         </ion-col>
       </ion-row>
     </ng-template>
+  
   </div>
+
   <!-- </div> -->
 </app-page-structure>
+
+<ion-footer class="ion-no-border" *ngIf="booking.bookingStatusId == 5">
+
+  <ion-button (click)="gotocamera()" class="pryColor " expand="block" fill="fill">
+    Acknowledge Receipt
+  </ion-button>
+</ion-footer>

@@ -2,17 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { Observable, Subject } from 'rxjs';
-import { LocalBooking, LocalRouteRate } from 'src/app/_models/service-models';
+import { LocalBooking, LocalRouteRate,MarkOrderAsRecieved } from 'src/app/_models/service-models';
 import { AuthenticationService, CUSTOMER_TYPES } from 'src/app/_services/authentication.service';
 import { MaprouteService } from 'src/app/_services/maproute.service';
-import { BulkorderServiceProxy, LocalBookingServiceProxy, RouteRateServiceProxy } from 'src/app/_services/service-proxies';
+import { BulkorderServiceProxy, LocalBookingServiceProxy, RiderServiceProxy, RouteRateServiceProxy } from 'src/app/_services/service-proxies';
 import { StoreService } from 'src/app/_services/store.service';
-
+import {customConfig} from "../../custumConfig";
+import { Base64 } from '@ionic-native/base64/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
 class LocalBookingCost{
+
   bookingRate: LocalRouteRate
   booking: LocalBooking
   
-  constructor(booking, bookingRate){
+  constructor(
+    booking, bookingRate,){
     this.booking = booking
     this.bookingRate = bookingRate
   }
@@ -60,7 +65,9 @@ export class ReviewBookingPage implements OnInit {
   bookingRates = []
   selectedBookingIndex = 0;
   totalPayment = 0;
-  customerType = 0
+  customerType = 0;
+  markOrderAsRecieved = new MarkOrderAsRecieved().clone();
+  public captureDataUrl: any;
   constructor(
     private maproute: MaprouteService,
     private store: StoreService,
@@ -70,7 +77,14 @@ export class ReviewBookingPage implements OnInit {
     private toastController: ToastController,
     private loadingController: LoadingController,
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private base64: Base64,
+    private camera: Camera,
+    private loadspinner: LoadingController,
+    private toastCtrl: ToastController,
+    private file: File,
+    private AuthenService: AuthenticationService,
+    private orderService: RiderServiceProxy
   ) { }
 
   async ngOnInit() {
@@ -148,4 +162,74 @@ export class ReviewBookingPage implements OnInit {
     this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
+  gotocamera(){     
+      const cameraOptions: CameraOptions = {
+        quality: 10,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE,
+      };
+      this.camera.getPicture(cameraOptions).then((imageData) => {
+        this.base64.encodeFile(imageData).then((base64File: string) => {
+          this.file.resolveLocalFilesystemUrl(imageData).then((entry: FileEntry) => {
+            entry.file(file => {
+              let fileType   = file.name.substring(file.name.lastIndexOf(".") + 1);
+              console.log(base64File)
+              this.markOrderAsRecieved.base64File = base64File.split(",")[1];
+              this.markOrderAsRecieved.orderId = this.booking.id;
+              this.markOrderAsRecieved.fileExtension = "."+ fileType;
+              this.markOrderAsRecieved.fileName = file.name;
+              this.markOrderAsRecieved.fileSize = file.size
+               this.readFile(this.markOrderAsRecieved);  
+            });
+          });
+        });          
+      })
+  
+ 
+  }
+  async readFile(payloadData) {
+    let loading = await this.loadspinner.create({
+      message: "please wait...",
+      translucent: true,
+      spinner: "bubbles",
+    });
+    await loading.present();
+    this.orderService.markorderasreceived(payloadData).subscribe(async dataRes => {   
+      console.log(dataRes)  
+      if(dataRes.code == '000'){        
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: dataRes.message,
+          color: "success"
+        });
+        toast.present();
+        this.booking.bookingStatusId = 2;
+      }else{
+     
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: dataRes.message,
+          color: "danger"
+        });
+        toast.present();
+        if(dataRes.message == "Unauthorized"){
+          this.AuthenService.clearusers();
+         this.router.navigate(['preferedaction']);
+        
+        }
+      }
+    
+     loading.dismiss()
+    },async error =>{
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: 'Oops! something went wrong',
+        color: "danger"
+      });
+      toast.present();
+      loading.dismiss()
+    });
+  
+  }
 }

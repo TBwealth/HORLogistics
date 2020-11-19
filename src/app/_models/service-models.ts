@@ -7,6 +7,64 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+export class MarkOrderAsRecieved implements IMarkOrderAsRecieved {
+    base64File: string;
+    orderId: number;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+
+    constructor(data?: IMarkOrderAsRecieved) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.base64File = _data["base64File"];
+            this.orderId = _data["orderId"];
+            this.fileExtension = _data["fileExtension"];
+            this.fileName = _data["fileName"];
+            this.fileSize = _data["fileSize"];
+        }
+    }
+
+    static fromJS(data: any): MarkOrderAsRecieved {
+        data = typeof data === 'object' ? data : {};
+        let result = new MarkOrderAsRecieved();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["base64File"] = this.base64File;
+        data["orderId"] = this.orderId;
+        data["fileExtension"] = this.fileExtension;
+        data["fileName"] = this.fileName;
+        data["fileSize"] = this.fileSize;
+        return data; 
+    }
+
+    clone(): MarkOrderAsRecieved {
+        const json = this.toJSON();
+        let result = new MarkOrderAsRecieved();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMarkOrderAsRecieved {
+    base64File: string;
+    orderId: number;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+}
 
 export class RiderDocument implements IRiderDocument {
     file: string;

@@ -539,61 +539,6 @@ export class ApiServiceProxy {
     /**
      * @return OK
      */
-    admin(usr: VmUserObj): Observable<boolean> {
-        let url_ = this.baseUrl + "/api/Admin";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(usr);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAdmin(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAdmin(<any>response_);
-                } catch (e) {
-                    return <Observable<boolean>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<boolean>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processAdmin(response: HttpResponseBase): Observable<boolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = resultData200 !== undefined ? resultData200 : <any>null;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<boolean>(<any>null);
-    }
-
-    /**
-     * @return OK
-     */
     base(usr: VmUserObj): Observable<boolean> {
         let url_ = this.baseUrl + "/api/Base";
         url_ = url_.replace(/[?&]$/, "");
@@ -757,6 +702,8 @@ export class ApiServiceProxy {
         return _observableOf<boolean>(<any>null);
     }
 
+  
+
     /**
      * @return OK
      */
@@ -865,6 +812,7 @@ export class ApiServiceProxy {
         }
         return _observableOf<void>(<any>null);
     }
+
 
     /**
      * @return OK
@@ -1412,7 +1360,7 @@ export class ApiServiceProxy {
 }
 
 @Injectable()
-export class ServiceProxy {
+export class AdminServiceProxy {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -1426,7 +1374,7 @@ export class ServiceProxy {
      * @return OK
      */
     createRider(payload: CreateRider): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/CreateRider";
+        let url_ = this.baseUrl + "/api/Admin/CreateRider";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(payload);
@@ -1481,7 +1429,7 @@ export class ServiceProxy {
      * @return OK
      */
     createwallet(payload: CreateWallet): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/Createwallet";
+        let url_ = this.baseUrl + "/api/Admin/Createwallet";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(payload);
@@ -1536,7 +1484,7 @@ export class ServiceProxy {
      * @return OK
      */
     updateWallet(payload: CreateWallet): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/UpdateWallet";
+        let url_ = this.baseUrl + "/api/Admin/UpdateWallet";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(payload);
@@ -1591,7 +1539,7 @@ export class ServiceProxy {
      * @return OK
      */
     getwallettops(page: number): Observable<ObjectResourceOfTopUps> {
-        let url_ = this.baseUrl + "/getwallettops?";
+        let url_ = this.baseUrl + "/api/Admin/getwallettops?";
         if (page === undefined || page === null)
             throw new Error("The parameter 'page' must be defined and cannot be null.");
         else
@@ -1646,7 +1594,7 @@ export class ServiceProxy {
      * @return OK
      */
     topwallet(topUp: TopWallet): Observable<StatusResource> {
-        let url_ = this.baseUrl + "/Topwallet";
+        let url_ = this.baseUrl + "/api/Admin/Topwallet";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(topUp);
@@ -1701,7 +1649,7 @@ export class ServiceProxy {
      * @return OK
      */
     reviewRiderDoc(riderId: number): Observable<ObjectResourceOfDispatcher> {
-        let url_ = this.baseUrl + "/ReviewRiderDoc?";
+        let url_ = this.baseUrl + "/api/Admin/ReviewRiderDoc?";
         if (riderId === undefined || riderId === null)
             throw new Error("The parameter 'riderId' must be defined and cannot be null.");
         else
@@ -1756,7 +1704,7 @@ export class ServiceProxy {
      * @return OK
      */
     approveRider(riderId: number): Observable<ObjectResourceOfDispatcher> {
-        let url_ = this.baseUrl + "/ApproveRider?";
+        let url_ = this.baseUrl + "/api/Admin/ApproveRider?";
         if (riderId === undefined || riderId === null)
             throw new Error("The parameter 'riderId' must be defined and cannot be null.");
         else
@@ -1805,6 +1753,120 @@ export class ServiceProxy {
             }));
         }
         return _observableOf<ObjectResourceOfDispatcher>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    getallriderGet(statusId: number, pageNumber: number): Observable<ObjectResourceOfRiders> {
+        let url_ = this.baseUrl + "/api/Admin/getallrider?";
+        if (statusId === undefined || statusId === null)
+            throw new Error("The parameter 'statusId' must be defined and cannot be null.");
+        else
+            url_ += "statusId=" + encodeURIComponent("" + statusId) + "&";
+        if (pageNumber === undefined || pageNumber === null)
+            throw new Error("The parameter 'pageNumber' must be defined and cannot be null.");
+        else
+            url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetallriderGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetallriderGet(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfRiders>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfRiders>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetallriderGet(response: HttpResponseBase): Observable<ObjectResourceOfRiders> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfRiders.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfRiders>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    getallriderPost(payload: CreatePenalty): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Admin/getallrider";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(payload);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetallriderPost(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetallriderPost(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetallriderPost(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
     }
 }
 
@@ -5438,6 +5500,65 @@ export class LocalBookingServiceProxy {
         }
         return _observableOf<StatusResource>(<any>null);
     }
+
+    /**
+     * @param payload_bookingNumber (optional) 
+     * @return OK
+     */
+    updatedeliverydate(payload_deliveryDate: Date, payload_bookingNumber: number | null | undefined): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/LocalBooking/Updatedeliverydate?";
+        if (payload_deliveryDate === undefined || payload_deliveryDate === null)
+            throw new Error("The parameter 'payload_deliveryDate' must be defined and cannot be null.");
+        else
+            url_ += "payload.deliveryDate=" + encodeURIComponent(payload_deliveryDate ? "" + payload_deliveryDate.toJSON() : "") + "&";
+        if (payload_bookingNumber !== undefined && payload_bookingNumber !== null)
+            url_ += "payload.bookingNumber=" + encodeURIComponent("" + payload_bookingNumber) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdatedeliverydate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdatedeliverydate(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processUpdatedeliverydate(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
 }
 
 @Injectable()
@@ -7860,6 +7981,122 @@ export class RiderServiceProxy {
     }
 
     /**
+     * @param filter_date_range (optional) 
+     * @param filter_pageNumber (optional) 
+     * @return OK
+     */
+    getdeliveredOrder(filter_dispatcherId: number, filter_date_range: string | null | undefined, filter_pageNumber: number | null | undefined): Observable<ObjectResourceOfOrders> {
+        let url_ = this.baseUrl + "/api/Rider/getdeliveredOrder?";
+        if (filter_dispatcherId === undefined || filter_dispatcherId === null)
+            throw new Error("The parameter 'filter_dispatcherId' must be defined and cannot be null.");
+        else
+            url_ += "filter.dispatcherId=" + encodeURIComponent("" + filter_dispatcherId) + "&";
+        if (filter_date_range !== undefined && filter_date_range !== null)
+            url_ += "filter.date_range=" + encodeURIComponent("" + filter_date_range) + "&";
+        if (filter_pageNumber !== undefined && filter_pageNumber !== null)
+            url_ += "filter.pageNumber=" + encodeURIComponent("" + filter_pageNumber) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetdeliveredOrder(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetdeliveredOrder(<any>response_);
+                } catch (e) {
+                    return <Observable<ObjectResourceOfOrders>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<ObjectResourceOfOrders>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetdeliveredOrder(response: HttpResponseBase): Observable<ObjectResourceOfOrders> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = ObjectResourceOfOrders.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<ObjectResourceOfOrders>(<any>null);
+    }
+
+    /**
+     * @return OK
+     */
+    markorderasreceived(payload: MarkOrderAsRecieved): Observable<StatusResource> {
+        let url_ = this.baseUrl + "/api/Rider/markorderasreceived";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(payload);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMarkorderasreceived(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMarkorderasreceived(<any>response_);
+                } catch (e) {
+                    return <Observable<StatusResource>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<StatusResource>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMarkorderasreceived(response: HttpResponseBase): Observable<StatusResource> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = StatusResource.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<StatusResource>(<any>null);
+    }
+
+    /**
      * @return OK
      */
     carryover(dTO: MarkOrderAsDeliveredDTO): Observable<StatusResource> {
@@ -8357,6 +8594,7 @@ export class Dispatcher implements IDispatcher {
     trackingPassword: string | undefined;
     profilePicUrl: string | undefined;
     dispatcherCertificate: DispatcherDocument | undefined;
+    dispatcherPenalty: DispatcherPenalty[] | undefined;
     isApproved: boolean | undefined;
     plateNumber: string | undefined;
     carName: string | undefined;
@@ -8407,6 +8645,11 @@ export class Dispatcher implements IDispatcher {
             this.trackingPassword = _data["trackingPassword"];
             this.profilePicUrl = _data["profilePicUrl"];
             this.dispatcherCertificate = _data["dispatcherCertificate"] ? DispatcherDocument.fromJS(_data["dispatcherCertificate"]) : <any>undefined;
+            if (Array.isArray(_data["dispatcherPenalty"])) {
+                this.dispatcherPenalty = [] as any;
+                for (let item of _data["dispatcherPenalty"])
+                    this.dispatcherPenalty.push(DispatcherPenalty.fromJS(item));
+            }
             this.isApproved = _data["isApproved"];
             this.plateNumber = _data["plateNumber"];
             this.carName = _data["carName"];
@@ -8457,6 +8700,11 @@ export class Dispatcher implements IDispatcher {
         data["trackingPassword"] = this.trackingPassword;
         data["profilePicUrl"] = this.profilePicUrl;
         data["dispatcherCertificate"] = this.dispatcherCertificate ? this.dispatcherCertificate.toJSON() : <any>undefined;
+        if (Array.isArray(this.dispatcherPenalty)) {
+            data["dispatcherPenalty"] = [];
+            for (let item of this.dispatcherPenalty)
+                data["dispatcherPenalty"].push(item.toJSON());
+        }
         data["isApproved"] = this.isApproved;
         data["plateNumber"] = this.plateNumber;
         data["carName"] = this.carName;
@@ -8503,6 +8751,7 @@ export interface IDispatcher {
     trackingPassword: string | undefined;
     profilePicUrl: string | undefined;
     dispatcherCertificate: DispatcherDocument | undefined;
+    dispatcherPenalty: DispatcherPenalty[] | undefined;
     isApproved: boolean | undefined;
     plateNumber: string | undefined;
     carName: string | undefined;
@@ -8825,6 +9074,8 @@ export class LocalBooking implements ILocalBooking {
     dispatchedAt: Date | undefined;
     deliveredAt: Date | undefined;
     createdFromEndpoint: boolean | undefined;
+    receivedOrderPicture: string | undefined;
+    rating: number | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
 
@@ -8912,6 +9163,8 @@ export class LocalBooking implements ILocalBooking {
             this.dispatchedAt = _data["dispatchedAt"] ? new Date(_data["dispatchedAt"].toString()) : <any>undefined;
             this.deliveredAt = _data["deliveredAt"] ? new Date(_data["deliveredAt"].toString()) : <any>undefined;
             this.createdFromEndpoint = _data["createdFromEndpoint"];
+            this.receivedOrderPicture = _data["receivedOrderPicture"];
+            this.rating = _data["rating"];
             this.personalizedLocalRateId = _data["personalizedLocalRateId"];
             this.personalizedLocalRate = _data["personalizedLocalRate"] ? PersonalizedLocalRate.fromJS(_data["personalizedLocalRate"]) : <any>undefined;
         }
@@ -8999,6 +9252,8 @@ export class LocalBooking implements ILocalBooking {
         data["dispatchedAt"] = this.dispatchedAt ? this.dispatchedAt.toISOString() : <any>undefined;
         data["deliveredAt"] = this.deliveredAt ? this.deliveredAt.toISOString() : <any>undefined;
         data["createdFromEndpoint"] = this.createdFromEndpoint;
+        data["receivedOrderPicture"] = this.receivedOrderPicture;
+        data["rating"] = this.rating;
         data["personalizedLocalRateId"] = this.personalizedLocalRateId;
         data["personalizedLocalRate"] = this.personalizedLocalRate ? this.personalizedLocalRate.toJSON() : <any>undefined;
         return data; 
@@ -9078,8 +9333,105 @@ export interface ILocalBooking {
     dispatchedAt: Date | undefined;
     deliveredAt: Date | undefined;
     createdFromEndpoint: boolean | undefined;
+    receivedOrderPicture: string | undefined;
+    rating: number | undefined;
     personalizedLocalRateId: number | undefined;
     personalizedLocalRate: PersonalizedLocalRate | undefined;
+}
+
+export class DispatcherPenalty implements IDispatcherPenalty {
+    id: number | undefined;
+    dispatcherId: number | undefined;
+    amount: number | undefined;
+    reason: string | undefined;
+    issuerId: string | undefined;
+    spread: boolean | undefined;
+    noOfMonths: number | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    dispatcher: Dispatcher | undefined;
+    ispaymentCompleted: boolean | undefined;
+    topUpPenalty: TopUpPenalty[] | undefined;
+
+    constructor(data?: IDispatcherPenalty) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.dispatcherId = _data["dispatcherId"];
+            this.amount = _data["amount"];
+            this.reason = _data["reason"];
+            this.issuerId = _data["issuerId"];
+            this.spread = _data["spread"];
+            this.noOfMonths = _data["noOfMonths"];
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.dispatcher = _data["dispatcher"] ? Dispatcher.fromJS(_data["dispatcher"]) : <any>undefined;
+            this.ispaymentCompleted = _data["ispaymentCompleted"];
+            if (Array.isArray(_data["topUpPenalty"])) {
+                this.topUpPenalty = [] as any;
+                for (let item of _data["topUpPenalty"])
+                    this.topUpPenalty.push(TopUpPenalty.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): DispatcherPenalty {
+        data = typeof data === 'object' ? data : {};
+        let result = new DispatcherPenalty();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["dispatcherId"] = this.dispatcherId;
+        data["amount"] = this.amount;
+        data["reason"] = this.reason;
+        data["issuerId"] = this.issuerId;
+        data["spread"] = this.spread;
+        data["noOfMonths"] = this.noOfMonths;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["dispatcher"] = this.dispatcher ? this.dispatcher.toJSON() : <any>undefined;
+        data["ispaymentCompleted"] = this.ispaymentCompleted;
+        if (Array.isArray(this.topUpPenalty)) {
+            data["topUpPenalty"] = [];
+            for (let item of this.topUpPenalty)
+                data["topUpPenalty"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): DispatcherPenalty {
+        const json = this.toJSON();
+        let result = new DispatcherPenalty();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IDispatcherPenalty {
+    id: number | undefined;
+    dispatcherId: number | undefined;
+    amount: number | undefined;
+    reason: string | undefined;
+    issuerId: string | undefined;
+    spread: boolean | undefined;
+    noOfMonths: number | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    dispatcher: Dispatcher | undefined;
+    ispaymentCompleted: boolean | undefined;
+    topUpPenalty: TopUpPenalty[] | undefined;
 }
 
 export class ResidentialState implements IResidentialState {
@@ -10341,6 +10693,89 @@ export interface IPersonalizedLocalRate {
     customer: Customer | undefined;
     localBookingCategoryId: number | undefined;
     localBookingCategory: LocalBookingCategory | undefined;
+}
+
+export class TopUpPenalty implements ITopUpPenalty {
+    id: number | undefined;
+    dispatcherPenaltyId: number | undefined;
+    amount: number | undefined;
+    amountBeforeTopUp: number | undefined;
+    penaltyAmount: number | undefined;
+    amountAfterTopUp: number | undefined;
+    dispatcherId: number | undefined;
+    monthPaid: Date | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    dispatcherPenalty: DispatcherPenalty | undefined;
+
+    constructor(data?: ITopUpPenalty) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.dispatcherPenaltyId = _data["dispatcherPenaltyId"];
+            this.amount = _data["amount"];
+            this.amountBeforeTopUp = _data["amountBeforeTopUp"];
+            this.penaltyAmount = _data["penaltyAmount"];
+            this.amountAfterTopUp = _data["amountAfterTopUp"];
+            this.dispatcherId = _data["dispatcherId"];
+            this.monthPaid = _data["monthPaid"] ? new Date(_data["monthPaid"].toString()) : <any>undefined;
+            this.createdAt = _data["createdAt"] ? new Date(_data["createdAt"].toString()) : <any>undefined;
+            this.updatedAt = _data["updatedAt"] ? new Date(_data["updatedAt"].toString()) : <any>undefined;
+            this.dispatcherPenalty = _data["dispatcherPenalty"] ? DispatcherPenalty.fromJS(_data["dispatcherPenalty"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): TopUpPenalty {
+        data = typeof data === 'object' ? data : {};
+        let result = new TopUpPenalty();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["dispatcherPenaltyId"] = this.dispatcherPenaltyId;
+        data["amount"] = this.amount;
+        data["amountBeforeTopUp"] = this.amountBeforeTopUp;
+        data["penaltyAmount"] = this.penaltyAmount;
+        data["amountAfterTopUp"] = this.amountAfterTopUp;
+        data["dispatcherId"] = this.dispatcherId;
+        data["monthPaid"] = this.monthPaid ? this.monthPaid.toISOString() : <any>undefined;
+        data["createdAt"] = this.createdAt ? this.createdAt.toISOString() : <any>undefined;
+        data["updatedAt"] = this.updatedAt ? this.updatedAt.toISOString() : <any>undefined;
+        data["dispatcherPenalty"] = this.dispatcherPenalty ? this.dispatcherPenalty.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): TopUpPenalty {
+        const json = this.toJSON();
+        let result = new TopUpPenalty();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ITopUpPenalty {
+    id: number | undefined;
+    dispatcherPenaltyId: number | undefined;
+    amount: number | undefined;
+    amountBeforeTopUp: number | undefined;
+    penaltyAmount: number | undefined;
+    amountAfterTopUp: number | undefined;
+    dispatcherId: number | undefined;
+    monthPaid: Date | undefined;
+    createdAt: Date | undefined;
+    updatedAt: Date | undefined;
+    dispatcherPenalty: DispatcherPenalty | undefined;
 }
 
 export class WalletPayment implements IWalletPayment {
@@ -13533,6 +13968,187 @@ export interface IObjectResourceOfDispatcher {
     data: Dispatcher | undefined;
     code: string | undefined;
     message: string | undefined;
+}
+
+export class ObjectResourceOfRiders implements IObjectResourceOfRiders {
+    data: Riders | undefined;
+    code: string | undefined;
+    message: string | undefined;
+
+    constructor(data?: IObjectResourceOfRiders) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.data = _data["data"] ? Riders.fromJS(_data["data"]) : <any>undefined;
+            this.code = _data["code"];
+            this.message = _data["message"];
+        }
+    }
+
+    static fromJS(data: any): ObjectResourceOfRiders {
+        data = typeof data === 'object' ? data : {};
+        let result = new ObjectResourceOfRiders();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["data"] = this.data ? this.data.toJSON() : <any>undefined;
+        data["code"] = this.code;
+        data["message"] = this.message;
+        return data; 
+    }
+
+    clone(): ObjectResourceOfRiders {
+        const json = this.toJSON();
+        let result = new ObjectResourceOfRiders();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IObjectResourceOfRiders {
+    data: Riders | undefined;
+    code: string | undefined;
+    message: string | undefined;
+}
+
+export class Riders implements IRiders {
+    dispatcher: Dispatcher[] | undefined;
+    totalCount: number | undefined;
+    totalPages: number | undefined;
+    currentPage: number | undefined;
+    pageSize: number | undefined;
+
+    constructor(data?: IRiders) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["dispatcher"])) {
+                this.dispatcher = [] as any;
+                for (let item of _data["dispatcher"])
+                    this.dispatcher.push(Dispatcher.fromJS(item));
+            }
+            this.totalCount = _data["totalCount"];
+            this.totalPages = _data["totalPages"];
+            this.currentPage = _data["currentPage"];
+            this.pageSize = _data["pageSize"];
+        }
+    }
+
+    static fromJS(data: any): Riders {
+        data = typeof data === 'object' ? data : {};
+        let result = new Riders();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.dispatcher)) {
+            data["dispatcher"] = [];
+            for (let item of this.dispatcher)
+                data["dispatcher"].push(item.toJSON());
+        }
+        data["totalCount"] = this.totalCount;
+        data["totalPages"] = this.totalPages;
+        data["currentPage"] = this.currentPage;
+        data["pageSize"] = this.pageSize;
+        return data; 
+    }
+
+    clone(): Riders {
+        const json = this.toJSON();
+        let result = new Riders();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRiders {
+    dispatcher: Dispatcher[] | undefined;
+    totalCount: number | undefined;
+    totalPages: number | undefined;
+    currentPage: number | undefined;
+    pageSize: number | undefined;
+}
+
+export class CreatePenalty implements ICreatePenalty {
+    amount: number;
+    reason: string;
+    dispatcherId: number;
+    issuerId: string | undefined;
+    spread: boolean;
+    noOfMonths: number | undefined;
+
+    constructor(data?: ICreatePenalty) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.amount = _data["amount"];
+            this.reason = _data["reason"];
+            this.dispatcherId = _data["dispatcherId"];
+            this.issuerId = _data["issuerId"];
+            this.spread = _data["spread"];
+            this.noOfMonths = _data["noOfMonths"];
+        }
+    }
+
+    static fromJS(data: any): CreatePenalty {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreatePenalty();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["amount"] = this.amount;
+        data["reason"] = this.reason;
+        data["dispatcherId"] = this.dispatcherId;
+        data["issuerId"] = this.issuerId;
+        data["spread"] = this.spread;
+        data["noOfMonths"] = this.noOfMonths;
+        return data; 
+    }
+
+    clone(): CreatePenalty {
+        const json = this.toJSON();
+        let result = new CreatePenalty();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface ICreatePenalty {
+    amount: number;
+    reason: string;
+    dispatcherId: number;
+    issuerId: string | undefined;
+    spread: boolean;
+    noOfMonths: number | undefined;
 }
 
 export class FormData implements IFormData {
@@ -18152,6 +18768,53 @@ export interface ICancelLocalBookingViewModel {
     localBooking: LocalBooking | undefined;
 }
 
+export class UpdateDeliveryDate implements IUpdateDeliveryDate {
+    deliveryDate: Date;
+    bookingNumber: number | undefined;
+
+    constructor(data?: IUpdateDeliveryDate) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.deliveryDate = _data["deliveryDate"] ? new Date(_data["deliveryDate"].toString()) : <any>undefined;
+            this.bookingNumber = _data["bookingNumber"];
+        }
+    }
+
+    static fromJS(data: any): UpdateDeliveryDate {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateDeliveryDate();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["deliveryDate"] = this.deliveryDate ? this.deliveryDate.toISOString() : <any>undefined;
+        data["bookingNumber"] = this.bookingNumber;
+        return data; 
+    }
+
+    clone(): UpdateDeliveryDate {
+        const json = this.toJSON();
+        let result = new UpdateDeliveryDate();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IUpdateDeliveryDate {
+    deliveryDate: Date;
+    bookingNumber: number | undefined;
+}
+
 export class ListResourceOfLocation implements IListResourceOfLocation {
     total: number | undefined;
     data: Location[] | undefined;
@@ -18392,6 +19055,10 @@ export class UserViewModel implements IUserViewModel {
     totalDelivered: number | undefined;
     totalCarryOver: number | undefined;
     totalDispatched: number | undefined;
+    totalDispatcher: number | undefined;
+    totalParneter: number | undefined;
+    totalCustomer: number | undefined;
+    dispatcherDocument: DispatcherDocument | undefined;
 
     constructor(data?: IUserViewModel) {
         if (data) {
@@ -18419,6 +19086,10 @@ export class UserViewModel implements IUserViewModel {
             this.totalDelivered = _data["totalDelivered"];
             this.totalCarryOver = _data["totalCarryOver"];
             this.totalDispatched = _data["totalDispatched"];
+            this.totalDispatcher = _data["totalDispatcher"];
+            this.totalParneter = _data["totalParneter"];
+            this.totalCustomer = _data["totalCustomer"];
+            this.dispatcherDocument = _data["dispatcherDocument"] ? DispatcherDocument.fromJS(_data["dispatcherDocument"]) : <any>undefined;
         }
     }
 
@@ -18446,6 +19117,10 @@ export class UserViewModel implements IUserViewModel {
         data["totalDelivered"] = this.totalDelivered;
         data["totalCarryOver"] = this.totalCarryOver;
         data["totalDispatched"] = this.totalDispatched;
+        data["totalDispatcher"] = this.totalDispatcher;
+        data["totalParneter"] = this.totalParneter;
+        data["totalCustomer"] = this.totalCustomer;
+        data["dispatcherDocument"] = this.dispatcherDocument ? this.dispatcherDocument.toJSON() : <any>undefined;
         return data; 
     }
 
@@ -18469,6 +19144,10 @@ export interface IUserViewModel {
     totalDelivered: number | undefined;
     totalCarryOver: number | undefined;
     totalDispatched: number | undefined;
+    totalDispatcher: number | undefined;
+    totalParneter: number | undefined;
+    totalCustomer: number | undefined;
+    dispatcherDocument: DispatcherDocument | undefined;
 }
 
 export class User implements IUser {
@@ -18479,6 +19158,7 @@ export class User implements IUser {
     isAdmin: boolean | undefined;
     isProfileCompleted: boolean | undefined;
     tcAccepted: boolean | undefined;
+    isPhoneVerified: boolean | undefined;
     userType: UserType | undefined;
 
     constructor(data?: IUser) {
@@ -18499,6 +19179,7 @@ export class User implements IUser {
             this.isAdmin = _data["isAdmin"];
             this.isProfileCompleted = _data["isProfileCompleted"];
             this.tcAccepted = _data["tcAccepted"];
+            this.isPhoneVerified = _data["isPhoneVerified"];
             this.userType = _data["userType"];
         }
     }
@@ -18519,6 +19200,7 @@ export class User implements IUser {
         data["isAdmin"] = this.isAdmin;
         data["isProfileCompleted"] = this.isProfileCompleted;
         data["tcAccepted"] = this.tcAccepted;
+        data["isPhoneVerified"] = this.isPhoneVerified;
         data["userType"] = this.userType;
         return data; 
     }
@@ -18539,6 +19221,7 @@ export interface IUser {
     isAdmin: boolean | undefined;
     isProfileCompleted: boolean | undefined;
     tcAccepted: boolean | undefined;
+    isPhoneVerified: boolean | undefined;
     userType: UserType | undefined;
 }
 
@@ -19523,6 +20206,65 @@ export interface IFiterOrderByComplted {
     dispatcherId: number;
     date_range: string | undefined;
     pageNumber: number | undefined;
+}
+
+export class MarkOrderAsRecieved implements IMarkOrderAsRecieved {
+    base64File: string;
+    orderId: number;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
+
+    constructor(data?: IMarkOrderAsRecieved) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.base64File = _data["base64File"];
+            this.orderId = _data["orderId"];
+            this.fileExtension = _data["fileExtension"];
+            this.fileName = _data["fileName"];
+            this.fileSize = _data["fileSize"];
+        }
+    }
+
+    static fromJS(data: any): MarkOrderAsRecieved {
+        data = typeof data === 'object' ? data : {};
+        let result = new MarkOrderAsRecieved();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["base64File"] = this.base64File;
+        data["orderId"] = this.orderId;
+        data["fileExtension"] = this.fileExtension;
+        data["fileName"] = this.fileName;
+        data["fileSize"] = this.fileSize;
+        return data; 
+    }
+
+    clone(): MarkOrderAsRecieved {
+        const json = this.toJSON();
+        let result = new MarkOrderAsRecieved();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IMarkOrderAsRecieved {
+    base64File: string;
+    orderId: number;
+    fileExtension: string;
+    fileName: string;
+    fileSize: number;
 }
 
 export class MarkOrderAsDeliveredDTO implements IMarkOrderAsDeliveredDTO {

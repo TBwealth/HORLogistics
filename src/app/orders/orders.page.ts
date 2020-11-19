@@ -53,6 +53,10 @@ export class OrdersPage implements OnInit {
     private AuthenService: AuthenticationService,
     private alertController : AlertController
   ) { }
+
+  ionViewWillEnter(){
+    this.getintials()  
+  }
   paymentInit(){
 
   }
@@ -134,7 +138,7 @@ async openBankInfo(){
      }, 2000);    
  }
    ngOnInit() {
-   this.getintials()
+  // this.getintials()
   }
   filterInProgress(){
     this.filteredLocalBookings = this.localBookings.filter(booking => !COMPLETED_LOCAL_BOOKING_STATUS.includes(booking.bookingStatusId))

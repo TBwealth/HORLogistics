@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup} from "@angular/forms";
-import { NavController,LoadingController, Platform, ToastController} from '@ionic/angular';
+import { NavController,LoadingController, Platform, ToastController, AlertController} from '@ionic/angular';
 import { from } from 'rxjs';
 import { User, socialUser } from "../_models/user";
 import { LoginViewModel,ObjectResourceOfLoginResource, LoginResource, 
@@ -10,7 +10,7 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase';
-import { AccountServiceProxy, RegisterServiceProxy } from '../_services/service-proxies';
+import { AccountServiceProxy, ManageServiceProxy, RegisterServiceProxy } from '../_services/service-proxies';
 import { AuthenticationService } from '../_services/authentication.service';
 import { Storage } from '@ionic/storage';
 @Component({
@@ -46,6 +46,8 @@ customerType: any;
     private soclLogin: RegisterServiceProxy,
     private AuthenService: AuthenticationService,
     private loadspinner: LoadingController,
+    private alertController: AlertController,
+    private manageUsers: ManageServiceProxy,
     public storage: Storage) { }
 
 async loginUser(){
@@ -94,7 +96,72 @@ async loginUser(){
  
 
   }
-  async forgotPassword(){}
+  async forgotPassword(){
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Forgot Password',
+      message: 'Please input your Email to receive password reset link',
+      inputs: [
+        {
+          name: 'femail',
+          type: 'text',
+          placeholder: 'E-mail Address',
+          
+        }],
+      buttons:  [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Send Link',
+          handler: async (femail) => {
+           // console.log(femail.femail);
+            this.loading = await this.loadspinner.create({
+              message: "please wait...",
+              translucent: true,
+              spinner: "bubbles",
+            });
+            await this.loading.present();
+
+            this.manageUsers.forgotpassword(femail.femail).subscribe(async res=>{
+              if(res.code == "000"){
+                const toast = await this.toastCtrl.create({
+                  duration: 3000,
+                  message: res.message,
+                  color: "success"
+                });
+                toast.present();
+                this.loading.dismiss()
+              }else{
+                const toast = await this.toastCtrl.create({
+                  duration: 3000,
+                  message: res.message,
+                  color: "danger"
+                });
+                toast.present();
+                this.loading.dismiss()
+              }
+            },async error=>{
+              const toast = await this.toastCtrl.create({
+                duration: 3000,
+                message: 'Oops! something went wrong',
+                color: "danger"
+              });
+              toast.present();
+              this.loading.dismiss()
+            })
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
+
+  }
   gototerms(){
 this.router.navigate(['terms'])
   }

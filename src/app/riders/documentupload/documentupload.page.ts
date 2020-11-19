@@ -135,12 +135,15 @@ this.filepath.resolveNativePath(uri).then(async(nativepath)=>{
   }
 converttobase64(uri,filekey, fileType, fileObj){
   console.log('fileMeta',fileObj)
+  console.log('uri',uri);
   this.base64.encodeFile(uri).then(async (base64File: string) => {
+    console.log('base64',base64File )
     console.log(base64File.split(",")[1])
+    console.log('dispatcher id',this.AuthenService.globalDispathcerId.value);
     this.userphotoviewmodel.file = base64File.split(",")[1];
     this.userphotoviewmodel.fileExtension = "."+  fileType;
     this.userphotoviewmodel.fileSize = fileObj.size;
-    this.userphotoviewmodel.dispatcherId = this.AuthenService.globalUserId.value;
+    this.userphotoviewmodel.dispatcherId = this.AuthenService.globalDispathcerId.value;
     this.userphotoviewmodel.fileName = filekey
 
     if(this.arrayType.indexOf(fileType) > -1){

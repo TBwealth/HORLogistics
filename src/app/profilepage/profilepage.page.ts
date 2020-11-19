@@ -5,7 +5,7 @@ import {  UserPhotoViewModel, UpdateUserViewModel, Dispatcher } from "../_models
 import { AuthenticationService } from '../_services/authentication.service';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { File, IWriteOptions, FileEntry, } from '@ionic-native/file/ngx';
-import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy, LocationsServiceProxy} from '../_services/service-proxies';
+import {AccountServiceProxy, ApiServiceProxy, CountriesServiceProxy, LocationsServiceProxy, ManageServiceProxy} from '../_services/service-proxies';
 import {CustomserviceService } from '../_services/customservice.service';
 import { Base64 } from '@ionic-native/base64/ngx';
 import {customConfig} from "../custumConfig";
@@ -44,8 +44,8 @@ userphotoviewmodel = new UserPhotoViewModel().clone();
     private uploadService: AccountServiceProxy,
     private countrySeervice: CountriesServiceProxy,
     private locationService: LocationsServiceProxy,
-    private customserviceservice: CustomserviceService,
-    private base64: Base64
+    private base64: Base64,
+    private manageUsers: ManageServiceProxy,
   ) { 
     //this.getlatestusers()
     }
@@ -104,19 +104,19 @@ this.userType = this.usersdata.user.userType;
 
     this.getBusStopByStateId(stateId);
 
-    this.defaultCountryList();
-  
-    
+    this.defaultCountryList();    
 
   }
   this.loading.dismiss()
 }, 2000);
  
   }
+
   logout(){
     this.AuthenService.clearusers();
     this.router.navigate(['preferedaction']);
     }
+    
   updateSponsor(){
     this.router.navigate(['sponsorsinformation']);
   }
@@ -280,7 +280,7 @@ async readFile(payloadData) {
       toast.present();
       if(dataRes.message == "Unauthorized"){
         this.AuthenService.clearusers();
-       this.router.navigate(['login']);
+       this.router.navigate(['prefredaction']);
       
       }
     }
@@ -342,6 +342,79 @@ defaultCountryList(){
   this.apiService.countries().subscribe(data=>{
     this.countryList = data;
   })
+}
+async changepassword(){
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'Change Password',
+    inputs: [
+      {
+        name: 'oldPassword',
+        type: 'password',
+        placeholder: 'Old Password',
+        
+      },
+      {
+        name: 'newPassword',
+        type: 'password',
+        placeholder: 'New Password',
+        
+      },
+      {
+        name: 'confirmPassword',
+        type: 'password',
+        placeholder: 'Confirm New Password',
+        
+      }
+    ],
+    buttons:  [
+    {
+        text: 'Change Password',
+        handler: async (data) => {
+         console.log(data);
+          this.loading = await this.loadspinner.create({
+            message: "please wait...",
+            translucent: true,
+            spinner: "bubbles",
+          });
+          await this.loading.present();
+          this.manageUsers.changePassword(data).subscribe(async res=>{
+            if(res.code == "000"){
+              const toast = await this.toastCtrl.create({
+                duration: 3000,
+                message: res.message,
+                color: "success"
+              });
+              toast.present();
+              this.loading.dismiss()
+            }else{
+              const toast = await this.toastCtrl.create({
+                duration: 3000,
+                message: res.message,
+                color: "danger"
+              });
+              toast.present();
+              this.loading.dismiss()
+              if(res.code == "004"){
+                this.router.navigate(['prefredaction']);
+              }
+            }
+          },async error=>{
+            const toast = await this.toastCtrl.create({
+              duration: 3000,
+              message: 'Oops! something went wrong',
+              color: "danger"
+            });
+            toast.present();
+            this.loading.dismiss()
+          })
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+
 }
   ngOnInit() {
     

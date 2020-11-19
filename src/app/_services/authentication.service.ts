@@ -29,6 +29,7 @@ export class AuthenticationService {
   public  globalUserEmail = new BehaviorSubject<any>('');
   public  globalUserId = new BehaviorSubject<any>('');
   public  globalAdminStatus = new BehaviorSubject<any>('');
+  public  globalDispathcerId = new BehaviorSubject<any>('');
  constructor(public storage: Storage,
      private manage: ManageServiceProxy,
      private toastCtrl: ToastController,
@@ -67,6 +68,7 @@ export class AuthenticationService {
                         if(this.users[0].dispatcher){
                             this.globalDispatchName = this.users[0].dispatcher.name;
                             this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                            this.globalDispathcerId = this.users[0].dispatcher.id;
                         }
                         this.globalUserId = this.users[0].userId;
                         this.globalUser.next(this.users[0])
@@ -112,6 +114,7 @@ export class AuthenticationService {
                 if(this.users[0].dispatcher){
                     this.globalDispatchName = this.users[0].dispatcher.name;
                     this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                    this.globalDispathcerId = this.users[0].dispatcher.id;
                 }
                 this.storage.set('user', this.users).then(data=>{
             if(data.length > 0){  
@@ -145,6 +148,7 @@ export class AuthenticationService {
                                 if(this.users[0].dispatcher){
                                     this.globalDispatchName = this.users[0].dispatcher.name;
                                     this.globalDispatchProfileurl = this.users[0].dispatcher.profilePicUrl;
+                                    this.globalDispathcerId = this.users[0].dispatcher.id;
                                 }
                                 this.storage.set('user', this.users); 
                         }else{
