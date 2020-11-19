@@ -7,115 +7,147 @@
     </ion-buttons>
     <ion-title>Summary</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="goback()">
-        <ion-icon name="filter" class="iconstyle1"></ion-icon>
+      <ion-button >
+     
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row style="padding-top: 20px;">
-        <ion-row><span style="font-size: 12px; color: #282F39;"><ion-icon name="ellipse" style="font-size: 8px; margin-right: 15px;"></ion-icon>1 Ash Park, Pembroke Dock, SA72</span></ion-row>
-        <ion-row><span style="font-size: 12px; color: #282F39;"><ion-icon name="square" style="font-size: 8px; margin-right: 15px; color: #EF6102;"></ion-icon>54 Hollybank Rd, Southampton</span></ion-row>
+<div style="padding: 15px;">
+  <ion-row >
+    <ion-col size="12">
+      <ion-row>
+        <ion-col size="12">
+        <span style="font-size: 12px; color: #282F39;">
+          <ion-icon name="square" style="font-size: 8px; margin-right: 15px; color: #EF6102;"></ion-icon>
+          {{checkoutassist.deliveryLocation?.name}},  {{checkoutassist.pickupCenter}}, {{checkoutassist.shipToState}}</span>
+        </ion-col> 
+        </ion-row>
+    </ion-col>
     </ion-row>
-  </ion-grid>
 
-  <ion-grid>
-    <ion-row style="background-color:#F2F5F7">
-      <ion-col size="7" style="justify-content: center; display: flex; flex-direction: column;"><span>ITEM 1 OF 10</span></ion-col>
-      <ion-col size="5">
-        <a href="javascript:void(0)" (click)="goback()" style="font-size: 14px; float: right; background: transparent; border: none; padding: 0; outline: none;">Next
-        <ion-icon name="arrow-forward"></ion-icon>
-        </a></ion-col>
-    </ion-row>
-  </ion-grid>
+    <ion-row >
+      <ion-col size="6">
+        Checkout Processing
+      </ion-col>
+      <ion-col size="6">
+        <span style="font-size: 12px; color: #282F39;float: right;">
+         {{checkoutassist.checkoutProcessing}}
+        </span>
+
+      </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col size="6">
+         Booking Status
+        </ion-col>
+        <ion-col size="6">
+          <span style="font-size: 12px; color: #282F39;float: right;color: #EF6102;">
+           {{checkoutassist.bookingStatus?.name}}
+          </span>
+        </ion-col>
+        </ion-row>
+</div>
+   
+<div style="width: 100%;background-color:#F2F5F7; padding: 10px 15px;">
+  <ion-row >
+    <ion-col size="7" style="justify-content: center; display: flex; flex-direction: column;">
+      <span>ITEM {{currentPage + 1}} OF {{productSize}}</span></ion-col>
+    <ion-col size="5">
+      <span>
+        <ion-icon *ngIf="(currentPage + 1) < productSize && (currentPage) != 0" name="chevron-back" (click)="rednavItem(currentPage)"></ion-icon> &nbsp; &nbsp;
+        <ion-icon *ngIf="(currentPage) > 0 && (currentPage+1) != productSize" name="chevron-forward" (click)="incnavItem(currentPage)"></ion-icon>
+      </span>
+      <a *ngIf="currentPage == 0" href="javascript:void(0)" (click)="incnavItem(currentPage)" style="font-size: 14px; float: right; background: transparent; border: none; padding: 0; outline: none;">
+        Next
+      <ion-icon name="arrow-forward"></ion-icon>
+      </a>
+      <a *ngIf="(currentPage + 1) == productSize" href="javascript:void(0)" (click)="rednavItem(currentPage)" style="font-size: 14px; float: right; background: transparent; border: none; padding: 0; outline: none;">
+      <ion-icon name="arrow-back"></ion-icon>
+      Previous
+      </a>
+    </ion-col>
+  </ion-row>
+</div>
+
+
 
     <ion-grid style="background-color: #fff; border-radius: 5px; margin: 10px;">
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Product</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">iPhone 12</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Product</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.name}}</span></ion-col>
       </ion-row>
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">URL</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">61 LBs</span></ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Quantity</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">14</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">URL</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;width:100%;float: right;text-overflow:ellipsis;">{{currentItem.url}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Delivery Type</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">International</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Quantity</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.quantity}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Colour</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">Yellow</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Delivery Type</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.delivery}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Size</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">181cm x 160cm</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Colour</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.color}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Style</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">Apple Style</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Size</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.size}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Item Number</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">5CB10GDF</span></ion-col>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Style</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.style}}</span></ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="4"><span style="font-size: 12px; color: #282F39;">Item Number</span></ion-col>
+        <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.itemNumber}}</span></ion-col>
       </ion-row>
     </ion-grid>
-
-    <ion-grid>
+    <div style="width: 100%;background-color:#F2F5F7; padding: 10px 15px;">
       <ion-row style="background-color:#F2F5F7">
         <ion-col><span>COST SUMMARY</span></ion-col>
       </ion-row>
+    </div>
+    <div style="padding: 15px;">
+     
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Admin Fee</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">N54,000</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Service Charge</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.serviceCharge | number: '.2'}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Charge per unit weight (Lbs)</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">N12,000</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Products Cost</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.productsCost | number: '.2'}}</span></ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Estimated Package Weight</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">N21,000</span></ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Charge for Package (Import) (USA)</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">N4,600</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Shipping Cost</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.shippingCost | number: '.2'}}</span></ion-col>
       </ion-row>
 
       <ion-row style="color: #EF6102;">
-        <ion-col size="7"><span style="font-size: 12px; color: #282F39;">Your payment</span></ion-col>
-        <ion-col size="5"><span style="font-size: 12px; color: #282F39;">N4,600</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Total Cost</span></ion-col>
+        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{checkoutassist.totalCost | number: '.2'}}</span></ion-col>
       </ion-row>
 
-      <ion-row style="background-color: #F2F5F7;">
-        <div style="padding: 10px;"></div>
-        <span style="color: #444F63;">Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight Please also make provision for an extra unit weight for packaging</span>
-      </ion-row>
-    </ion-grid>
-
-    <div style="display:flex; padding: 10px;">
-        <ion-button class="cta1" expand="block" fill="outline">
-          <ion-label>CANCEL</ion-label>
-        </ion-button>
-        <ion-button class="cta" expand="block" fill="default">
-          <ion-label>SUBMIT</ion-label>
-        </ion-button>
+     
+  
     </div>
+    <div style="padding: 15px;background-color: #F2F5F7;">
+      <span style="color: #444F63;">Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight Please also make provision for an extra unit weight for packaging</span>
+    </div>
+<div style="padding: 10px;"></div>
 
 </ion-content>

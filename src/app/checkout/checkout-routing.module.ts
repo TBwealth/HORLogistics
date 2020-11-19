@@ -20,13 +20,10 @@ const routes: Routes = [
   {
     path: 'rating',
     component: RatingsComponent
-  },  {
-    path: 'checkoutlist',
-    loadChildren: () => import('./checkoutlist/checkoutlist.module').then( m => m.CheckoutlistPageModule)
   },
   {
-    path: 'checkoutsummary',
-    loadChildren: () => import('./checkoutsummary/checkoutsummary.module').then( m => m.CheckoutsummaryPageModule)
+    path: 'checkoutlist',
+    loadChildren: () => import('./checkoutlist/checkoutlist.module').then( m => m.CheckoutlistPageModule)
   }
 
 ];

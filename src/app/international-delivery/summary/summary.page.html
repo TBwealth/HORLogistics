@@ -18,10 +18,10 @@
       <span title>Estimated Package Weight</span>
       <span value>{{booking.estimatedPackageWeight}}Lbs</span>
     </app-list-key-value>
-    <app-list-key-value>
+    <!-- <app-list-key-value>
       <span title>Value of Package</span>
       <span value>{{booking.packageValue}}</span>
-    </app-list-key-value>
+    </app-list-key-value> -->
     <app-list-key-value *ngIf="booking.eta">
       <span title>Date</span>
       <span value>{{booking.eta}}</span>
@@ -48,6 +48,10 @@
         <span title>Estimated Package Weight</span>
         <span value>{{booking.estimatedPackageWeight}}</span>
       </app-list-key-value>
+      <app-list-key-value *ngIf="booking.recipientPhone">
+        <span title>Recipient Phone No</span>
+        <span value>{{booking.recipientPhone}}</span>
+      </app-list-key-value>
       <!-- <app-list-key-value>
         <span title>Charge for Package (Import) (USA)</span>
         <span value></span>
@@ -60,14 +64,18 @@
         Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight.
         <br/><br/>Please also make provision for an extra unit weight for packaging
       </p>
-      <div style="display:flex; justify-content: center;">
-        <ion-button class="cta1" expand="block" fill="outline">
-          <ion-label>Cancel</ion-label>
-        </ion-button>
-        <ion-button color="primary" (click)="submit()">
-          <ion-label>Submit</ion-label>
-        </ion-button>
-      </div>
+      <ion-row>
+        <ion-col>
+          <ion-button size="6" class="cta1" expand="block" fill="outline">
+            <ion-label>Cancel</ion-label>
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button size="6" color="primary" expand="block" (click)="submit()">
+            <ion-label>Submit</ion-label>
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ng-template>
   </div>
 </app-page-structure>

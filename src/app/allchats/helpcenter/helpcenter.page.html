@@ -10,7 +10,15 @@
 </ion-header>
 
 <ion-content>
-
+  <div *ngFor="let faq of faqs" style="padding: 10px;">
+    <div style="display: flex; font-weight: bold; line-height: 20px;"  (click)="toggle(faq)">
+      <ion-label style="flex: auto; padding-right: 20px;">{{faq.question}}?</ion-label>
+      <ion-icon *ngIf="!faq.show" name="add-outline"></ion-icon>
+      <ion-icon *ngIf="faq.show" name="remove-outline"></ion-icon>
+    </div>
+    <!-- <div style="padding: 2px;"></div> -->
+    <ion-label style="margin-top: 5px; white-space: pre-line;" *ngIf="faq.show">{{faq.answer}}</ion-label>
+  </div>
 </ion-content>
 <ion-footer >
   <div style="text-align: center; width: 100%;">

@@ -40,7 +40,7 @@ export class AppComponent {
     {
       title: 'CheckOut Assistance',
       url: '/checkoutlist',
-      icon: 'receipt-outline',
+      icon: 'reader-outline',
       userRole: ['Customer','Partner']
     },
     {

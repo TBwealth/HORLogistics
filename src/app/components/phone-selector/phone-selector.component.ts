@@ -11,7 +11,10 @@ import libphonenumber from 'google-libphonenumber';
 export class PhoneSelectorComponent implements OnInit {
   phoneNo = ''
   @Input() set value(val: string){
-    this.phoneNo = val
+    if(val.length >= 4){
+      this.phoneNo = val.slice(4)
+    }
+    // this.phoneNo = val
   }
   @Output() valueChange = new EventEmitter<string>()
   alpha2Code = "NG";

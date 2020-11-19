@@ -101,15 +101,15 @@
       Receiver’s Number
     </ion-label>
     </ion-col>
-    <ion-col size="7" >
-      <ion-label style="float: right;font-style:normal;">
-      {{orderdetails.recipientPhoneNumber}}
+
+    <ion-col size="8" (click)="NumberDialer(orderdetails.recipientPhoneNumber)">
+      
+      <ion-label style="float: right;font-style:normal;color: #EF6102;">
+        <ion-icon style="font-size: 14px;"  name="call"></ion-icon>
+      &nbsp;{{orderdetails.recipientPhoneNumber}}
       </ion-label>
     </ion-col>
-    <ion-col size="1" >
-      <ion-icon style="font-size: 22px;" (click)="NumberDialer(orderdetails.recipientPhoneNumber)" name="call-outline"></ion-icon>
-     
-    </ion-col>
+   
   </ion-row>
 
 </div>

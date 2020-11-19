@@ -98,15 +98,21 @@ export class LocaldeliveryPage implements OnInit {
 
   get minDeliveryDate(){
     let timestamp = 0
-    const today = Number(new Date())
+    const now = new Date()
+    const todayAt12 = new Date()
+    todayAt12.setHours(12, 0, 0, 0)
     const millisInDay = 24 * 60 * 60 * 1000
+    let today = Number(now)
+    if(todayAt12 < now){
+      today = today + millisInDay
+    }
     if(!this.selectedBookingCategory.estimatedPackageWeight){
-      timestamp =  today + millisInDay
+      timestamp =  today
     } else {
       if(this.local_delivery.categioryId == 2){
-        timestamp = today  +  3 * millisInDay
+        timestamp = today  +  2 * millisInDay
       } else {
-        timestamp = today  +  2 * millisInDay 
+        timestamp = today  +  1 * millisInDay 
       }
     }
     const date:any = new Date(timestamp)
@@ -128,7 +134,7 @@ export class LocaldeliveryPage implements OnInit {
     yesfn(event){
       if(event.detail.checked) this.checkedIdx = true;
     }
-  
+  *
     nofn(event){
       if(event.detail.checked) this.checkedIdx = false;
      }
@@ -139,7 +145,6 @@ export class LocaldeliveryPage implements OnInit {
     })
     this.bookingService.localbookingcategory().subscribe(data => {
       this.bookingCategories = data.data
-      console.log(this.bookingCategories)
     })
     this.getcountry();
     this.getCountryFlag("NG",'')
@@ -173,7 +178,16 @@ this.packageDeliveryPanel = true;
 }
 
 validateDeliveryForm(){
-  console.log(this.local_delivery);
+  if(this.local_delivery.delivery_busstop == this.pickup_details.pickup_busstop){
+    this.local_delivery.delivery_busstop = null
+    const toast = this.toastCtrl.create({
+      duration: 3000,
+      message: "Pickup and delivery bustop can't be same",
+      color: "danger"
+    }).then(toast => {
+      toast.present();
+    })
+  }
   if(this.local_delivery.delivery_address &&
     !this.deliveryphoneError && 
     this.local_delivery.delivery_busstop &&
@@ -208,7 +222,6 @@ this.packageDeliveryPanel = true;
      }
      getcountry() {
    this.ICountrys = this.Cservice.setItems(); 
-   // console.log(this.ICountrys);
    this.alpha2Code = "NG";
    this.deliveryAlpha2Code   = "NG";
       }
@@ -345,15 +358,16 @@ if(isValidNumber){
   gotoSummary(){
     this.saveBooking()
     this.store.saveBookings(this.bookings).then(data => {
-      console.log('submitted')
       this.router.navigate(['localdelivery/review-booking'])
     })
   }
 
   getLocations(){
     this.locationService.category(this.pickup_details.booking_category).subscribe(data => {
-      console.log(data)
       this.locations = data
+      this.pickup_details.pickup_busstop = this.locations[0].id
+      this.local_delivery.delivery_busstop = this.locations[1].id
+      console.log(this.pickup_details)
     })
     this.selectedBookingCategory = this.bookingCategories.find(member => {
       return member.id == this.pickup_details.booking_category

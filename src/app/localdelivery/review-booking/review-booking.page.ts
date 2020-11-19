@@ -76,16 +76,17 @@ export class ReviewBookingPage implements OnInit {
   async ngOnInit() {
     this.customerType = this.authService.globalUserType.value
     this.bookings = await this.store.getBookings()
-    console.log(this.bookings)
     // this.booking = this.bookings[0]
-    this.maproute.addressEnd = this.booking.deliveryAddress;
-    this.maproute.addressStart = this.booking.pickUpAddress;
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
     this.localBookingCosts = this.bookings.map(booking => new LocalBookingCost(booking, new LocalRouteRate()))
     this.bookings.forEach((booking, index) => {
       this.localRouteRateService.delivery_type(booking.pickupLocationId, booking.deliveryLocationId, booking.deliveryTypeId, booking.localBookingCategoryId).subscribe(response => {
         this.localBookingCosts[index] = new LocalBookingCost(booking, response.localRouteRate)
       })
     })
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
   async SubmitBookings(){
@@ -134,6 +135,8 @@ export class ReviewBookingPage implements OnInit {
     if(this.selectedBookingIndex >= this.bookings.length){
       this.selectedBookingIndex = 0
     }
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
   showPrevBooking(){
@@ -141,6 +144,8 @@ export class ReviewBookingPage implements OnInit {
     if(this.selectedBookingIndex < 0){
       this.selectedBookingIndex = this.bookings.length - 1
     }
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
 }

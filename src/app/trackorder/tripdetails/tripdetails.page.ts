@@ -61,7 +61,7 @@ export class TripdetailsPage implements OnInit {
       }
       }
   goback(){
-    this.navCtrl.back();
+    this.router.navigate(['home']);
   }
 
 
@@ -76,10 +76,10 @@ export class TripdetailsPage implements OnInit {
       await this.loading.present();
       this.localBookingService.trackorder(data.orderNumber).subscribe(async data=>{
         if(data.code == "000"){
-          this.orderDetails = data.data;
-          const plateNo =this.orderDetails.dispatcher.plateNumber
+          this.orderDetails = data.data;         
           const trackStatus = [4]
           if(this.orderDetails.bookingStatusId == 3){
+            const plateNo =this.orderDetails.dispatcher.plateNumber
             this.trackerAPi.trackOrder(plateNo).then(response => {
               const trackingDetails: VehicleLocation = response.data[plateNo]
               trackingDetails.lat = Number(trackingDetails.lat)
@@ -113,6 +113,7 @@ export class TripdetailsPage implements OnInit {
           });
           toast.present();
         }else{
+          this.loading.dismiss();
           const toast = await this.toastCtrl.create({
             duration: 3000,
             message: data.message,
@@ -122,9 +123,19 @@ export class TripdetailsPage implements OnInit {
           if(data.code == "004"){
             this.router.navigate(['login']);
           }
+          this.router.navigate(['trackorder']);
         }
         
     
+      },async error =>{
+        this.loading.dismiss();
+        const toast = await this.toastCtrl.create({
+          duration: 3000,
+          message: 'Oops! something went wrong',
+          color: "danger"
+        });
+        toast.present();
+        this.router.navigate(['trackorder']);
       })
     }
     });

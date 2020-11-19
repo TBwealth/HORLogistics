@@ -76,18 +76,18 @@ addressEnd: any;
               directionsRenderer.setDirections(response);
               var leg = response.routes[ 0 ].legs[ 0 ];
             this.makeMarker( leg.start_location, {
-              url: 'http://localhost:8100/assets/images/start.png',
+              url: 'https://res.cloudinary.com/de-techy-empire/image/upload/v1605710722/HOR/start.png',
               scaledSize: new google.maps.Size( 11, 8 )
             }, "Start" );
             this.makeMarker( leg.end_location, {
-              url: 'http://localhost:8100/assets/images/end.png',
+              url: 'https://res.cloudinary.com/de-techy-empire/image/upload/v1605710733/HOR/end.png',
               scaledSize: new google.maps.Size( 11, 8 )
             }, 'End' );
   
             } else {
               const toast = await this.toastCtrl.create({
                 duration: 3000,
-                message: "Directions request failed due to " + status,
+                message: "Opps, an error occurred while trying to load direction",
                 color: "danger"
               });
               toast.present();
