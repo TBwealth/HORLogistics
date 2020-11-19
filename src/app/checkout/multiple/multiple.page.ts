@@ -1,13 +1,14 @@
+import { LocationsServiceProxy } from './../../_services/service-proxies';
 import { AuthService } from './../../_services/auth.service';
 import { NeworderComponent } from './../neworder/neworder.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,EventEmitter, Input, Output  } from '@angular/core';
 import {FormGroup } from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { CheckoutassistanceServiceProxy, ManageServiceProxy } from 'src/app/_services/service-proxies';
-import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO, CheckOutAssistanceModel,ObjectResourceOfUserViewModel } from 'src/app/_models/service-models';
+import { CheckOutAssistanceProductModel, CheckOutAssistanceDTO, CheckOutAssistanceModel, ObjectResourceOfUserViewModel, ResidentialState, Location } from 'src/app/_models/service-models';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 
 
@@ -17,12 +18,21 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
   styleUrls: ['./multiple.page.scss'],
 })
 export class MultiplePage implements OnInit {
+  // @Input() set value(val: number){
+  //   this.location = val
+  // }
+  // @Output() valueChange = new EventEmitter<number>()
+  // location: number;
+  // state: number;
+
   isMultiple = false;
   checkedIdx = true;
   activetab:string = "";
   homedelivery:string = ""
   totalOrders = [];
   loading: any;
+  myState:ResidentialState[]= [];
+  myLocation: Location[] = [];
     
   productDescriptionPanel: boolean = false;
   deliveryDetailsPanel: boolean = true;
@@ -51,12 +61,14 @@ export class MultiplePage implements OnInit {
     private checkout: CheckoutassistanceServiceProxy,
     private activeUser: ManageServiceProxy,
     public AuthService: AuthenticationService,
-    private loadingCtrl: LoadingController) { }
+    private loadingCtrl: LoadingController,
+    private stateOffice: LocationsServiceProxy) { }
 
   ngOnInit() {
+    this.getOfficeState();
     this.checkOutAsst.products = [];
     this.activatedroute.queryParamMap.subscribe(data => {
-      this.isMultiple = data.get('multiple') == 'false';
+    this.isMultiple = data.get('multiple') == 'false';
     })
   }
 
@@ -155,57 +167,8 @@ clearForm(){
   this.submitOrders();
   this.productDescriptionPanel = false;
   this.deliveryDetailsPanel  = true;
-  //this.addNewPanel = false;
-//  this.activetab = "product_description";
 }
 
-// onSubmit(){
-//   let productDetails = new CheckOutAssistanceProductModel()
-//   //Product details
-//   productDetails.name = this.product_desc.name;
-//   productDetails.quantity = this.product_desc.quantity;
-//   productDetails.size = this.product_desc.size;
-//   productDetails.color = this.product_desc.color;
-//   productDetails.url = this.product_desc.url;
-//   productDetails.delivery = this.product_desc.delivery
-//   productDetails.itemNumber = this.product_desc.itemNumber
-//   productDetails.comment = this.product_desc.comment;
-//   productDetails.style = this.product_desc.style;
-
-//   //Delivery Details
-//   let RequestDetails = new CheckOutAssistanceModel();
-//   this.activeUser.getAuthenticatedUserdatail().subscribe((data:ObjectResourceOfUserViewModel) => {
-//     this.authuserdetails = data;
-    
-//     if(this.checkedIdx = true)
-//     {
-//       this.request_desc.checkoutProcessing = 'home';
-//       this.request_desc.pickupCenter = null;
-//     } else {
-//       this.request_desc.checkoutProcessing = 'pickup';
-//       this.request_desc.customerAddress = null;
-//       this.request_desc.shipToState = null; 
-//       this.request_desc.deliveryLocationId = 0;
-//     }
-  
-//     RequestDetails.checkoutProcessing = this.request_desc.checkoutProcessing;
-//     RequestDetails.customerAddress = this.authuserdetails.data.customer.homeAddress;
-//     RequestDetails.customerName = this.authuserdetails.data.customer.fullName;
-//     RequestDetails.customerPhone = this.authuserdetails.data.user.phoneNumber;
-//     RequestDetails.shipToState = this.request_desc.shipToState;
-//     RequestDetails.pickupCenter = this.request_desc.pickupCenter;
-//     RequestDetails.deliveryLocationId = this.authuserdetails.data.customer.closestBustopId;
-//     this.checkOutAsst.request;
-//     this.checkOutAsst.products.push(productDetails);
-//     this.checkOutAsst.request = RequestDetails;
-//     console.log(this.checkOutAsst);
-//     this.product_desc = new CheckOutAssistanceProductModel().clone();
-//     this.request_desc = new CheckOutAssistanceModel().clone();
-    
-//   })
-
-  
-// }
 
   submitOrders() {
   
@@ -292,11 +255,45 @@ async finalsubmit(){
     loading.dismiss();
   })
 }
-// saveOrder() {
-//   this.gotoSummary();
-  
-// }
 
+async getLocation(stateId){
+  const loading = await this.loadingCtrl.create({
+    cssClass: 'my-custom-class',
+    message: 'Please wait...',
+    duration: 2000
+  });
+  await loading.present();
+  this.stateOffice.getLocationinstate(stateId).subscribe(data => {
+    if(data.code == "000"){
+      this.myLocation = data.data;
+      loading.dismiss();
+    }else{
+      loading.dismiss();
+      if(data.code == "004"){
+this.router.navigate(['preferedaction'])
+      }
+    }
+    
+  },async error=>{
+    loading.dismiss();
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: "Oops! something went wrong",
+      color: "danger"
+    });
+    toast.present();
+  })
+}
+getOfficeState(){
+  this.stateOffice.getOfficeState().subscribe(data => {
+    this.myState = data.data;
+    console.log(this.myState);
+  })
+}
+
+//  locationChanged(){
+//     this.valueChange.emit(this.location)
+//   }
 
 gotoSummary(){
   //this.onSubmit()

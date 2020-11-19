@@ -24,7 +24,6 @@
       <form  #myForm="ngForm" name="myForm">
       <div *ngSwitchCase="product_description">
           <ion-grid style="padding: 10px;">
-            
               <div style="padding: 5px;"></div>
               <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_name="ngModel" name="product_name" placeholder="Product Name" [(ngModel)]="product_desc.name" required></ion-input>
               <div *ngIf="product_name.invalid && (product_name.dirty || product_name.touched)" class="error">
@@ -118,18 +117,23 @@
                   <!-- <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_state="ngModel" name="delivery_state" placeholder="Delivery State" [(ngModel)]="request_desc.shipToState" required></ion-input>
                   <div *ngIf="delivery_state.invalid && (delivery_state.dirty || delivery_state.touched)" class="error"></div>
                   <div *ngIf="delivery_state.errors.required">State is required</div> -->
-                  <ion-select (keyup)="validateDeliveryDetailsForm()" #delivery_state="ngModel" name="delivery_state" placeholder="State" [(ngModel)]="request_desc.shipToState" required>
-                    <ion-select-option value="Lagos">Lagos</ion-select-option>
-                    <ion-select-option value="Abuja">Abuja</ion-select-option>
-                    <ion-select-option value="Ibadan">Ibadan</ion-select-option>
+                  <div style="border:1px solid #dddada; border-radius: 5px;" >
+                  <ion-select (ionChange)="getLocation(delivery_state.value)" #delivery_state="ngModel" name="delivery_state" placeholder="State" [(ngModel)]="request_desc.shipToState" required>
+                    <ion-select-option *ngFor="let state of myState" [value]="state.id">{{state.name}}</ion-select-option> 
                   </ion-select>
                   <div *ngIf="delivery_state.invalid && (delivery_state.dirty || delivery_state.touched)" class="error">
                   <div *ngIf="delivery_state.errors.required">State is required</div>
-                  </div>  
+                  </div>
+                  </div> 
         
                   
                   <div style="padding: 5px;"></div>
-                  <ion-input type="text" (keyup)="validateDeliveryDetailsForm()" #delivery_location="ngModel" name="delivery_location" placeholder="Delivery Location" [(ngModel)]="request_desc.deliveryLocationId" required></ion-input>
+                  <div style="border:1px solid #dddada; border-radius: 5px;">
+                  <ion-select  #delivery_location="ngModel" name="delivery_location" placeholder="Delivery Location" [(ngModel)]="request_desc.deliveryLocationId" required>
+                    <ion-select-option *ngFor="let location of myLocation" [value]="location.id">{{location.name}}</ion-select-option>
+                  </ion-select>
+                  </div>
+                  
                   <div *ngIf="delivery_location.invalid && (delivery_location.dirty || delivery_location.touched)" class="error">
                   <div *ngIf="delivery_location.errors.required">Location is required</div>
                   </div>

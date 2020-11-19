@@ -11,15 +11,13 @@
 </ion-header>
 
 <ion-content>
-<div style="padding: 10px;">
-<h4>Article 1</h4>
-<h6>Who May Use the Services</h6>
-<p>When one door of happiness closes, another opens, but often we look so long at the closed door that we do not see the one that has been opened for us.</p>
-<h4>Policy</h4>
-<p>
-  When one door of happiness closes, another opens, but often we look so long at the closed door that we do not see the one that has been opened for us.
-</p>
-<div style="padding: 5px;"></div>
-<ion-button  class="pryColor" (click)="contineandagree()"  expand="block" >CONTINUE & AGREE</ion-button>
+  <ion-row style="word-wrap: normal; text-justify: distribute;">
+    <h4 style="padding:8px;">Terms and Conditions</h4>
+      <div style="padding: 10px;">
+      <p style="overflow-wrap: break-word; word-wrap: break-word;"> {{ Newterms.tcValue }} </p>
+      <div style="padding: 5px;"></div>
+      <ion-button  class="pryColor" (click)="contineandagree()"  expand="block" >CONTINUE & AGREE</ion-button>
 </div>
+</ion-row>
+  
 </ion-content>
