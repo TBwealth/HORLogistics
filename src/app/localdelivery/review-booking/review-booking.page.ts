@@ -85,8 +85,8 @@ export class ReviewBookingPage implements OnInit {
         this.localBookingCosts[index] = new LocalBookingCost(booking, response.localRouteRate)
       })
     })
-    this.maproute.addressEnd = this.booking.deliveryAddress;
-    this.maproute.addressStart = this.booking.pickUpAddress;
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
   async SubmitBookings(){
@@ -135,8 +135,8 @@ export class ReviewBookingPage implements OnInit {
     if(this.selectedBookingIndex >= this.bookings.length){
       this.selectedBookingIndex = 0
     }
-    this.maproute.addressEnd = this.booking.deliveryAddress;
-    this.maproute.addressStart = this.booking.pickUpAddress;
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
   showPrevBooking(){
@@ -144,8 +144,8 @@ export class ReviewBookingPage implements OnInit {
     if(this.selectedBookingIndex < 0){
       this.selectedBookingIndex = this.bookings.length - 1
     }
-    this.maproute.addressEnd = this.booking.deliveryAddress;
-    this.maproute.addressStart = this.booking.pickUpAddress;
+    // this.maproute.addressEnd = this.booking.deliveryAddress;
+    // this.maproute.addressStart = this.booking.pickUpAddress;
   }
 
 }

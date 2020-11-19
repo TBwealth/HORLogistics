@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content [ngSwitch]="activetab">
   <ion-grid>
-    <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;">
+    <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;" class="select-border">
       <ion-img src="assets/images/booking.png" class="myicons" slot="start" style="background-color: #E2E4EB;"></ion-img>
       <ion-label class="mylabel">Shipment mode</ion-label>
       <ion-select (ionChange)="validateBookingForm()" (keyup)="validateBookingForm()" name="booking_category" class="select" [(ngModel)]="booking.shipmentModeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()">
@@ -18,7 +18,7 @@
       </ion-select>
     </ion-item>
 
-  <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;" *ngIf="!exportPage">
+  <ion-item lines="none" style="padding-left: 15px; border: 1px; border-radius: 5px; font-size: 13px; color: #78849E;" *ngIf="!exportPage"  class="select-border">
     <ion-img src="assets/images/booking.png" class="myicons" slot="start" style="background-color: #E2E4EB;"></ion-img>
     <ion-label class="mylabel">Booking Category</ion-label>
     <ion-select (ionChange)="validateBookingForm()" (keyup)="validateBookingForm()" name="booking_category" class="select" [(ngModel)]="booking.kindOfBooking" #booking_category="ngModel" required>
@@ -42,7 +42,7 @@
     <form name="DescriptionForm" #DescriptionForm="ngForm">
       <p style="word-wrap: break-word;">We do not open packages except in extreme circumstances where package is suspicious, or flagged by customs. We however need to know the content as required by law</p>
       <ion-col size=3>
-        <ion-select placeholder="country" class="form-control" #selectCount  [(ngModel)]="booking.country"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button" required (ngModelChange)="countrySelected()">
+        <ion-select placeholder="country" #selectCount  [(ngModel)]="booking.country"  cancelText="Cancel" name="deliveryAlpha2Code" okText="OK" style="border-radius: 5px; border: 1px;" class="custom-button form-control select-border" required (ngModelChange)="countrySelected()">
           <ion-select-option value="USA" *ngIf="!exportPage"> USA </ion-select-option>
           <ion-select-option  value="UK" *ngIf="!exportPage"> UK </ion-select-option>
           <ion-select-option  value="CA"> CANADA </ion-select-option>
@@ -109,7 +109,7 @@
 
   <div *ngSwitchCase="delivery_details">
     <form name="deliveryForm" #deliveryForm="ngForm">
-      <ion-select name="delivery_type" class="select" [(ngModel)]="booking.shipmentDeliveryTypeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()" placeholder="Shipment delivery type">
+      <ion-select name="delivery_type" class="select select-border" [(ngModel)]="booking.shipmentDeliveryTypeId" #booking_category="ngModel" required (ngModelChange)="shipmentModeChanged()" placeholder="Shipment delivery type">
         <ion-select-option [value]="mode.id" *ngFor="let mode of shipmentDeliveryTypes">{{mode.name}}</ion-select-option>
       </ion-select>
       <div style="padding: 5px;"></div>

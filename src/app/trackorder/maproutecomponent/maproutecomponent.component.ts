@@ -87,7 +87,7 @@ addressEnd: any;
             } else {
               const toast = await this.toastCtrl.create({
                 duration: 3000,
-                message: "Directions request failed due to " + status,
+                message: "Opps, an error occurred while trying to load direction",
                 color: "danger"
               });
               toast.present();

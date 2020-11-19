@@ -365,6 +365,9 @@ if(isValidNumber){
   getLocations(){
     this.locationService.category(this.pickup_details.booking_category).subscribe(data => {
       this.locations = data
+      this.pickup_details.pickup_busstop = this.locations[0].id
+      this.local_delivery.delivery_busstop = this.locations[1].id
+      console.log(this.pickup_details)
     })
     this.selectedBookingCategory = this.bookingCategories.find(member => {
       return member.id == this.pickup_details.booking_category
