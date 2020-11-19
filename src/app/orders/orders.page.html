@@ -14,9 +14,12 @@
       <ion-label style="color: #E1440B;">REJECTED</ion-label>
     </ion-segment-button> -->
   </ion-segment>
-  <ion-label *ngIf="filteredLocalBookings.length == 0">
-    <small>no order record found</small>
-  </ion-label>
+  <div style="padding: 15px;" *ngIf="filteredLocalBookings.length < 1">
+    <ion-label >
+      <small style="color: #97999c;font-size: 12px;">no order records found</small>
+    </ion-label>
+  </div>
+
   <div *ngFor="let booking of filteredLocalBookings" >
     <ion-label>
       <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">
@@ -81,11 +84,11 @@
             </span></h6>
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="![4,5].includes(booking.bookingStatusId)">
+        <ion-row >
           <ion-col >
-           <span *ngIf="![5,2,9].includes(booking.bookingStatusId)">
+           <span *ngIf="!booking.isPaid && ![11,1,8].includes(booking.bookingStatusId)">
             <a 
-            *ngIf="booking.paymentTypeId == 3 || booking.paymentTypeId == 4"
+            *ngIf="(booking.paymentTypeId == 3 || booking.paymentTypeId == 4)" 
             angular4-paystack
             [email]="AuthenService.globalUserEmail"
             [amount]="(booking.totalCost) * 100"
@@ -117,12 +120,12 @@
              Wallet Payment
                     </a>
                   </span>
-                  <span *ngIf="![11,7,1,12,8].includes(booking.bookingStatusId)" style="color: #049B1B;font-size: 12px;">
+                  <span *ngIf="booking.isPaid" style="color: #049B1B;font-size: 12px;">
                   Paid
                   </span>
-                  <span *ngIf="[11,7,1,12,8].includes(booking.bookingStatusId) " style="color: #b9b7b5;font-size: 12px;">
+                  <span *ngIf="!booking.isPaid && [11,1,8].includes(booking.bookingStatusId) " style="color: #b9b7b5;font-size: 12px;">
                    Payment
-                    </span>
+                  </span>
           </ion-col>
           <ion-col >
             <span *ngIf="![3,4].includes(booking.bookingStatusId)" style="color: #b9b7b5;font-size: 12px;">Track</span>
