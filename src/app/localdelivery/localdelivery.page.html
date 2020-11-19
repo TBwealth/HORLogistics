@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back-outline" class="iconstyle1"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>Local delivery {{mySelectedBookingCategory.name}}</ion-title>
+    <ion-title>Local delivery</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -24,7 +24,7 @@
       <div *ngSwitchCase='pickup'>
     <form name="pickup_detailsForm" id="pickup_detailsForm" #pickup_detailsForm="ngForm">
       <ion-grid>
-          <ion-select (ionChange)="validatePickupForm(); getLocations()" placeholder="Booking Category" name="booking_category" class="select" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
+          <ion-select (ionChange)="validatePickupForm(); getLocations()" placeholder="Booking Category" name="booking_category" class="select select-border" [(ngModel)]="pickup_details.booking_category" #booking_category="ngModel" required>
             <ion-select-option [value]="category.id" *ngFor="let category of bookingCategories">{{category.name}}</ion-select-option>
           </ion-select>
           <div *ngIf="booking_category.invalid && (booking_category.dirty || booking_category.touched)" class="error">
@@ -48,9 +48,10 @@
             </div>
         </div>
           <div style="padding: 5px;"></div>
-          <ion-select (ionChange)="validatePickupForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="pickup_details.pickup_busstop" required>
+          <ion-select (ionChange)="validatePickupForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select  select-border" [(ngModel)]="pickup_details.pickup_busstop" required>
             <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
           </ion-select>
+          <div style="padding: 5px;"></div>
           <ion-row style="border-radius: 5px;border: 0.5px solid #d6d3d3;">
             <ion-col size=2>
               <div style="padding: 5px;"></div>
@@ -97,10 +98,11 @@
     </ion-row>
     <div *ngSwitchCase='delivery'>
       <ion-grid>
-        <ion-select *ngIf="selectedBookingCategory.estimatedPackageWeight"  (ionChange)="validateDeliveryForm()" placeholder="Delivery Type" name="booking_category" class="select" [(ngModel)]="local_delivery.categioryId" #booking_category="ngModel" required>
+        <ion-select *ngIf="selectedBookingCategory.estimatedPackageWeight"  (ionChange)="validateDeliveryForm()" placeholder="Delivery Type" name="booking_category" class="select select-border" [(ngModel)]="local_delivery.categioryId" #booking_category="ngModel" required>
           <ion-select-option [value]="2" >Standard delivery</ion-select-option>
           <ion-select-option [value]="1" >Express delivery</ion-select-option>
         </ion-select>
+        <div style="padding: 5px;"></div>
         <form name="delivery_detailsForm" #delivery_detailsForm="ngForm">
           <ion-datetime [min]="minDeliveryDate" (ionChange)="validateDeliveryForm()" #delivery_date="ngModel" name="delivery_date" id="delivery_date" [(ngModel)]="local_delivery.delivery_date" displayFormat="DD/MM/YYYY" placeholder="Delivery Date" required></ion-datetime>
           <div *ngIf="delivery_date.invalid && (delivery_date.dirty || delivery_date.touched)" class="error">
@@ -140,7 +142,6 @@
             </ion-col>
             <ion-col size=7>
               <ion-input #deliveryphone (keyup)="phoneValidation(deliveryphone.value,'delivery')" placeholder="Phone Number" type="tel" [(ngModel)]="local_delivery.delivery_phone" name="delivery_phone" id="delivery_phone" #deliveryphone="ngModel"  required style="border: none;"></ion-input>
-       
             </ion-col>
           </ion-row> 
           <div style="padding: 2px;"></div>
@@ -149,14 +150,14 @@
         </div>
          
           <div style="padding: 5px;"></div>
-          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_landmark="ngModel" name="delivery_landmark" placeholder="Pickup Landmanrk" [(ngModel)]="local_delivery.delivery_landmark" required></ion-input>
+          <ion-input (keyup)="validateDeliveryForm()" type="text" #delivery_landmark="ngModel" name="delivery_landmark" placeholder="Delivery Landmanrk" [(ngModel)]="local_delivery.delivery_landmark" required></ion-input>
           <div *ngIf="delivery_landmark.invalid && (delivery_landmark.dirty || delivery_landmark.touched)" class="error">
             <div *ngIf="delivery_landmark.errors.required">
               Delivery Landmark is required
             </div>
         </div>
           <div style="padding: 5px;"></div>
-          <ion-select (ionChange)="validateDeliveryForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select" [(ngModel)]="local_delivery.delivery_busstop" required>
+          <ion-select (ionChange)="validateDeliveryForm()" placeholder="Closest Bus Stop" name="pickup_bus_stop" class="select  select-border" [(ngModel)]="local_delivery.delivery_busstop" required>
             <ion-select-option [value]="location.id" *ngFor="let location of locations">{{location.name}}</ion-select-option>
           </ion-select>
         </form>
@@ -203,7 +204,7 @@
               <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.cash_collection_amount" [validators]="[]" type='number' [extraErrors]="[]" label='' name="cash_amount" placeholder='Cash collection amount'></app-text-input>
               <div style="padding: 5px;"></div>
               <app-text-input *ngIf="package_details.cash_collection" [(value)]="package_details.account_number" [validators]="[]" type='text' [extraErrors]="[]" label='' name="cash_bank" placeholder='Cash collection account number'></app-text-input>
-              <ion-select name="delivery_type" class="select" [(ngModel)]="package_details.payment_type" #booking_category="ngModel" required placeholder="Payment type">
+              <ion-select name="delivery_type" class="select  select-border" [(ngModel)]="package_details.payment_type" #booking_category="ngModel" required placeholder="Payment type">
                 <ion-select-option [value]="mode.id" *ngFor="let mode of paymentTypes">{{mode.name}}</ion-select-option>
               </ion-select>
               <div style="padding: 5px;"></div>
