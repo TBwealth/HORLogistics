@@ -56,6 +56,7 @@ export class OrdersPage implements OnInit {
 
   ionViewWillEnter(){
     this.getintials()  
+    this.segmentChanged(SEGMENTS.PENDING);
   }
   paymentInit(){
 

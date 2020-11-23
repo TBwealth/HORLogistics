@@ -72,12 +72,14 @@
       <span *ngIf="riderStatus == 1">You are Online!</span>
       <span *ngIf="riderStatus == 5">You are Available!</span>
       <span *ngIf="riderStatus == 8">Your Profile is pending Approval!</span>
+      <span *ngIf="riderStatus == 6">Your Profile is now Active!</span>
     </p>
     <div class="circleContainer" (click)="toggledriverStatus()" *ngIf="[1,2].includes(riderStatus)">
       <div [ngClass]="{'riderStatusClass': riderStatus == '2', 'riderStatusClass2': riderStatus == '1'}" >
         <div [ngClass]="{'innerriderStatusClass': riderStatus == '2', 'innerriderStatusClass2': riderStatus == '1'}">
            <span *ngIf="riderStatus == 1">STOP</span>
           <span *ngIf="riderStatus == 2">GO</span>
+          
         </div>
       
       </div>
@@ -85,9 +87,16 @@
     <div class="circleContainer" (click)="toggledriverStatus()" *ngIf="riderStatus == 5">
       <div class="riderStatusClass2" >
         <div class="innerriderStatusClass2">
-           <span *ngIf="riderStatus == 5">STOP</span>      
+           <span *ngIf="riderStatus == 5">GO</span>      
         </div>      
       </div>
     </div>   
+    <div class="circleContainer" (click)="toggledriverStatus()" *ngIf="riderStatus == 6">
+      <div class="riderStatusClass2" >
+        <div class="innerriderStatusClass2">
+           <span *ngIf="riderStatus == 6">GO</span>      
+        </div>      
+      </div>
+    </div> 
     </div>
 </ion-content>

@@ -31,7 +31,7 @@
               </div>
               
               <div style="padding: 5px;"></div>
-              <ion-input (keyup)="validateProductDescriptionForm()" type="text" #product_url="ngModel" name="product_url" placeholder="Product URL" [(ngModel)]="product_desc.url" required></ion-input>
+              <ion-input (keyup)="validateProductDescriptionForm()" type="url" #product_url="ngModel" name="product_url" placeholder="Product URL" [(ngModel)]="product_desc.url" required></ion-input>
               <div *ngIf="product_url.invalid && (product_url.dirty || product_url.touched)" class="error">
               <div *ngIf="product_url.errors.required">Product URL is required</div>
               </div>
@@ -163,7 +163,7 @@
         <ion-button class="cta1" expand="block" fill="outline">
           <ion-label>Cancel</ion-label>
         </ion-button>
-        <ion-button class="cta" expand="block" (click)="finalsubmit()" [disabled]="!myForm.valid" fill="default">
+        <ion-button class="cta" expand="block" (click)="finalsubmit()" [disabled]="myForm.invalid" fill="default">
           <ion-label>Apply</ion-label>
         </ion-button>
         </div>

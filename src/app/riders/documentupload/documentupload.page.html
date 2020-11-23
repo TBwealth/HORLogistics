@@ -68,9 +68,17 @@
 </ion-content>
 
 <ion-footer class="ion-no-border">
-  <ion-button (click)="update()" class="pryColor " expand="block" fill="fill">DONE</ion-button>
-  <div style="padding:5px;"></div>
-  <ion-button expand="block"  class="blacksecColor" (click)="goback()">
-    Cancel
-  </ion-button>
+  <ion-row>
+    <ion-col size="6">
+      <ion-button expand="block"  class="blacksecColor" (click)="goback()">
+        Cancel
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button (click)="update()" class="pryColor " expand="block" fill="fill">DONE</ion-button>
+    </ion-col>
+ 
+  </ion-row>
+ 
+  
 </ion-footer>

@@ -4,7 +4,7 @@ import { AlertController, LoadingController, NavController, ToastController } fr
 import { Dispatcher } from 'src/app/_models/service-models';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { MaprouteService } from 'src/app/_services/maproute.service';
-import { RiderServiceProxy } from 'src/app/_services/service-proxies';
+import { LocalBookingServiceProxy, RiderServiceProxy } from 'src/app/_services/service-proxies';
 
 enum SEGMENTS {
   PENDING,
@@ -28,6 +28,7 @@ export class RidershistoryPage implements OnInit {
   dispatcherId: number;
   ListResourceOfOrder = [];
   pageNumber: number = 1;
+  bookingStatus=[];
   constructor(private navCtrl: NavController,
     private router: Router,
     private toastCtrl: ToastController,
@@ -35,12 +36,26 @@ export class RidershistoryPage implements OnInit {
     private loadspinner: LoadingController,
     private riderService: RiderServiceProxy,
     private AuthenService: AuthenticationService,
-    private maprouteService: MaprouteService) { }
+    private maprouteService: MaprouteService,
+    private localBookingService: LocalBookingServiceProxy,) { }
 
     ionViewWillEnter(){
       this.getAssignedOrder();
+      this.getbookingStatus()
     }
-
+    getbookingStatus(){
+      this.localBookingService.localbookingstatus().subscribe(data=>{
+        this.bookingStatus = data.data;
+      })
+      }
+    getOrderStatusName(statusId){
+      if(this.bookingStatus.length > 0){
+      var stFound = this.bookingStatus.find(x=>x.id == statusId);
+      return stFound.name
+      }else{
+        return null
+      }
+      }
   async getAssignedOrder(){
     this.loading = await this.loadspinner.create({
       message: "please wait...",

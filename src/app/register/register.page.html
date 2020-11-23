@@ -29,7 +29,8 @@
               </div>
           </div>
         </span>
-          <span *ngIf="customerType == 'customer' || 'rider'">
+
+          <span *ngIf="customerType == 'customer' || customerType == 'rider'">
           <ion-label for="" class="control-label">Full Name</ion-label>
           <div style="padding: 5px;"></div>
           <ion-input placeholder="Full Name" type="text" name="fullName" id="fullName" [(ngModel)]="regUser.fullName" #fullName="ngModel"  ></ion-input>

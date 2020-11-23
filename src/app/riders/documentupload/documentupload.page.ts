@@ -139,11 +139,11 @@ converttobase64(uri,filekey, fileType, fileObj){
   this.base64.encodeFile(uri).then(async (base64File: string) => {
     console.log('base64',base64File )
     console.log(base64File.split(",")[1])
-    console.log('dispatcher id',this.AuthenService.globalDispathcerId.value);
+    console.log('dispatcher id',this.dispatcher.id);
     this.userphotoviewmodel.file = base64File.split(",")[1];
     this.userphotoviewmodel.fileExtension = "."+  fileType;
     this.userphotoviewmodel.fileSize = fileObj.size;
-    this.userphotoviewmodel.dispatcherId = this.AuthenService.globalDispathcerId.value;
+    this.userphotoviewmodel.dispatcherId = this.dispatcher.id;
     this.userphotoviewmodel.fileName = filekey
 
     if(this.arrayType.indexOf(fileType) > -1){

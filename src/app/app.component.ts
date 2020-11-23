@@ -35,7 +35,7 @@ export class AppComponent {
       title: 'Orders',
       url: '/orders',
       icon: 'receipt-outline',
-      userRole: ['Customer']
+      userRole: ['Customer','Partner']
     },
     {
       title: 'CheckOut Assistance',

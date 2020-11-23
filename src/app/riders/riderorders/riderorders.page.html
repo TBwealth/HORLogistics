@@ -10,6 +10,11 @@
 </ion-header>
 
 <ion-content>
+  <div style="padding: 15px;" *ngIf="ListResourceOfOrder.length < 1">
+    <ion-label >
+      <small style="color: #97999c;font-size: 12px;">no order records found</small>
+    </ion-label>
+  </div>
   <div *ngFor="let assignedOrder of ListResourceOfOrder;">
   <ion-label>
     <div style="color: #78849E; opacity: 0,45; margin-top: 20px; margin-left: 16px; margin-bottom: -7px;">

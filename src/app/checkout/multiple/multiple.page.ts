@@ -67,6 +67,7 @@ export class MultiplePage implements OnInit {
   ngOnInit() {
     this.getOfficeState();
     this.checkOutAsst.products = [];
+    
     this.activatedroute.queryParamMap.subscribe(data => {
     this.isMultiple = data.get('multiple') == 'false';
     })
@@ -104,6 +105,7 @@ export class MultiplePage implements OnInit {
 
 myfunction($val){
   this.activetab = $val;
+  this.request_desc.checkoutProcessing = this.request_desc.checkoutProcessing == 'pickup'? 'pickup' :'home';
 }
 
 validateProductDescriptionForm(){
@@ -190,6 +192,39 @@ clearForm(){
   }
 
 async finalsubmit(){
+  console.log(this.request_desc);
+  if( this.request_desc.checkoutProcessing == 'home'){
+if((this.request_desc.customerAddress == "" || this.request_desc.customerAddress == undefined) || (this.request_desc.shipToState == "" || this.request_desc.shipToState == undefined) || (this.request_desc.deliveryLocationId == 0 || this.request_desc.deliveryLocationId == undefined))
+  {
+    const toast = await this.toastCtrl.create({
+      duration: 3000,
+      message: "Please fill delivery details",
+      color: "danger"
+    });
+    toast.present();
+   return false
+  }
+  }else{
+    if(this.request_desc.checkoutProcessing == 'pickup'){
+if(this.request_desc.pickupCenter == undefined || this.request_desc.pickupCenter == ""){
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: "Please select pickup center",
+        color: "danger"
+      });
+      toast.present();
+      return false
+}
+    }else{
+      const toast = await this.toastCtrl.create({
+        duration: 3000,
+        message: "Please fill delivery details",
+        color: "danger"
+      });
+      toast.present();
+      return false
+    }
+  }
   const loading = await this.loadingCtrl.create({
     cssClass: 'my-custom-class',
     message: 'Please wait...',
@@ -208,6 +243,7 @@ async finalsubmit(){
   productDetails.itemNumber = this.product_desc.itemNumber
   productDetails.comment = this.product_desc.comment;
   productDetails.style = this.product_desc.style;
+
   this.checkOutAsst.products.push(productDetails);
  
   this.AuthService.globalUser.subscribe((authuserdetails:any)=>{
@@ -221,39 +257,48 @@ async finalsubmit(){
     RequestDetails.deliveryLocationId = authuserdetails.customer.closestBustopId;   
     this.checkOutAsst.request = RequestDetails;
   })
-  this.checkout.create(this.checkOutAsst).subscribe(async data => {      
-    if(data.code == "000"){
-      const toast = await this.toastCtrl.create({
-        duration: 3000,
-        message: data.message,
-        color: "success"
-      });
-      toast.present();  
+this.router.navigate(['checkoutsummary'],{queryParams:{details:JSON.stringify(this.checkOutAsst),FormSubmit:true}});
       this.product_desc = new CheckOutAssistanceProductModel().clone();
       this.request_desc = new CheckOutAssistanceModel().clone();
       this.checkOutAsst = new CheckOutAssistanceDTO().clone();
       this.checkOutAsst.products = [];
+      this.productDescriptionPanel = false;
+      this.deliveryDetailsPanel  = true;
       loading.dismiss();
-      this.router.navigate(['/checkoutlist'])
-    } else{
-      const toast = await this.toastCtrl.create({
-        duration: 3000,
-        message: data.message,
-        color: "danger"
-      });
-      toast.present();
-      loading.dismiss();
-    }
+
+  // this.checkout.create(this.checkOutAsst).subscribe(async data => {      
+  //   if(data.code == "000"){
+  //     const toast = await this.toastCtrl.create({
+  //       duration: 3000,
+  //       message: data.message,
+  //       color: "success"
+  //     });
+  //     toast.present();  
+  //     this.product_desc = new CheckOutAssistanceProductModel().clone();
+  //     this.request_desc = new CheckOutAssistanceModel().clone();
+  //     this.checkOutAsst = new CheckOutAssistanceDTO().clone();
+  //     this.checkOutAsst.products = [];
+  //     loading.dismiss();
+  //     this.router.navigate(['/checkoutlist'])
+  //   } else{
+  //     const toast = await this.toastCtrl.create({
+  //       duration: 3000,
+  //       message: data.message,
+  //       color: "danger"
+  //     });
+  //     toast.present();
+  //     loading.dismiss();
+  //   }
    
-  },async error=>{
-    const toast = await this.toastCtrl.create({
-      duration: 3000,
-      message: "Oops! something went wrong",
-      color: "danger"
-    });
-    toast.present();
-    loading.dismiss();
-  })
+  // },async error=>{
+  //   const toast = await this.toastCtrl.create({
+  //     duration: 3000,
+  //     message: "Oops! something went wrong",
+  //     color: "danger"
+  //   });
+  //   toast.present();
+  //   loading.dismiss();
+  // })
 }
 
 async getLocation(stateId){
@@ -296,7 +341,7 @@ getOfficeState(){
 //   }
 
 gotoSummary(){
-  //this.onSubmit()
+
     //this.store.saveBookings(this.checkOutAsst)
     //this.router.navigate(['localdelivery/review-booking'])
 

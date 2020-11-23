@@ -22,4 +22,12 @@ ion-avatar{
     --border-radius:4px;
     height: 40px;
     width: 40px;
+    position: relative;
+    overflow: hidden;
 }
+
+  
+ion-avatar img {
+    width: 100%;
+    height: auto;
+  }

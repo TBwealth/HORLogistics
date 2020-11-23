@@ -16,7 +16,7 @@
 
 <ion-content>
 <div style="padding: 15px;">
-  <ion-row >
+  <!-- <ion-row *ngIf="!formsubmit">
     <ion-col size="12">
       <ion-row>
         <ion-col size="12">
@@ -26,9 +26,9 @@
         </ion-col> 
         </ion-row>
     </ion-col>
-    </ion-row>
+    </ion-row> -->
 
-    <ion-row >
+    <ion-row *ngIf="!formsubmit">
       <ion-col size="6">
         Checkout Processing
       </ion-col>
@@ -39,7 +39,7 @@
 
       </ion-col>
       </ion-row>
-      <ion-row >
+      <ion-row *ngIf="!formsubmit">
         <ion-col size="6">
          Booking Status
         </ion-col>
@@ -55,10 +55,12 @@
   <ion-row >
     <ion-col size="7" style="justify-content: center; display: flex; flex-direction: column;">
       <span>ITEM {{currentPage + 1}} OF {{productSize}}</span></ion-col>
-    <ion-col size="5">
+    <ion-col size="5" *ngIf="productSize > 1">
       <span>
-        <ion-icon *ngIf="(currentPage + 1) < productSize && (currentPage) != 0" name="chevron-back" (click)="rednavItem(currentPage)"></ion-icon> &nbsp; &nbsp;
-        <ion-icon *ngIf="(currentPage) > 0 && (currentPage+1) != productSize" name="chevron-forward" (click)="incnavItem(currentPage)"></ion-icon>
+        <ion-icon style="font-size: 20px; float: right; color: #F06103;" *ngIf="(currentPage) > 0 && (currentPage+1) != productSize" name="chevron-forward" (click)="incnavItem(currentPage)"></ion-icon>
+        &nbsp; &nbsp;&nbsp; &nbsp;
+        <ion-icon style="font-size: 20px; float: right; color: #F06103;" *ngIf="(currentPage + 1) < productSize && (currentPage) != 0" name="chevron-back" (click)="rednavItem(currentPage)"></ion-icon> 
+       
       </span>
       <a *ngIf="currentPage == 0" href="javascript:void(0)" (click)="incnavItem(currentPage)" style="font-size: 14px; float: right; background: transparent; border: none; padding: 0; outline: none;">
         Next
@@ -114,40 +116,58 @@
         <ion-col size="8"><span style="font-size: 12px; color: #282F39;float: right;">{{currentItem.itemNumber}}</span></ion-col>
       </ion-row>
     </ion-grid>
-    <div style="width: 100%;background-color:#F2F5F7; padding: 10px 15px;">
-      <ion-row style="background-color:#F2F5F7">
-        <ion-col><span>COST SUMMARY</span></ion-col>
-      </ion-row>
-    </div>
-    <div style="padding: 15px;">
-     
-
-      <ion-row>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Service Charge</span></ion-col>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.serviceCharge | number: '.2'}}</span></ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Products Cost</span></ion-col>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.productsCost | number: '.2'}}</span></ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Shipping Cost</span></ion-col>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.shippingCost | number: '.2'}}</span></ion-col>
-      </ion-row>
-
-      <ion-row style="color: #EF6102;">
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Total Cost</span></ion-col>
-        <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{checkoutassist.totalCost | number: '.2'}}</span></ion-col>
-      </ion-row>
-
-     
+    <div *ngIf="!formsubmit">
+      <div style="width: 100%;background-color:#F2F5F7; padding: 10px 15px;">
+        <ion-row style="background-color:#F2F5F7">
+          <ion-col><span>COST SUMMARY</span></ion-col>
+        </ion-row>
+      </div>
+      <div style="padding: 15px;">
+       
   
+        <ion-row>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Service Charge</span></ion-col>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.serviceCharge | number: '.2'}}</span></ion-col>
+        </ion-row>
+  
+        <ion-row>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Products Cost</span></ion-col>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.productsCost | number: '.2'}}</span></ion-col>
+        </ion-row>
+  
+        <ion-row>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Shipping Cost</span></ion-col>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{costSummary.shippingCost | number: '.2'}}</span></ion-col>
+        </ion-row>
+  
+        <ion-row style="color: #EF6102;">
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;">Total Cost</span></ion-col>
+          <ion-col size="6"><span style="font-size: 12px; color: #282F39;float: right;">N{{checkoutassist.totalCost | number: '.2'}}</span></ion-col>
+        </ion-row>
+  
+       
+    
+      </div>
+      <div style="padding: 15px;background-color: #F2F5F7;">
+        <span style="color: #444F63;">Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight Please also make provision for an extra unit weight for packaging</span>
+      </div>
     </div>
-    <div style="padding: 15px;background-color: #F2F5F7;">
-      <span style="color: #444F63;">Note that the prices quoted here is an estimate based on the estimated weight you entered. The amount to be billed will be different and will either be volume or actual weight Please also make provision for an extra unit weight for packaging</span>
-    </div>
-<div style="padding: 10px;"></div>
+   
+<div style="padding: 3px;"></div>
 
 </ion-content>
+<ion-footer class="ion-no-border" *ngIf="formsubmit">
+  <ion-row>
+    <ion-col size="6">
+      <ion-button expand="block"  class="blacksecColor" (click)="goback()">
+        Cancel
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button (click)="finalsubmit()" class="pryColor " expand="block" fill="fill">Submit</ion-button>
+    </ion-col>
+ 
+  </ion-row>
+ 
+  
+</ion-footer>

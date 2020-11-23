@@ -75,6 +75,8 @@ export class RegisterPage implements OnInit {
           spinner: "bubbles",
         });
         await this.loading.present();
+        this.regUser.businessAnniversary = new Date(this.regUser.businessAnniversary);
+        this.regUser.fullName = this.regUser.businessName;
       this.registerService.register(this.regUser).subscribe(async (data:ObjectResourceOfRegisterUserResource)=>{
 if(data.code == '007'){
   this.RegisterUserResource = data.data;
